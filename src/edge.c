@@ -31,15 +31,7 @@ bool edges_equal(const Edge edge_a, const Edge edge_b)
 {
     bool firsts_equal = vertices_equal(edge_a.first, edge_b.first);
     bool seconds_equal = vertices_equal(edge_a.second, edge_b.second);
-    if (firsts_equal && seconds_equal) {
-        return true;
-    }
-    bool first_second_equal = vertices_equal(edge_a.first, edge_b.second);
-    bool second_first_equal = vertices_equal(edge_a.second, edge_b.first);
-    if (first_second_equal && second_first_equal) {
-        return true;
-    }
-    return false;
+    return firsts_equal && seconds_equal;
 }
 
 bool edge_is_empty(const Edge edge)

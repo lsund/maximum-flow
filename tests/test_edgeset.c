@@ -27,7 +27,7 @@ char *utest_destroy_edgeset()
     return NULL;
 }
 
-char *utest_get_edge()
+char *utest_get_edge_at_position()
 {
     EdgeSet edgeset;
     edgeset = init_edgeset(4);
@@ -52,10 +52,10 @@ char *utest_edgeset_complement()
     edgeset_complement(edgeset_b, edgeset_a, &edgeset_d);
     mu_assert("should have length 16", edgeset_c.set->length == 16);
     mu_assert("should have 2 elements", edgeset_c.set->nelements == 2);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 0)->first.label == 0);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 0)->second.label == 1);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 1)->first.label == 2);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 1)->second.label == 3);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 0)->first.label == 0);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 0)->second.label == 1);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 1)->first.label == 2);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 1)->second.label == 3);
     mu_assert("should have length 16", edgeset_d.set->length == 16);
     mu_assert("should be empty", edgeset_d.set->nelements == 0);
     destroy_edgeset(edgeset_a);
@@ -117,12 +117,12 @@ char *utest_edgeset_union()
     edgeset_union(edgeset_a, edgeset_b, &edgeset_c);
     mu_assert("should have length 16", edgeset_c.set->length == 16);
     mu_assert("should have 2 elements", edgeset_c.set->nelements == 3);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 0)->first.label == 0);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 0)->second.label == 1);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 1)->first.label == 1);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 1)->second.label == 2);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 2)->first.label == 2);
-    mu_assert("and should be these edges", get_edge(edgeset_c, 2)->second.label == 3);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 0)->first.label == 0);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 0)->second.label == 1);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 1)->first.label == 1);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 1)->second.label == 2);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 2)->first.label == 2);
+    mu_assert("and should be these edges", get_edge_at_position(edgeset_c, 2)->second.label == 3);
     destroy_edgeset(edgeset_a);
     destroy_edgeset(edgeset_b);
     destroy_edgeset(edgeset_c);
@@ -145,7 +145,7 @@ char *utest_add_edge()
     mu_assert("should not contain vertex 2", !edgeset_contains_vertex(edgeset, make_vertex(2)));
     mu_assert("1 should succeed", add_edge(edgeset, make_edge(make_vertex(2), make_vertex(3))) == SUCCESS);
     mu_assert("should fail", add_edge(edgeset, make_edge(make_vertex(77),make_vertex(77))) == FAIL);
-    mu_assert("should be 2", get_edge(edgeset, 0)->first.label == 2);
+    mu_assert("should be 2", get_edge_at_position(edgeset, 0)->first.label == 2);
     mu_assert("should contain vertex 2", edgeset_contains_vertex(edgeset, make_vertex(2)));
     mu_assert("should contain vertex 3", edgeset_contains_vertex(edgeset, make_vertex(3)));
     mu_assert("vertexset should also contain 2", vertexset_contains_vertex(edgeset.vertices, make_vertex(2)));
@@ -170,9 +170,6 @@ char *utest_edgeset_contains_edge()
     mu_assert("should have this edge", edgeset_contains_edge(edgeset, b));
     mu_assert("should have this edge", edgeset_contains_edge(edgeset, c));
     mu_assert("should not be able to add this edge", add_edge(edgeset, d) == FAIL);
-    mu_assert("1 should have this edge", edgeset_contains_edge(edgeset, swapped(a)));
-    mu_assert("1 should have this edge", edgeset_contains_edge(edgeset, swapped(b)));
-    mu_assert("1 should have this edge", edgeset_contains_edge(edgeset, swapped(c)));
     destroy_edgeset(edgeset);
     edgeset = init_edgeset(16);
     TokenTablePointer table = init_tokentable();
@@ -182,8 +179,6 @@ char *utest_edgeset_contains_edge()
     parse_edges(table, edgeset, NULL, vertexset);
     mu_assert("should have this edge", edgeset_contains_edge(edgeset, make_edge(make_vertex(13), make_vertex(7))));
     mu_assert("should have this edge", edgeset_contains_edge(edgeset, make_edge(make_vertex(14), make_vertex(8))));
-    mu_assert("2 should have this edge", 
-            edgeset_contains_edge(edgeset, make_edge(make_vertex(8), make_vertex(14))));
     mu_assert("should have this edge", 
             edgeset_contains_edge(edgeset, make_edge(make_vertex(10), make_vertex(15))));
     mu_assert("should have this edge", 
@@ -244,8 +239,8 @@ char *test_edgeset() {
     mu_run_utest(utest_symmetric_difference);
     mu_message(UNIT, "destroy_edgeset\n");
     mu_run_utest(utest_destroy_edgeset);
-    mu_message(UNIT, "get_edge\n");
-    mu_run_utest(utest_get_edge);
+    mu_message(UNIT, "get_edge_at_position\n");
+    mu_run_utest(utest_get_edge_at_position);
     mu_message(UNIT, "edgeset_contains_edge\n");
     mu_run_utest(utest_edgeset_contains_edge);
     mu_message(UNIT, "edgepath_from_vertexset\n");

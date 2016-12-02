@@ -45,10 +45,11 @@ bool vertexset_contains_vertices(
 Result add_vertex(VertexSet vertexset, Vertex vertex);
 
 // Get the vertex at the specified position in the set 
-VertexPointer get_vertex(const VertexSet vertexset, const unsigned int position);
+VertexPointer get_vertex_at_position(const VertexSet vertexset, const unsigned int position);
+
+VertexPointer get_vertex_with_label(const VertexSet vertexset, const Label label);
 
 // Print the set to stout
-
 void print_vertexset(const VertexSet vertexset);
 
 // Free the structure

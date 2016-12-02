@@ -105,7 +105,7 @@ Result add_vertex(VertexSet vertexset, Vertex vertex)
     return SUCCESS;
 }
 
-VertexPointer get_vertex(const VertexSet vertexset, const unsigned int position)
+VertexPointer get_vertex_at_position(const VertexSet vertexset, const unsigned int position)
 {
     if (position >= vertexset.set->length) {
         return NULL;
@@ -114,11 +114,16 @@ VertexPointer get_vertex(const VertexSet vertexset, const unsigned int position)
     return (VertexPointer) get_element(vertexset.set, index);
 }
 
+VertexPointer get_vertex_with_label(const VertexSet vertexset, const Label label)
+{
+    return (VertexPointer) get_element(vertexset.set, label);
+}
+
 void print_vertexset(const VertexSet vertexset)
 {
     size_t i;
     for (i = 0; i < vertexset.set->nelements; i++) {
-        VertexPointer vertex = get_vertex(vertexset, i);
+        VertexPointer vertex = get_vertex_at_position(vertexset, i);
             printf("Vertex: %d\n", vertex->label);
     }
 }

@@ -13,7 +13,7 @@ char *utest_init_vertexset()
     /*         vertexset.set->length == MAX_VERTICES + 1); */
     /* for (size_t i = 0; i < vertexset.set->length; i++) { */
     /*     mu_assert("should be initialized to UNINIT_VERTEX", */ 
-    /*             get_vertex(vertexset, i)->label == UNINIT_VERTEX); */
+    /*             get_vertex_at_position(vertexset, i)->label == UNINIT_VERTEX); */
     /* } */
     /* mu_assert("initialized elements should be 0", vertexset.set->nelements == 0); */
     return NULL;
@@ -34,16 +34,16 @@ char *utest_add_vertex()
     mu_assert("2 should succeed", add_vertex(vertexset , make_vertex(3)) == FAIL);
     mu_assert("3 should succeed", add_vertex(vertexset, make_vertex(2)) == SUCCESS);
     mu_assert("4 should succeed", add_vertex(vertexset, make_vertex(1)) == SUCCESS);
-    mu_assert("should be false", get_vertex(vertexset, 4)->initialized == false);
+    mu_assert("should be false", get_vertex_at_position(vertexset, 4)->initialized == false);
     mu_assert("should now have 4 elements", vertexset.set->nelements == 4); 
-    mu_assert("should be 4", get_vertex(vertexset, 0)->label == 4);
-    mu_assert("should be 4", get_vertex(vertexset, 1)->label == 3);
-    mu_assert("should be 4", get_vertex(vertexset, 2)->label == 2);
-    mu_assert("should be 4", get_vertex(vertexset, 3)->label == 1);
+    mu_assert("should be 4", get_vertex_at_position(vertexset, 0)->label == 4);
+    mu_assert("should be 4", get_vertex_at_position(vertexset, 1)->label == 3);
+    mu_assert("should be 4", get_vertex_at_position(vertexset, 2)->label == 2);
+    mu_assert("should be 4", get_vertex_at_position(vertexset, 3)->label == 1);
     mu_assert("6 should fail", add_vertex(vertexset, make_vertex(2)) == FAIL);
     mu_assert("5 should fail to add empty ", add_vertex(vertexset, *make_p_empty_vertex()) == FAIL);
     mu_assert("7 should fail becaus vertex2 still exists", add_vertex(vertexset, make_vertex(2)) == FAIL);
-    mu_assert("should be 3", get_vertex(vertexset, 0)->label == 4);
+    mu_assert("should be 3", get_vertex_at_position(vertexset, 0)->label == 4);
     destroy_vertexset(vertexset);
     return NULL;
 }
@@ -81,14 +81,14 @@ char *utest_vertexset_contains_vertices()
 
     return NULL;
 }
-char *utest_get_vertex()
+char *utest_get_vertex_at_position()
 {
     VertexSet vertexset;
     vertexset = init_vertexset(7);
-    mu_assert("1 should succeed", get_vertex(vertexset, 3)->initialized == false);
+    mu_assert("1 should succeed", get_vertex_at_position(vertexset, 3)->initialized == false);
     mu_assert("2 should succeed", add_vertex(vertexset, make_vertex(6)) == SUCCESS);
-    mu_assert("should be NULL", get_vertex(vertexset, 8) == NULL);
-    mu_assert("should be NULL", get_vertex(vertexset, -1) == NULL);
+    mu_assert("should be NULL", get_vertex_at_position(vertexset, 8) == NULL);
+    mu_assert("should be NULL", get_vertex_at_position(vertexset, -1) == NULL);
     destroy_vertexset(vertexset);
     return NULL;
 }
@@ -105,8 +105,8 @@ char *test_vertexset() {
     mu_run_utest(utest_vertexset_contains_vertex);
     mu_message(UNIT, "vertexset_centains_vertices\n");
     mu_run_utest(utest_vertexset_contains_vertices);
-    mu_message(UNIT, "get_vertex\n");
-    mu_run_utest(utest_get_vertex);
+    mu_message(UNIT, "get_vertex_at_position\n");
+    mu_run_utest(utest_get_vertex_at_position);
     mu_message(UNIT, "add_vertex\n");
     mu_run_utest(utest_add_vertex);
     return NULL;

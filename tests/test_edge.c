@@ -1,5 +1,4 @@
 
-
 #include <stdlib.h>
 #include "test.h"
 
@@ -11,7 +10,7 @@ char *test_edges_equal()
     Edge d = make_edge(make_vertex(1), make_vertex(0));
     mu_assert("should be equal", edges_equal(a, b));
     mu_assert("should not be equal", !edges_equal(a, c));
-    mu_assert("2 should be equal", edges_equal(c, d));
+    mu_assert("should not be equal", !edges_equal(c, d));
     mu_assert("2 should not be equal", !edges_equal(c, a));
     return NULL;
 }

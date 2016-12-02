@@ -20,8 +20,8 @@ Result parse_edges( const TokenTablePointer table,
                 return FAIL;
             }
             e = make_edge(
-                    *get_vertex(vertexset, (int) strtol(second_token, NULL, 10) - 1),
-                    *get_vertex(vertexset, (int) strtol(third_token, NULL, 10) - 1)
+                    *get_vertex_at_position(vertexset, (int) strtol(second_token, NULL, 10) - 1),
+                    *get_vertex_at_position(vertexset, (int) strtol(third_token, NULL, 10) - 1)
                 );
             EdgePointer edge = get_element(edgeset.set, nedges);
             if (!edge) {

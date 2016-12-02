@@ -57,7 +57,7 @@ Result edgepath_from_vertexset(const VertexSet vertexset, EdgeSetPointer ret);
 Result add_edge(EdgeSet edgeset, Edge edge);
 
 // Get the edge at the specified position
-EdgePointer get_edge(const EdgeSet edgeset , const unsigned int position);
+EdgePointer get_edge_at_position(const EdgeSet edgeset , const unsigned int position);
 
 // Returns true if the edgeset contains the specified edge, false otherwise
 bool edgeset_contains_edge(const EdgeSet edgeset, const Edge edge);

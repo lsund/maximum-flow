@@ -37,6 +37,7 @@ int tests_run, utests_run;
 char *test_parser();
 char *test_tokenizer();
 char *test_graph();
+char *test_network();
 char *test_util();
 char *test_edgeset(); 
 char *test_vertexset(); 
@@ -92,6 +93,8 @@ static char *test()
     mu_run_test(test_parser);
 	mu_message(MODULE,"graph\n");
     mu_run_test(test_graph);
+	mu_message(MODULE,"network\n");
+    mu_run_test(test_network);
 	mu_message(MODULE,"util\n");
     mu_run_test(test_util);
     return 0;

@@ -8,6 +8,7 @@
 #include "graph.h"
 #include "edgeset.h"
 #include "vertexset.h"
+#include "network.h"
 
 enum MessageOption { 
     MODULE,

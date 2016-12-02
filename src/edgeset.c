@@ -56,10 +56,10 @@ Result edgepath_from_vertexset(const VertexSet vertexset, EdgeSetPointer ret)
     }
     size_t i;
     Vertex current, next;
-    next = *get_vertex(vertexset, 0);
+    next = *get_vertex_at_position(vertexset, 0);
     for (i = 0; i < vertexset.set->nelements - 1; i++) {
         current = next;
-        next = *get_vertex(vertexset, i + 1);
+        next = *get_vertex_at_position(vertexset, i + 1);
         add_edge(*ret, make_edge(current, next));
     }
     return SUCCESS;
@@ -116,7 +116,6 @@ Result add_edge(EdgeSet edgeset, Edge edge)
             return FAIL;
         }
         *(edgeset.contains_edge + edge_to_bitpos(edge, edgeset.vertices.maxvertices)) = true;
-        *(edgeset.contains_edge + edge_to_bitpos(swapped(edge), edgeset.vertices.maxvertices)) = true;
         *(edgeset.indices + edgeset.set->nelements) = edge_to_bitpos(edge, edgeset.vertices.maxvertices);
         *head = edge;
         add_vertex(edgeset.vertices, edge.first);
@@ -134,7 +133,7 @@ Result edgeset_complement(const EdgeSet edgeset_a, const EdgeSet edgeset_b, Edge
     size_t i;
     for (i = 0; i < larger_size; i++) {
         if (i < edgeset_a.set->nelements) {
-            edge_p_a = get_edge(edgeset_a, i);
+            edge_p_a = get_edge_at_position(edgeset_a, i);
             edge_a = edge_p_a ? *edge_p_a : empty_edge();
             if (!edge_is_empty(edge_a) && !edgeset_contains_edge(edgeset_b, edge_a)) {
                 add_edge(*ret, edge_a);
@@ -154,13 +153,13 @@ Result edgeset_union(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPo
     size_t i;
     for (i = 0; i < larger_size; i++) {
         if (i < edgeset_a.set->nelements) {
-            edge_p_a = get_edge(edgeset_a, i);
+            edge_p_a = get_edge_at_position(edgeset_a, i);
             edge_a = *edge_p_a;
         } else {
             edge_a = empty_edge();
         }
         if (i < edgeset_b.set->nelements) {
-            edge_p_b = get_edge(edgeset_b, i);
+            edge_p_b = get_edge_at_position(edgeset_b, i);
             edge_b = *edge_p_b;
         } else {
             edge_b = empty_edge();
@@ -189,7 +188,7 @@ Result symmetric_difference(const EdgeSet edgeset_a, const EdgeSet edgeset_b, Ed
     return SUCCESS;
 }
 
-EdgePointer get_edge(const EdgeSet edgeset , const unsigned int position)
+EdgePointer get_edge_at_position(const EdgeSet edgeset , const unsigned int position)
 {
     return (EdgePointer) get_element(edgeset.set, *(edgeset.indices + position)); 
 }
@@ -198,7 +197,7 @@ void print_edgeset(const EdgeSet edgeset)
 {
     size_t i;
     for (i = 0; i < edgeset.set->nelements; i++) {
-        Edge edge = *((EdgePointer) get_edge(edgeset, i));
+        Edge edge = *((EdgePointer) get_edge_at_position(edgeset, i));
         printf("Edge: (%d, %d)\n", edge.first.label, edge.second.label);
     }
 }
