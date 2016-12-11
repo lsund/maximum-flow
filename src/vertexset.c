@@ -17,7 +17,7 @@ VertexSet vertexset_init(const size_t init_length)
         return empty_vertexset();
     } else {
         ret.set         = array_p_init(init_length);
-        ret.set->length = init_length;
+        ret.set->capacity = init_length;
     }
     return ret;
 }
@@ -31,26 +31,29 @@ VertexSetPointer init_p_vertexset(const size_t init_length)
 
 bool vertexset_is_empty(const VertexSet vertexset)
 {
-    return vertexset.set->nelements == 0;
+    return vertexset.set->length == 0;
 }
 
-bool vertexset_contains_vertex(const VertexSet vertexset, const VertexPointer vertex)
+bool vertexset_contains_label(const VertexSet vertexset, const Label label)
 {
-    if (vertex->label > vertexset.set->length - 1) {
-        return false;
+    size_t i;
+    for (i = 0; i < vertexset.set->length; i++) {
+        if (label == vertexset_get(vertexset, i)->label) {
+            return true;
+        }
     }
-    return array_get(vertexset.set, vertex->label);
+    return false;
 }
 
 bool vertexset_is_super(const VertexSet super, const VertexSet sub)
 {
-    if (super.set->nelements != sub.set->nelements) {
+    if (super.set->length != sub.set->length) {
         return false;
     }
     size_t i;
-    for (i = 0; i < sub.set->nelements; i++) {
+    for (i = 0; i < sub.set->length; i++) {
         VertexPointer vertex = vertexset_get(sub, i);
-        if (!vertexset_contains_vertex(super, vertex)) {
+        if (!vertexset_contains_label(super, vertex->label)) {
             return false;
         }
     }
@@ -63,7 +66,7 @@ bool vertexset_equals(const VertexSet vertexset_a, const VertexSet vertexset_b)
         return false;
     }
     size_t i;
-    for (i = 0; i < vertexset_a.set->nelements; i++) {
+    for (i = 0; i < vertexset_a.set->length; i++) {
         VertexPointer vertex_a = vertexset_get(vertexset_a, i);
         VertexPointer vertex_b = vertexset_get(vertexset_b, i);
         if (vertex_equals(vertex_a, vertex_b)) {
@@ -75,29 +78,32 @@ bool vertexset_equals(const VertexSet vertexset_a, const VertexSet vertexset_b)
 
 Result vertexset_set(const VertexSet vertexset, const VertexPointer vertex, const unsigned int position) 
 {
-    if (vertex->label >= vertexset.set->length) {
+    if (vertex->label >= vertexset.set->capacity) {
         runtime_error("vertexset_set: label too large");
         return FAIL;
     }
-    if (vertexset_contains_vertex(vertexset, vertex)) {
+    if (vertexset_contains_label(vertexset, vertex->label)) {
         runtime_error("vertexset_set: set already contains this vertex");
         return FAIL;
     } else {
         array_set(vertexset.set, vertex, position);
-        vertexset.set->nelements++; 
+        vertexset.set->length++; 
     }
     return SUCCESS;
 }
 
-Result vertexset_push(const VertexSet edgeset, const VertexPointer vertex)
+Result vertexset_push(const VertexSet vertexset, const VertexPointer vertex)
 {
-    runtime_error("tbi");
-    return FAIL;
+    if (!vertexset_contains_label(vertexset, vertex->label)) {
+        return array_push(vertexset.set, vertex);
+    } else {
+        return FAIL;
+    }
 }
 
 VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int position)
 {
-    if (position >= vertexset.set->length) {
+    if (position >= vertexset.set->capacity) {
         runtime_error("vertexset_get: index out of bounds");
         return NULL;
     }
@@ -106,17 +112,15 @@ VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int positi
 
 Result vertexset_complement(const VertexSet vertexset_a, const VertexSet vertexset_b, VertexSetPointer ret)
 {
-    unsigned int larger_size = larger(vertexset_a.set->nelements, vertexset_b.set->nelements);
+    unsigned int larger_size = larger(vertexset_a.set->length, vertexset_b.set->length);
     VertexPointer vertex_a;
     size_t i;
     for (i = 0; i < larger_size; i++) {
-        if (i < vertexset_a.set->nelements) {
+        if (i < vertexset_a.set->length) {
             vertex_a = vertexset_get(vertexset_a, i);
-            if (vertex_a) {
+            if (vertex_a && !vertexset_contains_label(vertexset_b, vertex_a->label)) {
                 vertexset_push(*ret, vertex_a);
-            } else {
-                runtime_error("vertexset_complement: no edge present");
-            }
+            } 
         } else {
             break;
         }
@@ -128,7 +132,7 @@ Result vertexset_complement(const VertexSet vertexset_a, const VertexSet vertexs
 void vertexset_print(const VertexSet vertexset)
 {
     size_t i;
-    for (i = 0; i < vertexset.set->nelements; i++) {
+    for (i = 0; i < vertexset.set->length; i++) {
         VertexPointer vertex = vertexset_get(vertexset, i);
             printf("%d, ", vertex->label);
     }

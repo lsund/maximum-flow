@@ -79,7 +79,7 @@ bool tree_contains_vertex(Tree tree, VertexPointer vertex)
 Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
 {
     VertexSet inserted_vertices = vertexset_init(tree.maxsize);
-    if (inserted_vertices.set->length == 0) {
+    if (inserted_vertices.set->capacity == 0) {
         return FAIL;
     }
     if (treevertex_vertices(treevertex, inserted_vertices) == FAIL) {
@@ -89,11 +89,11 @@ Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
         return FAIL;
     }
     size_t i;
-    for (i = 0; i < inserted_vertices.set->nelements; i++) {
+    for (i = 0; i < inserted_vertices.set->length; i++) {
         VertexPointer vertex = vertexset_get(inserted_vertices, i);
             *(tree.contains + vertex->label) = true;
     }
-    *(tree.nvertices) += inserted_vertices.set->nelements;
+    *(tree.nvertices) += inserted_vertices.set->length;
     vertexset_destroy(inserted_vertices);
     return SUCCESS;
 }

@@ -31,7 +31,7 @@ bool edgeset_is_empty(const EdgeSet edgeset);
 
 bool edgesets_equal(const EdgeSet edgeset_a, const EdgeSet edgeset_b);
 
-size_t edgeset_vertice_count(const EdgeSet edgeset);
+size_t edgeset_vertex_count(const EdgeSet edgeset);
 
 // Attempts to compute the complement of two edgesets. On success, the complement
 // of edgeset_a and edgeset_b is stored in Ret and SUCCESS is returned.
@@ -57,7 +57,7 @@ Result edgeset_push(const EdgeSet edgeset, const EdgePointer edge);
 EdgePointer edgeset_get(const EdgeSet edgeset , const unsigned int position);
 
 // The vertices of this edgeset
-VertexSetPointer edgeset_vertices(const EdgeSet edgeset);
+VertexSet edgeset_vertices(const EdgeSet edgeset);
 
 // Returns true if the edgeset contains the specified edge, false otherwise
 bool edgeset_is_super(const EdgeSet super, const EdgeSet sub);
@@ -67,7 +67,7 @@ bool edgeset_is_sub(const EdgeSet sub, const EdgeSet super);
 
 // Returns true if the edgeset contains every edge in the list of edges
 // specified by edges, false otherwise
-bool edgeset_contains_edge(const EdgeSet edgeset, const EdgePointer Edge);
+bool edgeset_contains_edge(const EdgeSet edgeset, const EdgePointer edge);
 
 // Returns true if the edgeset contains the specified vertex, false otherwise
 bool edgeset_contains_vertex(const EdgeSet edgeset, const VertexPointer vertex);

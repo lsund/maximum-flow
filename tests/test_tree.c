@@ -31,10 +31,10 @@ char *utest_treevertex_vertices()
     tree_insert(make_p_tree_vertex_label(4), 2, tree);
     VertexSet vertexset = vertexset_init(10);
     treevertex_vertices(tree.root, vertexset);
-    mu_assert("should contain 1", vertexset_contains_vertex(vertexset, vertex_p_make(1)));
-    mu_assert("should contain 2", vertexset_contains_vertex(vertexset, vertex_p_make(2)));
-    mu_assert("should contain 3", vertexset_contains_vertex(vertexset, vertex_p_make(3)));
-    mu_assert("should contain 4", vertexset_contains_vertex(vertexset, vertex_p_make(4)));
+    mu_assert("should contain 1", vertexset_contains_label(vertexset, 1));
+    mu_assert("should contain 2", vertexset_contains_label(vertexset, 2));
+    mu_assert("should contain 3", vertexset_contains_label(vertexset, 3));
+    mu_assert("should contain 4", vertexset_contains_label(vertexset, 4));
     return NULL;
 }
 
@@ -48,8 +48,8 @@ char *utest_treevertex_insert()
     mu_assert("should succed", treevertex_insert(make_p_tree_vertex_label(2), 1, root) == SUCCESS);
     mu_assert("root should exist", root);
     mu_assert("root should exist", root->content->label == 1);
-    mu_assert("the maxlength of roots children should be 4", root->children->length == 4);
-    mu_assert("the length of roots children should be 1", root->children->nelements == 1);
+    mu_assert("the maxlength of roots children should be 4", root->children->capacity == 4);
+    mu_assert("the length of roots children should be 1", root->children->length == 1);
     mu_assert("should be 2", ((TreeVertexPointer) array_get(root->children, 0))->content->label == 2);
     mu_assert("should not be root", ((TreeVertexPointer) array_get(root->children, 0))->is_root == false);
     TreeVertexPointer parent = ((TreeVertexPointer) array_get(root->children, 0))->parent;
@@ -57,13 +57,13 @@ char *utest_treevertex_insert()
     mu_assert("should succeed", treevertex_insert(make_p_tree_vertex_label(3), 2, root) == SUCCESS);
     mu_assert("should succeed", treevertex_insert(make_p_tree_vertex_label(4), 2, root) == SUCCESS);
     mu_assert("should fail", treevertex_insert(make_p_tree_vertex_label(5), 6, root) == FAIL);
-    mu_assert("should still be 1", root->children->nelements == 1); 
+    mu_assert("should still be 1", root->children->length == 1); 
 
     TreeVertexPointer subroot = make_p_tree_vertex_label(5); 
     treevertex_insert(make_p_tree_vertex_label(6), 5, subroot);
     treevertex_insert(make_p_tree_vertex_label(7), 5, subroot);
     mu_assert("should succeed", treevertex_insert(subroot, 1, root) == SUCCESS);
-    mu_assert("root children should now be 2", root->children->nelements == 2); 
+    mu_assert("root children should now be 2", root->children->length == 2); 
     TreeVertexPointer secondchild = array_get(root->children, 1);
     TreeVertexPointer firstchild = array_get(root->children, 0);
     mu_assert("first child of root should still be 2", firstchild->content->label == 2);
@@ -73,7 +73,7 @@ char *utest_treevertex_insert()
     mu_assert("level 2: first child should be 6", secondchildchild1->content->label == 6); 
     mu_assert("level 2: second child should be 7", secondchildchild2->content->label == 7); 
     TreeVertexPointer tv = array_get(root->children, 0); 
-    mu_assert("should be 2", tv->children->nelements == 2); 
+    mu_assert("should be 2", tv->children->length == 2); 
     return NULL;
 }
 

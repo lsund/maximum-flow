@@ -1,8 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#define MAX_VERTICES 2000
-#define MAX_EDGES 600000
+#define MAX_VERTICES 1000
+#define MAX_EDGES 1000
 #define TKN_MAX_LEN 64
 #define LINE_MAX_TKNS 64
 #define MAX_LINES 50000

@@ -9,7 +9,7 @@ bool matching_exposing(const VertexPointer vertex, const EdgeSet matching)
 Result matching_find_exposed(const VertexSet vertexset, const EdgeSet matching, unsigned int *index)
 {
     size_t i;
-    for (i = 0; i < vertexset.set->nelements; i++) {
+    for (i = 0; i < vertexset.set->length; i++) {
         VertexPointer vertex = vertexset_get(vertexset, i);
         if (matching_exposing(vertex, matching)) {
             *index = i;
@@ -22,7 +22,7 @@ Result matching_find_exposed(const VertexSet vertexset, const EdgeSet matching, 
 bool matching_is_perfect(const EdgeSet matching, const VertexSet vertexset)
 {
     size_t i;
-    for (i = 0; i < vertexset.set->nelements; i++) {
+    for (i = 0; i < vertexset.set->length; i++) {
         VertexPointer vertex = vertexset_get(vertexset, i);
         if (!edgeset_contains_vertex(matching, vertex)) {
             return false;
@@ -31,8 +31,8 @@ bool matching_is_perfect(const EdgeSet matching, const VertexSet vertexset)
     if (!is_matching(matching)) {
         return false;
     } else {
-        size_t size = matching.set->nelements;
-        if (size == (size_t) ceil(((float) vertexset.set->nelements) / 2))  {
+        size_t size = matching.set->length;
+        if (size == (size_t) ceil(((float) vertexset.set->length) / 2))  {
             return true;
         }
         return false;

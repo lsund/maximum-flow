@@ -24,7 +24,7 @@ VertexSet vertexset_init(const size_t init_length);
 bool vertexset_is_empty(const VertexSet vertexset);
 
 // Does the set contain the specified vertex?
-bool vertexset_contains_vertex(const VertexSet vertexset, const VertexPointer vertex);
+bool vertexset_contains_label(const VertexSet vertexset, const Label label);
 
 // is the vertexset a superset of the subset?
 bool vertexset_is_super(const VertexSet super, const VertexSet sub);
@@ -34,7 +34,7 @@ bool vertexset_equals(const VertexSet vertexset_a, const VertexSet vertexset_b);
 // Add a vertex to the set
 Result vertexset_set(const VertexSet vertexset, const VertexPointer vertex, const unsigned int position);
 
-Result vertexset_push(const VertexSet edgeset, const VertexPointer vertex);
+Result vertexset_push(const VertexSet vertexset, const VertexPointer vertex);
 
 // Get the vertex at the specified position in the set 
 VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int position);

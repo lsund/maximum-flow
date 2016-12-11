@@ -27,8 +27,8 @@ EdgePointer edge_p_edge_make(const Edge edge);
 EdgePointer edge_p_make_label(const Label first_label, const Label second_label); 
 
 // Returns the edge, where the first and second field in the specified edge are
-// edge_edge_swapped
-Edge edge_edge_swapped(const Edge edge);
+// edge_swapped
+Edge edge_swapped(const Edge edge);
 
 // Return the other endpoint of an edge, given one its endpoints
 Result edge_get_adjacent(const Edge edge, VertexPointer vertex, VertexPointer *ret);

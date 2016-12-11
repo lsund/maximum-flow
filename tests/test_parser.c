@@ -40,7 +40,7 @@ char *utest_parse_vertices()
     VertexPointer flat_edges = malloc(4 * sizeof(Vertex));
     parse_edges(table, edgeset_init(2), flat_edges, vertexset);
     parse_vertices(vertexset);
-    mu_assert("should have 2 vertices", vertexset.set->length == 3); 
+    mu_assert("should have 2 vertices", vertexset.set->capacity == 3); 
     return NULL;
 }
 

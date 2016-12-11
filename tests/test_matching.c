@@ -92,7 +92,7 @@ char *utest_matching_perfect_odd_path()
     edgeset_push(edgeset, edge_p_make_label(2,1));
     EdgeSet ret = edgeset_init(4);
     matching_perfect_odd_path(edgeset, vertex_p_make(2), &ret);
-    mu_assert("should have 1 vertex", ret.set->nelements == 1);
+    mu_assert("should have 1 vertex", ret.set->length == 1);
     return NULL;
 }
 

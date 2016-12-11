@@ -7,8 +7,8 @@ char *utest_array_init()
     Array array;
     array = array_init(7);
     mu_assert("should not be null", array.head != NULL);
-    mu_assert("should be 0", array.nelements == 0);
-    mu_assert("should be init length", array.length == 7);
+    mu_assert("should be 0", array.length == 0);
+    mu_assert("should be init length", array.capacity == 7);
     return NULL;
 }
 
@@ -17,8 +17,8 @@ char *utest_array_empty()
     Array array;
     array = array_empty();
     mu_assert("should be empty", array.head == NULL);
+    mu_assert("should be empty", array.capacity == 0);
     mu_assert("should be empty", array.length == 0);
-    mu_assert("should be empty", array.nelements == 0);
     return NULL;
 }
 
@@ -35,8 +35,8 @@ char *utest_array_push()
     mu_assert("1.should work", array_push(array, a) == SUCCESS);
     mu_assert("2.should work", array_push(array, b) == SUCCESS);
     mu_assert("3.should work", array_push(array, c) == SUCCESS);
-    mu_assert("size should have doubled", array->length == 4); 
-    mu_assert("elements should have increased ", array->nelements == 3); 
+    mu_assert("size should have doubled", array->capacity == 4); 
+    mu_assert("elements should have increased ", array->length == 3); 
     mu_assert("should have the correct elements ", *((int *) array_get(array, 0)) == 1); 
     mu_assert("should have the correct elements ", *((int *) array_get(array, 1)) == 2); 
     mu_assert("should have the correct elements ", *((int *) array_get(array, 2)) == 3); 
@@ -44,7 +44,7 @@ char *utest_array_push()
     free(array);
     array =  array_p_empty(0);
     mu_assert("4. should work", array_push(array, a) == SUCCESS);
-    mu_assert("size should have been initialized", array->length == 4); 
+    mu_assert("size should have been initialized", array->capacity == 4); 
     free(a);
     free(b);
     free(c);
@@ -62,24 +62,24 @@ char *utest_array_pop()
     ArrayPointer array;
     array = array_p_empty();
     array_push(array, &a);
-    mu_assert("should be 1", array->nelements == 1);
+    mu_assert("should be 1", array->length == 1);
     array_push(array, &b);
     array_push(array, &c);
     array_push(array, &d);
-    mu_assert("should be 4", array->nelements == 4);
+    mu_assert("should be 4", array->length == 4);
     mu_assert("should be 1", *((int *) array_get_last(array)) == 1);
     mu_assert("should be 1", *((int *) array_get_last(array)) == 1);
     array_pop(array);
     mu_assert("should be 0", *((int *) array_get_last(array)) == 0);
-    mu_assert("should be 3", array->nelements == 3);
+    mu_assert("should be 3", array->length == 3);
     array_pop(array);
     mu_assert("should be 0", *((int *) array_get_last(array)) == 0);
     array_pop(array);
     mu_assert("should be 1", *((int *) array_get_last(array)) == 1);
-    mu_assert("should be 1", array->nelements == 1);
+    mu_assert("should be 1", array->length == 1);
     array_pop(array);
     mu_assert("should be null", array_get_last(array) == 0);
-    mu_assert("should be 0", array->nelements == 0);
+    mu_assert("should be 0", array->length == 0);
     mu_assert("should be null", array_get_last(array) == 0);
     return NULL;
 }

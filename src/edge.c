@@ -40,7 +40,7 @@ EdgePointer edge_p_make_vertices(const VertexPointer first, const VertexPointer 
     return ret;
 }
 
-Edge edge_edge_swapped(const Edge edge)
+Edge edge_swapped(const Edge edge)
 {
     return edge_make(edge.second, edge.first);
 }
@@ -67,7 +67,10 @@ void edge_swap(EdgePointer edge)
 
 bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b)
 {
-    return edge_a == edge_b;
+    if (!edge_a || !edge_b) {
+        return edge_a == edge_b;
+    }
+    return vertex_equals(edge_a->first, edge_b->first) && vertex_equals(edge_a->second, edge_b->second);
 }
 
 bool edge_is_empty(const EdgePointer edge)

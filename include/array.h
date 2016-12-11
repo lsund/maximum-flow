@@ -13,11 +13,11 @@
 // A generic array
 // Field head:      The actual references to the element
 // Field length:    Maximumm capacity of the array
-// Field nelements: The current number of initialized elements in the array
+// Field length: The current number of initialized elements in the array
 typedef struct array {
     void **head;
-    size_t length;
-    unsigned int nelements;
+    size_t capacity;
+    unsigned int length;
 } Array, *ArrayPointer;
 
 // A array with no capacity  

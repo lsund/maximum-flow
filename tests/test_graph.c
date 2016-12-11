@@ -16,15 +16,13 @@ char *utest_graph_make()
     graph = graph_init();
     Result res = graph_make(table, graph);
     mu_assert("graph_make: should succed", res == SUCCESS);
-    mu_assert("should have potential for 4 edges", graph->edgeset.set->length == 9);
+    mu_assert("should have potential for 4 edges", graph->edgeset.set->capacity == 9);
     mu_assert("graph should not be null", graph != NULL);
     mu_assert("vs should not be null", graph->vertexset.set->head != NULL);
     mu_assert("es should not be null", graph->edgeset.set->head != NULL);
     VertexPointer a = vertexset_get(graph->vertexset, 0);
     VertexPointer b = vertexset_get(graph->vertexset, 1);
     mu_assert("should exist", a && b); 
-    mu_assert("should have 1 neighbour", a->neighbors.nelements == 1);
-    mu_assert("should have 1 neighbour", b->neighbors.nelements == 1);
 
     res = graph_make(NULL, graph);
     mu_assert("graph_make: should fail", res == FAIL);

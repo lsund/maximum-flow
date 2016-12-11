@@ -4,8 +4,8 @@
 Result DIMACS_print(const GraphPointer graph) {
 
     int i, n, m;
-    m = graph->edgeset.set->nelements;
-    n = graph->vertexset.set->nelements;
+    m = graph->edgeset.set->length;
+    n = graph->vertexset.set->length;
 
     printf("p edge %d %d\n", n, m);
     for (i = 0; i < m; i++) { 

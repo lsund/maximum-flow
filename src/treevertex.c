@@ -9,7 +9,7 @@ Result treevertex_insert(
 {
     size_t i;
     if (under != tree_b->content->label) {
-        for (i = 0; i < tree_b->children->nelements; i++) {
+        for (i = 0; i < tree_b->children->length; i++) {
             Result success = treevertex_insert(tree_a, under, array_get(tree_b->children, i));
             if (success) {
                 return SUCCESS;
@@ -32,7 +32,7 @@ void treevertex_odds_evens(TreeVertexPointer root, bool even, VertexSetPointer e
         vertexset_push(*odds, root->content);
     }
     size_t i;
-    for (i = 0; i < root->children->nelements; i++) {
+    for (i = 0; i < root->children->length; i++) {
         treevertex_odds_evens(array_get(root->children, i), !even, evens, odds);
     }
 }
@@ -43,7 +43,7 @@ TreeVertexPointer treevertex_subtree(TreeVertexPointer root, VertexPointer under
         return root;
     } else {
         size_t i;
-        for (i = 0; i < root->children->nelements; i++) {
+        for (i = 0; i < root->children->length; i++) {
             TreeVertexPointer next = treevertex_subtree(array_get(root->children, i), under);
             if (next) {
                 return next;
@@ -59,7 +59,7 @@ TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content)
         return root;
     }
     size_t i;
-    for (i = 0; i < root->children->nelements; i++) {
+    for (i = 0; i < root->children->length; i++) {
         TreeVertexPointer cand = treevertex_get(array_get(root->children, i), content);
         if (cand) {
             return cand;
@@ -72,7 +72,7 @@ Result treevertex_vertices(TreeVertexPointer root, VertexSet acc)
 {
     if (vertexset_push(acc, root->content)) {
         size_t i;
-        for (i = 0; i < root->children->nelements; i++) {
+        for (i = 0; i < root->children->length; i++) {
             treevertex_vertices(array_get(root->children, i), acc);
         }
     } else {
@@ -85,7 +85,7 @@ void treevertex_print(TreeVertexPointer root)
 {
     printf("V: %d { ", root->content->label);
     size_t i;
-    for (i = 0; i < root->children->nelements; i++) {
+    for (i = 0; i < root->children->length; i++) {
         treevertex_print(array_get(root->children, i));
     }
     printf(" } ");
@@ -97,7 +97,7 @@ Result treevertex_destroy(TreeVertexPointer root)
         return FAIL;
     }
     size_t i;
-    for (i = 0; i < root->children->nelements; i++) {
+    for (i = 0; i < root->children->length; i++) {
         if (treevertex_destroy(array_get(root->children, i)) == FAIL) {
             return FAIL;
         }

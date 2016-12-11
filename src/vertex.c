@@ -23,7 +23,7 @@ VertexPointer vertex_copy(const Vertex vertex)
 
 bool vertex_equals(const VertexPointer vertex_a, const VertexPointer vertex_b)
 {
-    if (vertex_a == NULL || vertex_b == NULL) {
+    if (!vertex_a || !vertex_b) {
         return vertex_a == vertex_b;
     } 
     return vertex_a->label == vertex_b->label;
