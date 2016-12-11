@@ -18,9 +18,9 @@ GraphPointer init_graph();
 // Construct a graph, given a tokentable
 Result make_graph(const TokenTablePointer table, GraphPointer graph);
 
-Result make_reversed_graph(const Graph graph, GraphPointer reversed);
-
 // Frees the structure
 Result destroy_graph(GraphPointer graph);
+
+Result make_reversed_graph(const Graph graph, GraphPointer reversed);
 
 #endif

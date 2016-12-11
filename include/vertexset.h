@@ -14,40 +14,36 @@
 // Field contains:  bitmap for keeping track of which elements are in the set
 typedef struct vertexset {
     ArrayPointer set;
-    unsigned int maxvertices; 
-    bool *contains;
-    unsigned int *indices;
-    bool initialized;
 } VertexSet, *VertexSetPointer;
 
+// Return an unitialized vertexset
 VertexSet uninitialized_vertexset();
  
 // Initializes a vertexset of size init_length. All vertices in this set
 // get an uninitialized value
 VertexSet init_vertexset(const size_t init_length);
 
-// Return true if the vertexset is intialized, false otherwise
-bool vertexset_is_initialized(const VertexSet vertexset);
-
 // Return true if the vertexset has no intialized elements, false otherwise
 bool vertexset_is_empty(const VertexSet vertexset);
 
 // Does the set contain the specified vertex?
-bool vertexset_contains_vertex(const VertexSet vertexset, const Vertex vertex);
+bool vertexset_contains_vertex(const VertexSet vertexset, const VertexPointer vertex);
 
-bool vertexset_contains_vertices(
-        const VertexSet vertexset,
-        const VertexPointer vertices,
-        size_t length
-    );
+// Does the set contain all of the specified vertices?
+bool is_super_vertexset(const VertexSet super, const VertexSet sub);
+
+bool vertexsets_equal(const VertexSet vertexset_a, const VertexSet vertexset_b);
 
 // Add a vertex to the set
-Result add_vertex(VertexSet vertexset, Vertex vertex);
+Result set_vertex(const VertexSet vertexset, const VertexPointer vertex, const unsigned int position);
+
+Result push_vertex(const VertexSet edgeset, const VertexPointer vertex);
 
 // Get the vertex at the specified position in the set 
-VertexPointer get_vertex_at_position(const VertexSet vertexset, const unsigned int position);
+VertexPointer get_vertex(const VertexSet vertexset, const unsigned int position);
 
-VertexPointer get_vertex_with_label(const VertexSet vertexset, const Label label);
+// Find the relative complement of a vertexset and store it in ret
+Result vertexset_complement(const VertexSet vertexset_a, const VertexSet vertexset_b, VertexSetPointer ret);
 
 // Print the set to stout
 void print_vertexset(const VertexSet vertexset);

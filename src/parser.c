@@ -12,26 +12,27 @@ Result parse_edges( const TokenTablePointer table,
         char *first_token, *second_token, *third_token;
         first_token = get_token(table, row, 0);
         if (strcmp("e", first_token) == 0) {
-            Edge e;
             second_token = get_token(table, row, 1);
             third_token  = get_token(table, row, 2);
             if (!second_token || !first_token) {
                 errno = EFAULT;
                 return FAIL;
             }
-            e = make_edge(
-                    *get_vertex_at_position(vertexset, (int) strtol(second_token, NULL, 10) - 1),
-                    *get_vertex_at_position(vertexset, (int) strtol(third_token, NULL, 10) - 1)
-                );
-            EdgePointer edge = get_element(edgeset.set, nedges);
-            if (!edge) {
-                errno = EFAULT;
-                return FAIL;
+            Label label_first  = (int) strtol(second_token, NULL, 10) - 1;
+            Label label_second = (int) strtol(third_token, NULL, 10) - 1;
+            VertexPointer first_vertex = get_vertex(vertexset, label_first);
+            VertexPointer second_vertex = get_vertex(vertexset, label_second);
+            EdgePointer edge;
+            if (first_vertex && second_vertex) {
+                edge = make_p_edge_vertices(first_vertex, second_vertex);
+            } else {
+                edge = NULL;
+                runtime_error("table could not be parsed (vertex in edge out of range)");
             }
-            add_edge(edgeset, e);
+            push_edge(edgeset, edge);
             if (flat_edges) {
-                *(flat_edges + (2 * nedges)) = e.first;
-                *(flat_edges + (2 * nedges + 1)) = e.second;
+                *(flat_edges + (2 * nedges))        = *edge->first;
+                *(flat_edges + (2 * nedges + 1))    = *edge->second;
             }
             nedges++;
         }
@@ -42,9 +43,9 @@ Result parse_edges( const TokenTablePointer table,
 Result parse_vertices(const VertexSet vertexset) 
 {
     size_t i;
-    for (i = 0; i < vertexset.maxvertices; i++) {
-        Vertex vertex = make_vertex(i + 1);
-        add_vertex(vertexset, vertex);
+    for (i = 0; i < vertexset.set->nelements; i++) {
+        VertexPointer vertex = make_p_vertex(i);
+        push_vertex(vertexset, vertex);
     }
     return SUCCESS;
 }
@@ -74,5 +75,15 @@ Result parse(const TokenTablePointer table, const GraphPointer graph)
 
     free(flat_edges);
     return SUCCESS;
+}
+
+int parse_arguments(int argc, char *argv[]) {
+    if ((argc == 3 || argc == 5) && strcmp(argv[1], "--graph") == 0) {
+        if (argc == 5 && strcmp(argv[3], "--hint") == 0) {
+            return 2;
+        } 
+        return argc > 3 ? 0 : 1;
+    } 
+    return 0;
 }
 

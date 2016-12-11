@@ -30,12 +30,12 @@ Result make_graph(const TokenTablePointer table, GraphPointer graph)
 Result make_reversed_graph(const Graph graph, GraphPointer reversed)
 {
     reversed->vertexset = graph.vertexset;  
-    EdgeSet reversed_edgeset = init_edgeset(graph.vertexset.maxvertices + 1);
+    EdgeSet reversed_edgeset = init_edgeset(graph.edgeset.set->nelements);
     size_t i;
     for (i = 0; i < graph.edgeset.set->nelements; i++) {
-        if (add_edge(reversed_edgeset, swapped(*get_edge_at_position(graph.edgeset, i))) == FAIL) {
-            return FAIL;
-        }
+        Edge graph_edge = *get_edge(graph.edgeset, i);
+        EdgePointer reversed_edge = make_p_edge_edge(swapped(graph_edge));
+        push_edge(reversed_edgeset, reversed_edge);
     }
     reversed->edgeset = reversed_edgeset;
     return SUCCESS;

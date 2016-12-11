@@ -5,8 +5,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-// The value of an uninitialized vertex
-#define UNINIT_VERTEX 0
+#include "array.h"
 
 // Type synonym
 typedef unsigned int Label; 
@@ -15,29 +14,25 @@ typedef unsigned int Label;
 // Field label: Its (unique) identifier 
 typedef struct vertex {
     Label label;
-    Label part;
-    bool initialized;
+    Array neighbors;
 } Vertex, *VertexPointer;
-
-// Construct a uninitialized vertex
-Vertex empty_vertex();
-
-// Construct a pointer to a uninitialized vertex
-VertexPointer make_p_empty_vertex();
 
 // Construct a vertex
 Vertex make_vertex(const Label label);
 
+// Construct a pointer to a vertex with a label
+VertexPointer make_p_vertex(const Label label);
+
 // Return true if the vertices are considered the same, false otherwise
-bool vertices_equal(const Vertex vertex_a, const Vertex vertex_b);
+bool vertices_equal(const VertexPointer vertex_a, const VertexPointer vertex_b);
 
 // Converts the vertex to an integer, unique relative to its label.
-unsigned int vertex_to_bitpos(Vertex vertex);
-
-// Is the vertex initialized?
-bool is_vertex_initialized(const VertexPointer vertex);
+unsigned int vertex_to_bitpos(const VertexPointer vertex);
 
 // Construct a copy of the specified vertex
 VertexPointer copy_vertex(const Vertex vertex);
+
+// Print the label of a vertex to stdout
+void print_vertex(const VertexPointer vertex);
 
 #endif

@@ -4,7 +4,7 @@
 
 char *utest_parse() {
     TokenTablePointer table = init_tokentable();
-    make_tokentable("data/instances/K2.dmx", table);
+    make_tokentable("data/graphs/K2.dmx", table);
     GraphPointer graph = init_graph();
     make_graph(table, graph);
     Result res = parse(table, graph);
@@ -24,7 +24,7 @@ char *utest_parse() {
     destroy_tokentable(table);
 
     table = init_tokentable();
-    make_tokentable("data/instances/K2.dmx", table);
+    make_tokentable("data/graphs/K2.dmx", table);
     graph = init_graph();
     make_graph(table, graph);
     res = parse(table, graph);
@@ -36,7 +36,7 @@ char *utest_parse_vertices()
 {
     VertexSet vertexset = init_vertexset(2);
     TokenTablePointer table = init_tokentable();
-    make_tokentable("data/instances/K2.dmx", table);
+    make_tokentable("data/graphs/K2.dmx", table);
     VertexPointer flat_edges = malloc(4 * sizeof(Vertex));
     parse_edges(table, init_edgeset(2), flat_edges, vertexset);
     parse_vertices(vertexset);

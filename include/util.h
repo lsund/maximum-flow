@@ -1,11 +1,11 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#define MAX_VERTICES 64
-#define MAX_EDGES 1000
+#define MAX_VERTICES 2000
+#define MAX_EDGES 600000
 #define TKN_MAX_LEN 64
 #define LINE_MAX_TKNS 64
-#define MAX_LINES 3000
+#define MAX_LINES 50000
 
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_RESET "\x1b[0m"

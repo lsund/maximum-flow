@@ -8,7 +8,25 @@
 #include "graph.h"
 #include "edgeset.h"
 #include "vertexset.h"
-#include "network.h"
+#include "tree.h"
+#include "matching.h"
+#include "disjointset.h"
+
+char *test_parser();
+char *test_tokenizer();
+char *test_graph();
+char *test_util();
+char *test_edgeset(); 
+char *test_vertexset(); 
+char *test_array();
+char *test_tree();
+char *test_vertex();
+char *test_edge();
+char *test_matching();
+char *test_disjointset();
+char *test_bipartite_perfect_matching();
+char *test_perfect_matching();
+
 
 enum MessageOption { 
     MODULE,

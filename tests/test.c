@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include "test.h"
 #include "minunit.h"
-#include <string.h>
+
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -32,18 +32,8 @@
 #define TEST 0
 #endif
 
+int entry_index;
 int tests_run, utests_run;
-
-char *test_parser();
-char *test_tokenizer();
-char *test_graph();
-char *test_network();
-char *test_util();
-char *test_edgeset(); 
-char *test_vertexset(); 
-char *test_array();
-char *test_vertex();
-char *test_edge();
 
 void mu_message(enum MessageOption option, const char *s) 
 {
@@ -77,7 +67,7 @@ void mu_message(enum MessageOption option, const char *s)
 
 static char *test()
 {
-	mu_message(MODULE,"set\n");
+	mu_message(MODULE,"array\n");
     mu_run_test(test_array);
 	mu_message(MODULE,"vertex\n");
     mu_run_test(test_vertex);
@@ -87,16 +77,20 @@ static char *test()
     mu_run_test(test_vertexset);
 	mu_message(MODULE,"edgeset\n");
     mu_run_test(test_edgeset);
+	mu_message(MODULE,"tree\n");
+    mu_run_test(test_tree);
+	mu_message(MODULE,"disjoint set\n");
+    mu_run_test(test_disjointset);
 	mu_message(MODULE,"tokenizer\n");
     mu_run_test(test_tokenizer);
 	mu_message(MODULE,"parser\n");
     mu_run_test(test_parser);
 	mu_message(MODULE,"graph\n");
     mu_run_test(test_graph);
-	mu_message(MODULE,"network\n");
-    mu_run_test(test_network);
 	mu_message(MODULE,"util\n");
     mu_run_test(test_util);
+	mu_message(MODULE,"matching\n");
+    mu_run_test(test_matching);
     return 0;
 }
 
@@ -104,6 +98,10 @@ static char *one_test(const char *module)
 {
     if (strcmp(module, "edgeset") == 0) {
         mu_run_test(test_edgeset);
+    } else if (strcmp(module, "tree") == 0) {
+        mu_run_test(test_tree);
+    } else if (strcmp(module, "matching") == 0) {
+        mu_run_test(test_matching);
     }
     return 0;
 }
@@ -112,10 +110,12 @@ static char *one_test(const char *module)
 static char *all_tests() {
     char *result; 
     if ((result = test())) { return result; }
+
     return 0;
 }
 
 int main(int argc, char **argv) {
+    entry_index = -1;
     char *result;
     char buf1[128], buf2[128];
     tests_run = 0;
@@ -125,9 +125,20 @@ int main(int argc, char **argv) {
             result = one_test("edgeset");
         } else if (strcmp(argv[1], "tree") == 0) {
             result = one_test("tree");
+        } else if (strcmp(argv[1], "matching") == 0) {
+            result = one_test("matching");
         } else {
             result = NULL;
             runtime_error("invalid argument to test");
+        }
+    } else if (argc == 3) {
+        int index = strtol(argv[2], NULL, 10);
+        if (strcmp(argv[1], "perfect") == 0) {
+            entry_index = index;
+            result = one_test("perfect");
+        } else {
+            result = "";
+            runtime_error("wrong arguments to test");
         }
     } else {
         result = all_tests();

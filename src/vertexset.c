@@ -1,34 +1,23 @@
 
 #include "vertexset.h"
 
-VertexSet uninitialized_vertexset()
+VertexSet empty_vertexset()
 {
     VertexSet ret;
     ret.set         = NULL;
-    ret.indices     = NULL;
-    ret.contains    = NULL;
-    ret.initialized = false;
-    ret.maxvertices = 0;
     return ret;
 
 }
+
 VertexSet init_vertexset(const size_t init_length) 
 {
     VertexSet ret;
-    unsigned int actual_length = init_length + 1;
     if (init_length > MAX_VERTICES) {
-        return uninitialized_vertexset();
+        runtime_error("init_vertexset: too many vertices");
+        return empty_vertexset();
     } else {
-        unsigned int i;
-        ret.set         = init_p_array(actual_length);
-        ret.contains    = calloc(actual_length, sizeof(bool));
-        ret.indices     = calloc(actual_length, sizeof(unsigned int));
-        ret.maxvertices = init_length;
-        ret.initialized = true;
-        for (i = 0; i < actual_length; i++) {
-            *(ret.set->head + i) = make_p_empty_vertex();
-        }
-        ret.set->length = actual_length;
+        ret.set         = init_p_array(init_length);
+        ret.set->length = init_length;
     }
     return ret;
 }
@@ -45,93 +34,109 @@ bool vertexset_is_empty(const VertexSet vertexset)
     return vertexset.set->nelements == 0;
 }
 
-bool vertexset_is_initialized(const VertexSet vertexset)
+bool vertexset_contains_vertex(const VertexSet vertexset, const VertexPointer vertex)
 {
-    return vertexset.initialized;
-}
-
-bool vertexset_contains_vertex(const VertexSet vertexset, const Vertex vertex)
-{
-    if (vertex.label > vertexset.set->length - 1) {
+    if (vertex->label > vertexset.set->length - 1) {
         return false;
     }
-    return *(vertexset.contains + vertex_to_bitpos(vertex));
+    return get_element(vertexset.set, vertex->label);
 }
 
-bool vertexset_contains_vertices(
-        const VertexSet vertexset,
-        const VertexPointer vertices,
-        size_t length
-    )
+bool is_super_vertexset(const VertexSet super, const VertexSet sub)
 {
-    if (vertexset.set->nelements > length) {
+    if (super.set->nelements != sub.set->nelements) {
         return false;
     }
     size_t i;
-    for (i = 0; i < length; i++) {
-        if (!vertexset_contains_vertex(vertexset, *(vertices + i))) {
+    for (i = 0; i < sub.set->nelements; i++) {
+        VertexPointer vertex = get_vertex(sub, i);
+        if (!vertexset_contains_vertex(super, vertex)) {
             return false;
         }
     }
     return true;
 }
 
-Result add_vertex(VertexSet vertexset, Vertex vertex) 
+bool vertexsets_equal(const VertexSet vertexset_a, const VertexSet vertexset_b)
 {
-    if (!is_vertex_initialized(&vertex)) {
-        return FAIL;
+    if (!arrays_equal(vertexset_a.set, vertexset_b.set)) {
+        return false;
     }
-    if (vertex.label > vertexset.set->length - 1) {
-        errno = ERANGE;
-        return FAIL;
+    size_t i;
+    for (i = 0; i < vertexset_a.set->nelements; i++) {
+        VertexPointer vertex_a = get_vertex(vertexset_a, i);
+        VertexPointer vertex_b = get_vertex(vertexset_b, i);
+        if (vertices_equal(vertex_a, vertex_b)) {
+            return false;
+        }
     }
-    if ((size_t) vertex.label > vertexset.set->length - 1) {
-        errno = EFAULT;
-        return FAIL;
-    }
-    VertexPointer head = get_element(vertexset.set, vertex.label);
-    if (!head) {
-        errno = EFAULT;
+    return true;
+}
+
+Result set_vertex(const VertexSet vertexset, const VertexPointer vertex, const unsigned int position) 
+{
+    if (vertex->label >= vertexset.set->length) {
+        runtime_error("set_vertex: label too large");
         return FAIL;
     }
     if (vertexset_contains_vertex(vertexset, vertex)) {
+        runtime_error("set_vertex: set already contains this vertex");
         return FAIL;
     } else {
-        *(vertexset.contains + vertex_to_bitpos(vertex)) = true;
-        *(vertexset.indices + vertexset.set->nelements) = vertex_to_bitpos(vertex);
-        *head = vertex;
+        set_element(vertexset.set, vertex, position);
         vertexset.set->nelements++; 
     }
     return SUCCESS;
 }
 
-VertexPointer get_vertex_at_position(const VertexSet vertexset, const unsigned int position)
+Result push_vertex(const VertexSet edgeset, const VertexPointer vertex)
 {
-    if (position >= vertexset.set->length) {
-        return NULL;
-    }
-    unsigned int index = *(vertexset.indices + position);
-    return (VertexPointer) get_element(vertexset.set, index);
+    runtime_error("tbi");
+    return FAIL;
 }
 
-VertexPointer get_vertex_with_label(const VertexSet vertexset, const Label label)
+VertexPointer get_vertex(const VertexSet vertexset, const unsigned int position)
 {
-    return (VertexPointer) get_element(vertexset.set, label);
+    if (position >= vertexset.set->length) {
+        runtime_error("get_vertex: index out of bounds");
+        return NULL;
+    }
+    return (VertexPointer) get_element(vertexset.set, position);
 }
+
+Result vertexset_complement(const VertexSet vertexset_a, const VertexSet vertexset_b, VertexSetPointer ret)
+{
+    unsigned int larger_size = larger(vertexset_a.set->nelements, vertexset_b.set->nelements);
+    VertexPointer vertex_a;
+    size_t i;
+    for (i = 0; i < larger_size; i++) {
+        if (i < vertexset_a.set->nelements) {
+            vertex_a = get_vertex(vertexset_a, i);
+            if (vertex_a) {
+                push_vertex(*ret, vertex_a);
+            } else {
+                runtime_error("vertexset_complement: no edge present");
+            }
+        } else {
+            break;
+        }
+    }
+    return SUCCESS;
+}
+
 
 void print_vertexset(const VertexSet vertexset)
 {
     size_t i;
     for (i = 0; i < vertexset.set->nelements; i++) {
-        VertexPointer vertex = get_vertex_at_position(vertexset, i);
-            printf("Vertex: %d\n", vertex->label);
+        VertexPointer vertex = get_vertex(vertexset, i);
+            printf("%d, ", vertex->label);
     }
+    printf("\n");
 }
 
 Result destroy_vertexset(VertexSet vertexset)
 {
-    free(vertexset.contains);
-    free(vertexset.indices);
     destroy_array(vertexset.set);
     return SUCCESS;
 }

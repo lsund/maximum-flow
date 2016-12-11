@@ -1,37 +1,30 @@
 
 #include "edgeset.h"
 
-static EdgePointer make_p_empty_edge()
+EdgeSet empty_edgeset()
 {
-    EdgePointer ret = malloc(sizeof(Edge));
-    ret->initialized = false;
+    EdgeSet ret;
+    ret.set = NULL;
     return ret;
 }
 
-bool is_edge_initialized(const Edge edge)
+EdgeSet init_edgeset(const size_t size)
 {
-    return edge.initialized;
+    if (size > MAX_EDGES) {
+        runtime_error("Too large edgeset");
+        return empty_edgeset();
+    } else {
+        EdgeSet ret;
+        ret.set      = init_p_array(size);
+        ret.set->length = size;
+        return ret;
+    }
 }
 
-EdgeSet init_edgeset(const unsigned int nvertices)
+EdgeSetPointer init_p_edgeset(const unsigned int nvertices)
 {
-    EdgeSet ret;
-    unsigned int length = nvertices * nvertices;
-    if (length > MAX_EDGES) {
-        ret.set           = NULL;
-        ret.contains_edge = NULL;
-        ret.indices       = NULL;
-    } else {
-        unsigned int i;
-        ret.set      = init_p_array(length);
-        ret.vertices = init_vertexset(nvertices);
-        for (i = 0; i < length; i++) {
-            *(ret.set->head + i) = make_p_empty_edge();
-        }
-        ret.set->length = length;
-        ret.contains_edge = calloc(sizeof(unsigned int), nvertices * nvertices);
-        ret.indices       = calloc(length, sizeof(unsigned int));
-    }
+    EdgeSetPointer ret = malloc(sizeof(EdgeSet));
+    *ret = init_edgeset(nvertices); 
     return ret;
 }
 
@@ -40,103 +33,132 @@ bool edgeset_is_empty(const EdgeSet edgeset)
     return edgeset.set->nelements == 0;
 }
 
-void copy_edgeset(const EdgeSet edgeset, const EdgeSetPointer copy)
+bool edgesets_equal(const EdgeSet edgeset_a, const EdgeSet edgeset_b)
 {
-    copy->set             = edgeset.set;
-    copy->vertices        = edgeset.vertices;
-    copy->contains_edge   = edgeset.contains_edge;
-    copy->contains_vertex = edgeset.contains_vertex;
-    copy->indices         = edgeset.indices;
-}
-
-Result edgepath_from_vertexset(const VertexSet vertexset, EdgeSetPointer ret)
-{
-    if (vertexset_is_empty(vertexset)) {
-        return SUCCESS;
+    bool sets_equal = arrays_equal(edgeset_a.set, edgeset_b.set);
+    if (!sets_equal) {
+        return false;
     }
-    size_t i;
-    Vertex current, next;
-    next = *get_vertex_at_position(vertexset, 0);
-    for (i = 0; i < vertexset.set->nelements - 1; i++) {
-        current = next;
-        next = *get_vertex_at_position(vertexset, i + 1);
-        add_edge(*ret, make_edge(current, next));
-    }
-    return SUCCESS;
-}
-
-bool edgeset_contains_edge(const EdgeSet edgeset, const Edge edge)
-{
-    unsigned int bitpos = edge_to_bitpos(edge, edgeset.vertices.maxvertices);
-    return *(edgeset.contains_edge + bitpos);
-}
-
-bool edgeset_contains_edges(
-        const EdgeSet edgeset,
-        const EdgePointer edges,
-        size_t length
-    )
-{
-    if (edgeset.set->nelements < length) {
+    if (edgeset_a.set->nelements != edgeset_b.set->nelements) {
         return false;
     }
     size_t i;
-    for (i = 0; i < length; i++) {
-        if (!edgeset_contains_edge(edgeset, *(edges + i))) {
+    for (i = 0; i < edgeset_a.set->nelements; i++) {
+        EdgePointer edge_a = get_edge(edgeset_a, i);
+        EdgePointer edge_b = get_edge(edgeset_a, i);
+        if (!edges_equal(edge_a, edge_b)) {
             return false;
         }
     }
     return true;
 }
 
-bool edgeset_contains_vertex(const EdgeSet edgeset, const Vertex vertex)
+Result set_edge(const EdgeSet edgeset, const EdgePointer edge, const unsigned int position)
 {
-    return vertexset_contains_vertex(edgeset.vertices, vertex);
-}
-
-Result add_edge(EdgeSet edgeset, Edge edge)
-{
-    if (edge.first.label == edge.second.label) {
-        return FAIL;
+    if (edge->first->label == edge->second->label) {
+        runtime_error("add_edge: can't have looping edges");
     }
-    unsigned int bitpos = edge_to_bitpos(edge, edgeset.vertices.maxvertices);
-    if (bitpos > edgeset.set->length) {
-        errno = EFAULT;
-        return FAIL;
-    }
-    EdgePointer head = get_element(edgeset.set, bitpos);
-    if (!head) {
-        errno = EFAULT;
-        return FAIL;
+    if (position >= edgeset.set->length) {
+        runtime_error("add_edge: index out of bounds");
     }
     if (edgeset_contains_edge(edgeset, edge)) {
+        runtime_error("set_edge: set already contains this edge");
         return FAIL;
     } else {
-        if (larger(edge.first.label, edge.second.label) >= edgeset.vertices.maxvertices) {
-            return FAIL;
-        }
-        *(edgeset.contains_edge + edge_to_bitpos(edge, edgeset.vertices.maxvertices)) = true;
-        *(edgeset.indices + edgeset.set->nelements) = edge_to_bitpos(edge, edgeset.vertices.maxvertices);
-        *head = edge;
-        add_vertex(edgeset.vertices, edge.first);
-        add_vertex(edgeset.vertices, edge.second);
-        edgeset.set->nelements++; 
+        set_element(edgeset.set, edge, position);
         return SUCCESS;
     }
+}
+
+Result push_edge(const EdgeSet edgeset, const EdgePointer edge)
+{
+    runtime_error("tbi");
+    return FAIL;
+}
+
+bool edgeset_contains_edge(const EdgeSet edgeset, const EdgePointer Edge)
+{
+    runtime_error("tbi");
+    return false;
+}
+
+VertexSetPointer edgeset_vertices(const EdgeSet edgeset)
+{
+    runtime_error("tbi");
+    return NULL;
+}
+
+bool is_super_edgeset(const EdgeSet super, const EdgeSet sub)
+{
+    if (super.set->nelements != sub.set->nelements) {
+        return false;
+    }
+    size_t i;
+    for (i = 0; i < sub.set->nelements; i++) {
+        EdgePointer edge = get_edge(sub, i);
+        if (!edgeset_contains_edge(super, edge)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+Result covered_by(const EdgeSet edgeset, const VertexPointer vertex, EdgePointer *edge)
+{
+    size_t i;
+    for (i = 0; i < edgeset.set->nelements; i++) {
+        EdgePointer cand = get_edge(edgeset, i);
+        if (incident_with(cand, vertex)) {
+            *edge = cand;
+            return SUCCESS;
+        }
+    }
+    return FAIL;
+}
+
+bool is_sub_edgeset(const EdgeSet sub, const EdgeSet super)
+{
+    if (sub.set->nelements > super.set->nelements) {
+        return false;
+    }
+    size_t i;
+    for (i = 0; i < sub.set->nelements; i++) {
+        if (!edgeset_contains_edge(super, get_edge(sub, i))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool edgeset_contains_vertex(const EdgeSet edgeset, const VertexPointer vertex)
+{
+    runtime_error("tbi");
+    return false;
+}
+
+EdgePointer get_edge(const EdgeSet edgeset, const unsigned int position)
+{
+    return get_element(edgeset.set, position);
+}
+
+size_t n_vertices(const EdgeSet edgeset)
+{
+    runtime_error("tbi");
+    return 0;
 }
 
 Result edgeset_complement(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret)
 {
     unsigned int larger_size = larger(edgeset_a.set->nelements, edgeset_b.set->nelements);
-    Edge edge_a;
-    EdgePointer edge_p_a;
+    EdgePointer edge_a;
     size_t i;
     for (i = 0; i < larger_size; i++) {
         if (i < edgeset_a.set->nelements) {
-            edge_p_a = get_edge_at_position(edgeset_a, i);
-            edge_a = edge_p_a ? *edge_p_a : empty_edge();
-            if (!edge_is_empty(edge_a) && !edgeset_contains_edge(edgeset_b, edge_a)) {
-                add_edge(*ret, edge_a);
+            edge_a = get_edge(edgeset_a, i);
+            if (edge_a) {
+                push_edge(*ret, edge_a);
+            } else {
+                runtime_error("edgeset_complement: no edge present");
             }
         } else {
             break;
@@ -148,27 +170,24 @@ Result edgeset_complement(const EdgeSet edgeset_a, const EdgeSet edgeset_b, Edge
 Result edgeset_union(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret)
 {
     unsigned int larger_size = larger(edgeset_a.set->nelements, edgeset_b.set->nelements);
-    Edge edge_a, edge_b;
-    EdgePointer edge_p_a, edge_p_b;
+    EdgePointer edge_a, edge_b;
     size_t i;
     for (i = 0; i < larger_size; i++) {
         if (i < edgeset_a.set->nelements) {
-            edge_p_a = get_edge_at_position(edgeset_a, i);
-            edge_a = *edge_p_a;
+            edge_a = get_edge(edgeset_a, i);
         } else {
-            edge_a = empty_edge();
+            edge_a = NULL;
         }
         if (i < edgeset_b.set->nelements) {
-            edge_p_b = get_edge_at_position(edgeset_b, i);
-            edge_b = *edge_p_b;
+            edge_b = get_edge(edgeset_b, i);
         } else {
-            edge_b = empty_edge();
+            edge_b = NULL;
         }
         if (edges_equal(edge_a, edge_b)) {
-            add_edge(*ret, edge_a);
+            push_edge(*ret, edge_a);
         } else {
-            add_edge(*ret, edge_a);
-            add_edge(*ret, edge_b);
+            push_edge(*ret, edge_a);
+            push_edge(*ret, edge_b);
         }
     }
     return SUCCESS;
@@ -177,9 +196,8 @@ Result edgeset_union(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPo
 Result symmetric_difference(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret)
 {
     EdgeSet compl_ab, compl_ba;
-    unsigned int nvertices = larger(edgeset_a.vertices.set->length - 1, edgeset_b.vertices.set->length - 1);
-    compl_ab = init_edgeset(nvertices);
-    compl_ba = init_edgeset(nvertices);
+    compl_ab = init_edgeset(edgeset_a.set->length);
+    compl_ba = init_edgeset(edgeset_b.set->length);
     edgeset_complement(edgeset_a, edgeset_b, &compl_ab);
     edgeset_complement(edgeset_b, edgeset_a, &compl_ba);
     edgeset_union(compl_ab, compl_ba, ret);
@@ -188,26 +206,35 @@ Result symmetric_difference(const EdgeSet edgeset_a, const EdgeSet edgeset_b, Ed
     return SUCCESS;
 }
 
-EdgePointer get_edge_at_position(const EdgeSet edgeset , const unsigned int position)
+EdgePointer find_incident_uneq(EdgeSet edgeset, VertexPointer vertex, EdgePointer uneq)
 {
-    return (EdgePointer) get_element(edgeset.set, *(edgeset.indices + position)); 
+   unsigned int i;
+   EdgePointer edge = NULL;
+   for (i = 0; i < edgeset.set->nelements; i++) {
+       edge = get_edge(edgeset, i);
+       if (!edges_equal(edge, uneq)) {
+           if (incident_with(edge, vertex)) {
+               break;
+           }
+       }
+       edge = NULL;
+   }
+   return edge;
 }
 
 void print_edgeset(const EdgeSet edgeset)
 {
     size_t i;
     for (i = 0; i < edgeset.set->nelements; i++) {
-        Edge edge = *((EdgePointer) get_edge_at_position(edgeset, i));
-        printf("Edge: (%d, %d)\n", edge.first.label, edge.second.label);
+        EdgePointer edge = get_edge(edgeset, i);
+        printf("(%d, %d), ", edge->first->label, edge->second->label);
     }
+    printf("\n");
 }
 
 Result destroy_edgeset(EdgeSet edgeset)
 {
     destroy_array(edgeset.set);
-    destroy_vertexset(edgeset.vertices);
-    free(edgeset.contains_edge);
-    free(edgeset.indices);
     return SUCCESS;
 }
 

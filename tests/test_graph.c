@@ -11,7 +11,7 @@ char *utest_make_graph()
 {
     TokenTablePointer table;
     table = init_tokentable();
-    make_tokentable("data/instances/K2.dmx", table);
+    make_tokentable("data/graphs/K2.dmx", table);
     GraphPointer graph;
     graph = init_graph();
     Result res = make_graph(table, graph);
@@ -20,6 +20,12 @@ char *utest_make_graph()
     mu_assert("graph should not be null", graph != NULL);
     mu_assert("vs should not be null", graph->vertexset.set->head != NULL);
     mu_assert("es should not be null", graph->edgeset.set->head != NULL);
+    VertexPointer a = get_vertex(graph->vertexset, 0);
+    VertexPointer b = get_vertex(graph->vertexset, 1);
+    mu_assert("should exist", a && b); 
+    mu_assert("should have 1 neighbour", a->neighbors.nelements == 1);
+    mu_assert("should have 1 neighbour", b->neighbors.nelements == 1);
+
     res = make_graph(NULL, graph);
     mu_assert("make_graph: should fail", res == FAIL);
     res = make_graph(table, NULL);
@@ -31,7 +37,7 @@ char *utest_destroy_graph()
 {
     TokenTablePointer table;
     table = init_tokentable();
-    make_tokentable("data/instances/K2.dmx", table);
+    make_tokentable("data/graphs/K2.dmx", table);
     GraphPointer graph;
     graph = init_graph();
     make_graph(table, graph);

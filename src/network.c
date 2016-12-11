@@ -11,9 +11,9 @@ Result make_network(
     ret->graph  = graph;
     ret->rev_graph = init_graph();
     make_reversed_graph(*graph, ret->rev_graph);
-    ret->source = get_vertex_with_label(graph->vertexset, source_label);
-    ret->sink   = get_vertex_with_label(graph->vertexset, sink_label);
-    if (!is_vertex_initialized(ret->source) || !is_vertex_initialized(ret->sink)) {
+    ret->source = get_vertex(graph->vertexset, source_label);
+    ret->sink   = get_vertex(graph->vertexset, sink_label);
+    if (!ret->source || !ret->sink) {
         return FAIL;
     }
     return SUCCESS;

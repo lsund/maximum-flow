@@ -33,14 +33,24 @@ Array init_array(const size_t init_length);
 // same as init_array, but returns a pointer to the array 
 ArrayPointer init_p_array(const unsigned int init_length);
 
-// Arrays the next uninitialized value to the specified element
-Result push_element(ArrayPointer array, void *element);
+// Sets the next uninitialized value to the specified element
+Result push_element(const ArrayPointer array, void *element);
+
+// Remove the final element from an array
+Result pop_element(ArrayPointer array);
 
 // Has the array only uninitialized values?
 bool array_is_empty(const ArrayPointer array);
 
+bool arrays_equal(const ArrayPointer array_a, const ArrayPointer array_b);
+
 // Return the element in the array at the specified position
 void *get_element(const ArrayPointer array, const unsigned int position);
+
+// Return the final element of an array
+void *get_last_element(const ArrayPointer array);
+
+void set_element(const ArrayPointer array, void *element, unsigned int position);
 
 // Frees the structure
 Result destroy_array(ArrayPointer array);

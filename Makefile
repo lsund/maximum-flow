@@ -6,13 +6,13 @@ SRCS := $(shell find $(SRC_DIR)/* -maxdepth 0 -name '*.c')
 TEST_SRCS := $(shell find $(TEST_DIR)/* -maxdepth 0 -name '*.c')
 
 all: dirs
-	$(CC) $(CFLAGS) $(SRCS) main.c -o bin/main
+	$(CC) $(CFLAGS) $(SRCS) main.c -o bin/main -lm
 
 run: all
 	./bin/main
 
 test: dirs
-	$(CC) $(CFLAGS) $(SRCS) $(TEST_SRCS) -o bin/test
+	$(CC) $(CFLAGS) $(SRCS) $(TEST_SRCS) -o bin/test -lm
 
 runtest: test
 	./bin/test

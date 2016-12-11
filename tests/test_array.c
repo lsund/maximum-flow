@@ -52,19 +52,43 @@ char *utest_push_element()
     return NULL;
 }
 
+char *utest_pop_element()
+{
+    int a, b, c, d;
+    a = 1;
+    b = 0;
+    c = 0;
+    d = 1;
+    ArrayPointer array;
+    array = empty_p_array();
+    push_element(array, &a);
+    mu_assert("should be 1", array->nelements == 1);
+    push_element(array, &b);
+    push_element(array, &c);
+    push_element(array, &d);
+    mu_assert("should be 4", array->nelements == 4);
+    mu_assert("should be 1", *((int *) get_last_element(array)) == 1);
+    mu_assert("should be 1", *((int *) get_last_element(array)) == 1);
+    pop_element(array);
+    mu_assert("should be 0", *((int *) get_last_element(array)) == 0);
+    mu_assert("should be 3", array->nelements == 3);
+    pop_element(array);
+    mu_assert("should be 0", *((int *) get_last_element(array)) == 0);
+    pop_element(array);
+    mu_assert("should be 1", *((int *) get_last_element(array)) == 1);
+    mu_assert("should be 1", array->nelements == 1);
+    pop_element(array);
+    mu_assert("should be null", get_last_element(array) == 0);
+    mu_assert("should be 0", array->nelements == 0);
+    mu_assert("should be null", get_last_element(array) == 0);
+    return NULL;
+}
+
 char *utest_is_empty_array() 
 {
     ArrayPointer array;
     array = empty_p_array();
-    mu_assert("should be successfull", array_is_empty(array) == 1);
-    array->head = malloc(sizeof(Vertex));
-    mu_assert("should fail", array_is_empty(array) == 0);
-    array = empty_p_array();
-    array->length = -1;
-    mu_assert("should fail", array_is_empty(array) == 0);
-    array = empty_p_array();
-    array->nelements = 1;
-    mu_assert("should fail", array_is_empty(array) == 0);
+    mu_assert("should be successfull", array_is_empty(array) == true);
     return NULL;
 }
 
@@ -100,5 +124,7 @@ char *test_array() {
     mu_run_utest(utest_is_empty_array);
     mu_message(UNIT, "destroy_array\n");
     mu_run_utest(utest_destroy_array);
+    mu_message(UNIT, "pop_element\n");
+    mu_run_utest(utest_pop_element);
     return NULL;
 }

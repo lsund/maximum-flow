@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
     make_tokentable("data/instances/K2.dmx", table);
     GraphPointer graph = init_graph();
     make_graph(table, graph);
-    Network network = make_network(graph, 0, 1);
+    NetworkPointer network = malloc(sizeof(Network));
+    make_network(graph, 0, 1, network);
     
     return 0;
 }
