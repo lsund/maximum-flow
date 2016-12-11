@@ -13,14 +13,14 @@
 #include "parser.h"
 
 // Initializes a graph, it's components get uninitialized values
-GraphPointer init_graph();
+GraphPointer graph_init();
 
 // Construct a graph, given a tokentable
-Result make_graph(const TokenTablePointer table, GraphPointer graph);
+Result graph_make(const TokenTablePointer table, GraphPointer graph);
 
 // Frees the structure
-Result destroy_graph(GraphPointer graph);
+Result graph_destroy(GraphPointer graph);
 
-Result make_reversed_graph(const Graph graph, GraphPointer reversed);
+Result graph_make_reversed(const Graph graph, GraphPointer reversed);
 
 #endif

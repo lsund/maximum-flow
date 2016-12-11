@@ -1,36 +1,17 @@
 
 #include "matching.h"
 
-bool is_matching(const EdgeSet edgeset)
-{
-    bool *visited = calloc(n_vertices(edgeset), sizeof(bool));
-    size_t i;
-    i = 0;
-    for (i = 0; i < edgeset.set->nelements; i++) {
-        EdgePointer edge = get_edge(edgeset, i);
-        if (*(visited + edge->first->label) || *(visited + edge->second->label)) {
-            free(visited);
-            return false;
-        } else {
-            *(visited + edge->first->label) = true;
-            *(visited + edge->second->label) = true;
-        } 
-    }
-    free(visited);
-    return true;
-}
-
-bool is_exposed(const VertexPointer vertex, const EdgeSet matching)
+bool matching_exposing(const VertexPointer vertex, const EdgeSet matching)
 {
     return !edgeset_contains_vertex(matching, vertex);
 }
 
-Result find_exposed(const VertexSet vertexset, const EdgeSet matching, unsigned int *index)
+Result matching_find_exposed(const VertexSet vertexset, const EdgeSet matching, unsigned int *index)
 {
     size_t i;
     for (i = 0; i < vertexset.set->nelements; i++) {
-        VertexPointer vertex = get_vertex(vertexset, i);
-        if (is_exposed(vertex, matching)) {
+        VertexPointer vertex = vertexset_get(vertexset, i);
+        if (matching_exposing(vertex, matching)) {
             *index = i;
             return SUCCESS;
         }
@@ -38,11 +19,11 @@ Result find_exposed(const VertexSet vertexset, const EdgeSet matching, unsigned 
     return FAIL;
 }
 
-bool is_perfect(const EdgeSet matching, const VertexSet vertexset)
+bool matching_is_perfect(const EdgeSet matching, const VertexSet vertexset)
 {
     size_t i;
     for (i = 0; i < vertexset.set->nelements; i++) {
-        VertexPointer vertex = get_vertex(vertexset, i);
+        VertexPointer vertex = vertexset_get(vertexset, i);
         if (!edgeset_contains_vertex(matching, vertex)) {
             return false;
         }
@@ -58,33 +39,33 @@ bool is_perfect(const EdgeSet matching, const VertexSet vertexset)
     }
 }
 
-Result augment(const EdgeSet matching, const EdgeSet path, EdgeSetPointer ret)
+Result matching_augment(const EdgeSet matching, const EdgeSet path, EdgeSetPointer ret)
 {
-    symmetric_difference(matching, path, ret);
+    edgeset_symmetric_difference(matching, path, ret);
     return SUCCESS;
 }
 
-Result perfect_matching_odd_path(EdgeSet circuit, VertexPointer ignore, EdgeSetPointer ret)
+Result matching_perfect_odd_path(EdgeSet circuit, VertexPointer ignore, EdgeSetPointer ret)
 {
     EdgePointer first, last;
-    first = find_incident_uneq(circuit, ignore, NULL);
+    first = edgeset_find_incident_uneq(circuit, ignore, NULL);
     last = first;
     VertexPointer front = ignore;
 
     bool add = false;
     do {
         if (add) {
-            push_edge(*ret, last);
+            edgeset_push(*ret, last);
         }
-        if (vertices_equal(last->first, front)) {
+        if (vertex_equals(last->first, front)) {
             front = last->second;
         }
         else { 
             front = last->first;
         }
-        last = find_incident_uneq(circuit, front, last);
+        last = edgeset_find_incident_uneq(circuit, front, last);
         add = !add;
-    } while (!edges_equal(last, first));
+    } while (!edge_equals(last, first));
     return SUCCESS;
 }
 

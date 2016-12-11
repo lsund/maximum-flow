@@ -1,27 +1,27 @@
 
 #include "disjointset.h"
 
-TreeVertexPointer make_dset(VertexPointer vertex)
+TreeVertexPointer disjointset_make(VertexPointer vertex)
 {
     TreeVertexPointer ret = make_p_tree_vertex(vertex);
     ret->is_root = true;
     return ret;
 }
 
-TreeVertexPointer dset_find(const TreeVertexPointer treevertex)
+TreeVertexPointer disjointset_find(const TreeVertexPointer treevertex)
 {
     if (treevertex->is_root) {
         return treevertex;
     } else {
-        return dset_find(treevertex->parent);
+        return disjointset_find(treevertex->parent);
     }
 }
 
-Result dset_union(TreeVertexPointer treevertex_a, TreeVertexPointer treevertex_b)
+Result disjointset_union(TreeVertexPointer treevertex_a, TreeVertexPointer treevertex_b)
 {
     TreeVertexPointer root_a, root_b;
-    root_a = dset_find(treevertex_a);
-    root_b = dset_find(treevertex_b);
+    root_a = disjointset_find(treevertex_a);
+    root_b = disjointset_find(treevertex_b);
     if (root_a->content->label == root_b->content->label) {
         return SUCCESS;
     } else {

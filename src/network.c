@@ -1,7 +1,18 @@
 
 #include "network.h"
 
-Result make_network(
+// Denote the value of this function dl(v) for any vertex
+// dl(t) = 0
+// dl(s) = n
+// dl(v) <= dl(w) + 1 for all (v, w) in E(G_f).
+static unsigned int distance_labeling(const Graph graph, const Vertex vertex)
+{
+    runtime_error("tbi");
+    return 0;
+}
+
+
+Result network_make(
         const GraphPointer graph, 
         const Label source_label, 
         const Label sink_label,
@@ -9,10 +20,10 @@ Result make_network(
     )
 {
     ret->graph  = graph;
-    ret->rev_graph = init_graph();
-    make_reversed_graph(*graph, ret->rev_graph);
-    ret->source = get_vertex(graph->vertexset, source_label);
-    ret->sink   = get_vertex(graph->vertexset, sink_label);
+    ret->rev_graph = graph_init();
+    graph_make_reversed(*graph, ret->rev_graph);
+    ret->source = vertexset_get(graph->vertexset, source_label);
+    ret->sink   = vertexset_get(graph->vertexset, sink_label);
     if (!ret->source || !ret->sink) {
         return FAIL;
     }

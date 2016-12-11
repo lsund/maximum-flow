@@ -15,35 +15,34 @@ typedef struct edge {
 } Edge, *EdgePointer;
 
 // Constructs an edge
-Edge make_edge(const VertexPointer first, const VertexPointer second);
-
-EdgePointer make_p_edge_vertices(const VertexPointer first, const VertexPointer second);
-
-EdgePointer make_p_edge_edge(const Edge edge);
-
-EdgePointer make_p_edge_label(const Label first_label, const Label second_label); 
+Edge edge_make(const VertexPointer first, const VertexPointer second);
 
 // Constructs an edge from labels
-Edge make_edge_label(const Label first_label, const Label second_label); 
+Edge edge_make_label(const Label first_label, const Label second_label); 
 
+EdgePointer edge_p_make_vertices(const VertexPointer first, const VertexPointer second);
+
+EdgePointer edge_p_edge_make(const Edge edge);
+
+EdgePointer edge_p_make_label(const Label first_label, const Label second_label); 
 
 // Returns the edge, where the first and second field in the specified edge are
-// swapped
-Edge swapped(const Edge edge);
+// edge_edge_swapped
+Edge edge_edge_swapped(const Edge edge);
 
 // Return the other endpoint of an edge, given one its endpoints
-Result get_other(const Edge edge, VertexPointer vertex, VertexPointer *ret);
+Result edge_get_adjacent(const Edge edge, VertexPointer vertex, VertexPointer *ret);
 
 // Mutates the edge, sets the first field to the second and the second field to
 // the first
-void swap(EdgePointer edge);
+void edge_swap(EdgePointer edge);
 
 // Returns true if the two edges are considered equal, false otherwise
-bool edges_equal(const EdgePointer edge_a, const EdgePointer edge_b);
+bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b);
 
-bool incident_with(const EdgePointer edge, const VertexPointer vertex);
+bool edge_incident_with(const EdgePointer edge, const VertexPointer vertex);
 
 // Print an edge as "(v, w)" to stdout
-void print_edge(const Edge edge);
+void edge_print(const Edge edge);
 
 #endif

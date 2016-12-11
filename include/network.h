@@ -10,17 +10,11 @@ typedef struct network {
     VertexPointer sink;
 } Network, *NetworkPointer;
 
-Result make_network(
+Result network_make(
         const GraphPointer graph, 
         const Label source_label, 
         const Label sink_label,
         NetworkPointer ret
     );
-
-// Denote the value of this function dl(v) for any vertex
-// dl(t) = 0
-// dl(s) = n
-// dl(v) <= dl(w) + 1 for all (v, w) in E(G_f).
-unsigned int distance_labeling(const Graph graph, const Vertex vertex);
 
 #endif

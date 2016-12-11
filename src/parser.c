@@ -20,16 +20,16 @@ Result parse_edges( const TokenTablePointer table,
             }
             Label label_first  = (int) strtol(second_token, NULL, 10) - 1;
             Label label_second = (int) strtol(third_token, NULL, 10) - 1;
-            VertexPointer first_vertex = get_vertex(vertexset, label_first);
-            VertexPointer second_vertex = get_vertex(vertexset, label_second);
+            VertexPointer first_vertex = vertexset_get(vertexset, label_first);
+            VertexPointer second_vertex = vertexset_get(vertexset, label_second);
             EdgePointer edge;
             if (first_vertex && second_vertex) {
-                edge = make_p_edge_vertices(first_vertex, second_vertex);
+                edge = edge_p_make_vertices(first_vertex, second_vertex);
             } else {
                 edge = NULL;
                 runtime_error("table could not be parsed (vertex in edge out of range)");
             }
-            push_edge(edgeset, edge);
+            edgeset_push(edgeset, edge);
             if (flat_edges) {
                 *(flat_edges + (2 * nedges))        = *edge->first;
                 *(flat_edges + (2 * nedges + 1))    = *edge->second;
@@ -44,8 +44,8 @@ Result parse_vertices(const VertexSet vertexset)
 {
     size_t i;
     for (i = 0; i < vertexset.set->nelements; i++) {
-        VertexPointer vertex = make_p_vertex(i);
-        push_vertex(vertexset, vertex);
+        VertexPointer vertex = vertex_p_make(i);
+        vertexset_push(vertexset, vertex);
     }
     return SUCCESS;
 }

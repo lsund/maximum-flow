@@ -18,21 +18,18 @@ typedef struct vertex {
 } Vertex, *VertexPointer;
 
 // Construct a vertex
-Vertex make_vertex(const Label label);
+Vertex vertex_make(const Label label);
 
 // Construct a pointer to a vertex with a label
-VertexPointer make_p_vertex(const Label label);
+VertexPointer vertex_p_make(const Label label);
 
 // Return true if the vertices are considered the same, false otherwise
-bool vertices_equal(const VertexPointer vertex_a, const VertexPointer vertex_b);
-
-// Converts the vertex to an integer, unique relative to its label.
-unsigned int vertex_to_bitpos(const VertexPointer vertex);
+bool vertex_equals(const VertexPointer vertex_a, const VertexPointer vertex_b);
 
 // Construct a copy of the specified vertex
-VertexPointer copy_vertex(const Vertex vertex);
+VertexPointer vertex_copy(const Vertex vertex);
 
 // Print the label of a vertex to stdout
-void print_vertex(const VertexPointer vertex);
+void vertex_print(const VertexPointer vertex);
 
 #endif

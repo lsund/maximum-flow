@@ -5,8 +5,8 @@
 char *utest_parse() {
     TokenTablePointer table = init_tokentable();
     make_tokentable("data/graphs/K2.dmx", table);
-    GraphPointer graph = init_graph();
-    make_graph(table, graph);
+    GraphPointer graph = graph_init();
+    graph_make(table, graph);
     Result res = parse(table, graph);
     mu_assert("parse: should succeed", res == SUCCESS);
     
@@ -16,17 +16,17 @@ char *utest_parse() {
     graph = NULL;
     res = parse(table, graph);
     mu_assert("should fail with null argument", res == FAIL);
-    graph = init_graph();
+    graph = graph_init();
     table = NULL;
     res = parse(table, graph);
     mu_assert("should fail with null argument", res == FAIL);
-    destroy_graph(graph);
+    graph_destroy(graph);
     destroy_tokentable(table);
 
     table = init_tokentable();
     make_tokentable("data/graphs/K2.dmx", table);
-    graph = init_graph();
-    make_graph(table, graph);
+    graph = graph_init();
+    graph_make(table, graph);
     res = parse(table, graph);
 
     return NULL;
@@ -34,11 +34,11 @@ char *utest_parse() {
 
 char *utest_parse_vertices()
 {
-    VertexSet vertexset = init_vertexset(2);
+    VertexSet vertexset = vertexset_init(2);
     TokenTablePointer table = init_tokentable();
     make_tokentable("data/graphs/K2.dmx", table);
     VertexPointer flat_edges = malloc(4 * sizeof(Vertex));
-    parse_edges(table, init_edgeset(2), flat_edges, vertexset);
+    parse_edges(table, edgeset_init(2), flat_edges, vertexset);
     parse_vertices(vertexset);
     mu_assert("should have 2 vertices", vertexset.set->length == 3); 
     return NULL;

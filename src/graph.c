@@ -1,12 +1,12 @@
 
 #include "graph.h"
 
-GraphPointer init_graph()
+GraphPointer graph_init()
 {
     return calloc(1, sizeof(Graph));;
 }
 
-Result make_graph(const TokenTablePointer table, GraphPointer graph)
+Result graph_make(const TokenTablePointer table, GraphPointer graph)
 {
     if (!table || !graph) {
         errno = EFAULT;
@@ -15,11 +15,11 @@ Result make_graph(const TokenTablePointer table, GraphPointer graph)
     Point table_dim;
     table_dim = graph_cardinality(table);
     
-    graph->vertexset = init_vertexset(table_dim.x);
+    graph->vertexset = vertexset_init(table_dim.x);
     if (!graph->vertexset.set) {
         return FAIL;
     }
-    graph->edgeset = init_edgeset(table_dim.x + 1);
+    graph->edgeset = edgeset_init(table_dim.x + 1);
     if (!graph->edgeset.set) {
         return FAIL;
     }
@@ -27,21 +27,21 @@ Result make_graph(const TokenTablePointer table, GraphPointer graph)
     return parse(table, graph);
 }
 
-Result make_reversed_graph(const Graph graph, GraphPointer reversed)
+Result graph_make_reversed(const Graph graph, GraphPointer reversed)
 {
     reversed->vertexset = graph.vertexset;  
-    EdgeSet reversed_edgeset = init_edgeset(graph.edgeset.set->nelements);
+    EdgeSet reversed_edgeset = edgeset_init(graph.edgeset.set->nelements);
     size_t i;
     for (i = 0; i < graph.edgeset.set->nelements; i++) {
-        Edge graph_edge = *get_edge(graph.edgeset, i);
-        EdgePointer reversed_edge = make_p_edge_edge(swapped(graph_edge));
-        push_edge(reversed_edgeset, reversed_edge);
+        Edge graph_edge = *edgeset_get(graph.edgeset, i);
+        EdgePointer reversed_edge = edge_p_edge_make(edge_edge_swapped(graph_edge));
+        edgeset_push(reversed_edgeset, reversed_edge);
     }
     reversed->edgeset = reversed_edgeset;
     return SUCCESS;
 }
 
-Result destroy_graph(GraphPointer graph)
+Result graph_destroy(GraphPointer graph)
 {
     if (!graph || !graph->edgeset.set || !graph->vertexset.set) {
         errno = EFAULT;
@@ -51,8 +51,8 @@ Result destroy_graph(GraphPointer graph)
         errno = EFAULT;
         return FAIL;
     }
-    destroy_vertexset(graph->vertexset);
-    destroy_edgeset(graph->edgeset);
+    vertexset_destroy(graph->vertexset);
+    edgeset_destroy(graph->edgeset);
     free(graph);
     graph = NULL;
     return SUCCESS;
