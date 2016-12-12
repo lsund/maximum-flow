@@ -1,1 +1,24 @@
-change vertexset_contains_labal
+is_admissable
+float residualal_capacity(networkedge)  [done]
+network_residual
+fix parser with network
+fix graph.c with network
+
+Clean up/Test: 
+    array.c                             [done]
+    disjointset.c []
+    edge.c []
+    edgeset.c []
+    graph.c []
+    matching.c []
+    network.c []
+    parser.c []
+    spit.c []
+    tokenizer.c []
+    tree.c []
+    treevertex.c []
+    util.c []
+    vertex.c []
+    vertexset.c []
+    networkedge.c []
+

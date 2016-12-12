@@ -11,8 +11,11 @@
 typedef struct edge {
     VertexPointer first;
     VertexPointer second;
-    bool initialized;
+    float capacity;
+    float flow;
 } Edge, *EdgePointer;
+
+Edge edge_init();
 
 // Constructs an edge
 Edge edge_make(const VertexPointer first, const VertexPointer second);

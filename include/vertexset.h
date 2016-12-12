@@ -16,8 +16,7 @@ typedef struct vertexset {
     ArrayPointer set;
 } VertexSet, *VertexSetPointer;
 
-// Initializes a vertexset of size init_length. All vertices in this set
-// get an uninitialized value
+// Initializes a vertexset of size init_length. 
 VertexSet vertexset_init(const size_t init_length);
 
 // Return true if the vertexset has no intialized elements, false otherwise

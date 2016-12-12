@@ -16,9 +16,8 @@
 Result parse(const TokenTablePointer table, const GraphPointer graph);
 
 // Helper fucntion for parse: converts tokens into edges
-Result parse_edges(const TokenTablePointer table, 
+Result parse_edges( const TokenTablePointer table, 
                           EdgeSet edgeset, 
-                          VertexPointer flat_edges,
                           VertexSet vertexset);
 
 // Helper function for parse: creates vertices based on the first line

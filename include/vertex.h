@@ -14,6 +14,7 @@ typedef unsigned int Label;
 // Field label: Its (unique) identifier 
 typedef struct vertex {
     Label label;
+    Label distance_label;
 } Vertex, *VertexPointer;
 
 // Construct a vertex

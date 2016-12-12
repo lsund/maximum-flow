@@ -33,8 +33,9 @@ Result graph_make_reversed(const Graph graph, GraphPointer reversed)
     EdgeSet reversed_edgeset = edgeset_init(graph.edgeset.set->length);
     size_t i;
     for (i = 0; i < graph.edgeset.set->length; i++) {
-        Edge graph_edge = *edgeset_get(graph.edgeset, i);
-        EdgePointer reversed_edge = edge_p_edge_make(edge_swapped(graph_edge));
+        NetworkEdge graph_edge = *edgeset_get(graph.edgeset, i);
+        NetworkEdgePointer reversed_edge = networkedge_p_make(
+                edge_p_edge_make(edge_swapped(*graph_edge.content)), 0, 0, true);
         edgeset_push(reversed_edgeset, reversed_edge);
     }
     reversed->edgeset = reversed_edgeset;

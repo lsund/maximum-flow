@@ -7,7 +7,7 @@ TreeVertexPointer make_p_tree_vertex(VertexPointer vertex) {
     ret->parent           = NULL;
     ret->is_root          = false;
     ret->rank             = 0;
-    ret->children         = array_p_empty();
+    ret->children         = array_p_init(0);
     return ret;
 }
 

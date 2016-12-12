@@ -38,8 +38,7 @@ char *utest_parse_vertices()
     TokenTablePointer table = init_tokentable();
     make_tokentable("data/graphs/K2.dmx", table);
     mu_assert("should succeed", parse_vertices(vertexset) == SUCCESS);
-    VertexPointer flat_edges = malloc(4 * sizeof(Vertex));
-    parse_edges(table, edgeset_init(2), flat_edges, vertexset);
+    parse_edges(table, edgeset_init(2), vertexset);
     mu_assert("should have 2 vertices", vertexset.set->capacity == 2); 
     return NULL;
 }

@@ -1,8 +1,17 @@
 #include "parser.h"
 
+Result parse_vertices(const VertexSet vertexset) 
+{
+    size_t i;
+    for (i = 0; i < vertexset.set->capacity; i++) {
+        VertexPointer vertex = vertex_p_make(i);
+        vertexset_push(vertexset, vertex);
+    }
+    return SUCCESS;
+}
+
 Result parse_edges( const TokenTablePointer table, 
                     EdgeSet edgeset, 
-                    VertexPointer flat_edges,
                     VertexSet vertexset)
 {
     unsigned int row;
@@ -20,33 +29,18 @@ Result parse_edges( const TokenTablePointer table,
             }
             Label label_first  = (int) strtol(second_token, NULL, 10) - 1;
             Label label_second = (int) strtol(third_token, NULL, 10) - 1;
-            // TODO get with label
             VertexPointer first_vertex = vertexset_get_with_label(vertexset, label_first);
             VertexPointer second_vertex = vertexset_get_with_label(vertexset, label_second);
-            EdgePointer edge;
+            NetworkEdgePointer edge;
             if (first_vertex && second_vertex) {
-                edge = edge_p_make_vertices(first_vertex, second_vertex);
+                edge = networkedge_p_make(edge_p_make_vertices(first_vertex, second_vertex), 0, 0, false);
             } else {
                 edge = NULL;
                 runtime_error("Parse edges: vertex null pointer");
             }
             edgeset_push(edgeset, edge);
-            if (flat_edges) {
-                *(flat_edges + (2 * nedges))        = *edge->first;
-                *(flat_edges + (2 * nedges + 1))    = *edge->second;
-            }
             nedges++;
         }
-    }
-    return SUCCESS;
-}
-
-Result parse_vertices(const VertexSet vertexset) 
-{
-    size_t i;
-    for (i = 0; i < vertexset.set->capacity; i++) {
-        VertexPointer vertex = vertex_p_make(i);
-        vertexset_push(vertexset, vertex);
     }
     return SUCCESS;
 }
@@ -56,25 +50,13 @@ Result parse(const TokenTablePointer table, const GraphPointer graph)
     if (!table || !graph) {
         return FAIL;
     }
-    VertexPointer flat_edges = calloc(graph->edgeset.set->capacity, sizeof(Vertex));
-    if (!flat_edges) {
-        errno = ENOMEM;
-        free(flat_edges);
+    if (    
+            parse_vertices(graph->vertexset) == FAIL ||
+            parse_edges(table, graph->edgeset, graph->vertexset) == FAIL
+        ) 
+    {
         return FAIL;
     }
-
-    if (parse_vertices(graph->vertexset) == FAIL) {
-        free(flat_edges);
-        return FAIL;
-    }
-    
-    if (parse_edges(table, graph->edgeset, flat_edges, graph->vertexset) == FAIL) {
-        free(flat_edges);
-        return FAIL;
-    }
-
-
-    free(flat_edges);
     return SUCCESS;
 }
 

@@ -45,27 +45,3 @@ Result matching_augment(const EdgeSet matching, const EdgeSet path, EdgeSetPoint
     return SUCCESS;
 }
 
-Result matching_perfect_odd_path(EdgeSet circuit, VertexPointer ignore, EdgeSetPointer ret)
-{
-    EdgePointer first, last;
-    first = edgeset_find_incident_uneq(circuit, ignore, NULL);
-    last = first;
-    VertexPointer front = ignore;
-
-    bool add = false;
-    do {
-        if (add) {
-            edgeset_push(*ret, last);
-        }
-        if (vertex_equals(last->first, front)) {
-            front = last->second;
-        }
-        else { 
-            front = last->first;
-        }
-        last = edgeset_find_incident_uneq(circuit, front, last);
-        add = !add;
-    } while (!edge_equals(last, first));
-    return SUCCESS;
-}
-

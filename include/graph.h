@@ -12,7 +12,7 @@
 #include "vertexset.h"
 #include "parser.h"
 
-// Initializes a graph, it's components get uninitialized values
+// Initializes a graph, it's components get default values
 GraphPointer graph_init();
 
 // Construct a graph, given a tokentable

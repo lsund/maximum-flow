@@ -1,7 +1,7 @@
 
 #include "edge.h"
 
-Edge empty_edge()
+Edge edge_init()
 {
     return edge_make(NULL, NULL);
 }
@@ -9,9 +9,8 @@ Edge empty_edge()
 Edge edge_make(const VertexPointer first, const VertexPointer second)
 {
     Edge ret;
-    ret.first = first;
-    ret.second = second;
-    ret.initialized = true;
+    ret.first    = first;
+    ret.second   = second;
     return ret;
 }
 

@@ -4,9 +4,9 @@
 Array array_init(const size_t init_length)
 {
     Array ret;
-    ret.head      = calloc(init_length, sizeof(void *));
-    ret.capacity    = init_length;
-    ret.length = 0;
+    ret.head     = calloc(init_length, sizeof(void *));
+    ret.capacity = init_length;
+    ret.length   = 0;
     return ret;
 }
 
@@ -17,60 +17,22 @@ ArrayPointer array_p_init(const unsigned int init_length)
     return ret;
 }
 
-bool array_is_empty(const ArrayPointer array) 
-{
-    return array->length == 0;
-}
-
-Array array_empty() 
-{
-    Array ret;
-    ret.head = NULL;
-    ret.capacity = 0;
-    ret.length = 0;
-    return ret;
-}
-
-ArrayPointer array_p_empty()
-{
-    ArrayPointer ret = malloc(sizeof(Array));
-    *ret = array_empty();
-    return ret;
-}
-
-bool array_equals(ArrayPointer array_a, ArrayPointer array_b)
-{
-    if (array_a->length != array_b->length) {
-        return false;
-    }
-    if (array_a->capacity != array_b->capacity) {
-        return false;
-    }
-    size_t i;
-    for (i = 0; i < array_a->length; i++) {
-        if (array_get(array_a, i) != array_get(array_b, i)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 void *array_get(const ArrayPointer array, const unsigned int position)
 {
-    if (position > array->capacity) {
-        errno = EFAULT;
-        return NULL;
+    if (!array) {
+        runtime_error("array_get: argument is NULL");
+    }
+    if (position >= array->capacity) {
+        runtime_error("array_get: index out of bounds");
     }
     return *(array->head + position);
 }
 
-void *array_get_last(const ArrayPointer array)
-{
-    return array_get(array, array->length - 1);
-}
-
 void array_set(const ArrayPointer array, void *element, unsigned int position)
 {
+    if (!array) {
+        runtime_error("array_get: argument is NULL");
+    }
     *(array->head + position) = element;
 }
 
@@ -102,16 +64,33 @@ Result array_push(const ArrayPointer array, void *element)
     return SUCCESS;
 }
 
-Result array_pop(ArrayPointer array)
+void *array_pop(ArrayPointer array)
 {
-    void *head = array_get(array, array->length - 1);
-    if (!head) {
-        errno = EFAULT;
-        return FAIL;
-    } else {
-        array->length--; 
-        return SUCCESS;
+    if (array->length == 0) {
+        return NULL;
     }
+    array->length--; 
+    return array_get(array, array->length);
+}
+
+bool array_equals(ArrayPointer array_a, ArrayPointer array_b)
+{
+    if (!array_a || !array_b) {
+        runtime_error("array_equals: argument is NULL");
+    }
+    if (array_a->length != array_b->length) {
+        return false;
+    }
+    if (array_a->capacity != array_b->capacity) {
+        return false;
+    }
+    size_t i;
+    for (i = 0; i < array_a->length; i++) {
+        if (array_get(array_a, i) != array_get(array_b, i)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 Result array_destroy(ArrayPointer array)

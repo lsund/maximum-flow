@@ -18,7 +18,7 @@ char *utesmake_p_tree_vertex_label()
 {
     TreeVertexPointer x = make_p_tree_vertex_label(7);
     mu_assert("should be empty", x->content->label == 7);
-    mu_assert("should be empty", array_is_empty(x->children));
+    mu_assert("should be empty", x->children->capacity == 0);
     return NULL;
 }
 
