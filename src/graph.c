@@ -19,7 +19,7 @@ Result graph_make(const TokenTablePointer table, GraphPointer graph)
     if (!graph->vertexset.set) {
         return FAIL;
     }
-    graph->edgeset = edgeset_init(table_dim.x + 1);
+    graph->edgeset = edgeset_init(table_dim.y);
     if (!graph->edgeset.set) {
         return FAIL;
     }

@@ -23,6 +23,11 @@ VertexSet vertexset_init(const size_t init_length);
 // Return true if the vertexset has no intialized elements, false otherwise
 bool vertexset_is_empty(const VertexSet vertexset);
 
+// Get the vertex at the specified position in the set 
+VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int position);
+
+VertexPointer vertexset_get_with_label(const VertexSet vertexset, const Label label);
+
 // Does the set contain the specified vertex?
 bool vertexset_contains_label(const VertexSet vertexset, const Label label);
 
@@ -35,9 +40,6 @@ bool vertexset_equals(const VertexSet vertexset_a, const VertexSet vertexset_b);
 Result vertexset_set(const VertexSet vertexset, const VertexPointer vertex, const unsigned int position);
 
 Result vertexset_push(const VertexSet vertexset, const VertexPointer vertex);
-
-// Get the vertex at the specified position in the set 
-VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int position);
 
 // Find the relative complement of a vertexset and store it in ret
 Result vertexset_complement(const VertexSet vertexset_a, const VertexSet vertexset_b, VertexSetPointer ret);

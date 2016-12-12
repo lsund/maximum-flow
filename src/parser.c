@@ -21,8 +21,8 @@ Result parse_edges( const TokenTablePointer table,
             Label label_first  = (int) strtol(second_token, NULL, 10) - 1;
             Label label_second = (int) strtol(third_token, NULL, 10) - 1;
             // TODO get with label
-            VertexPointer first_vertex = vertexset_get(vertexset, label_first);
-            VertexPointer second_vertex = vertexset_get(vertexset, label_second);
+            VertexPointer first_vertex = vertexset_get_with_label(vertexset, label_first);
+            VertexPointer second_vertex = vertexset_get_with_label(vertexset, label_second);
             EdgePointer edge;
             if (first_vertex && second_vertex) {
                 edge = edge_p_make_vertices(first_vertex, second_vertex);
@@ -44,7 +44,7 @@ Result parse_edges( const TokenTablePointer table,
 Result parse_vertices(const VertexSet vertexset) 
 {
     size_t i;
-    for (i = 0; i < vertexset.set->length; i++) {
+    for (i = 0; i < vertexset.set->capacity; i++) {
         VertexPointer vertex = vertex_p_make(i);
         vertexset_push(vertexset, vertex);
     }

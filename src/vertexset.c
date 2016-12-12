@@ -34,6 +34,27 @@ bool vertexset_is_empty(const VertexSet vertexset)
     return vertexset.set->length == 0;
 }
 
+VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int position)
+{
+    if (position >= vertexset.set->capacity) {
+        runtime_error("vertexset_get: index out of bounds");
+        return NULL;
+    }
+    return (VertexPointer) array_get(vertexset.set, position);
+}
+
+VertexPointer vertexset_get_with_label(const VertexSet vertexset, const Label label)
+{
+    size_t i;
+    for (i = 0; i < vertexset.set->capacity; i++) {
+        VertexPointer vertex = vertexset_get(vertexset, i);
+        if (vertex->label == label) {
+            return vertex;
+        }
+    }
+    return NULL;
+}
+
 bool vertexset_contains_label(const VertexSet vertexset, const Label label)
 {
     size_t i;
@@ -99,15 +120,6 @@ Result vertexset_push(const VertexSet vertexset, const VertexPointer vertex)
     } else {
         return FAIL;
     }
-}
-
-VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int position)
-{
-    if (position >= vertexset.set->capacity) {
-        runtime_error("vertexset_get: index out of bounds");
-        return NULL;
-    }
-    return (VertexPointer) array_get(vertexset.set, position);
 }
 
 Result vertexset_complement(const VertexSet vertexset_a, const VertexSet vertexset_b, VertexSetPointer ret)
