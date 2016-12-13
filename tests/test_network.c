@@ -21,6 +21,11 @@ char *utest_network_get_edge_capacity()
     return NULL;
 }
 
+char *utest_network_set_edge_capacity()
+{
+    return NULL;
+}
+
 char *utest_network_edge_is_reverse()
 {
     return NULL;

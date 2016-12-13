@@ -18,26 +18,40 @@ Result parse(const TokenTablePointer table, const NetworkPointer network)
     for (row = 0; row < table->populated_rows; row++) {
         char *first_token, *second_token, *third_token;
         first_token = get_token(table, row, 0);
-        if (strcmp("e", first_token) == 0) {
+        bool is_n = strcmp("n", first_token) == 0;
+        bool is_e = strcmp("e", first_token) == 0;
+        if (is_n || is_e) {
             second_token = get_token(table, row, 1);
             third_token  = get_token(table, row, 2);
             if (!second_token || !first_token) {
                 errno = EFAULT;
                 return FAIL;
             }
-            Label label_first  = (int) strtol(second_token, NULL, 10) - 1;
-            Label label_second = (int) strtol(third_token, NULL, 10) - 1;
-            VertexPointer first_vertex = vertexset_get_with_label(vertexset, label_first);
-            VertexPointer second_vertex = vertexset_get_with_label(vertexset, label_second);
-            EdgePointer edge;
-            if (first_vertex && second_vertex) {
-                edge = edge_p_make_vertices(first_vertex, second_vertex);
+            if (is_n) {
+                Label label  = (unsigned int) strtol(second_token, NULL, 10) - 1;
+                if (strcmp(third_token, "s") == 0) {
+                    network->source = vertex_p_make(label);
+                } else {
+                    network->sink = vertex_p_make(label);
+                }
             } else {
-                edge = NULL;
-                runtime_error("Parse edges: vertex null pointer");
+                Label label_first  = (unsigned int) strtol(second_token, NULL, 10) - 1;
+                Label label_second = (unsigned int) strtol(third_token, NULL, 10) - 1;
+                VertexPointer first_vertex = vertexset_get_with_label(vertexset, label_first);
+                VertexPointer second_vertex = vertexset_get_with_label(vertexset, label_second);
+                EdgePointer edge;
+                if (first_vertex && second_vertex) {
+                    edge = edge_p_make_vertices(first_vertex, second_vertex);
+                } else {
+                    edge = NULL;
+                    runtime_error("Parse edges: vertex null pointer");
+                }
+                edgeset_push(edgeset, edge);
+                nedges++;
+                char *fourth_token = get_token(table, row, 3);
+                unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10) - 1;
+                network_set_edge_capacity(network, edge, capacity);
             }
-            edgeset_push(edgeset, edge);
-            nedges++;
         }
     }
     GraphPointer graph = graph_make(vertexset, edgeset);

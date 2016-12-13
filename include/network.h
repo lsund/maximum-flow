@@ -8,6 +8,7 @@ typedef struct network {
     GraphPointer rev_graph;
     VertexPointer source;
     VertexPointer sink;
+    unsigned int *capacities;
 } Network, *NetworkPointer;
 
 Network network_make(
@@ -16,14 +17,20 @@ Network network_make(
         const Label sink_label
     );
 
-Graph network_residual(const Network network);
+Label network_get_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
 
-Label network_get_vertex_distance_label(const VertexPointer vertex);
+unsigned int network_get_edge_flow(const NetworkPointer network, const EdgePointer edge);
 
-float network_get_edge_flow(const EdgePointer edge);
+unsigned int network_get_edge_capacity(const NetworkPointer network, const EdgePointer edge);
 
-float network_get_edge_capacity(const EdgePointer edge);
+void network_set_edge_capacity(
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        unsigned int capacity
+    );
 
-float network_edge_is_reverse(const EdgePointer edge);
+bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edge);
+
+Graph network_residual(const NetworkPointer network);
 
 #endif
