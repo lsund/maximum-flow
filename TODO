@@ -7,7 +7,7 @@ fix graph.c with network
 Clean up/Test: 
     array.c                             [done]
     disjointset.c []
-    edge.c []
+    edge.c                              [done]
     edgeset.c []
     graph.c []
     matching.c []

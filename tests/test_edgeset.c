@@ -34,7 +34,7 @@ char *utest_edgeset_push()
     mu_assert("vertexset should also contain 2", vertexset_contains_label(vertices, 2));
     mu_assert("vertexset should also contain 3", vertexset_contains_label(vertices, 3));
     /* mu_assert("should not be able to add the same edge 'edge_edge_swapped'", */ 
-    /*         edgeset_push(edgeset, edge_make(vertex_make(3), vertex_make(2))) == FAIL); */
+    /*         edgeset_push(edgeset, edge_make_vertices(vertex_make(3), vertex_make(2))) == FAIL); */
     edgeset_destroy(edgeset);
 
     /* edgeset = edgeset_init(4); */
@@ -42,18 +42,18 @@ char *utest_edgeset_push()
     /* VertexPointer y = vertex_p_make(1); */
     /* VertexPointer a = vertex_p_make(2); */
     /* VertexPointer b = vertex_p_make(3); */
-    /* edgeset_push(edgeset, edge_make(a, b)); */
+    /* edgeset_push(edgeset, edge_make_vertices(a, b)); */
     /* mu_assert("should have one neighbour", a->neighbors.length == 1); */
     /* mu_assert("should have one neighbour", b->neighbors.length == 1); */
     /* VertexPointer neighbor = array_get(&a->neighbors, 0); */
     /* mu_assert("neighbour should be b", neighbor->label == 3); */
     /* neighbor = array_get(&b->neighbors, 0); */
     /* mu_assert("neighbour should be a", neighbor->label == 2); */
-    /* edgeset_push(edgeset, edge_make(a, x)); */
+    /* edgeset_push(edgeset, edge_make_vertices(a, x)); */
     /* mu_assert("should have two neighbour", a->neighbors.length == 2); */
     /* mu_assert("should have one neighbour", b->neighbors.length == 1); */
     /* mu_assert("should have one neighbour", x->neighbors.length == 1); */
-    /* edgeset_push(edgeset, edge_make(y, b)); */
+    /* edgeset_push(edgeset, edge_make_vertices(y, b)); */
     /* mu_assert("should have two neighbour", a->neighbors.length == 2); */
     /* mu_assert("should have one neighbour", b->neighbors.length == 2); */
     /* mu_assert("should have one neighbour", x->neighbors.length == 1); */

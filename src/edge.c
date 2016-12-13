@@ -3,10 +3,10 @@
 
 Edge edge_init()
 {
-    return edge_make(NULL, NULL);
+    return edge_make_vertices(NULL, NULL);
 }
 
-Edge edge_make(const VertexPointer first, const VertexPointer second)
+Edge edge_make_vertices(const VertexPointer first, const VertexPointer second)
 {
     Edge ret;
     ret.first    = first;
@@ -16,32 +16,32 @@ Edge edge_make(const VertexPointer first, const VertexPointer second)
 
 Edge edge_make_label(const Label first_label, const Label second_label)
 {
-    return edge_make(vertex_p_make(first_label), vertex_p_make(second_label));
+    return edge_make_vertices(vertex_p_make(first_label), vertex_p_make(second_label));
 }
 
-EdgePointer edge_p_edge_make(const Edge edge)
+EdgePointer edge_p_make_edge(const Edge edge)
 {
     EdgePointer ret = malloc(sizeof(Edge));
-    *ret = edge_make(edge.first, edge.second);
+    *ret = edge_make_vertices(edge.first, edge.second);
     return ret;
 }
 
 EdgePointer edge_p_make_label(const Label first_label, const Label second_label)
 {
-    return edge_p_edge_make(edge_make_label(first_label, second_label));    
+    return edge_p_make_edge(edge_make_label(first_label, second_label));    
 }
 
 
 EdgePointer edge_p_make_vertices(const VertexPointer first, const VertexPointer second)
 {
     EdgePointer ret = malloc(sizeof(Edge));
-    *ret = edge_make(first, second);
+    *ret = edge_make_vertices(first, second);
     return ret;
 }
 
 Edge edge_swapped(const Edge edge)
 {
-    return edge_make(edge.second, edge.first);
+    return edge_make_vertices(edge.second, edge.first);
 }
 
 Result edge_get_adjacent(const Edge edge, VertexPointer vertex, VertexPointer *ret)
