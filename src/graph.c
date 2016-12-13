@@ -1,30 +1,12 @@
 
 #include "graph.h"
 
-GraphPointer graph_init()
+GraphPointer graph_make(const VertexSet vertexset, const EdgeSet edgeset)
 {
-    return calloc(1, sizeof(Graph));;
-}
-
-Result graph_make(const TokenTablePointer table, GraphPointer graph)
-{
-    if (!table || !graph) {
-        errno = EFAULT;
-        return FAIL;
-    }
-    Point table_dim;
-    table_dim = graph_cardinality(table);
-    
-    graph->vertexset = vertexset_init(table_dim.x);
-    if (!graph->vertexset.set) {
-        return FAIL;
-    }
-    graph->edgeset = edgeset_init(table_dim.y);
-    if (!graph->edgeset.set) {
-        return FAIL;
-    }
-    
-    return parse(table, graph);
+    GraphPointer ret = malloc(sizeof(Graph));
+    ret->vertexset = vertexset;
+    ret->edgeset = edgeset;
+    return ret;
 }
 
 Result graph_make_reversed(const Graph graph, GraphPointer reversed)

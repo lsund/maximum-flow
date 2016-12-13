@@ -1,25 +1,28 @@
+MISC:
+
+check if I need parse_argumentsn
+
+FUNCTIONS:
+
 is_admissable
 float residualal_capacity(networkedge)  [done]
 network_residual
-fix parser with network
-fix graph.c with network
 
-Clean up/Test: 
+TESTS:
     array.c                             [done]
-    disjointset.c []
+    disjointset.c                       []
     edge.c                              [done]
-    edgeset.c []
-    graph.c []
-    matching.c []
-    network.c []
-    parser.c []
-    spit.c []
-    tokenizer.c []
-    tree.c []
-    treevertex.c []
-    util.c []
+    edgeset.c                           []
+    graph.c                             []
+    matching.c                          []
+    network.c                           []
+    parser.c                            []
+    spit.c                              []
+    tokenizer.c                         []
+    tree.c                              []
+    treevertex.c                        []
+    util.c                              []
     vertex.c                            [done]
-    vertexset.c []
-    networkedge.c []
-    networkvertex.c []
+    vertexset.c                         []
+    network.c                           []
 

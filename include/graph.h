@@ -7,16 +7,18 @@
 
 #include "tokenizer.h"
 #include "util.h"
-#include "graphstructs.h"
 #include "edgeset.h"
 #include "vertexset.h"
-#include "parser.h"
 
-// Initializes a graph, it's components get default values
-GraphPointer graph_init();
+// An undirected graph
+// Field edgeset:   The set of edges
+// Field vertexset: The set of vertices
+typedef struct graph {
+    EdgeSet edgeset;
+    VertexSet vertexset;
+} Graph, *GraphPointer;
 
-// Construct a graph, given a tokentable
-Result graph_make(const TokenTablePointer table, GraphPointer graph);
+GraphPointer graph_make(const VertexSet vertexset, const EdgeSet edgeset);
 
 // Frees the structure
 Result graph_destroy(GraphPointer graph);

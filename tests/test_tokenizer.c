@@ -5,7 +5,7 @@
 char *utest_init_tokentable() {
     TokenTablePointer table;
     FILE *fp;
-    fp = fopen("data/graphs/K2.dmx", "r");
+    fp = fopen("data/matchings/graphs/K2.dmx", "r");
     table = init_tokentable();
     mu_assert("table has a capacity of MAX_LINES", table->rows == MAX_LINES); 
     mu_assert("no rows are populated", table->populated_rows == 0); 
@@ -18,7 +18,7 @@ char *utest_init_tokentable() {
 char *utest_destroy_tokentable() {
     FILE *fp;
     TokenTablePointer table;
-    fp = fopen("data/graphs/K2.dmx", "r");
+    fp = fopen("data/matchings/graphs/K2.dmx", "r");
     table = init_tokentable();
     fclose(fp);
     destroy_tokentable(table);
@@ -33,25 +33,25 @@ char *utest_make_tokentable()
     ssize_t res;
 
     table = init_tokentable();
-    res = make_tokentable("data/graphs/K2.dmx", table);
+    res = make_tokentable("data/matchings/graphs/K2.dmx", table);
     mu_assert("should not fail", res == SUCCESS); 
     mu_assert("table has 2 rows", table->populated_rows == 2); 
     destroy_tokentable(table);
 
     table = init_tokentable();
-    res = make_tokentable("data/graphs/K3.dmx", table);
+    res = make_tokentable("data/matchings/graphs/K3.dmx", table);
     mu_assert("table has 4 rows", table->populated_rows == 4); 
     mu_assert("should not fail", res == SUCCESS); 
     destroy_tokentable(table);
 
     table = init_tokentable();
-    res = make_tokentable("data/graphs/lu980.dmx", table);
+    res = make_tokentable("data/matchings/graphs/lu980.dmx", table);
     mu_assert("should not fail", res == SUCCESS); 
     mu_assert("table has 2555 rows", table->populated_rows == 7228); 
     destroy_tokentable(table);
 
     table = init_tokentable();
-    res = make_tokentable("data/graphs/malformed.dmx", table);
+    res = make_tokentable("data/matchings/graphs/malformed.dmx", table);
     mu_assert("should fail because file is malformed", res == FAIL); 
     destroy_tokentable(table);
     
@@ -61,7 +61,7 @@ char *utest_make_tokentable()
 char *utest_get_token() {
     TokenTablePointer table;
     table = init_tokentable();
-    make_tokentable("data/graphs/myciel7.mwis.dmx", table);
+    make_tokentable("data/matchings/graphs/myciel7.mwis.dmx", table);
     mu_assert("r0c0 should be c", strcmp(get_token(table, 0, 0), "c") == 0);
     mu_assert("r4c2 should be 2", strcmp(get_token(table, 4, 2) , "2") == 0);
     mu_assert("r2c8 should be defines", strcmp(get_token(table, 2, 8) , "defines") == 0);
@@ -72,12 +72,12 @@ char *utest_get_token() {
 char *utest_graph_cardinality() {
     TokenTablePointer table;
     table = init_tokentable();
-    make_tokentable("data/graphs/myciel7.mwis.dmx", table);
+    make_tokentable("data/matchings/graphs/myciel7.mwis.dmx", table);
     mu_assert("nedges should be 2360", graph_cardinality(table).y == 2360);
     destroy_tokentable(table);
 
     table = init_tokentable();
-    make_tokentable("data/graphs/malformed2.dmx", table);
+    make_tokentable("data/matchings/graphs/malformed2.dmx", table);
     mu_assert("nedges should fail", graph_cardinality(table).y == -1);
     destroy_tokentable(table);
     return NULL;

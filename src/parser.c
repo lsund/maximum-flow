@@ -1,19 +1,17 @@
 #include "parser.h"
 
-Result parse_vertices(const VertexSet vertexset) 
+Result parse(const TokenTablePointer table, const NetworkPointer network)
 {
+    if (!table || !network) {
+        return FAIL;
+    }
+    VertexSet vertexset = vertexset_init(graph_cardinality(table).x);
+    EdgeSet edgeset = edgeset_init(graph_cardinality(table).y);
     size_t i;
-    for (i = 0; i < vertexset.set->capacity; i++) {
+    for (i = 0; i < network->graph->vertexset.set->capacity; i++) {
         VertexPointer vertex = vertex_p_make(i);
         vertexset_push(vertexset, vertex);
     }
-    return SUCCESS;
-}
-
-Result parse_edges( const TokenTablePointer table, 
-                    EdgeSet edgeset, 
-                    VertexSet vertexset)
-{
     unsigned int row;
     int nedges;
     nedges = 0;
@@ -42,26 +40,13 @@ Result parse_edges( const TokenTablePointer table,
             nedges++;
         }
     }
-    return SUCCESS;
-}
-
-Result parse(const TokenTablePointer table, const GraphPointer graph)
-{
-    if (!table || !graph) {
-        return FAIL;
-    }
-    if (    
-            parse_vertices(graph->vertexset) == FAIL ||
-            parse_edges(table, graph->edgeset, graph->vertexset) == FAIL
-        ) 
-    {
-        return FAIL;
-    }
+    GraphPointer graph = graph_make(vertexset, edgeset);
+    network->graph = graph;
     return SUCCESS;
 }
 
 int parse_arguments(int argc, char *argv[]) {
-    if ((argc == 3 || argc == 5) && strcmp(argv[1], "--graph") == 0) {
+    if ((argc == 3 || argc == 5) && strcmp(argv[1], "--network") == 0) {
         if (argc == 5 && strcmp(argv[3], "--hint") == 0) {
             return 2;
         } 

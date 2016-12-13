@@ -19,7 +19,8 @@ Network network_make(
 {
     Network ret;
     ret.graph  = graph;
-    ret.rev_graph = graph_init();
+    // TODO
+    /* ret.rev_graph = graph_init(); */
     graph_make_reversed(*graph, ret.rev_graph);
     ret.source = vertexset_get(graph->vertexset, source_label);
     ret.sink   = vertexset_get(graph->vertexset, sink_label);
