@@ -18,7 +18,7 @@ Clean up/Test:
     tree.c []
     treevertex.c []
     util.c []
-    vertex.c []
+    vertex.c                            [done]
     vertexset.c []
     networkedge.c []
 

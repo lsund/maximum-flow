@@ -14,7 +14,6 @@ typedef unsigned int Label;
 // Field label: Its (unique) identifier 
 typedef struct vertex {
     Label label;
-    Label distance_label;
 } Vertex, *VertexPointer;
 
 // Construct a vertex
@@ -25,9 +24,6 @@ VertexPointer vertex_p_make(const Label label);
 
 // Return true if the vertices are considered the same, false otherwise
 bool vertex_equals(const VertexPointer vertex_a, const VertexPointer vertex_b);
-
-// Construct a copy of the specified vertex
-VertexPointer vertex_copy(const Vertex vertex);
 
 // Print the label of a vertex to stdout
 void vertex_print(const VertexPointer vertex);
