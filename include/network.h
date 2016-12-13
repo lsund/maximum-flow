@@ -2,7 +2,6 @@
 #define NETWORK_H
 
 #include "graph.h"
-#include "networkedge.h"
 
 typedef struct network {
     GraphPointer graph;
@@ -18,5 +17,13 @@ Network network_make(
     );
 
 Graph network_residual(const Network network);
+
+Label network_get_vertex_distance_label(const VertexPointer vertex);
+
+float network_get_edge_flow(const EdgePointer edge);
+
+float network_get_edge_capacity(const EdgePointer edge);
+
+float network_edge_is_reverse(const EdgePointer edge);
 
 #endif

@@ -21,4 +21,5 @@ Clean up/Test:
     vertex.c                            [done]
     vertexset.c []
     networkedge.c []
+    networkvertex.c []
 

@@ -31,9 +31,9 @@ Result parse_edges( const TokenTablePointer table,
             Label label_second = (int) strtol(third_token, NULL, 10) - 1;
             VertexPointer first_vertex = vertexset_get_with_label(vertexset, label_first);
             VertexPointer second_vertex = vertexset_get_with_label(vertexset, label_second);
-            NetworkEdgePointer edge;
+            EdgePointer edge;
             if (first_vertex && second_vertex) {
-                edge = networkedge_p_make(edge_p_make_vertices(first_vertex, second_vertex), 0, 0, false);
+                edge = edge_p_make_vertices(first_vertex, second_vertex);
             } else {
                 edge = NULL;
                 runtime_error("Parse edges: vertex null pointer");

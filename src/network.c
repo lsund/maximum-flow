@@ -29,9 +29,30 @@ Network network_make(
     return ret;
 }
 
-/* Graph network_residual(const Network network) */
-/* { */
-/*     Graph ret; */
+Label network_get_vertex_distance_label(const VertexPointer vertex)
+{
+    return 0;
+}
+
+float network_get_edge_flow(const EdgePointer edge)
+{
+    return 0;
+}
+
+float network_get_edge_capacity(const EdgePointer edge)
+{
+    return 0;
+}
+
+float network_edge_is_reverse(const EdgePointer edge)
+{
+    return 0;
+}
+
+
+Graph network_residual(const Network network)
+{
+    Graph ret;
 /*     ret.vertexset = network.graph->vertexset; */
 /*     ret.edgeset = edgeset_init(network.graph->edgeset.set->capacity); */
 /*     size_t i; */
@@ -39,6 +60,6 @@ Network network_make(
 /*         NetworkEdgePointer edge = edgeset_get(network.graph->edgeset, i); */
 /*         if (networkedge_residual_capacity( */
 /*     } */
-/*     return ret; */
-/* } */
+    return ret;
+}
 

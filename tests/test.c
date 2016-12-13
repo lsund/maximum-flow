@@ -18,16 +18,6 @@
 #include "test.h"
 #include "minunit.h"
 
-
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_GREY    "\x1b[37m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
-
 #ifndef TEST
 #define TEST 0
 #endif
@@ -35,6 +25,34 @@
 int entry_index;
 int tests_run, utests_run;
 
+static char *test()
+{
+	mu_message(MODULE,"array\n");
+    mu_run_test(test_array);
+	mu_message(MODULE,"vertex\n");
+    mu_run_test(test_vertex);
+	mu_message(MODULE,"edge\n");
+    mu_run_test(test_edge);
+	mu_message(MODULE,"vertexset\n");
+    mu_run_test(test_vertexset);
+	mu_message(MODULE,"edgeset\n");
+    mu_run_test(test_edgeset);
+	mu_message(MODULE,"tree\n");
+    mu_run_test(test_tree);
+	mu_message(MODULE,"disjoint set\n");
+    mu_run_test(test_disjointset);
+	mu_message(MODULE,"tokenizer\n");
+    mu_run_test(test_tokenizer);
+	mu_message(MODULE,"parser\n");
+    mu_run_test(test_parser);
+	mu_message(MODULE,"graph\n");
+    mu_run_test(test_graph);
+	mu_message(MODULE,"util\n");
+    mu_run_test(test_util);
+	mu_message(MODULE,"matching\n");
+    mu_run_test(test_matching);
+    return 0;
+}
 void mu_message(enum MessageOption option, const char *s) 
 {
     switch (option) {
@@ -65,34 +83,6 @@ void mu_message(enum MessageOption option, const char *s)
     }
 }
 
-static char *test()
-{
-	mu_message(MODULE,"array\n");
-    mu_run_test(test_array);
-	mu_message(MODULE,"vertex\n");
-    mu_run_test(test_vertex);
-	mu_message(MODULE,"edge\n");
-    mu_run_test(test_edge);
-	mu_message(MODULE,"vertexset\n");
-    mu_run_test(test_vertexset);
-	mu_message(MODULE,"edgeset\n");
-    mu_run_test(test_edgeset);
-	mu_message(MODULE,"tree\n");
-    mu_run_test(test_tree);
-	mu_message(MODULE,"disjoint set\n");
-    mu_run_test(test_disjointset);
-	mu_message(MODULE,"tokenizer\n");
-    mu_run_test(test_tokenizer);
-	mu_message(MODULE,"parser\n");
-    mu_run_test(test_parser);
-	mu_message(MODULE,"graph\n");
-    mu_run_test(test_graph);
-	mu_message(MODULE,"util\n");
-    mu_run_test(test_util);
-	mu_message(MODULE,"matching\n");
-    mu_run_test(test_matching);
-    return 0;
-}
 
 static char *one_test(const char *module)
 {

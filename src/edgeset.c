@@ -33,7 +33,7 @@ bool edgeset_is_empty(const EdgeSet edgeset)
     return edgeset.set->length == 0;
 }
 
-NetworkEdgePointer edgeset_get(const EdgeSet edgeset, const unsigned int position)
+EdgePointer edgeset_get(const EdgeSet edgeset, const unsigned int position)
 {
     return array_get(edgeset.set, position);
 }
@@ -49,18 +49,18 @@ bool edgesets_equal(const EdgeSet edgeset_a, const EdgeSet edgeset_b)
     }
     size_t i;
     for (i = 0; i < edgeset_a.set->length; i++) {
-        NetworkEdgePointer edge_a = edgeset_get(edgeset_a, i);
-        NetworkEdgePointer edge_b = edgeset_get(edgeset_a, i);
-        if (!edge_equals(edge_a->content, edge_b->content)) {
+        EdgePointer edge_a = edgeset_get(edgeset_a, i);
+        EdgePointer edge_b = edgeset_get(edgeset_a, i);
+        if (!edge_equals(edge_a, edge_b)) {
             return false;
         }
     }
     return true;
 }
 
-Result edgeset_set(const EdgeSet edgeset, const NetworkEdgePointer edge, const unsigned int position)
+Result edgeset_set(const EdgeSet edgeset, const EdgePointer edge, const unsigned int position)
 {
-    if (edge->content->first->label == edge->content->second->label) {
+    if (edge->first->label == edge->second->label) {
         runtime_error("add_edge: can't have looping edges");
     }
     if (position >= edgeset.set->capacity) {
@@ -70,7 +70,7 @@ Result edgeset_set(const EdgeSet edgeset, const NetworkEdgePointer edge, const u
         return SUCCESS;
 }
 
-Result edgeset_push(const EdgeSet edgeset, const NetworkEdgePointer edge)
+Result edgeset_push(const EdgeSet edgeset, const EdgePointer edge)
 {
     if (!edgeset_contains_edge(edgeset, edge)) {
         return array_push(edgeset.set, edge);
@@ -79,12 +79,12 @@ Result edgeset_push(const EdgeSet edgeset, const NetworkEdgePointer edge)
     }
 }
 
-bool edgeset_contains_edge(const EdgeSet edgeset, const NetworkEdgePointer edge)
+bool edgeset_contains_edge(const EdgeSet edgeset, const EdgePointer edge)
 {
     size_t i; 
     for (i = 0; i < edgeset.set->length; i++) {
-        NetworkEdgePointer current = edgeset_get(edgeset, i);
-        if (edge_equals(current->content, edge->content)) {
+        EdgePointer current = edgeset_get(edgeset, i);
+        if (edge_equals(current, edge)) {
             return true;
         }
     }
@@ -96,9 +96,9 @@ VertexSet edgeset_vertices(const EdgeSet edgeset)
     VertexSet vertices = vertexset_init(ARRAY_MIN_SIZE);
     size_t i;
     for (i = 0; i < edgeset.set->length; i++) {
-        NetworkEdgePointer edge = edgeset_get(edgeset, i);
-        VertexPointer first = edge->content->first;
-        VertexPointer second = edge->content->second;
+        EdgePointer edge = edgeset_get(edgeset, i);
+        VertexPointer first = edge->first;
+        VertexPointer second = edge->second;
         if (!vertexset_contains_label(vertices, first->label)) {
             vertexset_push(vertices, first);
         }
@@ -116,7 +116,7 @@ bool edgeset_is_super(const EdgeSet super, const EdgeSet sub)
     }
     size_t i;
     for (i = 0; i < sub.set->length; i++) {
-        NetworkEdgePointer edge = edgeset_get(sub, i);
+        EdgePointer edge = edgeset_get(sub, i);
         if (!edgeset_contains_edge(super, edge)) {
             return false;
         }
@@ -130,25 +130,25 @@ bool is_matching(const EdgeSet edgeset)
     size_t i;
     i = 0;
     for (i = 0; i < edgeset.set->length; i++) {
-        NetworkEdgePointer edge = edgeset_get(edgeset, i);
-        if (*(visited + edge->content->first->label) || *(visited + edge->content->second->label)) {
+        EdgePointer edge = edgeset_get(edgeset, i);
+        if (*(visited + edge->first->label) || *(visited + edge->second->label)) {
             free(visited);
             return false;
         } else {
-            *(visited + edge->content->first->label) = true;
-            *(visited + edge->content->second->label) = true;
+            *(visited + edge->first->label) = true;
+            *(visited + edge->second->label) = true;
         } 
     }
     free(visited);
     return true;
 }
 
-Result edgeset_covered_by(const EdgeSet edgeset, const VertexPointer vertex, NetworkEdgePointer *edge)
+Result edgeset_covered_by(const EdgeSet edgeset, const VertexPointer vertex, EdgePointer *edge)
 {
     size_t i;
     for (i = 0; i < edgeset.set->length; i++) {
-        NetworkEdgePointer cand = edgeset_get(edgeset, i);
-        if (edge_incident_with(cand->content, vertex)) {
+        EdgePointer cand = edgeset_get(edgeset, i);
+        if (edge_incident_with(cand, vertex)) {
             *edge = cand;
             return SUCCESS;
         }
@@ -194,7 +194,7 @@ size_t edgeset_vertex_count(const EdgeSet edgeset)
 
 Result edgeset_complement(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret)
 {
-    NetworkEdgePointer edge_a;
+    EdgePointer edge_a;
     size_t i;
     for (i = 0; i < edgeset_a.set->length; i++) {
         edge_a = edgeset_get(edgeset_a, i);
@@ -208,7 +208,7 @@ Result edgeset_complement(const EdgeSet edgeset_a, const EdgeSet edgeset_b, Edge
 Result edgeset_union(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret)
 {
     unsigned int larger_size = larger(edgeset_a.set->length, edgeset_b.set->length);
-    NetworkEdgePointer edge_a, edge_b;
+    EdgePointer edge_a, edge_b;
     size_t i;
     for (i = 0; i < larger_size; i++) {
         edge_a = edgeset_get(edgeset_a, i);
@@ -243,14 +243,14 @@ Result edgeset_symmetric_difference(const EdgeSet edgeset_a, const EdgeSet edges
     return SUCCESS;
 }
 
-NetworkEdgePointer edgeset_find_incident_uneq(EdgeSet edgeset, VertexPointer vertex, NetworkEdgePointer uneq)
+EdgePointer edgeset_find_incident_uneq(EdgeSet edgeset, VertexPointer vertex, EdgePointer uneq)
 {
    unsigned int i;
-   NetworkEdgePointer edge = NULL;
+   EdgePointer edge = NULL;
    for (i = 0; i < edgeset.set->length; i++) {
        edge = edgeset_get(edgeset, i);
-       if (!edge_equals(edge->content, uneq->content)) {
-           if (edge_incident_with(edge->content, vertex)) {
+       if (!edge_equals(edge, uneq)) {
+           if (edge_incident_with(edge, vertex)) {
                break;
            }
        }
@@ -263,8 +263,8 @@ void edgeset_print(const EdgeSet edgeset)
 {
     size_t i;
     for (i = 0; i < edgeset.set->length; i++) {
-        NetworkEdgePointer edge = edgeset_get(edgeset, i);
-        printf("(%d, %d), ", edge->content->first->label, edge->content->second->label);
+        EdgePointer edge = edgeset_get(edgeset, i);
+        printf("(%d, %d), ", edge->first->label, edge->second->label);
     }
     printf("\n");
 }
