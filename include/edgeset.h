@@ -19,45 +19,35 @@ typedef struct edgeset {
     ArrayPointer set;
 } EdgeSet, *EdgeSetPointer;
 
+// Returns a dummy edgeset with it's set set to NULL
 EdgeSet edgeset_empty();
 
+// Returns the edgeset with its set initialized, with an initial capacity of
+// size.
 EdgeSet edgeset_init(const size_t size);
 
 // Initializes an edgeset using edgeset_init and returns a pointer to it
 EdgeSetPointer edgeset_p_init(const unsigned int nvertices);
 
-// Returns true if the edgeset has no initialized elements, false otherwise.
-bool edgeset_is_empty(const EdgeSet edgeset);
-
-bool edgesets_equal(const EdgeSet edgeset_a, const EdgeSet edgeset_b);
+// Get the edge at the specified position
+EdgePointer edgeset_get(const EdgeSet edgeset , const unsigned int position);
 
 size_t edgeset_vertex_count(const EdgeSet edgeset);
 
-// Attempts to compute the complement of two edgesets. On success, the complement
-// of edgeset_a and edgeset_b is stored in Ret and SUCCESS is returned.
-// Otherwise, FAIL is returned.
-Result edgeset_complement(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret);
-
-// Attempts to compute the union of two edgesets. On success, the union
-// of edgeset_a and edgeset_b is stored in Ret and SUCCESS is returned.
-// Otherwise, FAIL is returned.
-Result edgeset_union(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret);
-
-// Attempts to compute the symmetric difference of two edgesets. On success, the symmetric difference
-// of edgeset_a and edgeset_b is stored in Ret and SUCCESS is returned.
-// Otherwise, FAIL is returned.
-Result edgeset_symmetric_difference(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret);
+// The vertices of this edgeset
+VertexSet edgeset_vertices(const EdgeSet edgeset);
 
 // Add an edge to the edgeset
 Result edgeset_set(const EdgeSet edgeset, const EdgePointer edge, const unsigned int position);
 
+// Sets the last element to the specified edge, and increments the number of
+// elements
 Result edgeset_push(const EdgeSet edgeset, const EdgePointer edge);
 
-// Get the edge at the specified position
-EdgePointer edgeset_get(const EdgeSet edgeset , const unsigned int position);
+// Returns true if the edgeset has no initialized elements, false otherwise.
+bool edgeset_is_empty(const EdgeSet edgeset);
 
-// The vertices of this edgeset
-VertexSet edgeset_vertices(const EdgeSet edgeset);
+bool edgeset_equals(const EdgeSet edgeset_a, const EdgeSet edgeset_b);
 
 // Returns true if the edgeset contains the specified edge, false otherwise
 bool edgeset_is_super(const EdgeSet super, const EdgeSet sub);
@@ -79,9 +69,20 @@ bool is_matching(const EdgeSet edgeset);
 // and edge exists.
 Result edgeset_covered_by(const EdgeSet edgeset, const VertexPointer vertex, EdgePointer *edge);
 
-// Returns an edge incident to vertex, unequal to the given edge if it exists. Returns an
-// empty edge otherwise
-EdgePointer edgeset_find_incident_uneq(EdgeSet edgeset, VertexPointer vertex, EdgePointer uneq);
+// Attempts to compute the complement of two edgesets. On success, the complement
+// of edgeset_a and edgeset_b is stored in Ret and SUCCESS is returned.
+// Otherwise, FAIL is returned.
+Result edgeset_complement(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret);
+
+// Attempts to compute the union of two edgesets. On success, the union
+// of edgeset_a and edgeset_b is stored in Ret and SUCCESS is returned.
+// Otherwise, FAIL is returned.
+Result edgeset_union(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret);
+
+// Attempts to compute the symmetric difference of two edgesets. On success, the symmetric difference
+// of edgeset_a and edgeset_b is stored in Ret and SUCCESS is returned.
+// Otherwise, FAIL is returned.
+Result edgeset_symmetric_difference(const EdgeSet edgeset_a, const EdgeSet edgeset_b, EdgeSetPointer ret);
 
 // Print the set tos stdout
 void edgeset_print(const EdgeSet edgeset);

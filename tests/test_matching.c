@@ -60,33 +60,7 @@ char *utest_matching_exposing()
     edgeset_destroy(edgeset);
     return NULL;
 }
-
-char *utest_is_matching() 
-{
-    EdgeSet edgeset = edgeset_init(4);
-    edgeset_push(edgeset, edge_p_make_label(0, 1));
-    edgeset_push(edgeset, edge_p_make_label(2, 3));
-    mu_assert("1: should be a matching", is_matching(edgeset) == true); 
-
-    edgeset_push(edgeset, edge_p_make_label(0, 1));
-    edgeset_push(edgeset, edge_p_make_label(1, 3));
-    mu_assert("2: should not be a matching", !is_matching(edgeset)); 
-
-    edgeset_push(edgeset, edge_p_make_label(0, 1));
-    edgeset_push(edgeset, edge_p_make_label(2, 0));
-    mu_assert("should not be a matching", !is_matching(edgeset)); 
-
-    edgeset_push(edgeset, edge_p_make_label(0, 1));
-    edgeset_push(edgeset, edge_p_make_label(0, 1));
-    mu_assert("should not be a matching", !is_matching(edgeset)); 
-
-    edgeset_destroy(edgeset);
-    return NULL;
-}
-
 char *test_matching() {
-    mu_message(UNIT, "is_matching\n");
-    mu_run_utest(utest_is_matching);
     /* mu_message(UNIT, "matching_is_perfect\n"); */
     /* mu_run_utest(utest_matching_is_perfect); */
     mu_message(UNIT, "matching_exposing\n");

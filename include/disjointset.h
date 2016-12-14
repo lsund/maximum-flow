@@ -1,8 +1,6 @@
 #ifndef DISJOINT_SET_H
 #define DISJOINT_SET_H
 
-#include "array.h"
-#include "vertex.h"
 #include "tree.h"
 
 // Disjoint set datastructure implemented using tree vertices from tree.h

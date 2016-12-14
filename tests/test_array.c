@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include "test.h"
 
+char *utest_array_empty()
+{
+    Array array = array_empty();
+    mu_assert("should be empty", array.head == NULL);
+    mu_assert("should be empty", array.capacity == 0);
+    mu_assert("should be empty", array.length == 0);
+    return NULL;
+}
+
 char *utest_array_init()
 {
     Array array;
@@ -131,6 +140,11 @@ char *utest_array_pop()
     return NULL;
 }
 
+char *utest_array_is_empty()
+{
+    return NULL; 
+}
+
 char *utest_array_destroy()
 {
     ArrayPointer array = array_p_init(0);
@@ -144,6 +158,8 @@ char *utest_array_destroy()
 }
 
 char *test_array() {
+    mu_message(UNIT, "array_empty\n");
+    mu_run_utest(utest_array_empty);
     mu_message(UNIT, "array_init\n");
     mu_run_utest(utest_array_init);
     mu_message(UNIT, "array_push\n");
@@ -154,6 +170,8 @@ char *test_array() {
     mu_run_utest(utest_array_destroy);
     mu_message(UNIT, "array_pop\n");
     mu_run_utest(utest_array_pop);
+    mu_message(UNIT, "array_is_empty\n");
+    mu_run_utest(utest_array_is_empty);
     mu_message(UNIT, "array_equals\n");
     mu_run_utest(utest_array_equals);
     mu_message(UNIT, "array_set\n");

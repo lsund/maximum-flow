@@ -1,6 +1,15 @@
 
 #include "array.h"
 
+Array array_empty()
+{
+    Array ret;
+    ret.head     = NULL;
+    ret.capacity = 0;
+    ret.length   = 0;
+    return ret;
+}
+
 Array array_init(const size_t init_length)
 {
     Array ret;
@@ -22,13 +31,13 @@ void *array_get(const ArrayPointer array, const unsigned int position)
     if (!array) {
         runtime_error("array_get: argument is NULL");
     }
-    if (position >= array->capacity) {
-        runtime_error("array_get: index out of bounds");
+    if (position >= array->length) {
+        return NULL;
     }
     return *(array->head + position);
 }
 
-void array_set(const ArrayPointer array, void *element, unsigned int position)
+void array_set(const ArrayPointer array, void *element, const unsigned int position)
 {
     if (!array) {
         runtime_error("array_get: argument is NULL");
@@ -64,33 +73,33 @@ Result array_push(const ArrayPointer array, void *element)
     return SUCCESS;
 }
 
-void *array_pop(ArrayPointer array)
+void *array_pop(const ArrayPointer array)
 {
     if (array->length == 0) {
         return NULL;
     }
+    void *temp = array_get(array, array->length - 1);
     array->length--; 
-    return array_get(array, array->length);
+    return temp;
 }
 
-bool array_equals(ArrayPointer array_a, ArrayPointer array_b)
+bool array_is_empty(const ArrayPointer array)
+{
+    return !array || !array->head || array->length == 0;
+}
+
+bool array_equals(const ArrayPointer array_a, const ArrayPointer array_b)
 {
     if (!array_a || !array_b) {
         runtime_error("array_equals: argument is NULL");
-    }
-    if (array_a->length != array_b->length) {
         return false;
-    }
-    if (array_a->capacity != array_b->capacity) {
+    } else if (array_a->length != array_b->length) {
         return false;
+    } else if (array_a->capacity != array_b->capacity) {
+        return false;
+    } else {
+        return true;
     }
-    size_t i;
-    for (i = 0; i < array_a->length; i++) {
-        if (array_get(array_a, i) != array_get(array_b, i)) {
-            return false;
-        }
-    }
-    return true;
 }
 
 Result array_destroy(ArrayPointer array)

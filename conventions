@@ -1,0 +1,19 @@
+order functions in the following way:
+
+1. constructors
+    1.0  empty constructor
+    1.1. normal constructors
+    1.2. reference constructors 
+
+2. setters and getters
+    2.1. getters
+    2.2. setters
+
+3. bool functions
+    3.1 is_empty
+    3.2 is_equal
+    3.3 ...
+
+4. other functions
+
+5. print and destroy

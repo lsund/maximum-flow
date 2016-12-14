@@ -20,6 +20,9 @@ typedef struct array {
     unsigned int length;
 } Array, *ArrayPointer;
 
+// An array with all fields set to 0 or NULL.
+Array array_empty();
+
 // Initializes a array of length init_length. All elements get uninitialized
 // values. 
 Array array_init(const size_t init_length);
@@ -31,13 +34,16 @@ ArrayPointer array_p_init(const unsigned int init_length);
 void *array_get(const ArrayPointer array, const unsigned int position);
 
 // Sets the element at the specified position in the array
-void array_set(const ArrayPointer array, void *element, unsigned int position);
+void array_set(const ArrayPointer array, void *element, const unsigned int position);
 
 // Sets the next uninitialized value to the specified element
 Result array_push(const ArrayPointer array, void *element);
 
 // get the last element of an array
 void *array_pop(ArrayPointer array);
+
+// Returns true if the array is considered empty
+bool array_is_empty(const ArrayPointer array);
 
 bool array_equals(const ArrayPointer array_a, const ArrayPointer array_b);
 

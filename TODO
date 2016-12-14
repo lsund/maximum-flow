@@ -1,6 +1,6 @@
 MISC:
 
-check if I need parse_argumentsn
+check if I need parse_arguments
 
 FUNCTIONS:
 
@@ -10,9 +10,9 @@ network_residual
 
 TESTS:
     array.c                             [done]
-    disjointset.c                       []
+    disjointset.c                       [done]
     edge.c                              [done]
-    edgeset.c                           []
+    edgeset.c                           [done]
     graph.c                             []
     matching.c                          []
     network.c                           []
@@ -26,3 +26,4 @@ TESTS:
     vertexset.c                         []
     network.c                           []
 
+change set to array for edgeset and vertexset
