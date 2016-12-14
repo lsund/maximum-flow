@@ -34,17 +34,15 @@ static bool is_edge_row(const TokenTablePointer table, const unsigned int row)
 Result make_tokentable(const char *fname, TokenTablePointer table)
 {
     if (!fname || !table) {
-        errno = EFAULT;
         return FAIL;
     }
     if (table->initialized) {
-        errno = EINVAL;
         return FAIL;
     }
     FILE *fp;
     fp = fopen(fname, "r");
     if (fp == NULL) {
-        exit(EXIT_FAILURE);
+        runtime_error("make_tokentable: could not open file");
 	}
 
     int read;
@@ -71,7 +69,7 @@ Result make_tokentable(const char *fname, TokenTablePointer table)
     }
     table->populated_rows = line_index;
     if (graph_cardinality(table).y != edge_index) {
-        errno = EINVAL;
+        runtime_error("make_tokentable: data malformed (number of edges unmatched)");
         fclose(fp);
         return FAIL;
     }
@@ -80,7 +78,7 @@ Result make_tokentable(const char *fname, TokenTablePointer table)
     return SUCCESS;
 }
 
-TokenTablePointer init_tokentable()
+TokenTablePointer tokentable_init()
 {
     TokenTablePointer ret = calloc(1, sizeof(TokenTable));
     char ***tokens;

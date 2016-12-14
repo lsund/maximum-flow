@@ -2,12 +2,7 @@
 #ifndef EDGE_SET_H
 #define EDGE_SET_H
 
-#include <stddef.h>
-#include <errno.h>
-#include <stdlib.h>
-
 #include "edge.h"
-#include "array.h"
 #include "util.h"
 #include "vertexset.h"
 

@@ -1,10 +1,7 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include <stdbool.h>
-#include <stdlib.h>
-
-#include "array.h"
+#include "util.h"
 
 // Type synonym
 typedef unsigned int Label; 

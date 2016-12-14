@@ -5,10 +5,13 @@ Result parse(const TokenTablePointer table, const NetworkPointer network)
     if (!table || !network) {
         return FAIL;
     }
-    VertexSet vertexset = vertexset_init(graph_cardinality(table).x);
-    EdgeSet edgeset = edgeset_init(graph_cardinality(table).y);
+    Point dimension = graph_cardinality(table);
+    unsigned int n_vertices = dimension.x;
+    unsigned int n_edges = dimension.y;
+    VertexSet vertexset = vertexset_init(n_vertices);
+    EdgeSet edgeset = edgeset_init(n_edges);
     size_t i;
-    for (i = 0; i < network->graph->vertexset.set->capacity; i++) {
+    for (i = 0; i < n_vertices; i++) {
         VertexPointer vertex = vertex_p_make(i);
         vertexset_push(vertexset, vertex);
     }

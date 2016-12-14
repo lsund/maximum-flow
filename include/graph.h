@@ -1,11 +1,6 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "tokenizer.h"
 #include "util.h"
 #include "edgeset.h"
 #include "vertexset.h"

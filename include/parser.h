@@ -1,15 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <stdio.h>
-#include <stddef.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
-
 #include "network.h"
 #include "tokenizer.h"
-#include "util.h"
 
 // Convert the tokens in the tokentable into graph structs, and load them into
 // the specified graph 

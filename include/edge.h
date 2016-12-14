@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "vertex.h"
+#include "util.h"
 
 // An edge is a relation between two vertices 
 // Field first:     The first vertex in the relation

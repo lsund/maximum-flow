@@ -2,11 +2,22 @@ MISC:
 
 check if I need parse_arguments
 
+Renamings:
+
+change set to array for edgeset and vertexset
+
 FUNCTIONS:
 
-is_admissable
-float residualal_capacity(networkedge)  [done]
+edgeset_length
+vertexset_length
+array_length
+inflow(vertex)
+outflow(vertex)
+exflow(vertex) = inflow - outflow
+active(vertex) = exflow > 0
+is_admissable(edge)
 network_residual
+float residualal_capacity(networkedge)  [done]
 
 TESTS:
     array.c                             [done]
@@ -25,5 +36,5 @@ TESTS:
     vertex.c                            [done]
     vertexset.c                         []
     network.c                           []
+    main.c
 
-change set to array for edgeset and vertexset

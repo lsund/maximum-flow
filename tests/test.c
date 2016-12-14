@@ -51,8 +51,11 @@ static char *test()
     mu_run_test(test_util);
 	mu_message(MODULE,"matching\n");
     mu_run_test(test_matching);
+	mu_message(MODULE,"main\n");
+    mu_run_test(test_main);
     return 0;
 }
+
 void mu_message(enum MessageOption option, const char *s) 
 {
     switch (option) {

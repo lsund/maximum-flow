@@ -19,7 +19,7 @@ typedef struct tokentable {
 } TokenTable, *TokenTablePointer;
 
 // Initialize a tokentable. All tokens get uninitialized values
-TokenTablePointer init_tokentable();
+TokenTablePointer tokentable_init();
 
 // Construct a tokentable, populating it with the words in fname as tokens 
 Result make_tokentable(const char *fname, TokenTablePointer table);

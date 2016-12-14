@@ -1,13 +1,8 @@
 #ifndef VERTEX_SET_H
 #define VERTEX_SET_H 
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <util.h>
-#include <errno.h>
-
-#include "array.h"
 #include "vertex.h"
+#include "array.h"
 
 // A set of vertices
 // Field set:   the set holding the actual references to the vertices
