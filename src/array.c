@@ -19,11 +19,16 @@ Array array_init(const size_t init_length)
     return ret;
 }
 
-ArrayPointer array_p_init(const unsigned int init_length)
+ArrayPointer array_p_init(const size_t init_length)
 {
     ArrayPointer ret = malloc(sizeof(Array));
     *ret             = array_init(init_length);
     return ret;
+}
+
+size_t array_length(const ArrayPointer array)
+{
+    return array->length;
 }
 
 void *array_get(const ArrayPointer array, const unsigned int position)

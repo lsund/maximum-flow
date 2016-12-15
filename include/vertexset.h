@@ -17,6 +17,9 @@ VertexSet vertexset_init(const size_t init_length);
 // Return true if the vertexset has no intialized elements, false otherwise
 bool vertexset_is_empty(const VertexSet vertexset);
 
+// Return the number of elements currently in this set
+size_t vertexset_length(const VertexSet vertexset);
+
 // Get the vertex at the specified position in the set 
 VertexPointer vertexset_get(const VertexSet vertexset, const unsigned int position);
 

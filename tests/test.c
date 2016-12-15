@@ -49,8 +49,6 @@ static char *test()
     mu_run_test(test_graph);
 	mu_message(MODULE,"util\n");
     mu_run_test(test_util);
-	mu_message(MODULE,"matching\n");
-    mu_run_test(test_matching);
 	mu_message(MODULE,"main\n");
     mu_run_test(test_main);
     return 0;
@@ -93,8 +91,6 @@ static char *one_test(const char *module)
         mu_run_test(test_edgeset);
     } else if (strcmp(module, "tree") == 0) {
         mu_run_test(test_tree);
-    } else if (strcmp(module, "matching") == 0) {
-        mu_run_test(test_matching);
     }
     return 0;
 }
@@ -118,8 +114,6 @@ int main(int argc, char **argv) {
             result = one_test("edgeset");
         } else if (strcmp(argv[1], "tree") == 0) {
             result = one_test("tree");
-        } else if (strcmp(argv[1], "matching") == 0) {
-            result = one_test("matching");
         } else {
             result = NULL;
             runtime_error("invalid argument to test");

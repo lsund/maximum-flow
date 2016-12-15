@@ -11,9 +11,11 @@ typedef struct network {
     unsigned int *capacities;
 } Network, *NetworkPointer;
 
-Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
-
 unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex);
+
+bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex);
+
+Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
 
 unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer edge);
 

@@ -1,20 +1,19 @@
 MISC:
 
-check if I need parse_arguments
+RENAMINGS:
 
-Renamings:
-
-change set to array for edgeset and vertexset
+change set to array for edgeset and vertexset (or collection?)
+change edgeset to edgearray (or collection?)
+chang vertexset to vertexarray (or collection?)
 
 FUNCTIONS:
 
-edgeset_length
-vertexset_length
-array_length
-inflow(vertex)
-outflow(vertex)
-exflow(vertex) = inflow - outflow
-active(vertex) = exflow > 0
+edgeset_length                          [done]
+vertexset_length                        [done]
+array_length                            [done]
+exflow(vertex) = inflow - outflow       [done]
+active(vertex) = exflow > 0             [done]
+distance_label(vertex)
 is_admissable(edge)
 network_residual
 float residualal_capacity(networkedge)  [done]
@@ -25,8 +24,6 @@ TESTS:
     edge.c                              [done]
     edgeset.c                           [done]
     graph.c                             [done]
-    matching.c                          []
-    network.c                           []
     parser.c                            []
     spit.c                              []
     tokenizer.c                         []

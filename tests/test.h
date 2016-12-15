@@ -9,7 +9,6 @@
 #include "edgeset.h"
 #include "vertexset.h"
 #include "tree.h"
-#include "matching.h"
 #include "disjointset.h"
 #include "network.h"
 

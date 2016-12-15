@@ -17,7 +17,7 @@
 typedef struct array {
     void **head;
     size_t capacity;
-    unsigned int length;
+    size_t length;
 } Array, *ArrayPointer;
 
 // An array with all fields set to 0 or NULL.
@@ -28,7 +28,9 @@ Array array_empty();
 Array array_init(const size_t init_length);
 
 // same as array_init, but returns a pointer to the array 
-ArrayPointer array_p_init(const unsigned int init_length);
+ArrayPointer array_p_init(const size_t init_length);
+
+size_t array_length(const ArrayPointer array);
 
 // Return the element in the array at the specified position
 void *array_get(const ArrayPointer array, const unsigned int position);

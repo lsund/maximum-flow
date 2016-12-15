@@ -24,6 +24,9 @@ EdgeSet edgeset_init(const size_t size);
 // Initializes an edgeset using edgeset_init and returns a pointer to it
 EdgeSetPointer edgeset_p_init(const unsigned int nvertices);
 
+// Return the number of elements currently in this set
+size_t edgeset_length(const EdgeSet edgeset);
+
 // Get the edge at the specified position
 EdgePointer edgeset_get(const EdgeSet edgeset , const unsigned int position);
 

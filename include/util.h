@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 // Errno codes used:
 // EFAULT - the preceeding operation would have resulted in invalid read/write
