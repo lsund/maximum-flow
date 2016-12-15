@@ -1,7 +1,7 @@
 #ifndef TREE_VERTEX_H
 #define TREE_VERTEX_H
 
-#include "edgeset.h"
+#include "edgecollection.h"
 #include "stddef.h" 
 
 // A vertex of a tree.
@@ -12,7 +12,7 @@ typedef struct treevertex {
     size_t rank;
     void * parent;
     bool is_root;
-    ArrayPointer children;
+    CollectionPointer children;
 } TreeVertex, *TreeVertexPointer;
 
 // Creates a pointer to a treevertex using a vertex
@@ -31,11 +31,11 @@ Result treevertex_insert(
 TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content);
 
 // Attempts to return the vertices of the tree rooted in root. Returns SUCCESS
-// when successful with the vertices stored as a vertexset in the return
+// when successful with the vertices stored as a vertexcollection in the return
 // parameter. Returns FAIL otherwise.
-Result treevertex_vertices(TreeVertexPointer root, VertexSet ret_vertexset);
+Result treevertex_vertices(TreeVertexPointer root, VertexCollection ret_vertexcollection);
 
-void treevertex_odds_evens(TreeVertexPointer root, bool even, VertexSetPointer evens, VertexSetPointer odds);
+void treevertex_odds_evens(TreeVertexPointer root, bool even, VertexCollectionPointer evens, VertexCollectionPointer odds);
 
 void treevertex_print(TreeVertexPointer root);
 

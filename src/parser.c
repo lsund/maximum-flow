@@ -1,21 +1,21 @@
 #include "parser.h"
 
-static void parse_vertices(const VertexSet vertexset, const unsigned int n_vertices)
+static void parse_vertices(const VertexCollection vertexcollection, const unsigned int n_vertices)
 {
     size_t i;
     for (i = 0; i < n_vertices; i++) {
         VertexPointer vertex = vertex_p_make(i);
-        vertexset_push(vertexset, vertex);
+        vertexcollection_push(vertexcollection, vertex);
     }
 }
 
-static EdgePointer parse_edge(const VertexSet vertexset, const char *first_token, const char*second_token)
+static EdgePointer parse_edge(const VertexCollection vertexcollection, const char *first_token, const char*second_token)
 {
     EdgePointer ret;
     Label label_first  = (unsigned int) strtol(first_token, NULL, 10) - 1;
     Label label_second = (unsigned int) strtol(second_token, NULL, 10) - 1;
-    VertexPointer first_vertex = vertexset_get_with_label(vertexset, label_first);
-    VertexPointer second_vertex = vertexset_get_with_label(vertexset, label_second);
+    VertexPointer first_vertex = vertexcollection_get_with_label(vertexcollection, label_first);
+    VertexPointer second_vertex = vertexcollection_get_with_label(vertexcollection, label_second);
     if (first_vertex && second_vertex) {
         ret = edge_p_make_vertices(first_vertex, second_vertex);
     } else {
@@ -36,14 +36,14 @@ static void update_source_sink(const NetworkPointer network, const char *first_t
 }
 
 static EdgePointer update_edge(
-        const VertexSet vertexset, 
-        const EdgeSet edgeset, 
+        const VertexCollection vertexcollection, 
+        const EdgeCollection edgecollection, 
         const char *first_token, 
         const char *second_token
     )
 {
-    EdgePointer edge = parse_edge(vertexset, first_token, second_token);
-    edgeset_push(edgeset, edge);
+    EdgePointer edge = parse_edge(vertexcollection, first_token, second_token);
+    edgecollection_push(edgecollection, edge);
     return edge;
 }
 
@@ -71,12 +71,12 @@ Result parse(const TokenTablePointer table, const NetworkPointer network)
     n_vertices = dimension.x;
     n_edges = dimension.y;
 
-    VertexSet vertexset;
-    vertexset = vertexset_init(n_vertices);
-    parse_vertices(vertexset, n_vertices);
+    VertexCollection vertexcollection;
+    vertexcollection = vertexcollection_init(n_vertices);
+    parse_vertices(vertexcollection, n_vertices);
 
-    EdgeSet edgeset;
-    edgeset = edgeset_init(n_edges);
+    EdgeCollection edgecollection;
+    edgecollection = edgecollection_init(n_edges);
 
     unsigned int row;
     for (row = 0; row < table->populated_rows; row++) {
@@ -98,12 +98,12 @@ Result parse(const TokenTablePointer table, const NetworkPointer network)
             if (is_n) {
                 update_source_sink(network, second_token, third_token);
             } else {
-                EdgePointer edge = update_edge(vertexset, edgeset, second_token, third_token);
+                EdgePointer edge = update_edge(vertexcollection, edgecollection, second_token, third_token);
                 update_capacity(network, table, edge, row);
             }
         }
     }
-    GraphPointer graph = graph_make(vertexset, edgeset);
+    GraphPointer graph = graph_make(vertexcollection, edgecollection);
     network->graph = graph;
     return SUCCESS;
 }

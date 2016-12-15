@@ -2,20 +2,20 @@
 #define GRAPH_H
 
 #include "util.h"
-#include "edgeset.h"
-#include "vertexset.h"
+#include "edgecollection.h"
+#include "vertexcollection.h"
 
 // An undirected graph
-// Field edgeset:   The set of edges
-// Field vertexset: The set of vertices
+// Field edgecollection:   The set of edges
+// Field vertexcollection: The set of vertices
 typedef struct graph {
-    EdgeSet edgeset;
-    VertexSet vertexset;
+    EdgeCollection edges;
+    VertexCollection vertices;
 } Graph, *GraphPointer;
 
-// Constructs an instance of a graph using the vertexset and edgeset and returns
+// Constructs an instance of a graph using the vertexcollection and edgecollection and returns
 // a pointer to this structure
-GraphPointer graph_make(const VertexSet vertexset, const EdgeSet edgeset);
+GraphPointer graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection);
 
 // Frees the structure
 Result graph_destroy(GraphPointer graph);

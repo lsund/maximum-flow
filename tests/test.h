@@ -6,8 +6,8 @@
 #include "tokenizer.h"
 #include "minunit.h"
 #include "graph.h"
-#include "edgeset.h"
-#include "vertexset.h"
+#include "edgecollection.h"
+#include "vertexcollection.h"
 #include "tree.h"
 #include "disjointset.h"
 #include "network.h"
@@ -27,9 +27,9 @@ char *test_parser();
 char *test_tokenizer();
 char *test_graph();
 char *test_util();
-char *test_edgeset(); 
-char *test_vertexset(); 
-char *test_array();
+char *test_edgecollection(); 
+char *test_vertexcollection(); 
+char *test_collection();
 char *test_tree();
 char *test_vertex();
 char *test_edge();

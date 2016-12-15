@@ -9,14 +9,14 @@ add constructs in network that holds:
 
 RENAMINGS:
 
-change set to array for edgeset and vertexset (or collection?)
-change edgeset to edgearray (or collection?)
-chang vertexset to vertexarray (or collection?)
+array to collection                     [done]
+edgeset to edgecollection               [done]
+vertexset to vertexcollection           [done]
 
 FUNCTIONS:
 
-edgeset_length                          [done]
-vertexset_length                        [done]
+edgecollection_length                   [done]
+vertexcollection_length                 [done]
 array_length                            [done]
 exflow(vertex) = inflow - outflow       [done]
 active(vertex) = exflow > 0             [done]
@@ -29,7 +29,7 @@ TESTS:
     array.c                             [done]
     disjointset.c                       [done]
     edge.c                              [done]
-    edgeset.c                           [done]
+    edgecollection.c                           [done]
     graph.c                             [done]
     parser.c                            [done]
     spit.c                              []
@@ -38,7 +38,7 @@ TESTS:
     treevertex.c                        []
     util.c                              []
     vertex.c                            [done]
-    vertexset.c                         []
+    vertexcollection.c                  []
     network.c                           []
     main.c
 

@@ -27,16 +27,16 @@ int tests_run, utests_run;
 
 static char *test()
 {
-	mu_message(MODULE,"array\n");
-    mu_run_test(test_array);
+	mu_message(MODULE,"collection\n");
+    mu_run_test(test_collection);
 	mu_message(MODULE,"vertex\n");
     mu_run_test(test_vertex);
 	mu_message(MODULE,"edge\n");
     mu_run_test(test_edge);
-	mu_message(MODULE,"vertexset\n");
-    mu_run_test(test_vertexset);
-	mu_message(MODULE,"edgeset\n");
-    mu_run_test(test_edgeset);
+	mu_message(MODULE,"vertexcollection\n");
+    mu_run_test(test_vertexcollection);
+	mu_message(MODULE,"edgecollection\n");
+    mu_run_test(test_edgecollection);
 	mu_message(MODULE,"tree\n");
     mu_run_test(test_tree);
 	mu_message(MODULE,"disjoint set\n");
@@ -87,8 +87,8 @@ void mu_message(enum MessageOption option, const char *s)
 
 static char *one_test(const char *module)
 {
-    if (strcmp(module, "edgeset") == 0) {
-        mu_run_test(test_edgeset);
+    if (strcmp(module, "edgecollection") == 0) {
+        mu_run_test(test_edgecollection);
     } else if (strcmp(module, "tree") == 0) {
         mu_run_test(test_tree);
     }
@@ -110,8 +110,8 @@ int main(int argc, char **argv) {
     tests_run = 0;
     utests_run = 0;
     if (argc == 2) {
-        if (strcmp(argv[1], "edgeset") == 0) {
-            result = one_test("edgeset");
+        if (strcmp(argv[1], "edgecollection") == 0) {
+            result = one_test("edgecollection");
         } else if (strcmp(argv[1], "tree") == 0) {
             result = one_test("tree");
         } else {

@@ -10,30 +10,30 @@ Result treevertex_insert(
     size_t i;
     if (under != tree_b->content->label) {
         for (i = 0; i < tree_b->children->length; i++) {
-            Result success = treevertex_insert(tree_a, under, array_get(tree_b->children, i));
+            Result success = treevertex_insert(tree_a, under, collection_get(tree_b->children, i));
             if (success) {
                 return SUCCESS;
             }
         }
         return FAIL;
     } else {
-        array_push(tree_b->children, tree_a);
+        collection_push(tree_b->children, tree_a);
         tree_a->parent = tree_b;
         return SUCCESS;
     }
 }
 
-void treevertex_odds_evens(TreeVertexPointer root, bool even, VertexSetPointer evens, VertexSetPointer odds)
+void treevertex_odds_evens(TreeVertexPointer root, bool even, VertexCollectionPointer evens, VertexCollectionPointer odds)
 {
     if (even && evens) {
-        vertexset_push(*evens, root->content);
+        vertexcollection_push(*evens, root->content);
     } 
     if (!even && odds) {
-        vertexset_push(*odds, root->content);
+        vertexcollection_push(*odds, root->content);
     }
     size_t i;
     for (i = 0; i < root->children->length; i++) {
-        treevertex_odds_evens(array_get(root->children, i), !even, evens, odds);
+        treevertex_odds_evens(collection_get(root->children, i), !even, evens, odds);
     }
 }
 
@@ -44,7 +44,7 @@ TreeVertexPointer treevertex_subtree(TreeVertexPointer root, VertexPointer under
     } else {
         size_t i;
         for (i = 0; i < root->children->length; i++) {
-            TreeVertexPointer next = treevertex_subtree(array_get(root->children, i), under);
+            TreeVertexPointer next = treevertex_subtree(collection_get(root->children, i), under);
             if (next) {
                 return next;
             }
@@ -60,7 +60,7 @@ TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content)
     }
     size_t i;
     for (i = 0; i < root->children->length; i++) {
-        TreeVertexPointer cand = treevertex_get(array_get(root->children, i), content);
+        TreeVertexPointer cand = treevertex_get(collection_get(root->children, i), content);
         if (cand) {
             return cand;
         }
@@ -68,12 +68,12 @@ TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content)
     return NULL;
 }
 
-Result treevertex_vertices(TreeVertexPointer root, VertexSet acc)
+Result treevertex_vertices(TreeVertexPointer root, VertexCollection acc)
 {
-    if (vertexset_push(acc, root->content)) {
+    if (vertexcollection_push(acc, root->content)) {
         size_t i;
         for (i = 0; i < root->children->length; i++) {
-            treevertex_vertices(array_get(root->children, i), acc);
+            treevertex_vertices(collection_get(root->children, i), acc);
         }
     } else {
         return FAIL;
@@ -86,7 +86,7 @@ void treevertex_print(TreeVertexPointer root)
     printf("V: %d { ", root->content->label);
     size_t i;
     for (i = 0; i < root->children->length; i++) {
-        treevertex_print(array_get(root->children, i));
+        treevertex_print(collection_get(root->children, i));
     }
     printf(" } ");
 }
@@ -98,11 +98,11 @@ Result treevertex_destroy(TreeVertexPointer root)
     }
     size_t i;
     for (i = 0; i < root->children->length; i++) {
-        if (treevertex_destroy(array_get(root->children, i)) == FAIL) {
+        if (treevertex_destroy(collection_get(root->children, i)) == FAIL) {
             return FAIL;
         }
     }
-    array_destroy(root->children);
+    collection_destroy(root->children);
     return SUCCESS;
 }
 

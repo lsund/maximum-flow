@@ -38,13 +38,13 @@ Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree);
 
 // Stores references to all vertices that have even / odd distance to the root
 // of the tree the two respective sets 
-void tree_evens_odds(Tree tree, VertexSetPointer evens, VertexSetPointer odds);
+void tree_evens_odds(Tree tree, VertexCollectionPointer evens, VertexCollectionPointer odds);
 
 // See tree_evens_odds
-void tree_evens(Tree tree, VertexSetPointer evens);
+void tree_evens(Tree tree, VertexCollectionPointer evens);
 
 // See tree_evens_odds
-void tree_odds(Tree tree, VertexSetPointer odds);
+void tree_odds(Tree tree, VertexCollectionPointer odds);
 
 // Traverse the tree, print to stdout
 void tree_print(Tree tree);

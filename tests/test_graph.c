@@ -4,15 +4,15 @@
 
 char *utest_graph_make() 
 {
-    VertexSet vertexset = vertexset_init(2);
-    EdgeSet edgeset = edgeset_init(1);
-    vertexset_push(vertexset, vertex_p_make(0));
-    vertexset_push(vertexset, vertex_p_make(1));
-    edgeset_push(edgeset, edge_p_make_label(0, 1));
-    GraphPointer graph = graph_make(vertexset, edgeset);
-    mu_assert("should not be null", vertexset_get(graph->vertexset, 0));
-    mu_assert("should not be null", edgeset_get(graph->edgeset, 0));
-    mu_assert("should be 1", edgeset_get(graph->edgeset, 0)->first->label == 0);
+    VertexCollection vertexcollection = vertexcollection_init(2);
+    EdgeCollection edgecollection = edgecollection_init(1);
+    vertexcollection_push(vertexcollection, vertex_p_make(0));
+    vertexcollection_push(vertexcollection, vertex_p_make(1));
+    edgecollection_push(edgecollection, edge_p_make_label(0, 1));
+    GraphPointer graph = graph_make(vertexcollection, edgecollection);
+    mu_assert("should not be null", vertexcollection_get(graph->vertices, 0));
+    mu_assert("should not be null", edgecollection_get(graph->edges, 0));
+    mu_assert("should be 1", edgecollection_get(graph->edges, 0)->first->label == 0);
     return NULL;
 }
 

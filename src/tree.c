@@ -7,7 +7,7 @@ TreeVertexPointer make_p_tree_vertex(VertexPointer vertex) {
     ret->parent           = NULL;
     ret->is_root          = false;
     ret->rank             = 0;
-    ret->children         = array_p_init(0);
+    ret->children         = collection_p_init(0);
     return ret;
 }
 
@@ -78,8 +78,8 @@ bool tree_contains_vertex(Tree tree, VertexPointer vertex)
 
 Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
 {
-    VertexSet inserted_vertices = vertexset_init(tree.maxsize);
-    if (inserted_vertices.set->capacity == 0) {
+    VertexCollection inserted_vertices = vertexcollection_init(tree.maxsize);
+    if (inserted_vertices.members->capacity == 0) {
         return FAIL;
     }
     if (treevertex_vertices(treevertex, inserted_vertices) == FAIL) {
@@ -89,26 +89,26 @@ Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
         return FAIL;
     }
     size_t i;
-    for (i = 0; i < inserted_vertices.set->length; i++) {
-        VertexPointer vertex = vertexset_get(inserted_vertices, i);
+    for (i = 0; i < inserted_vertices.members->length; i++) {
+        VertexPointer vertex = vertexcollection_get(inserted_vertices, i);
             *(tree.contains + vertex->label) = true;
     }
-    *(tree.nvertices) += inserted_vertices.set->length;
-    vertexset_destroy(inserted_vertices);
+    *(tree.nvertices) += inserted_vertices.members->length;
+    vertexcollection_destroy(inserted_vertices);
     return SUCCESS;
 }
 
-void tree_evens_odds(Tree tree, VertexSetPointer evens, VertexSetPointer odds)
+void tree_evens_odds(Tree tree, VertexCollectionPointer evens, VertexCollectionPointer odds)
 {
     treevertex_odds_evens(tree.root, true, evens, odds);
 }
 
-void tree_evens(Tree tree, VertexSetPointer evens)
+void tree_evens(Tree tree, VertexCollectionPointer evens)
 {
     tree_evens_odds(tree, evens, NULL);
 }
 
-void tree_odds(Tree tree, VertexSetPointer odds)
+void tree_odds(Tree tree, VertexCollectionPointer odds)
 {
     tree_evens_odds(tree, NULL, odds);
 }

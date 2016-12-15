@@ -13,8 +13,8 @@ unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPoi
     inflow = 0;
     outflow = 0;
     size_t i;
-    for (i = 0; i < edgeset_length(network->graph->edgeset); i++) {
-        EdgePointer edge = edgeset_get(network->graph->edgeset, i);
+    for (i = 0; i < edgecollection_length(network->graph->edges); i++) {
+        EdgePointer edge = edgecollection_get(network->graph->edges, i);
         if (vertex_equals(edge->first, vertex)) {
             outflow += network_edge_flow(network, edge);
         } else if (vertex_equals(edge->second, vertex)) {
