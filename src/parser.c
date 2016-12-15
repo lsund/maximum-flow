@@ -59,24 +59,33 @@ static void update_capacity(
     network_set_edge_capacity(network, edge, capacity);
 }
 
-Result parse(const TokenTablePointer table, const NetworkPointer network)
+Result parse(const char *filename, const NetworkPointer network)
 {
-    if (!table || !network) {
+    if (!filename || !network) {
         return FAIL;
     }
     Point dimension;
+    TokenTablePointer table = tokentable_init();
+    make_tokentable(filename, table);
     dimension = graph_cardinality(table);
 
     unsigned int n_vertices, n_edges;
     n_vertices = dimension.x;
     n_edges = dimension.y;
 
-    VertexCollection vertexcollection;
-    vertexcollection = vertexcollection_init(n_vertices);
-    parse_vertices(vertexcollection, n_vertices);
+    VertexCollection vertices;
+    vertices = vertexcollection_init(n_vertices);
+    parse_vertices(vertices, n_vertices);
 
-    EdgeCollection edgecollection;
-    edgecollection = edgecollection_init(n_edges);
+    EdgeCollection edges;
+    edges = edgecollection_init(n_edges);
+
+    GraphPointer graph = graph_make(vertices, edges);
+    network->graph = graph;
+
+    network->capacities      = calloc(edgecollection_length(edges), sizeof(unsigned int));
+    network->flows           = calloc(edgecollection_length(edges), sizeof(unsigned int));
+    network->distance_labels = calloc(vertexcollection_length(vertices), sizeof(Label));
 
     unsigned int row;
     for (row = 0; row < table->populated_rows; row++) {
@@ -98,13 +107,11 @@ Result parse(const TokenTablePointer table, const NetworkPointer network)
             if (is_n) {
                 update_source_sink(network, second_token, third_token);
             } else {
-                EdgePointer edge = update_edge(vertexcollection, edgecollection, second_token, third_token);
+                EdgePointer edge = update_edge(vertices, edges, second_token, third_token);
                 update_capacity(network, table, edge, row);
             }
         }
     }
-    GraphPointer graph = graph_make(vertexcollection, edgecollection);
-    network->graph = graph;
     return SUCCESS;
 }
 

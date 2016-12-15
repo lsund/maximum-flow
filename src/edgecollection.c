@@ -43,6 +43,18 @@ EdgePointer edgecollection_get(const EdgeCollection edgecollection, const unsign
     return collection_get(edgecollection.members, position);
 }
 
+unsigned int edgecollection_index_of(const EdgeCollection edgecollection, const EdgePointer edge)
+{
+    size_t i;
+    for (i = 0; i < edgecollection_length(edgecollection); i++) {
+        if (edge_equals(edge, edgecollection_get(edgecollection, i))) {
+            return i;
+        }
+    }
+    runtime_error("edgecollection_index_of: the collection does not contain the specified edge");
+    return 0;
+}
+
 size_t edgecollection_vertex_count(const EdgeCollection edgecollection)
 {
     VertexCollection vertices = edgecollection_vertices(edgecollection);

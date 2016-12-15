@@ -26,6 +26,8 @@ size_t edgecollection_length(const EdgeCollection edgecollection);
 // Get the edge at the specified position
 EdgePointer edgecollection_get(const EdgeCollection edgecollection , const unsigned int position);
 
+unsigned int edgecollection_index_of(const EdgeCollection edgecollection, const EdgePointer edge);
+
 size_t edgecollection_vertex_count(const EdgeCollection edgecollection);
 
 // The vertices of this edgecollection

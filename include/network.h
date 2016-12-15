@@ -4,27 +4,42 @@
 #include "graph.h"
 
 typedef struct network {
-    GraphPointer graph;
-    GraphPointer rev_graph;
-    VertexPointer source;
-    VertexPointer sink;
-    unsigned int *capacities;
+    GraphPointer    graph;
+    VertexPointer   source;
+    VertexPointer   sink;
+    unsigned int    *capacities;
+    unsigned int    *flows;
+    Label           *distance_labels;
 } Network, *NetworkPointer;
 
-unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex);
+NetworkPointer network_init();
 
-bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex);
-
-Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
+NetworkPointer network_make(const GraphPointer graph, const VertexPointer source, const VertexPointer sink);
+//// getters
+unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge);
 
 unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer edge);
 
-unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge);
+Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
+
+unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex);
+//// setters
+
+void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex);
+
+bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex);
+
 
 void network_set_edge_capacity(
         const NetworkPointer network, 
         const EdgePointer edge, 
         unsigned int capacity
+    );
+
+void network_set_edge_flow(
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        unsigned int flow
     );
 
 bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edge);

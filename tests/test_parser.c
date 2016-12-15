@@ -3,10 +3,8 @@
 #include "test.h"
 
 char *utest_parse() {
-    TokenTablePointer table = tokentable_init();
-    make_tokentable(TEST_GRAPH, table);
     NetworkPointer network = malloc(sizeof(Network));
-    mu_assert("should succeed", parse(table, network));
+    mu_assert("should succeed", parse(TEST_GRAPH, network));
     mu_assert("should not be empty", !edgecollection_is_empty(network->graph->edges));
     mu_assert("should not be empty", !vertexcollection_is_empty(network->graph->vertices));
     mu_assert("first vertex should be 1", vertexcollection_get(network->graph->vertices, 0)->label == 0);

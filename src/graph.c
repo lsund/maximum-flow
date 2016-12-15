@@ -9,6 +9,19 @@ GraphPointer graph_make(const VertexCollection vertexcollection, const EdgeColle
     return ret;
 }
 
+VertexCollection graph_neighbours_of(const GraphPointer graph, const VertexPointer vertex)
+{
+    VertexCollection ret = vertexcollection_init(vertexcollection_length(graph->vertices));
+    size_t i;
+    for (i = 0; i < edgecollection_length(graph->edges); i++) {
+        EdgePointer edge = edgecollection_get(graph->edges, i);
+        if (edge_incident_with(edge, vertex)) {
+            vertexcollection_push(ret, edge_get_adjacent(edge, vertex));
+        }
+    }
+    return ret;
+}
+
 Result graph_destroy(GraphPointer graph)
 {
     if (!graph || !graph->edges.members || !graph->vertices.members) {

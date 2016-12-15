@@ -44,16 +44,14 @@ Edge edge_swapped(const Edge edge)
     return edge_make_vertices(edge.second, edge.first);
 }
 
-Result edge_get_adjacent(const Edge edge, VertexPointer vertex, VertexPointer *ret)
+VertexPointer edge_get_adjacent(const EdgePointer edge, VertexPointer vertex)
 {
-    if (vertex_equals(edge.first, vertex)) {
-        *ret = edge.second; 
-        return SUCCESS;
-    } else if (vertex_equals(edge.second, vertex)) {
-        *ret = edge.first;
-        return SUCCESS;
+    if (vertex_equals(edge->first, vertex)) {
+        return edge->second; 
+    } else if (vertex_equals(edge->second, vertex)) {
+        return edge->first;
     } else {
-        return FAIL;
+        return NULL;
     }
 }
 

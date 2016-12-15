@@ -1,6 +1,31 @@
 
 #include "network.h"
 
+NetworkPointer network_init()
+{
+    // TODO
+    NetworkPointer ret   = malloc(sizeof(Network));
+    ret->graph           = NULL;
+    ret->source          = NULL;
+    ret->sink            = NULL;
+    ret->capacities      = NULL;
+    ret->flows           = NULL;
+    ret->distance_labels = NULL;
+    return ret;
+}
+
+unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge)
+{
+    unsigned int index = edgecollection_index_of(network->graph->edges, edge);
+    return *(network->capacities + index);
+}
+
+unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer edge)
+{
+    unsigned int index = edgecollection_index_of(network->graph->edges, edge);
+    return *(network->flows + index);
+}
+
 bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
 {
     // TODO
@@ -24,6 +49,12 @@ unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPoi
     return inflow - outflow;
 }
 
+void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex)
+{
+    // TODO
+    return;
+}
+
 bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex)
 {
     return network_vertex_exflow(network, vertex) > 0;
@@ -45,16 +76,14 @@ Label network_vertex_distance_label(const NetworkPointer network, const VertexPo
     return 0;
 }
 
-unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer edge)
+void network_set_edge_flow(
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        unsigned int flow
+    )
 {
-    // TODO
-    return 0;
-}
-
-unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge)
-{
-    // TODO
-    return 0;
+    unsigned int index = edgecollection_index_of(network->graph->edges, edge);
+    *(network->flows + index) = flow;
 }
 
 void network_set_edge_capacity(
@@ -63,8 +92,8 @@ void network_set_edge_capacity(
         unsigned int capacity
     )
 {
-    // TODO
-    return;
+    unsigned int index = edgecollection_index_of(network->graph->edges, edge);
+    *(network->capacities + index) = capacity;
 }
 
 bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edge)

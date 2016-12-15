@@ -47,6 +47,8 @@ static char *test()
     mu_run_test(test_parser);
 	mu_message(MODULE,"graph\n");
     mu_run_test(test_graph);
+	mu_message(MODULE,"network\n");
+    mu_run_test(test_network);
 	mu_message(MODULE,"util\n");
     mu_run_test(test_util);
 	mu_message(MODULE,"main\n");

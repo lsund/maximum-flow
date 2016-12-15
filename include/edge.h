@@ -41,7 +41,7 @@ void edge_swap(EdgePointer edge);
 
 // Sets ret the other endpoint of an edge, given one its endpoints and returns
 // SUCCESS. If the vertex does not contain the specified vertex, return FAIL.
-Result edge_get_adjacent(const Edge edge, VertexPointer vertex, VertexPointer *ret);
+VertexPointer edge_get_adjacent(const EdgePointer edge, VertexPointer vertex);
 
 // Returns true if the edge contains the given vertex, false otherwise
 bool edge_incident_with(const EdgePointer edge, const VertexPointer vertex);

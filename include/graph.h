@@ -17,6 +17,8 @@ typedef struct graph {
 // a pointer to this structure
 GraphPointer graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection);
 
+VertexCollection graph_neighbours_of(const GraphPointer graph, const VertexPointer vertex);
+
 // Frees the structure
 Result graph_destroy(GraphPointer graph);
 

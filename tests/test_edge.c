@@ -62,16 +62,15 @@ char *utest_edge_swapped()
 
 char *utest_edge_get_adjacent()
 {
-    Edge e = edge_make_label(8, 7);
+    EdgePointer e = edge_p_make_label(8, 7);
     Vertex x = vertex_make(8);
     Vertex y = vertex_make(7);
     Vertex z = vertex_make(6);
-    VertexPointer ret = vertex_p_make(0);
-    mu_assert("should be 7", edge_get_adjacent(e, &x, &ret) == SUCCESS);
+    VertexPointer ret = edge_get_adjacent(e, &x);
     mu_assert("should be 7", ret->label == 7);
-    mu_assert("should be 8", edge_get_adjacent(e, &y, &ret) == SUCCESS);
+    ret = edge_get_adjacent(e, &y);
     mu_assert("should be 8", ret->label == 8);
-    mu_assert("should fail", edge_get_adjacent(e, &z, &ret) == FAIL);
+    mu_assert("should fail", edge_get_adjacent(e, &z) == NULL);
     return NULL;
 }
 

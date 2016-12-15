@@ -9,6 +9,9 @@ add constructs in network that holds:
 
 RENAMINGS:
 
+set_* to change_* (eg. set_edge)
+change variables of *collection to 
+edges, vertices etc?
 array to collection                     [done]
 edgeset to edgecollection               [done]
 vertexset to vertexcollection           [done]
@@ -24,8 +27,13 @@ distance_label(vertex)
 is_admissable(edge)                     [done]
 network_residual                        ?
 float residualal_capacity(networkedge)  [done]
+VertexSet graph_neighbours_of
 
-TESTS:
+TESTS FUNCTIONS:
+    edgecollection_index_of             []
+    graph_neighbours_of                 []
+
+TESTS MODULES:
     array.c                             [done]
     disjointset.c                       [done]
     edge.c                              [done]
