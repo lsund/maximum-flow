@@ -108,13 +108,3 @@ Result parse(const TokenTablePointer table, const NetworkPointer network)
     return SUCCESS;
 }
 
-int parse_arguments(int argc, char *argv[]) {
-    if ((argc == 3 || argc == 5) && strcmp(argv[1], "--network") == 0) {
-        if (argc == 5 && strcmp(argv[3], "--hint") == 0) {
-            return 2;
-        } 
-        return argc > 3 ? 0 : 1;
-    } 
-    return 0;
-}
-

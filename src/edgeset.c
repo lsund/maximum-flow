@@ -30,6 +30,10 @@ EdgeSetPointer edgeset_p_init(const unsigned int nvertices)
 
 EdgePointer edgeset_get(const EdgeSet edgeset, const unsigned int position)
 {
+    if (position >= edgeset.set->capacity) {
+        runtime_error("vertexset_get: index out of bounds");
+        return NULL;
+    }
     return array_get(edgeset.set, position);
 }
 

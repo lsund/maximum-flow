@@ -13,11 +13,11 @@ typedef struct graph {
     VertexSet vertexset;
 } Graph, *GraphPointer;
 
+// Constructs an instance of a graph using the vertexset and edgeset and returns
+// a pointer to this structure
 GraphPointer graph_make(const VertexSet vertexset, const EdgeSet edgeset);
 
 // Frees the structure
 Result graph_destroy(GraphPointer graph);
-
-Result graph_make_reversed(const Graph graph, GraphPointer reversed);
 
 #endif

@@ -1,8 +1,4 @@
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "tokenizer.h"
 
 static char tokenize_string(char *str, char **o_tokenized_string)
@@ -36,9 +32,6 @@ Result make_tokentable(const char *fname, TokenTablePointer table)
     if (!fname || !table) {
         return FAIL;
     }
-    if (table->initialized) {
-        return FAIL;
-    }
     FILE *fp;
     fp = fopen(fname, "r");
     if (fp == NULL) {
@@ -50,11 +43,8 @@ Result make_tokentable(const char *fname, TokenTablePointer table)
     unsigned int line_index;
     int edge_index;
     char *line, *str;
-    line = NULL;
-    str = NULL;
-    file_len   = 0;
-    line_index = 0;
-    edge_index = 0;
+    line = str = NULL;
+    file_len = line_index = edge_index = 0;
     while ((read = getline(&line, &file_len, fp)) != -1) {
         str = strtok(line, " ");
         char **tokenrow = *(table->tokens + line_index);

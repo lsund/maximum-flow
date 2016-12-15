@@ -24,7 +24,7 @@ TESTS:
     disjointset.c                       [done]
     edge.c                              [done]
     edgeset.c                           [done]
-    graph.c                             []
+    graph.c                             [done]
     matching.c                          []
     network.c                           []
     parser.c                            []
