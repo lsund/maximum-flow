@@ -41,16 +41,19 @@ bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer 
 
 Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex)
 {
+    // TODO
     return 0;
 }
 
 unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer edge)
 {
+    // TODO
     return 0;
 }
 
-unsigned int network_get_edge_capacity(const NetworkPointer network, const EdgePointer edge)
+unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge)
 {
+    // TODO
     return 0;
 }
 
@@ -60,11 +63,13 @@ void network_set_edge_capacity(
         unsigned int capacity
     )
 {
+    // TODO
     return;
 }
 
 bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edge)
 {
+    // TODO
     return 0;
 }
 

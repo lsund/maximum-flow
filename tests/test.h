@@ -21,6 +21,8 @@
 #define ANSI_COLOR_GREY    "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
+#define TEST_GRAPH "/home/lsund/Data/graphs/data/networks/small.dmx"
+
 char *test_parser();
 char *test_tokenizer();
 char *test_graph();
