@@ -15,11 +15,26 @@ static void push_relabel_initialize(NetworkPointer network)
     }
 }
 
+static void relabel(const NetworkPointer network, const VertexPointer vertex)
+{
+}
+
+static void push(const NetworkPointer network, const EdgePointer edge)
+{
+}
+
 void push_relabel(NetworkPointer network)
 {
     push_relabel_initialize(network);
     VertexPointer active = network_active_vertex(network);
     while (active) {
+        EdgeCollection active_incident = graph_incident_with(network->graph, active);
+        EdgePointer admissable = network_admissable_edge(network, active_incident);
+        if (!admissable) {
+            relabel(network, active);
+        } else {
+            push(network, admissable);
+        }
         active = network_active_vertex(network);
     }
 }

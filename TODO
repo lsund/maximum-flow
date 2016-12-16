@@ -18,7 +18,6 @@ vertexset to vertexcollection                   [done]
 
 FUNCTIONS:
 
-network_active_vertex                           []
 edgecollection_length                           [done]
 vertexcollection_length                         [done]
 array_length                                    [done]
@@ -32,6 +31,8 @@ VertexSet graph_neighbours_of
 EdgeSet graph_incident_with
 
 TESTS FUNCTIONS:
+    network_active_vertex                       []
+    network_admissable_edge                     []
     edgecollection_index_of                     []
     graph_neighbours_of                         []
 

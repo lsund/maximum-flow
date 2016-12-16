@@ -9,7 +9,7 @@ GraphPointer graph_make(const VertexCollection vertexcollection, const EdgeColle
     return ret;
 }
 
-VertexCollection graph_neighbours_of(const GraphPointer graph, const VertexPointer vertex)
+VertexCollection graph_neighbors_of(const GraphPointer graph, const VertexPointer vertex)
 {
     VertexCollection ret = vertexcollection_init(vertexcollection_length(graph->vertices));
     size_t i;

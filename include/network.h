@@ -25,12 +25,15 @@ Label network_vertex_distance_label(const NetworkPointer network, const VertexPo
 unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex);
 
 VertexPointer network_active_vertex(const NetworkPointer network);
+
+EdgePointer network_admissable_edge(const NetworkPointer network, const EdgeCollection edges);
 //// setters
 
 void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex);
 
 bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex);
 
+bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer edge);
 
 void network_set_edge_capacity(
         const NetworkPointer network, 

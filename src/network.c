@@ -60,16 +60,22 @@ VertexPointer network_active_vertex(const NetworkPointer network)
     return NULL;
 }
 
+EdgePointer network_admissable_edge(const NetworkPointer network, const EdgeCollection edges)
+{
+    size_t i;
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, 0);
+        if (network_edge_is_admissable(network, edge)) {
+            return edge;
+        }
+    }
+    return NULL;
+}
+
 bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
 {
     // TODO
     return true;
-}
-
-void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex)
-{
-    // TODO
-    return;
 }
 
 bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer edge)
@@ -80,6 +86,12 @@ bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer 
     bool cond_a = label_first == label_second + 1;
     bool cond_b = network_edge_is_residual(network, edge);
     return cond_a && cond_b;
+}
+
+void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex)
+{
+    // TODO
+    return;
 }
 
 Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex)
