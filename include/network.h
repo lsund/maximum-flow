@@ -30,6 +30,8 @@ VertexPointer network_active_vertex(const NetworkPointer network);
 
 EdgePointer network_admissable_edge(const NetworkPointer network, const EdgeCollection edges);
 
+unsigned int network_flow(const NetworkPointer network);
+
 //// setters
 
 void network_augment_edge(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow);

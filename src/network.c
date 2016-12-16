@@ -14,6 +14,12 @@ NetworkPointer network_init()
     return ret;
 }
 
+Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex)
+{
+    unsigned int index = vertexcollection_index_of(network->graph->vertices, vertex);
+    return *(network->distance_labels + index);
+}
+
 unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge)
 {
     unsigned int index = edgecollection_index_of(network->graph->edges, edge);
@@ -86,10 +92,9 @@ EdgePointer network_admissable_edge(const NetworkPointer network, const EdgeColl
     return NULL;
 }
 
-Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex)
+unsigned int network_flow(const NetworkPointer network)
 {
-    // TODO
-    return 0;
+    return network_vertex_inflow(network, network->sink);
 }
 
 bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
@@ -158,6 +163,9 @@ void network_set_edge_capacity(
 
 void network_vertex_set_distance_label(const NetworkPointer network, const VertexPointer vertex, const unsigned int label)
 {
+    if (!vertex || !network) {
+        runtime_error("network_vertex_set_distance_label: null argument");
+    }
     unsigned int index = vertexcollection_index_of(network->graph->vertices, vertex);
     *(network->distance_labels + index) = label; 
 }
