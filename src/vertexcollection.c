@@ -29,30 +29,30 @@ VertexCollectionPointer init_p_vertexcollection(const size_t init_length)
     return ret;
 }
 
-bool vertexcollection_is_empty(const VertexCollection vertexcollection)
+bool vertexcollection_is_empty(const VertexCollection vertices)
 {
-    return vertexcollection_length(vertexcollection) == 0;
+    return vertexcollection_length(vertices) == 0;
 }
 
-size_t vertexcollection_length(const VertexCollection vertexcollection)
+size_t vertexcollection_length(const VertexCollection vertices)
 {
-    return collection_length(vertexcollection.members);
+    return collection_length(vertices.members);
 }
 
-VertexPointer vertexcollection_get(const VertexCollection vertexcollection, const unsigned int position)
+VertexPointer vertexcollection_get(const VertexCollection vertices, const unsigned int position)
 {
-    if (position >= vertexcollection.members->capacity) {
+    if (position >= vertices.members->capacity) {
         runtime_error("vertexcollection_get: index out of bounds");
         return NULL;
     }
-    return (VertexPointer) collection_get(vertexcollection.members, position);
+    return (VertexPointer) collection_get(vertices.members, position);
 }
 
-VertexPointer vertexcollection_get_with_label(const VertexCollection vertexcollection, const Label label)
+VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label)
 {
     size_t i;
-    for (i = 0; i < vertexcollection.members->capacity; i++) {
-        VertexPointer vertex = vertexcollection_get(vertexcollection, i);
+    for (i = 0; i < vertices.members->capacity; i++) {
+        VertexPointer vertex = vertexcollection_get(vertices, i);
         if (vertex->label == label) {
             return vertex;
         }
@@ -60,11 +60,11 @@ VertexPointer vertexcollection_get_with_label(const VertexCollection vertexcolle
     return NULL;
 }
 
-bool vertexcollection_contains_label(const VertexCollection vertexcollection, const Label label)
+bool vertexcollection_contains_label(const VertexCollection vertices, const Label label)
 {
     size_t i;
-    for (i = 0; i < vertexcollection_length(vertexcollection); i++) {
-        if (label == vertexcollection_get(vertexcollection, i)->label) {
+    for (i = 0; i < vertexcollection_length(vertices); i++) {
+        if (label == vertexcollection_get(vertices, i)->label) {
             return true;
         }
     }
@@ -102,28 +102,28 @@ bool vertexcollection_equals(const VertexCollection vertexcollection_a, const Ve
     return true;
 }
 
-Result vertexcollection_set(const VertexCollection vertexcollection, const VertexPointer vertex, const unsigned int position) 
+Result vertexcollection_replace(const VertexCollection vertices, const VertexPointer vertex, const unsigned int position) 
 {
-    if (!vertexcollection_get(vertexcollection, position)) {
-        runtime_error("vertexcollection_set: can only overwrite existing element");
+    if (!vertexcollection_get(vertices, position)) {
+        runtime_error("vertexcollection_replace: can only overwrite existing element");
     }
-    if (vertex->label >= vertexcollection.members->capacity) {
-        runtime_error("vertexcollection_set: label too large");
+    if (vertex->label >= vertices.members->capacity) {
+        runtime_error("vertexcollection_replace: label too large");
         return FAIL;
     }
-    if (vertexcollection_contains_label(vertexcollection, vertex->label)) {
-        runtime_error("vertexcollection_set: set already contains this vertex");
+    if (vertexcollection_contains_label(vertices, vertex->label)) {
+        runtime_error("vertexcollection_replace: set already contains this vertex");
         return FAIL;
     } else {
-        collection_set(vertexcollection.members, vertex, position);
+        collection_replace(vertices.members, vertex, position);
     }
     return SUCCESS;
 }
 
-Result vertexcollection_push(const VertexCollection vertexcollection, const VertexPointer vertex)
+Result vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex)
 {
-    if (!vertexcollection_contains_label(vertexcollection, vertex->label)) {
-        return collection_push(vertexcollection.members, vertex);
+    if (!vertexcollection_contains_label(vertices, vertex->label)) {
+        return collection_push(vertices.members, vertex);
     } else {
         return FAIL;
     }
@@ -150,19 +150,19 @@ Result vertexcollection_complement(const VertexCollection vertexcollection_a, co
 }
 
 
-void vertexcollection_print(const VertexCollection vertexcollection)
+void vertexcollection_print(const VertexCollection vertices)
 {
     size_t i;
-    for (i = 0; i < vertexcollection_length(vertexcollection); i++) {
-        VertexPointer vertex = vertexcollection_get(vertexcollection, i);
+    for (i = 0; i < vertexcollection_length(vertices); i++) {
+        VertexPointer vertex = vertexcollection_get(vertices, i);
             printf("%d, ", vertex->label);
     }
     printf("\n");
 }
 
-Result vertexcollection_destroy(VertexCollection vertexcollection)
+Result vertexcollection_destroy(VertexCollection vertices)
 {
-    collection_destroy(vertexcollection.members);
+    collection_destroy(vertices.members);
     return SUCCESS;
 }
 

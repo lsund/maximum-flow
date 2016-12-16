@@ -31,7 +31,7 @@ size_t collection_length(const CollectionPointer collection);
 void *collection_get(const CollectionPointer collection, const unsigned int position);
 
 // Sets the element at the specified position in the collection
-void collection_set(const CollectionPointer collection, void *element, const unsigned int position);
+void collection_replace(const CollectionPointer collection, void *element, const unsigned int position);
 
 // Sets the next uninitialized value to the specified element
 Result collection_push(const CollectionPointer collection, void *element);

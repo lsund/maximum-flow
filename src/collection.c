@@ -42,7 +42,7 @@ void *collection_get(const CollectionPointer collection, const unsigned int posi
     return *(collection->head + position);
 }
 
-void collection_set(const CollectionPointer collection, void *element, const unsigned int position)
+void collection_replace(const CollectionPointer collection, void *element, const unsigned int position)
 {
     if (!collection) {
         runtime_error("collection_get: argument is NULL");

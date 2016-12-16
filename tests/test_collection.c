@@ -65,7 +65,7 @@ char *utest_collection_get()
     return NULL;
 }
 
-char *utest_collection_set()
+char *utest_collection_replace()
 {
     int x = 3;
     int y = 2;
@@ -74,9 +74,9 @@ char *utest_collection_set()
     collection_push(collection_a, &x);
     collection_push(collection_a, &y);
     collection_push(collection_a, &z);
-    collection_set(collection_a, &x, 0);
-    collection_set(collection_a, &x, 1);
-    collection_set(collection_a, &x, 2);
+    collection_replace(collection_a, &x, 0);
+    collection_replace(collection_a, &x, 1);
+    collection_replace(collection_a, &x, 2);
     mu_assert("should be 3", *((int *) collection_get(collection_a, 0)) == 3);
     mu_assert("should be 2", *((int *) collection_get(collection_a, 1)) == 3);
     mu_assert("should be 1", *((int *) collection_get(collection_a, 2)) == 3);
@@ -174,7 +174,7 @@ char *test_collection() {
     mu_run_utest(utest_collection_is_empty);
     mu_message(UNIT, "collection_equals\n");
     mu_run_utest(utest_collection_equals);
-    mu_message(UNIT, "collection_set\n");
-    mu_run_utest(utest_collection_set);
+    mu_message(UNIT, "collection_replace\n");
+    mu_run_utest(utest_collection_replace);
     return NULL;
 }

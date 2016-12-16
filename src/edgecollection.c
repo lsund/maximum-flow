@@ -29,25 +29,25 @@ EdgeCollectionPointer edgecollection_p_init(const unsigned int nvertices)
 }
 
 
-size_t edgecollection_length(const EdgeCollection edgecollection)
+size_t edgecollection_length(const EdgeCollection edges)
 {
-    return collection_length(edgecollection.members);
+    return collection_length(edges.members);
 }
 
-EdgePointer edgecollection_get(const EdgeCollection edgecollection, const unsigned int position)
+EdgePointer edgecollection_get(const EdgeCollection edges, const unsigned int position)
 {
-    if (position >= edgecollection.members->capacity) {
+    if (position >= edges.members->capacity) {
         runtime_error("vertexcollection_get: index out of bounds");
         return NULL;
     }
-    return collection_get(edgecollection.members, position);
+    return collection_get(edges.members, position);
 }
 
-unsigned int edgecollection_index_of(const EdgeCollection edgecollection, const EdgePointer edge)
+unsigned int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge)
 {
     size_t i;
-    for (i = 0; i < edgecollection_length(edgecollection); i++) {
-        if (edge_equals(edge, edgecollection_get(edgecollection, i))) {
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        if (edge_equals(edge, edgecollection_get(edges, i))) {
             return i;
         }
     }
@@ -55,20 +55,20 @@ unsigned int edgecollection_index_of(const EdgeCollection edgecollection, const 
     return 0;
 }
 
-size_t edgecollection_vertex_count(const EdgeCollection edgecollection)
+size_t edgecollection_vertex_count(const EdgeCollection edges)
 {
-    VertexCollection vertices = edgecollection_vertices(edgecollection);
+    VertexCollection vertices = edgecollection_vertices(edges);
     size_t temp = vertexcollection_length(vertices);
     vertexcollection_destroy(vertices);
     return temp;
 }
 
-VertexCollection edgecollection_vertices(const EdgeCollection edgecollection)
+VertexCollection edgecollection_vertices(const EdgeCollection edges)
 {
     VertexCollection vertices = vertexcollection_init(ARRAY_MIN_SIZE);
     size_t i;
-    for (i = 0; i < edgecollection_length(edgecollection); i++) {
-        EdgePointer edge = edgecollection_get(edgecollection, i);
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
         VertexPointer first = edge->first;
         VertexPointer second = edge->second;
         if (!vertexcollection_contains_label(vertices, first->label)) {
@@ -81,33 +81,33 @@ VertexCollection edgecollection_vertices(const EdgeCollection edgecollection)
     return vertices;
 }
 
-Result edgecollection_set(const EdgeCollection edgecollection, const EdgePointer edge, const unsigned int position)
+Result edgecollection_replace(const EdgeCollection edges, const EdgePointer edge, const unsigned int position)
 {
-    if (!edgecollection_get(edgecollection, position)) {
+    if (!edgecollection_get(edges, position)) {
         runtime_error("set_edge: can only overwrite existing element");
     }
     if (edge && (edge->first->label == edge->second->label)) {
         runtime_error("set_edge: can't have looping edges");
     }
-    if (position >= edgecollection.members->capacity) {
+    if (position >= edges.members->capacity) {
         runtime_error("set_edge: index out of bounds");
     }
-    collection_set(edgecollection.members, edge, position);
+    collection_replace(edges.members, edge, position);
     return SUCCESS;
 }
 
-Result edgecollection_push(const EdgeCollection edgecollection, const EdgePointer edge)
+Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
-    if (!edgecollection_contains_edge(edgecollection, edge)) {
-        return collection_push(edgecollection.members, edge);
+    if (!edgecollection_contains_edge(edges, edge)) {
+        return collection_push(edges.members, edge);
     } else {
         return FAIL;
     }
 }
 
-bool edgecollection_is_empty(const EdgeCollection edgecollection)
+bool edgecollection_is_empty(const EdgeCollection edges)
 {
-    return collection_is_empty(edgecollection.members);
+    return collection_is_empty(edges.members);
 }
 
 bool edgecollection_equals(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b)
@@ -157,11 +157,11 @@ bool edgecollection_is_sub(const EdgeCollection sub, const EdgeCollection super)
     return edgecollection_is_super(super, sub);
 }
 
-bool edgecollection_contains_edge(const EdgeCollection edgecollection, const EdgePointer edge)
+bool edgecollection_contains_edge(const EdgeCollection edges, const EdgePointer edge)
 {
     size_t i; 
-    for (i = 0; i < edgecollection_length(edgecollection); i++) {
-        EdgePointer current = edgecollection_get(edgecollection, i);
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer current = edgecollection_get(edges, i);
         if (edge_equals(current, edge)) {
             return true;
         }
@@ -169,9 +169,9 @@ bool edgecollection_contains_edge(const EdgeCollection edgecollection, const Edg
     return false;
 }
 
-bool edgecollection_contains_vertex(const EdgeCollection edgecollection, const VertexPointer vertex)
+bool edgecollection_contains_vertex(const EdgeCollection edges, const VertexPointer vertex)
 {
-    VertexCollection vertices = edgecollection_vertices(edgecollection);
+    VertexCollection vertices = edgecollection_vertices(edges);
     size_t i;
     for (i = 0; i < vertexcollection_length(vertices); i++) {
         if (vertex_equals(vertex, vertexcollection_get(vertices, i))) {
@@ -183,13 +183,13 @@ bool edgecollection_contains_vertex(const EdgeCollection edgecollection, const V
     return false;
 }
 
-bool is_matching(const EdgeCollection edgecollection)
+bool is_matching(const EdgeCollection edges)
 {
-    bool *visited = calloc(edgecollection_vertex_count(edgecollection), sizeof(bool));
+    bool *visited = calloc(edgecollection_vertex_count(edges), sizeof(bool));
     size_t i;
     i = 0;
-    for (i = 0; i < edgecollection_length(edgecollection); i++) {
-        EdgePointer edge = edgecollection_get(edgecollection, i);
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
         if (*(visited + edge->first->label) || *(visited + edge->second->label)) {
             free(visited);
             return false;
@@ -202,11 +202,11 @@ bool is_matching(const EdgeCollection edgecollection)
     return true;
 }
 
-Result edgecollection_covered_by(const EdgeCollection edgecollection, const VertexPointer vertex, EdgePointer *edge)
+Result edgecollection_covered_by(const EdgeCollection edges, const VertexPointer vertex, EdgePointer *edge)
 {
     size_t i;
-    for (i = 0; i < edgecollection_length(edgecollection); i++) {
-        EdgePointer cand = edgecollection_get(edgecollection, i);
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer cand = edgecollection_get(edges, i);
         if (edge_incident_with(cand, vertex)) {
             *edge = cand;
             return SUCCESS;
@@ -266,19 +266,19 @@ Result edgecollection_symmetric_difference(const EdgeCollection edgecollection_a
     return SUCCESS;
 }
 
-void edgecollection_print(const EdgeCollection edgecollection)
+void edgecollection_print(const EdgeCollection edges)
 {
     size_t i;
-    for (i = 0; i < edgecollection_length(edgecollection); i++) {
-        EdgePointer edge = edgecollection_get(edgecollection, i);
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
         printf("(%d, %d), ", edge->first->label, edge->second->label);
     }
     printf("\n");
 }
 
-Result edgecollection_destroy(EdgeCollection edgecollection)
+Result edgecollection_destroy(EdgeCollection edges)
 {
-    collection_destroy(edgecollection.members);
+    collection_destroy(edges.members);
     return SUCCESS;
 }
 

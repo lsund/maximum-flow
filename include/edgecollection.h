@@ -21,27 +21,28 @@ EdgeCollection edgecollection_init(const size_t size);
 EdgeCollectionPointer edgecollection_p_init(const unsigned int nvertices);
 
 // Return the number of elements currently in this collection
-size_t edgecollection_length(const EdgeCollection edgecollection);
+size_t edgecollection_length(const EdgeCollection edges);
 
 // Get the edge at the specified position
-EdgePointer edgecollection_get(const EdgeCollection edgecollection , const unsigned int position);
+EdgePointer edgecollection_get(const EdgeCollection edges , const unsigned int position);
 
-unsigned int edgecollection_index_of(const EdgeCollection edgecollection, const EdgePointer edge);
+unsigned int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge);
 
-size_t edgecollection_vertex_count(const EdgeCollection edgecollection);
+size_t edgecollection_vertex_count(const EdgeCollection edges);
 
 // The vertices of this edgecollection
-VertexCollection edgecollection_vertices(const EdgeCollection edgecollection);
+VertexCollection edgecollection_vertices(const EdgeCollection edges);
 
-// Add an edge to the edgecollection
-Result edgecollection_set(const EdgeCollection edgecollection, const EdgePointer edge, const unsigned int position);
+// Replaces the edge in the collection at the specified position to the
+// specified edge
+Result edgecollection_replace(const EdgeCollection edges, const EdgePointer edge, const unsigned int position);
 
 // Sets the last element to the specified edge, and increments the number of
 // elements
-Result edgecollection_push(const EdgeCollection edgecollection, const EdgePointer edge);
+Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge);
 
 // Returns true if the edgecollection has no initialized elements, false otherwise.
-bool edgecollection_is_empty(const EdgeCollection edgecollection);
+bool edgecollection_is_empty(const EdgeCollection edges);
 
 bool edgecollection_equals(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b);
 
@@ -53,17 +54,17 @@ bool edgecollection_is_sub(const EdgeCollection sub, const EdgeCollection super)
 
 // Returns true if the edgecollection contains every edge in the list of edges
 // specified by edges, false otherwise
-bool edgecollection_contains_edge(const EdgeCollection edgecollection, const EdgePointer edge);
+bool edgecollection_contains_edge(const EdgeCollection edges, const EdgePointer edge);
 
 // Returns true if the edgecollection contains the specified vertex, false otherwise
-bool edgecollection_contains_vertex(const EdgeCollection edgecollection, const VertexPointer vertex);
+bool edgecollection_contains_vertex(const EdgeCollection edges, const VertexPointer vertex);
 
 // Is this edgecollection a matching?
-bool is_matching(const EdgeCollection edgecollection);
+bool is_matching(const EdgeCollection edges);
 
 // Return a pointer to an edge in edgecollection that covers the given vertex, if such 
 // and edge exists.
-Result edgecollection_covered_by(const EdgeCollection edgecollection, const VertexPointer vertex, EdgePointer *edge);
+Result edgecollection_covered_by(const EdgeCollection edges, const VertexPointer vertex, EdgePointer *edge);
 
 // Attempts to compute the complement of two edgecollections. On success, the complement
 // of edgecollection_a and edgecollection_b is stored in Ret and SUCCESS is returned.
@@ -81,9 +82,9 @@ Result edgecollection_union(const EdgeCollection edgecollection_a, const EdgeCol
 Result edgecollection_symmetric_difference(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b, EdgeCollectionPointer ret);
 
 // Print the collection tos stdout
-void edgecollection_print(const EdgeCollection edgecollection);
+void edgecollection_print(const EdgeCollection edges);
 
 // Free the structure
-Result edgecollection_destroy(EdgeCollection edgecollection);
+Result edgecollection_destroy(EdgeCollection edges);
 
 #endif

@@ -72,7 +72,7 @@ char *utest_edgecollection_vertices()
     return NULL;
 }
 
-char *utest_edgecollection_set()
+char *utest_edgecollection_replace()
 {
     EdgeCollection edgecollection;
     edgecollection = edgecollection_init(4);
@@ -81,8 +81,8 @@ char *utest_edgecollection_set()
     edgecollection_push(edgecollection, edge_p_make_label(1, 2));
     edgecollection_push(edgecollection, edge_p_make_label(3, 4));
     EdgePointer e = edge_p_make_label(77, 78);
-    edgecollection_set(edgecollection, NULL, 0);
-    edgecollection_set(edgecollection, e, 1);
+    edgecollection_replace(edgecollection, NULL, 0);
+    edgecollection_replace(edgecollection, e, 1);
     mu_assert("should be null", edge_equals(edgecollection_get(edgecollection, 0), NULL));
     mu_assert("should be null", edge_equals(edgecollection_get(edgecollection, 1), e));
     return NULL;
@@ -399,8 +399,8 @@ char *test_edgecollection() {
     mu_run_utest(utest_edgecollection_vertex_count);
     mu_message(UNIT, "edgecollection_vertices\n");
     mu_run_utest(utest_edgecollection_vertices);
-    mu_message(UNIT, "edgecollection_set\n");
-    mu_run_utest(utest_edgecollection_set);
+    mu_message(UNIT, "edgecollection_replace\n");
+    mu_run_utest(utest_edgecollection_replace);
     mu_message(UNIT, "edgecollection_push\n");
     mu_run_utest(utest_edgecollection_push);
     mu_message(UNIT, "edgecollection_init\n");
