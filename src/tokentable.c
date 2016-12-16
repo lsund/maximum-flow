@@ -19,6 +19,14 @@ TokenTablePointer tokentable_init()
     return ret;
 }
 
+char *tokentable_get(const TokenTablePointer table, const unsigned int row, const unsigned int col) 
+{
+    if (row >= table->populated_rows) { 
+        return NULL;
+    }
+    return *(*(table->tokens + row) + col);
+}
+
 Point tokentable_graph_dimension(const TokenTablePointer table) 
 {
     unsigned int i;
@@ -34,11 +42,6 @@ Point tokentable_graph_dimension(const TokenTablePointer table)
     ret.x = -1;
     ret.y = -1;
     return ret;
-}
-
-char *tokentable_get(const TokenTablePointer table, const unsigned int row, const unsigned int col) 
-{
-    return *(*(table->tokens + row) + col);
 }
 
 void tokentable_print(TokenTablePointer table)

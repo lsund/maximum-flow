@@ -15,17 +15,6 @@ char *utest_tokentable_init() {
     return NULL;
 }
 
-char *utest_tokentable_destroy() {
-    FILE *fp;
-    TokenTablePointer table;
-    fp = fopen("/home/lsund/Data/graphs/data/matchings/graphs/K2.dmx", "r");
-    table = tokentable_init();
-    fclose(fp);
-    tokentable_destroy(table);
-    mu_assert("tokens are not null", table->tokens == NULL); 
-    return NULL;
-}
-
 char *utest_tokentable_get() {
     TokenTablePointer table;
     table = tokentable_init();
@@ -37,13 +26,23 @@ char *utest_tokentable_get() {
     return NULL;
 }
 
+char *utest_tokentable_destroy() {
+    FILE *fp;
+    TokenTablePointer table;
+    fp = fopen("/home/lsund/Data/graphs/data/matchings/graphs/K2.dmx", "r");
+    table = tokentable_init();
+    fclose(fp);
+    tokentable_destroy(table);
+    mu_assert("tokens are not null", table->tokens == NULL); 
+    return NULL;
+}
+
 char *utest_tokentable_graph_dimension() {
     TokenTablePointer table;
     table = tokentable_init();
     tokenize("/home/lsund/Data/graphs/data/matchings/graphs/myciel7.mwis.dmx", table);
     mu_assert("nedges should be 2360", tokentable_graph_dimension(table).y == 2360);
     tokentable_destroy(table);
-
     return NULL;
 }
 

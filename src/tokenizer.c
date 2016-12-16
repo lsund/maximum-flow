@@ -49,6 +49,7 @@ Result tokenize(const char *fname, TokenTablePointer table)
         str = strtok(line, " ");
         char **tokenrow = *(table->tokens + line_index);
         tokenize_string(str, tokenrow);
+        table->populated_rows++;
         if (is_edge_row(table, line_index)) {
             edge_index++;
         }
@@ -57,7 +58,6 @@ Result tokenize(const char *fname, TokenTablePointer table)
     if (line) {
         free(line);
     }
-    table->populated_rows = line_index;
     if (tokentable_graph_dimension(table).y != edge_index) {
         runtime_error("tokenize: data malformed (number of edges unmatched)");
         fclose(fp);
