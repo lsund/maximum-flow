@@ -18,6 +18,7 @@ vertexset to vertexcollection                   [done]
 
 FUNCTIONS:
 
+network_active_vertex                           []
 edgecollection_length                           [done]
 vertexcollection_length                         [done]
 array_length                                    [done]
@@ -28,6 +29,7 @@ is_admissable(edge)                             [done]
 network_residual                                ?
 float residualal_capacity(networkedge)          [done]
 VertexSet graph_neighbours_of
+EdgeSet graph_incident_with
 
 TESTS FUNCTIONS:
     edgecollection_index_of                     []

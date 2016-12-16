@@ -19,6 +19,8 @@ GraphPointer graph_make(const VertexCollection vertexcollection, const EdgeColle
 
 VertexCollection graph_neighbours_of(const GraphPointer graph, const VertexPointer vertex);
 
+EdgeCollection graph_incident_with(const GraphPointer graph, const VertexPointer vertex);
+
 // Frees the structure
 Result graph_destroy(GraphPointer graph);
 

@@ -23,6 +23,8 @@ unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer e
 Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
 
 unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex);
+
+VertexPointer network_active_vertex(const NetworkPointer network);
 //// setters
 
 void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex);

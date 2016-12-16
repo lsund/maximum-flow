@@ -22,6 +22,19 @@ VertexCollection graph_neighbours_of(const GraphPointer graph, const VertexPoint
     return ret;
 }
 
+EdgeCollection graph_incident_with(const GraphPointer graph, const VertexPointer vertex)
+{
+    EdgeCollection ret = edgecollection_init(edgecollection_length(graph->edges));
+    size_t i;
+    for (i = 0; i < edgecollection_length(graph->edges); i++) {
+        EdgePointer edge = edgecollection_get(graph->edges, i);
+        if (edge_incident_with(edge, vertex)) {
+            edgecollection_push(ret, edge);
+        }
+    }
+    return ret;
+}
+
 Result graph_destroy(GraphPointer graph)
 {
     if (!graph || !graph->edges.members || !graph->vertices.members) {

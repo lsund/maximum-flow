@@ -26,12 +26,6 @@ unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer e
     return *(network->flows + index);
 }
 
-bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
-{
-    // TODO
-    return true;
-}
-
 unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex)
 {
     unsigned int inflow, outflow;
@@ -49,15 +43,33 @@ unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPoi
     return inflow - outflow;
 }
 
+bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex)
+{
+    return network_vertex_exflow(network, vertex) > 0;
+}
+
+VertexPointer network_active_vertex(const NetworkPointer network)
+{
+    size_t i;
+    for (i = 0; i < vertexcollection_length(network->graph->vertices); i++) {
+        VertexPointer vertex = vertexcollection_get(network->graph->vertices, 0); 
+        if (network_vertex_is_active(network, vertex)) {
+            return vertex;
+        }
+    }
+    return NULL;
+}
+
+bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
+{
+    // TODO
+    return true;
+}
+
 void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex)
 {
     // TODO
     return;
-}
-
-bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex)
-{
-    return network_vertex_exflow(network, vertex) > 0;
 }
 
 bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer edge)
