@@ -25,6 +25,8 @@ VertexPointer vertexcollection_get(const VertexCollection vertices, const unsign
 
 VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label);
 
+unsigned int vertexcollection_index_of(const VertexCollection vertices, const VertexPointer vertex);
+
 // Does the set contain the specified vertex?
 bool vertexcollection_contains_label(const VertexCollection vertices, const Label label);
 

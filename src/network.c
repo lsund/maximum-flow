@@ -26,6 +26,20 @@ unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer e
     return *(network->flows + index);
 }
 
+unsigned int network_vertex_inflow(const NetworkPointer network, const VertexPointer vertex)
+{
+    unsigned int inflow;
+    inflow = 0;
+    size_t i;
+    for (i = 0; i < edgecollection_length(network->graph->edges); i++) {
+        EdgePointer edge = edgecollection_get(network->graph->edges, i);
+        if (vertex_equals(edge->second, vertex)) {
+            inflow += network_edge_flow(network, edge);
+        }
+    }
+    return inflow;
+}
+
 unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex)
 {
     unsigned int inflow, outflow;
@@ -72,10 +86,23 @@ EdgePointer network_admissable_edge(const NetworkPointer network, const EdgeColl
     return NULL;
 }
 
-bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
+Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex)
 {
     // TODO
-    return true;
+    return 0;
+}
+
+bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
+{
+    unsigned int edge_flow, edge_capacity, residual_capacity;
+    edge_flow = network_edge_flow(network, edge);
+    if (network_edge_is_reverse(network, edge)) {
+        residual_capacity = edge_flow;
+    } else {
+        edge_capacity = network_edge_capacity(network, edge);
+        residual_capacity = edge_capacity - edge_flow;
+    }
+    return residual_capacity > 0;
 }
 
 bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer edge)
@@ -88,16 +115,25 @@ bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer 
     return cond_a && cond_b;
 }
 
-void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex)
+bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edge)
 {
-    // TODO
-    return;
+    size_t i;
+    for (i = 0; i < edgecollection_length(network->graph->edges); i++) {
+        EdgePointer current = edgecollection_get(network->graph->edges, i);
+        if (edge_equals_reverse(edge, current)) {
+            return true;
+        } else if (edge_equals(edge, current)) {
+            return false;
+        }
+        runtime_error("network_edge_is_reverse: the edge is neither forward or backward");
+    }
+    return false;
 }
 
-Label network_vertex_distance_label(const NetworkPointer network, const VertexPointer vertex)
+void network_augment_edge(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow)
 {
-    // TODO
-    return 0;
+    unsigned int flow = network_edge_capacity(network, edge);
+    network_set_edge_capacity(network, edge, flow + added_flow);
 }
 
 void network_set_edge_flow(
@@ -120,10 +156,16 @@ void network_set_edge_capacity(
     *(network->capacities + index) = capacity;
 }
 
-bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edge)
+void network_vertex_set_distance_label(const NetworkPointer network, const VertexPointer vertex, const unsigned int label)
 {
-    // TODO
-    return 0;
+    unsigned int index = vertexcollection_index_of(network->graph->vertices, vertex);
+    *(network->distance_labels + index) = label; 
 }
+
+/* void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex) */
+/* { */
+/*     // TODO */
+/*     return; */
+/* } */
 
 

@@ -43,11 +43,15 @@ void edge_swap(EdgePointer edge);
 // SUCCESS. If the vertex does not contain the specified vertex, return FAIL.
 VertexPointer edge_get_adjacent(const EdgePointer edge, VertexPointer vertex);
 
+bool edge_is_empty(const EdgePointer edge);
+
 // Returns true if the edge contains the given vertex, false otherwise
 bool edge_incident_with(const EdgePointer edge, const VertexPointer vertex);
 
 // Returns true if the two edges are considered equal, false otherwise
 bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b);
+
+bool edge_equals_reverse(const EdgePointer edge_a, const EdgePointer edge_b);
 
 // Print an edge as "(v, w)" to stdout
 void edge_print(const Edge edge);

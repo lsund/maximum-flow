@@ -62,6 +62,11 @@ void edge_swap(EdgePointer edge)
     edge->second = temp;
 }
 
+bool edge_is_empty(const EdgePointer edge)
+{
+    return edge == NULL;
+}
+
 bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b)
 {
     if (!edge_a || !edge_b) {
@@ -70,9 +75,9 @@ bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b)
     return vertex_equals(edge_a->first, edge_b->first) && vertex_equals(edge_a->second, edge_b->second);
 }
 
-bool edge_is_empty(const EdgePointer edge)
+bool edge_equals_reverse(const EdgePointer edge_a, const EdgePointer edge_b)
 {
-    return edge == NULL;
+    return vertex_equals(edge_a->first, edge_b->second) && vertex_equals(edge_a->second, edge_b->first);
 }
 
 bool edge_incident_with(const EdgePointer edge, const VertexPointer vertex)

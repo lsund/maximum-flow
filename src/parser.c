@@ -12,8 +12,8 @@ static void parse_vertices(const VertexCollection vertexcollection, const unsign
 static EdgePointer parse_edge(const VertexCollection vertexcollection, const char *first_token, const char*second_token)
 {
     EdgePointer ret;
-    Label label_first  = (unsigned int) strtol(first_token, NULL, 10) - 1;
-    Label label_second = (unsigned int) strtol(second_token, NULL, 10) - 1;
+    Label label_first  = (unsigned int) strtol(first_token, NULL, 10);
+    Label label_second = (unsigned int) strtol(second_token, NULL, 10);
     VertexPointer first_vertex = vertexcollection_get_with_label(vertexcollection, label_first);
     VertexPointer second_vertex = vertexcollection_get_with_label(vertexcollection, label_second);
     if (first_vertex && second_vertex) {
@@ -83,9 +83,9 @@ Result parse(const char *filename, const NetworkPointer network)
     GraphPointer graph = graph_make(vertices, edges);
     network->graph = graph;
 
-    network->capacities      = calloc(edgecollection_length(edges), sizeof(unsigned int));
-    network->flows           = calloc(edgecollection_length(edges), sizeof(unsigned int));
-    network->distance_labels = calloc(vertexcollection_length(vertices), sizeof(Label));
+    network->capacities      = calloc(n_edges, sizeof(unsigned int));
+    network->flows           = calloc(n_edges, sizeof(unsigned int));
+    network->distance_labels = calloc(n_vertices, sizeof(Label));
 
     unsigned int row;
     for (row = 0; row < table->populated_rows; row++) {

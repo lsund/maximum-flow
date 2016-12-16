@@ -60,6 +60,18 @@ VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, c
     return NULL;
 }
 
+unsigned int vertexcollection_index_of(const VertexCollection vertices, const VertexPointer vertex)
+{
+    size_t i;
+    for (i = 0; i < vertexcollection_length(vertices); i++) {
+        if (vertex_equals(vertex, vertexcollection_get(vertices, i))) {
+            return i;
+        }
+    }
+    runtime_error("edgecollection_index_of: the collection does not contain the specified edge");
+    return 0;
+}
+
 bool vertexcollection_contains_label(const VertexCollection vertices, const Label label)
 {
     size_t i;
