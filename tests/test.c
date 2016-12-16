@@ -41,6 +41,8 @@ static char *test()
     mu_run_test(test_tree);
 	mu_message(MODULE,"disjoint set\n");
     mu_run_test(test_disjointset);
+	mu_message(MODULE,"tokentable\n");
+    mu_run_test(test_tokentable);
 	mu_message(MODULE,"tokenizer\n");
     mu_run_test(test_tokenizer);
 	mu_message(MODULE,"parser\n");

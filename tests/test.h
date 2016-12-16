@@ -37,6 +37,7 @@ char *test_matching();
 char *test_disjointset();
 char *test_network();
 char *test_main();
+char *test_tokentable();
 
 
 enum MessageOption { 

@@ -54,7 +54,7 @@ static void update_capacity(
         const unsigned int row
     )
 {
-    char *fourth_token = get_token(table, row, 3);
+    char *fourth_token = tokentable_get(table, row, 3);
     unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10) - 1;
     network_set_edge_capacity(network, edge, capacity);
 }
@@ -66,8 +66,8 @@ Result parse(const char *filename, const NetworkPointer network)
     }
     Point dimension;
     TokenTablePointer table = tokentable_init();
-    make_tokentable(filename, table);
-    dimension = graph_cardinality(table);
+    tokenize(filename, table);
+    dimension = tokentable_graph_dimension(table);
 
     unsigned int n_vertices, n_edges;
     n_vertices = dimension.x;
@@ -90,7 +90,7 @@ Result parse(const char *filename, const NetworkPointer network)
     unsigned int row;
     for (row = 0; row < table->populated_rows; row++) {
         char *first_token;
-        first_token = get_token(table, row, 0);
+        first_token = tokentable_get(table, row, 0);
 
         bool is_n, is_e;
         is_n = strcmp("n", first_token) == 0;
@@ -98,10 +98,9 @@ Result parse(const char *filename, const NetworkPointer network)
 
         if (is_n || is_e) {
             char *second_token, *third_token;
-            second_token = get_token(table, row, 1);
-            third_token  = get_token(table, row, 2);
+            second_token = tokentable_get(table, row, 1);
+            third_token  = tokentable_get(table, row, 2);
             if (!second_token || !first_token) {
-                errno = EFAULT;
                 return FAIL;
             }
             if (is_n) {

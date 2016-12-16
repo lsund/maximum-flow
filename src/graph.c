@@ -25,11 +25,9 @@ VertexCollection graph_neighbours_of(const GraphPointer graph, const VertexPoint
 Result graph_destroy(GraphPointer graph)
 {
     if (!graph || !graph->edges.members || !graph->vertices.members) {
-        errno = EFAULT;
         return FAIL;
     }
     if (!graph->edges.members->head || !graph->vertices.members->head) {
-        errno = EFAULT;
         return FAIL;
     }
     vertexcollection_destroy(graph->vertices);
