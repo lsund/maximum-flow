@@ -33,7 +33,7 @@ network_vertex_distance_label                   [done]
 
 TESTS FUNCTIONS:
 
-graph_incident_with                             [] *
+graph_incident_with                             [done] *
 network_active_vertex                           [] *
 network_admissable_edge                         [] *
 edgecollection_index_of                         [] * (needs to be the d+(v))

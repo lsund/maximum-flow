@@ -3,7 +3,6 @@
 
 NetworkPointer network_init()
 {
-    // TODO
     NetworkPointer ret   = malloc(sizeof(Network));
     ret->graph           = NULL;
     ret->source          = NULL;
