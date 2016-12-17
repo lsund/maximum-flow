@@ -27,11 +27,11 @@ static EdgePointer parse_edge(const VertexCollection vertexcollection, const cha
 
 static void update_source_sink(const NetworkPointer network, const char *first_token, const char *second_token)
 {
-    Label label  = (unsigned int) strtol(first_token, NULL, 10) - 1;
+    Label label  = (unsigned int) strtol(first_token, NULL, 10);
     if (strcmp(second_token, "s") == 0) {
-        network->source = vertex_p_make(label);
+        network->source = vertexcollection_get_with_label(network->graph->vertices, label);
     } else {
-        network->sink = vertex_p_make(label);
+        network->sink = vertexcollection_get_with_label(network->graph->vertices, label);
     }
 }
 
@@ -55,7 +55,7 @@ static void update_capacity(
     )
 {
     char *fourth_token = tokentable_get(table, row, 3);
-    unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10) - 1;
+    unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10);
     network_set_edge_capacity(network, edge, capacity);
 }
 
@@ -84,7 +84,7 @@ Result parse(const char *filename, const NetworkPointer network)
     network->graph = graph;
 
     network->capacities      = calloc(n_edges, sizeof(unsigned int));
-    network->flows           = calloc(n_edges, sizeof(unsigned int));
+    network->flows           = calloc(n_edges, sizeof(int));
     network->distance_labels = calloc(n_vertices, sizeof(Label));
 
     unsigned int row;

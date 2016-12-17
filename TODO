@@ -1,5 +1,6 @@
 MISC:
 
+can a flow be negative? add test in exflow
 clean up, sort network
 change spit to accept a network
 add constructs in network that holds:
@@ -33,8 +34,9 @@ network_vertex_distance_label                   [done]
 
 TESTS FUNCTIONS:
 
-graph_incident_with                             [done] *
-network_active_vertex                           [] *
+graph_incident_with                             [done]
+network_vertex_exflow                           [done]
+network_active_vertex                           [done]
 network_admissable_edge                         [] *
 edgecollection_index_of                         [] * (needs to be the d+(v))
 vertexcollection_index_of                       [] *
@@ -46,6 +48,7 @@ network_vertex_distance_label                   [done]
 push_relabel                                    [] *
 network_flow                                    []
 graph_neighbours_of                             [] 
+network_edge_is_reverse                         [done]
 
 TESTS MODULES:
 

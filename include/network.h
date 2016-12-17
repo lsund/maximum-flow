@@ -8,7 +8,7 @@ typedef struct network {
     VertexPointer   source;
     VertexPointer   sink;
     unsigned int    *capacities;
-    unsigned int    *flows;
+    int             *flows;
     Label           *distance_labels;
 } Network, *NetworkPointer;
 
@@ -24,7 +24,7 @@ Label network_vertex_distance_label(const NetworkPointer network, const VertexPo
 
 unsigned int network_vertex_inflow(const NetworkPointer network, const VertexPointer vertex);
 
-unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex);
+int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex);
 
 VertexPointer network_active_vertex(const NetworkPointer network);
 
@@ -49,13 +49,13 @@ bool network_edge_is_residual(const NetworkPointer network, const EdgePointer ed
 void network_set_edge_capacity(
         const NetworkPointer network, 
         const EdgePointer edge, 
-        unsigned int capacity
+        const unsigned int capacity
     );
 
 void network_set_edge_flow(
         const NetworkPointer network, 
         const EdgePointer edge, 
-        unsigned int flow
+        const int flow
     );
 
 bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edge);

@@ -45,7 +45,7 @@ unsigned int network_vertex_inflow(const NetworkPointer network, const VertexPoi
     return inflow;
 }
 
-unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex)
+int network_vertex_exflow(const NetworkPointer network, const VertexPointer vertex)
 {
     unsigned int inflow, outflow;
     inflow = 0;
@@ -64,6 +64,9 @@ unsigned int network_vertex_exflow(const NetworkPointer network, const VertexPoi
 
 bool network_vertex_is_active(const NetworkPointer network, const VertexPointer vertex)
 {
+    if (vertex_equals(network->source, vertex) || vertex_equals(network->sink, vertex)) {
+        return false;
+    }
     return network_vertex_exflow(network, vertex) > 0;
 }
 
@@ -71,7 +74,7 @@ VertexPointer network_active_vertex(const NetworkPointer network)
 {
     size_t i;
     for (i = 0; i < vertexcollection_length(network->graph->vertices); i++) {
-        VertexPointer vertex = vertexcollection_get(network->graph->vertices, 0); 
+        VertexPointer vertex = vertexcollection_get(network->graph->vertices, i); 
         if (network_vertex_is_active(network, vertex)) {
             return vertex;
         }
@@ -83,7 +86,7 @@ EdgePointer network_admissable_edge(const NetworkPointer network, const EdgeColl
 {
     size_t i;
     for (i = 0; i < edgecollection_length(edges); i++) {
-        EdgePointer edge = edgecollection_get(edges, 0);
+        EdgePointer edge = edgecollection_get(edges, i);
         if (network_edge_is_admissable(network, edge)) {
             return edge;
         }
@@ -99,10 +102,12 @@ unsigned int network_flow(const NetworkPointer network)
 bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
 {
     unsigned int edge_flow, edge_capacity, residual_capacity;
-    edge_flow = network_edge_flow(network, edge);
     if (network_edge_is_reverse(network, edge)) {
+        Edge reverse_edge = edge_swapped(*edge);
+        edge_flow = network_edge_flow(network, &reverse_edge);
         residual_capacity = edge_flow;
     } else {
+        edge_flow = network_edge_flow(network, edge);
         edge_capacity = network_edge_capacity(network, edge);
         residual_capacity = edge_capacity - edge_flow;
     }
@@ -129,21 +134,24 @@ bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edg
         } else if (edge_equals(edge, current)) {
             return false;
         }
-        runtime_error("network_edge_is_reverse: the edge is neither forward or backward");
     }
+    runtime_error("network_edge_is_reverse: the edge is neither forward or backward");
     return false;
 }
 
 void network_augment_edge(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow)
 {
-    unsigned int flow = network_edge_capacity(network, edge);
-    network_set_edge_capacity(network, edge, flow + added_flow);
+    int flow = network_edge_flow(network, edge);
+    if (flow + added_flow > network_edge_capacity(network, edge)) {
+        runtime_error("network_augment_edge: flow exeeds capacity");
+    }
+    network_set_edge_flow(network, edge, flow + added_flow);
 }
 
 void network_set_edge_flow(
         const NetworkPointer network, 
         const EdgePointer edge, 
-        unsigned int flow
+        int flow
     )
 {
     unsigned int index = edgecollection_index_of(network->graph->edges, edge);
