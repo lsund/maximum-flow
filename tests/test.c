@@ -68,7 +68,7 @@ void mu_message(enum MessageOption option, const char *s)
             fprintf(stdout, ANSI_COLOR_CYAN   "\tTesting Unit: %s" ANSI_COLOR_RESET, s); 
             break;
         case DATA:
-            fprintf(stdout, ANSI_COLOR_GREY   "\t\t%s" ANSI_COLOR_RESET, s); 
+            fprintf(stdout, ANSI_COLOR_GREY   "\t%s" ANSI_COLOR_RESET, s); 
             break;
         case PASSING:
             fprintf(stdout, ANSI_COLOR_GREEN  "\t\tPassed" ANSI_COLOR_RESET "\n"); 

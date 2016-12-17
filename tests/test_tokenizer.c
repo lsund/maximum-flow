@@ -9,25 +9,25 @@ char *utest_tokenize()
     ssize_t res;
 
     table = tokentable_init();
-    res = tokenize("/home/lsund/Data/graphs/data/matchings/graphs/K2.dmx", table);
+    res = tokenize_dimacs("/home/lsund/Data/graphs/data/matchings/graphs/K2.dmx", table);
     mu_assert("should not fail", res == SUCCESS); 
     mu_assert("table has 2 rows", table->populated_rows == 2); 
     tokentable_destroy(table);
 
     table = tokentable_init();
-    res = tokenize("/home/lsund/Data/graphs/data/matchings/graphs/K3.dmx", table);
+    res = tokenize_dimacs("/home/lsund/Data/graphs/data/matchings/graphs/K3.dmx", table);
     mu_assert("table has 4 rows", table->populated_rows == 4); 
     mu_assert("should not fail", res == SUCCESS); 
     tokentable_destroy(table);
 
     table = tokentable_init();
-    res = tokenize("/home/lsund/Data/graphs/data/matchings/graphs/lu980.dmx", table);
+    res = tokenize_dimacs("/home/lsund/Data/graphs/data/matchings/graphs/lu980.dmx", table);
     mu_assert("should not fail", res == SUCCESS); 
     mu_assert("table has 2555 rows", table->populated_rows == 7228); 
     tokentable_destroy(table);
 
     table = tokentable_init();
-    res = tokenize(TEST_GRAPH, table);
+    res = tokenize_dimacs(TEST_GRAPH, table);
     mu_assert("should be c", strcmp(tokentable_get(table, 0, 0), "c") == 0);
     mu_assert("should be c", strcmp(tokentable_get(table, 0, 0), "C") != 0);
     mu_assert("should be c", strcmp(tokentable_get(table, 0, 1), "c") != 0);
@@ -41,7 +41,7 @@ char *utest_tokenize()
 
 char *test_tokenizer() 
 {
-    mu_message(UNIT, "tokenize\n");
+    mu_message(UNIT, "tokenize_dimacs\n");
     mu_run_utest(utest_tokenize);
 
     return NULL;

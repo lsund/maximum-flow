@@ -21,10 +21,9 @@ static char tokenize_string(char *str, char **o_tokenized_string)
 
 static bool is_edge_row(const TokenTablePointer table, const unsigned int row) 
 {
-    if (strcmp(tokentable_get(table, row, 0), "e") == 0) {
-        return true;
-    }
-    return false;
+    bool is_a = strcmp(tokentable_get(table, row, 0), "a") == 0;
+    bool is_e = strcmp(tokentable_get(table, row, 0), "e") == 0;
+    return is_a || is_e;
 }
 
 Result tokenize(const char *fname, TokenTablePointer table)
@@ -41,30 +40,38 @@ Result tokenize(const char *fname, TokenTablePointer table)
     int read;
     size_t file_len;
     unsigned int line_index;
-    int edge_index;
     char *line, *str;
     line = str = NULL;
-    file_len = line_index = edge_index = 0;
+    file_len = line_index = 0;
     while ((read = getline(&line, &file_len, fp)) != -1) {
         str = strtok(line, " ");
         char **tokenrow = *(table->tokens + line_index);
         tokenize_string(str, tokenrow);
         table->populated_rows++;
-        if (is_edge_row(table, line_index)) {
-            edge_index++;
-        }
         line_index++;
     }
     if (line) {
         free(line);
     }
-    if (tokentable_graph_dimension(table).y != edge_index) {
-        runtime_error("tokenize: data malformed (number of edges unmatched)");
-        fclose(fp);
-        return FAIL;
-    }
     table->initialized = 1;
     fclose(fp);
+    return SUCCESS;
+}
+
+Result tokenize_dimacs(const char *fname, TokenTablePointer table)
+{
+    tokenize(fname, table);
+    size_t i;
+    int edge_index = 0;
+    for (i = 0; i < table->populated_rows; i++) {
+        if (is_edge_row(table, i)) {
+            edge_index++;
+        }
+    }
+    if (tokentable_graph_dimension(table).y != edge_index) {
+        runtime_error("tokenize: data malformed (number of edges unmatched)");
+        return FAIL;
+    }
     return SUCCESS;
 }
 

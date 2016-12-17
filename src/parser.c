@@ -66,7 +66,7 @@ Result parse(const char *filename, const NetworkPointer network)
     }
     Point dimension;
     TokenTablePointer table = tokentable_init();
-    tokenize(filename, table);
+    tokenize_dimacs(filename, table);
     dimension = tokentable_graph_dimension(table);
 
     unsigned int n_vertices, n_edges;
@@ -94,7 +94,7 @@ Result parse(const char *filename, const NetworkPointer network)
 
         bool is_n, is_e;
         is_n = strcmp("n", first_token) == 0;
-        is_e = strcmp("e", first_token) == 0;
+        is_e = strcmp("a", first_token) == 0 || strcmp("e", first_token) == 0;
 
         if (is_n || is_e) {
             char *second_token, *third_token;
