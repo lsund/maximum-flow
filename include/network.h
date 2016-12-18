@@ -5,6 +5,7 @@
 
 typedef struct network {
     GraphPointer    graph;
+    GraphPointer    graph_all; 
     VertexPointer   source;
     VertexPointer   sink;
     unsigned int    *capacities;
@@ -16,7 +17,7 @@ NetworkPointer network_init();
 
 NetworkPointer network_make(const GraphPointer graph, const VertexPointer source, const VertexPointer sink);
 //// getters
-unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge);
+unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge, const bool residual);
 
 unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer edge);
 

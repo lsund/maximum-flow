@@ -7,18 +7,18 @@ char *utest_network_active_vertex()
 
 char *utest_network_edge_is_reverse()
 {
-    EdgePointer edge = edge_p_make_label(0, 1);
-    EdgePointer edger = edge_p_make_label(1, 0);
-    EdgePointer edge2 = edge_p_make_label(0, 2);
-    EdgePointer edge2r = edge_p_make_label(2, 0);
+    EdgePointer edge = edge_p_make_label(1, 2);
+    EdgePointer edger = edge_p_make_label(2, 1);
+    EdgePointer edge2 = edge_p_make_label(1, 3);
+    EdgePointer edge2r = edge_p_make_label(3, 1);
     mu_assert("should be the reversed version", edge_equals_reverse(edge, edger));
     mu_assert("should be the reversed version", edge_equals_reverse(edge2, edge2r));
     NetworkPointer network = network_init();
     parse(TEST_GRAPH, network);
     mu_assert("should have 7 edge", edgecollection_length(network->graph->edges) == 7);
     mu_assert("should contain", edgecollection_contains_edge(network->graph->edges, edge2)); 
-    network_vertex_set_distance_label(network, vertex_p_make(0), 1);
-    network_vertex_set_distance_label(network, vertex_p_make(1), 0);
+    network_vertex_set_distance_label(network, vertex_p_make(1), 1);
+    network_vertex_set_distance_label(network, vertex_p_make(2), 0);
     mu_assert("should be reverse", network_edge_is_reverse(network, edger));
     mu_assert("should be reverse", network_edge_is_reverse(network, edge2r));
     mu_assert("edge should not be reverse", !network_edge_is_reverse(network, edge));
@@ -30,13 +30,13 @@ char *utest_network_edge_is_admissable()
 {
     NetworkPointer network = network_init();
     parse(TEST_GRAPH, network);
-    EdgePointer edge = edge_p_make_label(0, 1);
-    EdgePointer edge2 = edge_p_make_label(0, 2);
-    EdgePointer edge3 = edge_p_make_label(1, 3);
+    EdgePointer edge = edge_p_make_label(1, 2);
+    EdgePointer edge2 = edge_p_make_label(1, 3);
+    EdgePointer edge3 = edge_p_make_label(2, 4);
     network_set_edge_flow(network, edge, 10);
     network_set_edge_flow(network, edge2, 10);
-    network_vertex_set_distance_label(network, vertex_p_make(1), 4);
-    network_vertex_set_distance_label(network, vertex_p_make(3), 3);
+    network_vertex_set_distance_label(network, vertex_p_make(2), 4);
+    network_vertex_set_distance_label(network, vertex_p_make(4), 3);
     mu_assert("should not be admissable", !network_edge_is_admissable(network, edge));
     mu_assert("should not be admissable", !network_edge_is_admissable(network, edge2));
     mu_assert("should be admissable", network_edge_is_admissable(network, edge3));
@@ -47,8 +47,8 @@ char *utest_network_vertex_is_active()
 {
     NetworkPointer network = network_init();
     parse(TEST_GRAPH, network);
-    network_set_edge_flow(network, edge_p_make_label(0, 1), 8);
-    mu_assert("should be active", network_vertex_is_active(network, vertex_p_make(1)));
+    network_set_edge_flow(network, edge_p_make_label(1, 2), 8);
+    mu_assert("should be active", network_vertex_is_active(network, vertex_p_make(2)));
     mu_assert("should be 0", network_vertex_is_active(network, vertex_p_make(4)) == false);
     mu_assert("source should not be active", !network_vertex_is_active(network, network->source));
     mu_assert("source should not be active", !network_vertex_is_active(network, network->sink));
@@ -59,10 +59,12 @@ char *utest_network_vertex_exflow()
 {
     NetworkPointer network = network_init();
     parse(TEST_GRAPH, network);
-    network_set_edge_flow(network, edge_p_make_label(0, 1), 8);
-    mu_assert("should be 8", network_vertex_exflow(network, vertex_p_make(1)) == 8);
-    /* mu_assert("should be 8", network_vertex_exflow(network, vertex_p_make(0)) == -8); */
-    mu_assert("should be 0", network_vertex_exflow(network, vertex_p_make(4)) == 0);
+    network_set_edge_flow(network, edge_p_make_label(1, 2), 10);
+    network_set_edge_flow(network, edge_p_make_label(1, 3), 10);
+    network_set_edge_flow(network, edge_p_make_label(2, 4), 0);
+    network_set_edge_flow(network, edge_p_make_label(2, 4), 0);
+    mu_assert("should be 10", network_vertex_exflow(network, vertex_p_make(2)) == 10);
+    mu_assert("should be 0", network_vertex_exflow(network, vertex_p_make(6)) == 0);
     return NULL; 
 }
 
@@ -104,6 +106,7 @@ char *utest_network_set_edge_flow()
     EdgePointer edge = edge_p_make_label(0, 1);
     edgecollection_push(edges, edge);
     network->graph = graph_make(vertices, edges);
+    network->graph_all = graph_make(vertices, edges);
     network->flows = calloc(8, sizeof(unsigned int));
     network_set_edge_flow(network, edge, 10);
     mu_assert("should be 10", network_edge_flow(network, edge) == 10);
@@ -121,9 +124,10 @@ char *utest_network_set_edge_capacity()
     EdgePointer edge = edge_p_make_label(0, 1);
     edgecollection_push(edges, edge);
     network->graph = graph_make(vertices, edges);
+    network->graph_all = graph_make(vertices, edges);
     network->capacities = calloc(8, sizeof(unsigned int));
     network_set_edge_capacity(network, edge, 10);
-    mu_assert("should be 10", network_edge_capacity(network, edge) == 10);
+    mu_assert("should be 10", network_edge_capacity(network, edge, false) == 10);
     return NULL;
 }
 

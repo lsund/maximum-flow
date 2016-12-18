@@ -5,6 +5,7 @@ NetworkPointer network_init()
 {
     NetworkPointer ret   = malloc(sizeof(Network));
     ret->graph           = NULL;
+    ret->graph_all       = NULL;
     ret->source          = NULL;
     ret->sink            = NULL;
     ret->capacities      = NULL;
@@ -19,15 +20,30 @@ Label network_vertex_distance_label(const NetworkPointer network, const VertexPo
     return *(network->distance_labels + index);
 }
 
-unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge)
+unsigned int network_edge_capacity(const NetworkPointer network, const EdgePointer edge, const bool residual)
 {
-    unsigned int index = edgecollection_index_of(network->graph->edges, edge);
-    return *(network->capacities + index);
+    if (!residual) {
+        unsigned int index = edgecollection_index_of(network->graph_all->edges, edge);
+        unsigned int capacity = *(network->capacities + index);
+        return capacity;
+    } else {
+        if (network_edge_is_reverse(network, edge)) {
+            Edge reverse_edge = edge_swapped(*edge);
+            unsigned int index = edgecollection_index_of(network->graph->edges, &reverse_edge);
+            unsigned int flow = *(network->flows + index);
+            return flow;
+        } else {
+            unsigned int index = edgecollection_index_of(network->graph->edges, edge);
+            unsigned int capacity = *(network->capacities + index);
+            unsigned int flow = *(network->flows + index);
+            return capacity - flow;
+        }
+    }
 }
 
 unsigned int network_edge_flow(const NetworkPointer network, const EdgePointer edge)
 {
-    unsigned int index = edgecollection_index_of(network->graph->edges, edge);
+    unsigned int index = edgecollection_index_of(network->graph_all->edges, edge);
     return *(network->flows + index);
 }
 
@@ -51,8 +67,8 @@ int network_vertex_exflow(const NetworkPointer network, const VertexPointer vert
     inflow = 0;
     outflow = 0;
     size_t i;
-    for (i = 0; i < edgecollection_length(network->graph->edges); i++) {
-        EdgePointer edge = edgecollection_get(network->graph->edges, i);
+    for (i = 0; i < edgecollection_length(network->graph_all->edges); i++) {
+        EdgePointer edge = edgecollection_get(network->graph_all->edges, i);
         if (vertex_equals(edge->first, vertex)) {
             outflow += network_edge_flow(network, edge);
         } else if (vertex_equals(edge->second, vertex)) {
@@ -89,7 +105,7 @@ EdgePointer network_admissable_edge(const NetworkPointer network, const EdgeColl
         EdgePointer edge = edgecollection_get(edges, i);
         if (network_edge_is_admissable(network, edge)) {
             return edge;
-        }
+        } 
     }
     return NULL;
 }
@@ -101,17 +117,7 @@ unsigned int network_flow(const NetworkPointer network)
 
 bool network_edge_is_residual(const NetworkPointer network, const EdgePointer edge)
 {
-    unsigned int edge_flow, edge_capacity, residual_capacity;
-    if (network_edge_is_reverse(network, edge)) {
-        Edge reverse_edge = edge_swapped(*edge);
-        edge_flow = network_edge_flow(network, &reverse_edge);
-        residual_capacity = edge_flow;
-    } else {
-        edge_flow = network_edge_flow(network, edge);
-        edge_capacity = network_edge_capacity(network, edge);
-        residual_capacity = edge_capacity - edge_flow;
-    }
-    return residual_capacity > 0;
+    return network_edge_capacity(network, edge, true) > 0;
 }
 
 bool network_edge_is_admissable(const NetworkPointer network, const EdgePointer edge)
@@ -142,9 +148,6 @@ bool network_edge_is_reverse(const NetworkPointer network, const EdgePointer edg
 void network_augment_edge(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow)
 {
     int flow = network_edge_flow(network, edge);
-    if (flow + added_flow > network_edge_capacity(network, edge)) {
-        runtime_error("network_augment_edge: flow exeeds capacity");
-    }
     network_set_edge_flow(network, edge, flow + added_flow);
 }
 
@@ -154,7 +157,7 @@ void network_set_edge_flow(
         int flow
     )
 {
-    unsigned int index = edgecollection_index_of(network->graph->edges, edge);
+    unsigned int index = edgecollection_index_of(network->graph_all->edges, edge);
     *(network->flows + index) = flow;
 }
 
@@ -176,11 +179,4 @@ void network_vertex_set_distance_label(const NetworkPointer network, const Verte
     unsigned int index = vertexcollection_index_of(network->graph->vertices, vertex);
     *(network->distance_labels + index) = label; 
 }
-
-/* void network_vertex_set_flow(const NetworkPointer network, const VertexPointer vertex) */
-/* { */
-/*     // TODO */
-/*     return; */
-/* } */
-
 

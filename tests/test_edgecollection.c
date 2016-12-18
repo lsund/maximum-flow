@@ -280,9 +280,9 @@ char *utest_edgecollection_union()
     edgecollection_push(edgecollection_a, edge_p_make_label(1, 2));
     edgecollection_push(edgecollection_a, edge_p_make_label(2, 3));
     edgecollection_push(edgecollection_b, edge_p_make_label(1, 2));
-    EdgeCollection edgecollection_c = edgecollection_init(4);
-    edgecollection_union(edgecollection_a, edgecollection_b, &edgecollection_c);
-    mu_assert("should have length 4", edgecollection_c.members->capacity == 4);
+    EdgeCollection edgecollection_c;
+    edgecollection_c = edgecollection_union(edgecollection_a, edgecollection_b);
+    mu_assert("should have capacity 8", edgecollection_c.members->capacity == 8);
     mu_assert("should have 3 elements", edgecollection_c.members->length == 3);
     mu_assert("and should be these edges", edgecollection_get(edgecollection_c, 0)->first->label == 0);
     mu_assert("and should be these edges", edgecollection_get(edgecollection_c, 0)->second->label == 1);

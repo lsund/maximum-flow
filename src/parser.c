@@ -3,7 +3,7 @@
 static void parse_vertices(const VertexCollection vertexcollection, const unsigned int n_vertices)
 {
     size_t i;
-    for (i = 0; i < n_vertices; i++) {
+    for (i = 1; i <= n_vertices; i++) {
         VertexPointer vertex = vertex_p_make(i);
         vertexcollection_push(vertexcollection, vertex);
     }
@@ -84,7 +84,7 @@ Result parse(const char *filename, const NetworkPointer network)
     network->graph = graph;
 
     network->capacities      = calloc(n_edges, sizeof(unsigned int));
-    network->flows           = calloc(n_edges, sizeof(int));
+    network->flows           = calloc(2 * n_edges, sizeof(int));
     network->distance_labels = calloc(n_vertices, sizeof(Label));
 
     unsigned int row;
@@ -111,6 +111,18 @@ Result parse(const char *filename, const NetworkPointer network)
             }
         }
     }
+    EdgeCollection all_edges = edgecollection_init(2 * n_edges);
+    size_t i;
+    for (i = 0; i < n_edges; i++) {
+        EdgePointer edge = edgecollection_get(network->graph->edges, i);
+        edgecollection_push(all_edges, edge);
+    }
+    for (i = 0; i < n_edges; i++) {
+        EdgePointer edge = edgecollection_get(network->graph->edges, i);
+        EdgePointer reverse_edge = edge_p_make_edge(edge_swapped(*edge));
+        edgecollection_push(all_edges, reverse_edge);
+    }
+    network->graph_all = graph_make(vertices, all_edges);
     return SUCCESS;
 }
 

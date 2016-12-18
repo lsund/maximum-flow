@@ -1,6 +1,6 @@
 
-#ifndef EDGE_SET_H
-#define EDGE_SET_H
+#ifndef EDGE_COLLECTION_H
+#define EDGE_COLLECTION_H
 
 #include "edge.h"
 #include "util.h"
@@ -74,7 +74,7 @@ Result edgecollection_complement(const EdgeCollection edgecollection_a, const Ed
 // Attempts to compute the union of two edgecollections. On success, the union
 // of edgecollection_a and edgecollection_b is stored in Ret and SUCCESS is returned.
 // Otherwise, FAIL is returned.
-Result edgecollection_union(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b, EdgeCollectionPointer ret);
+EdgeCollection edgecollection_union(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b);
 
 // Attempts to compute the symmetric difference of two edgecollections. On success, the symmetric difference
 // of edgecollection_a and edgecollection_b is stored in Ret and SUCCESS is returned.

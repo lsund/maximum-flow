@@ -228,9 +228,11 @@ Result edgecollection_complement(const EdgeCollection edgecollection_a, const Ed
     return SUCCESS;
 }
 
-Result edgecollection_union(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b, EdgeCollectionPointer ret)
+EdgeCollection edgecollection_union(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b)
 {
     unsigned int larger_size = larger(edgecollection_length(edgecollection_a), edgecollection_length(edgecollection_b));
+    unsigned int summed_capacity = edgecollection_a.members->capacity + edgecollection_b.members->capacity;
+    EdgeCollection ret = edgecollection_init(summed_capacity);
     EdgePointer edge_a, edge_b;
     size_t i;
     for (i = 0; i < larger_size; i++) {
@@ -239,18 +241,18 @@ Result edgecollection_union(const EdgeCollection edgecollection_a, const EdgeCol
         bool inboth = edgecollection_contains_edge(edgecollection_b, edge_a);
         if (edge_a && edge_b) {
             if (inboth) {
-                edgecollection_push(*ret, edge_a);
+                edgecollection_push(ret, edge_a);
             } else {
-                edgecollection_push(*ret, edge_a);
-                edgecollection_push(*ret, edge_b);
+                edgecollection_push(ret, edge_a);
+                edgecollection_push(ret, edge_b);
             }
         } else if (!edge_b && edge_a) {
-            edgecollection_push(*ret, edge_a);
+            edgecollection_push(ret, edge_a);
         } else if (!edge_a && edge_b) {
-            edgecollection_push(*ret, edge_b);
+            edgecollection_push(ret, edge_b);
         }
     }
-    return SUCCESS;
+    return ret;
 }
 
 Result edgecollection_symmetric_difference(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b, EdgeCollectionPointer ret)
@@ -260,7 +262,7 @@ Result edgecollection_symmetric_difference(const EdgeCollection edgecollection_a
     compl_ba = edgecollection_init(edgecollection_b.members->capacity);
     edgecollection_complement(edgecollection_a, edgecollection_b, &compl_ab);
     edgecollection_complement(edgecollection_b, edgecollection_a, &compl_ba);
-    edgecollection_union(compl_ab, compl_ba, ret);
+    *ret = edgecollection_union(compl_ab, compl_ba);
     edgecollection_destroy(compl_ab);
     edgecollection_destroy(compl_ba);
     return SUCCESS;
