@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     if (argc == 2) {
         parse(argv[1], network);
     } else {
+        /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
         parse("/home/lsund/Data/graphs/data/networks/set/gen8x8.dmx", network);
     }
     clock_t start = clock(), diff;

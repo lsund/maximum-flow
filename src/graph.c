@@ -1,12 +1,26 @@
 
 #include "graph.h"
 
+Graph graph_init()
+{
+    Graph ret;
+    ret.vertices = vertexcollection_init(ARRAY_MIN_SIZE);
+    ret.edges = edgecollection_init(ARRAY_MIN_SIZE);
+    return ret;
+}
+
 Graph graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection)
 {
     Graph ret;
     ret.vertices = vertexcollection;
     ret.edges = edgecollection;
     return ret;
+}
+
+void graph_reset(Graph graph)
+{
+    vertexcollection_reset(graph.vertices);
+    edgecollection_reset(graph.edges);
 }
 
 VertexCollection graph_neighbors_of(const Graph graph, const VertexPointer vertex)

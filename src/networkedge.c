@@ -30,28 +30,35 @@ unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer ed
     return *(network->flows + index);
 }
 
-EdgePointer networkedge_admissable(const NetworkPointer network, const EdgeCollection edges)
-{
-    size_t i;
-    for (i = 0; i < edgecollection_length(edges); i++) {
-        EdgePointer edge = edgecollection_get(edges, i);
-        if (networkedge_is_admissable(network, edge)) {
-            return edge;
-        } 
-    }
-    return NULL;
-}
-
-bool networkedge_is_admissable(const NetworkPointer network, const EdgePointer edge)
+static bool networkedge_is_admissable(
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        GraphPointer residual_graph
+    )
 {
     unsigned int label_first, label_second;
     label_first = networkvertex_distance_label(network, edge->first);
     label_second = networkvertex_distance_label(network, edge->second);
     bool cond_a = label_first == label_second + 1;
-    Graph residual_graph = network_residual_graph(network);
-    bool cond_b = edgecollection_contains_edge(residual_graph.edges, edge);
-    graph_destroy(residual_graph);
+    network_residual_graph(network, residual_graph);
+    bool cond_b = edgecollection_contains_edge(residual_graph->edges, edge);
     return cond_a && cond_b;
+}
+
+EdgePointer networkedge_admissable(
+        const NetworkPointer network, 
+        const EdgeCollection edges, 
+        GraphPointer residual_graph
+    )
+{
+    size_t i;
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
+        if (networkedge_is_admissable(network, edge, residual_graph)) {
+            return edge;
+        } 
+    }
+    return NULL;
 }
 
 bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge)

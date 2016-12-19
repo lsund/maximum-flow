@@ -26,23 +26,6 @@ char *utest_networkedge_is_reverse()
     return NULL;
 }
 
-char *utest_networkedge_is_admissable()
-{
-    NetworkPointer network = network_init();
-    parse(TEST_GRAPH, network);
-    EdgePointer edge = edge_p_make_label(1, 2);
-    EdgePointer edge2 = edge_p_make_label(1, 3);
-    EdgePointer edge3 = edge_p_make_label(2, 4);
-    networkedge_set_flow(network, edge, 10);
-    networkedge_set_flow(network, edge2, 10);
-    networkvertex_set_distance_label(network, vertex_p_make(2), 4);
-    networkvertex_set_distance_label(network, vertex_p_make(4), 3);
-    mu_assert("should not be admissable", !networkedge_is_admissable(network, edge));
-    mu_assert("should not be admissable", !networkedge_is_admissable(network, edge2));
-    mu_assert("should be admissable", networkedge_is_admissable(network, edge3));
-    return NULL;
-}
-
 char *utest_networkvertex_is_active()
 {
     NetworkPointer network = network_init();
@@ -145,8 +128,6 @@ char *test_network()
     mu_run_utest(utest_networkvertex_is_active);
     mu_message(UNIT, "networkvertex_exflow\n");
     mu_run_utest(utest_networkvertex_exflow);
-    mu_message(UNIT, "networkedge_is_admissable\n");
-    mu_run_utest(utest_networkedge_is_admissable);
     return NULL;
 }
 

@@ -14,6 +14,8 @@ typedef struct vertexcollection {
 // Initializes a vertexcollection of size init_length. 
 VertexCollection vertexcollection_init(const size_t init_length);
 
+void vertexcollection_reset(VertexCollection vertices);
+
 // Return true if the vertexcollection has no intialized elements, false otherwise
 bool vertexcollection_is_empty(const VertexCollection vertices);
 

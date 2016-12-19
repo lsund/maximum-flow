@@ -21,7 +21,7 @@ NetworkPointer network_init();
 
 unsigned int network_flow(const NetworkPointer network);
 
-Graph network_residual_graph(const NetworkPointer network);
+void network_residual_graph(const NetworkPointer network, GraphPointer ret);
 
 void network_destroy(NetworkPointer network);
 

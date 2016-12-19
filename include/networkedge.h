@@ -11,15 +11,13 @@ unsigned int networkedge_residual_capacity(const NetworkPointer network, const E
 
 unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
 
-bool networkedge_is_admissable(const NetworkPointer network, const EdgePointer edge);
-
 bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge);
 
 EdgePointer networkedge_reverse(const NetworkPointer network, const EdgePointer edge);
 
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow);
 
-EdgePointer networkedge_admissable(const NetworkPointer network, const EdgeCollection edges);
+EdgePointer networkedge_admissable(const NetworkPointer network, const EdgeCollection edges, GraphPointer residual_graph);
 
 void networkedge_set_capacity(
         const NetworkPointer network, 

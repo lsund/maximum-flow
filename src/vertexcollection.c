@@ -29,6 +29,11 @@ VertexCollectionPointer init_p_vertexcollection(const size_t init_length)
     return ret;
 }
 
+void vertexcollection_reset(VertexCollection vertices)
+{
+    collection_reset(vertices.members);
+}
+
 bool vertexcollection_is_empty(const VertexCollection vertices)
 {
     return vertexcollection_length(vertices) == 0;

@@ -73,15 +73,7 @@ Result parse(const char *filename, const NetworkPointer network)
     n_vertices = dimension.x;
     n_edges = dimension.y;
 
-    VertexCollection vertices;
-    vertices = vertexcollection_init(n_vertices);
-    parse_vertices(vertices, n_vertices);
-
-    EdgeCollection edges;
-    edges = edgecollection_init(n_edges);
-
-    Graph graph = graph_make(vertices, edges);
-    network->graph = graph;
+    parse_vertices(network->graph.vertices, n_vertices);
 
     network->capacities      = calloc(n_edges, sizeof(unsigned int));
     network->flows           = calloc(2 * n_edges, sizeof(int));
@@ -106,7 +98,12 @@ Result parse(const char *filename, const NetworkPointer network)
             if (is_n) {
                 update_source_sink(network, second_token, third_token);
             } else {
-                EdgePointer edge = update_edge(vertices, edges, second_token, third_token);
+                EdgePointer edge = update_edge(
+                        network->graph.vertices, 
+                        network->graph.edges, 
+                        second_token, 
+                        third_token
+                    );
                 update_capacity(network, table, edge, row);
             }
         }

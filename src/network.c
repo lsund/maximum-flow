@@ -4,7 +4,7 @@
 NetworkPointer network_init()
 {
     NetworkPointer ret   = malloc(sizeof(Network));
-    /* ret->graph           = graph_init(); */
+    ret->graph           = graph_init();
     ret->reverse_edges   = edgecollection_init(ARRAY_MIN_SIZE);
     ret->source          = NULL;
     ret->sink            = NULL;
@@ -19,28 +19,26 @@ unsigned int network_flow(const NetworkPointer network)
     return networkvertex_inflow(network, network->sink);
 }
 
-Graph network_residual_graph(const NetworkPointer network)
+void network_residual_graph(const NetworkPointer network, GraphPointer ret)
 {
-    VertexCollection vertices = vertexcollection_init(ARRAY_MIN_SIZE);
+    graph_reset(*ret);
     size_t i;
     for (i = 0; i < vertexcollection_length(network->graph.vertices); i++) {
         VertexPointer p_vertex = vertexcollection_get(network->graph.vertices, i);
-        vertexcollection_push(vertices, p_vertex);
+        vertexcollection_push(ret->vertices, p_vertex);
     }
-    EdgeCollection edges = edgecollection_init(ARRAY_MIN_SIZE);
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer p_edge = edgecollection_get(network->graph.edges, i);
         Edge reverse_edge = edge_swapped(*p_edge);
         unsigned int index = edgecollection_index_of(network->reverse_edges, &reverse_edge);
         EdgePointer reverse_p_edge = edgecollection_get(network->reverse_edges, index);
         if (networkedge_residual_capacity(network, p_edge) > 0) { 
-            edgecollection_push(edges, p_edge);
+            edgecollection_push(ret->edges, p_edge);
         }
         if (networkedge_residual_capacity(network, reverse_p_edge) > 0) {
-            edgecollection_push(edges, reverse_p_edge);
+            edgecollection_push(ret->edges, reverse_p_edge);
         }
     }
-    return graph_make(vertices, edges);
 }
 
 void network_destroy(NetworkPointer network)

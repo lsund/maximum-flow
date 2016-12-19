@@ -13,9 +13,13 @@ typedef struct graph {
     VertexCollection vertices;
 } Graph, *GraphPointer;
 
+Graph graph_init();
+
 // Constructs an instance of a graph using the vertexcollection and edgecollection and returns
 // a pointer to this structure
 Graph graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection);
+
+void graph_reset(Graph graph);
 
 VertexCollection graph_neighbors_of(const Graph graph, const VertexPointer vertex);
 
