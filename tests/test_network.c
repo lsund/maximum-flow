@@ -15,8 +15,8 @@ char *utest_networkedge_is_reverse()
     mu_assert("should be the reversed version", edge_equals_reverse(edge2, edge2r));
     NetworkPointer network = network_init();
     parse(TEST_GRAPH, network);
-    mu_assert("should have 7 edge", edgecollection_length(network->graph->edges) == 7);
-    mu_assert("should contain", edgecollection_contains_edge(network->graph->edges, edge2)); 
+    mu_assert("should have 7 edge", edgecollection_length(network->graph.edges) == 7);
+    mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, edge2)); 
     networkvertex_set_distance_label(network, vertex_p_make(1), 1);
     networkvertex_set_distance_label(network, vertex_p_make(2), 0);
     mu_assert("should be reverse", networkedge_is_reverse(network, edger));
@@ -78,7 +78,7 @@ char *utest_networkvertex_set_distance_label()
     network->graph = graph_make(vertices, edges);
     network->distance_labels = calloc(8, sizeof(Label));
     mu_assert("should be 0", *network->distance_labels == 0);
-    networkvertex_set_distance_label(network, vertexcollection_get(network->graph->vertices, 0), 77);
+    networkvertex_set_distance_label(network, vertexcollection_get(network->graph.vertices, 0), 77);
     mu_assert("should be 77", *network->distance_labels == 77);
     return NULL;
 }
@@ -91,8 +91,8 @@ char *utest_networkvertex_distance_label()
     vertexcollection_push(vertices, vertex_p_make(0));
     network->graph = graph_make(vertices, edges);
     network->distance_labels = calloc(8, sizeof(Label));
-    networkvertex_set_distance_label(network, vertexcollection_get(network->graph->vertices, 0), 77);
-    mu_assert("should be 77", networkvertex_distance_label(network, vertexcollection_get(network->graph->vertices, 0)) == 77);
+    networkvertex_set_distance_label(network, vertexcollection_get(network->graph.vertices, 0), 77);
+    mu_assert("should be 77", networkvertex_distance_label(network, vertexcollection_get(network->graph.vertices, 0)) == 77);
     return NULL;
 }
 

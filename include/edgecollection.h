@@ -20,6 +20,8 @@ EdgeCollection edgecollection_init(const size_t size);
 // Initializes an edgecollection using edgecollection_init and returns a pointer to it
 EdgeCollectionPointer edgecollection_p_init(const unsigned int nvertices);
 
+void edgecollection_reset(EdgeCollection edges);
+
 // Return the number of elements currently in this collection
 size_t edgecollection_length(const EdgeCollection edges);
 

@@ -28,6 +28,10 @@ EdgeCollectionPointer edgecollection_p_init(const unsigned int nvertices)
     return ret;
 }
 
+void edgecollection_reset(EdgeCollection edges)
+{
+    collection_reset(edges.members);
+}
 
 size_t edgecollection_length(const EdgeCollection edges)
 {

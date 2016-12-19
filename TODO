@@ -1,13 +1,10 @@
 MISC:
 
-can a flow be negative? add test in exflow
+timer in ./bin/main
+add constructs to allow for constant access  
+(do not need to generate res_graph etc)
 clean up, sort network
 change spit to accept a network
-add constructs in network that holds:
-    *distance labels
-    *edge capacities
-    *edge flows
-
 
 RENAMINGS:
 

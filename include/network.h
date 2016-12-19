@@ -4,7 +4,7 @@
 #include "graph.h"
 
 typedef struct network {
-    GraphPointer    graph;
+    Graph           graph;
     EdgeCollection  reverse_edges;
     VertexPointer   source;
     VertexPointer   sink;
@@ -21,7 +21,7 @@ NetworkPointer network_init();
 
 unsigned int network_flow(const NetworkPointer network);
 
-GraphPointer network_residual_graph(const NetworkPointer network);
+Graph network_residual_graph(const NetworkPointer network);
 
 void network_destroy(NetworkPointer network);
 

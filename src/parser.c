@@ -29,9 +29,9 @@ static void update_source_sink(const NetworkPointer network, const char *first_t
 {
     Label label  = (unsigned int) strtol(first_token, NULL, 10);
     if (strcmp(second_token, "s") == 0) {
-        network->source = vertexcollection_get_with_label(network->graph->vertices, label);
+        network->source = vertexcollection_get_with_label(network->graph.vertices, label);
     } else {
-        network->sink = vertexcollection_get_with_label(network->graph->vertices, label);
+        network->sink = vertexcollection_get_with_label(network->graph.vertices, label);
     }
 }
 
@@ -80,7 +80,7 @@ Result parse(const char *filename, const NetworkPointer network)
     EdgeCollection edges;
     edges = edgecollection_init(n_edges);
 
-    GraphPointer graph = graph_make(vertices, edges);
+    Graph graph = graph_make(vertices, edges);
     network->graph = graph;
 
     network->capacities      = calloc(n_edges, sizeof(unsigned int));
@@ -114,8 +114,8 @@ Result parse(const char *filename, const NetworkPointer network)
     tokentable_destroy(table);
 
     size_t i;
-    for (i = 0; i < edgecollection_length(network->graph->edges); i++) {
-        EdgePointer p_edge = edgecollection_get(network->graph->edges, i);
+    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
+        EdgePointer p_edge = edgecollection_get(network->graph.edges, i);
         Edge reverse_edge = edge_swapped(*p_edge);
         edgecollection_push(network->reverse_edges, edge_p_make_edge(reverse_edge));
     }

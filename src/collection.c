@@ -26,6 +26,11 @@ CollectionPointer collection_p_init(const size_t init_length)
     return ret;
 }
 
+void collection_reset(CollectionPointer collection)
+{
+    collection->length   = 0;
+}
+
 size_t collection_length(const CollectionPointer collection)
 {
     return collection->length;

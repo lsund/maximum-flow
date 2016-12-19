@@ -15,15 +15,16 @@ typedef struct graph {
 
 // Constructs an instance of a graph using the vertexcollection and edgecollection and returns
 // a pointer to this structure
-GraphPointer graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection);
+Graph graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection);
 
-VertexCollection graph_neighbors_of(const GraphPointer graph, const VertexPointer vertex);
+VertexCollection graph_neighbors_of(const Graph graph, const VertexPointer vertex);
 
-EdgeCollection graph_incident_with(const GraphPointer graph, const VertexPointer vertex);
-
-EdgeCollection graph_out_edges_from(const GraphPointer graph, const VertexPointer vertex);
+void graph_out_edges_from(
+        const Graph graph, 
+        const VertexPointer vertex,
+        EdgeCollectionPointer ret);
 
 // Frees the structure
-Result graph_destroy(GraphPointer graph);
+Result graph_destroy(Graph graph);
 
 #endif

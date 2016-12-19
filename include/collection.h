@@ -25,6 +25,8 @@ Collection collection_init(const size_t init_length);
 // same as collection_init, but returns a pointer to the collection 
 CollectionPointer collection_p_init(const size_t init_length);
 
+void collection_reset(CollectionPointer collection);
+
 size_t collection_length(const CollectionPointer collection);
 
 // Return the element in the collection at the specified position
