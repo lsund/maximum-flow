@@ -5,10 +5,10 @@
 
 typedef struct network {
     GraphPointer    graph;
+    EdgeCollection  reverse_edges;
     VertexPointer   source;
     VertexPointer   sink;
     unsigned int    *capacities;
-    unsigned int    *residual_capacities;
     int             *flows;
     Label           *distance_labels;
 } Network, *NetworkPointer;
@@ -22,5 +22,7 @@ NetworkPointer network_init();
 unsigned int network_flow(const NetworkPointer network);
 
 GraphPointer network_residual_graph(const NetworkPointer network);
+
+void network_destroy(NetworkPointer network);
 
 #endif

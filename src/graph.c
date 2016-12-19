@@ -50,12 +50,6 @@ EdgeCollection graph_out_edges_from(const GraphPointer graph, const VertexPointe
 
 Result graph_destroy(GraphPointer graph)
 {
-    if (!graph || !graph->edges.members || !graph->vertices.members) {
-        return FAIL;
-    }
-    if (!graph->edges.members->head || !graph->vertices.members->head) {
-        return FAIL;
-    }
     vertexcollection_destroy(graph->vertices);
     edgecollection_destroy(graph->edges);
     free(graph);

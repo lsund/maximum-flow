@@ -111,6 +111,15 @@ Result parse(const char *filename, const NetworkPointer network)
             }
         }
     }
+    tokentable_destroy(table);
+
+    size_t i;
+    for (i = 0; i < edgecollection_length(network->graph->edges); i++) {
+        EdgePointer p_edge = edgecollection_get(network->graph->edges, i);
+        Edge reverse_edge = edge_swapped(*p_edge);
+        edgecollection_push(network->reverse_edges, edge_p_make_edge(reverse_edge));
+    }
+
     return SUCCESS;
 }
 

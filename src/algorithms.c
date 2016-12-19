@@ -47,6 +47,8 @@ static void relabel(const NetworkPointer network, const VertexPointer vertex)
     GraphPointer residual_graph = network_residual_graph(network);
     EdgeCollection out_edges = graph_out_edges_from(residual_graph, vertex);
     networkvertex_set_distance_label(network, vertex, find_min(network, out_edges));
+    edgecollection_destroy(out_edges);
+    graph_destroy(residual_graph);
 }
 
 void push_relabel(NetworkPointer network)
@@ -57,6 +59,8 @@ void push_relabel(NetworkPointer network)
         GraphPointer residual_graph = network_residual_graph(network);
         EdgeCollection out_edges = graph_out_edges_from(residual_graph, active);
         EdgePointer admissable = networkedge_admissable(network, out_edges);
+        edgecollection_destroy(out_edges);
+        graph_destroy(residual_graph);
         if (!admissable) {
             relabel(network, active);
         } else {

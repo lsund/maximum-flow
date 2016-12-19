@@ -50,6 +50,7 @@ bool networkedge_is_admissable(const NetworkPointer network, const EdgePointer e
     bool cond_a = label_first == label_second + 1;
     GraphPointer residual_graph = network_residual_graph(network);
     bool cond_b = edgecollection_contains_edge(residual_graph->edges, edge);
+    graph_destroy(residual_graph);
     return cond_a && cond_b;
 }
 
