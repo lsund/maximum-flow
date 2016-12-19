@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <limits.h>
 
 #define MAX_VERTICES 1000
 #define MAX_EDGES 1000

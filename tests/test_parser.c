@@ -13,7 +13,7 @@ char *utest_parse() {
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph->edges); i++) {
         EdgePointer edge = edgecollection_get(network->graph->edges, i);
-        mu_assert("should be 0", network_edge_flow(network, edge) == 0);
+        mu_assert("should be 0", networkedge_flow(network, edge) == 0);
     }
     return NULL;
 }

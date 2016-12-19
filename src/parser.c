@@ -56,7 +56,7 @@ static void update_capacity(
 {
     char *fourth_token = tokentable_get(table, row, 3);
     unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10);
-    network_set_edge_capacity(network, edge, capacity);
+    networkedge_set_capacity(network, edge, capacity);
 }
 
 Result parse(const char *filename, const NetworkPointer network)
@@ -111,18 +111,6 @@ Result parse(const char *filename, const NetworkPointer network)
             }
         }
     }
-    EdgeCollection all_edges = edgecollection_init(2 * n_edges);
-    size_t i;
-    for (i = 0; i < n_edges; i++) {
-        EdgePointer edge = edgecollection_get(network->graph->edges, i);
-        edgecollection_push(all_edges, edge);
-    }
-    for (i = 0; i < n_edges; i++) {
-        EdgePointer edge = edgecollection_get(network->graph->edges, i);
-        EdgePointer reverse_edge = edge_p_make_edge(edge_swapped(*edge));
-        edgecollection_push(all_edges, reverse_edge);
-    }
-    network->graph_all = graph_make(vertices, all_edges);
     return SUCCESS;
 }
 

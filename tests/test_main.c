@@ -16,6 +16,7 @@ char *test_main()
         long res = (long) network_flow(network);
         mu_message(DATA, "testing file\n");
         printf("\t\%s with opt: %lu\n", file, opt);
+        printf("\tfound: %lu\n", res);
         mu_assert("should give the same output as maxflow", res == opt);
         mu_message(DATA, "passed\n");
     }

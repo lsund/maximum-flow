@@ -30,21 +30,21 @@ is_admissable(edge)                             [done]
 network_residual                                ?
 float residualal_capacity(networkedge)          [done]
 network_edge_is_reverse                         [done]
-network_vertex_distance_label                   [done]
+networkvertex_distance_label                   [done]
 
 TESTS FUNCTIONS:
 
 graph_incident_with                             [done]
-network_vertex_exflow                           [done]
+networkvertex_exflow                           [done]
 network_active_vertex                           [done]
 network_admissable_edge                         [] *
 edgecollection_index_of                         [] * (needs to be the d+(v))
 vertexcollection_index_of                       [] *
 network_edge_is_residual                        [] *
 edge_equals_reverse                             [] *
-network_augment_edge                            [] *
-network_vertex_set_distance_label               [done]
-network_vertex_distance_label                   [done]
+networkedge_augment                            [] *
+networkvertex_set_distance_label               [done]
+networkvertex_distance_label                   [done]
 push_relabel                                    [] *
 network_flow                                    []
 graph_neighbours_of                             [] 
