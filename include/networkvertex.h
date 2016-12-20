@@ -4,18 +4,18 @@
 #include "network.h"
 unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
 
-Label networkvertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
+Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex);
 
-unsigned int networkvertex_inflow(const NetworkPointer network, const VertexPointer vertex);
+unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);
 
-int networkvertex_exflow(const NetworkPointer network, const VertexPointer vertex);
+int networkvertex_exflow(const NetworkPointer network, const Vertex vertex);
 
-void networkvertex_set_flow(const NetworkPointer network, const VertexPointer vertex);
+void networkvertex_set_flow(const NetworkPointer network, const Vertex vertex);
 
-void networkvertex_set_distance_label(const NetworkPointer network, const VertexPointer vertex, const unsigned int label);
+void networkvertex_set_distance_label(const NetworkPointer network, const Vertex vertex, const unsigned int label);
 
-bool networkvertex_is_active(const NetworkPointer network, const VertexPointer vertex);
+bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex);
 
-VertexPointer network_active_vertex(const NetworkPointer network);
+Result networkvertex_active(const NetworkPointer network, VertexPointer vertex);
 
 #endif

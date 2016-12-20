@@ -3,7 +3,7 @@
 
 #include "network.h"
 
-Label networkvertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
+Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex);
 
 unsigned int networkedge_capacity(const NetworkPointer network, const EdgePointer edge);
 

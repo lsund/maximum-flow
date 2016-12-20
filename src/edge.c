@@ -3,10 +3,10 @@
 
 Edge edge_init()
 {
-    return edge_make_vertices(NULL, NULL);
+    return edge_make_vertices(vertex_empty(), vertex_empty());
 }
 
-Edge edge_make_vertices(const VertexPointer first, const VertexPointer second)
+Edge edge_make_vertices(const Vertex first, const Vertex second)
 {
     Edge ret;
     ret.first    = first;
@@ -16,7 +16,7 @@ Edge edge_make_vertices(const VertexPointer first, const VertexPointer second)
 
 Edge edge_make_label(const Label first_label, const Label second_label)
 {
-    return edge_make_vertices(vertex_p_make(first_label), vertex_p_make(second_label));
+    return edge_make_vertices(vertex_make(first_label), vertex_make(second_label));
 }
 
 EdgePointer edge_p_make_edge(const Edge edge)
@@ -32,7 +32,7 @@ EdgePointer edge_p_make_label(const Label first_label, const Label second_label)
 }
 
 
-EdgePointer edge_p_make_vertices(const VertexPointer first, const VertexPointer second)
+EdgePointer edge_p_make_vertices(const Vertex first, const Vertex second)
 {
     EdgePointer ret = malloc(sizeof(Edge));
     *ret = edge_make_vertices(first, second);
@@ -44,20 +44,21 @@ Edge edge_swapped(const Edge edge)
     return edge_make_vertices(edge.second, edge.first);
 }
 
-VertexPointer edge_get_adjacent(const EdgePointer edge, VertexPointer vertex)
+Vertex edge_get_adjacent(const EdgePointer edge, Vertex vertex)
 {
     if (vertex_equals(edge->first, vertex)) {
         return edge->second; 
     } else if (vertex_equals(edge->second, vertex)) {
         return edge->first;
     } else {
-        return NULL;
+        runtime_error("eedge_get_adjacent: edge does not contain that vertex");
     }
+    return vertex_empty();
 }
 
 void edge_swap(EdgePointer edge)
 {
-    VertexPointer temp = edge->first;
+    Vertex temp = edge->first;
     edge->first = edge->second;
     edge->second = temp;
 }
@@ -80,28 +81,25 @@ bool edge_equals_reverse(const EdgePointer edge_a, const EdgePointer edge_b)
     return vertex_equals(edge_a->first, edge_b->second) && vertex_equals(edge_a->second, edge_b->first);
 }
 
-bool edge_incident_with(const EdgePointer edge, const VertexPointer vertex)
+bool edge_incident_with(const EdgePointer edge, const Vertex vertex)
 {
     return vertex_equals(edge->first, vertex) || vertex_equals(edge->second, vertex); 
 }
 
 unsigned int edge_to_bitpos(const Edge edge, const unsigned int nvertices)
 {
-    if (edge.first == NULL || edge.second == NULL) {
-        return 0;
-    }
-    return edge.first->label * nvertices + edge.second->label;
+    return edge.first.label * nvertices + edge.second.label;
 }
 
 char *edge_string_representation(const EdgePointer edge)
 {
     char *ret = malloc(sizeof(char) * MAX_NUM_LEN * 2 + 2);
-    sprintf(ret, "%u%u", edge->first->label, edge->second->label);
+    sprintf(ret, "%u%u", edge->first.label, edge->second.label);
     return ret;
 }
 
 void edge_print(const Edge edge)
 {
-    printf("(%u, %u)\n", edge.first->label, edge.second->label);
+    printf("(%u, %u)\n", edge.first.label, edge.second.label);
 }
 

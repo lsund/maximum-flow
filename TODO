@@ -1,31 +1,21 @@
 MISC:
 
 timer in ./bin/main                             [done]
-add constructs to allow for constant access  
+add constructs to allow for constant access     [done]
 (do not need to generate res_graph etc)
 clean up, sort network
 change spit to accept a network
 
-efficient maintanence of residual graph 
-remove, add max Ologn
-places where residual graph changes:
+efficient maintanence of residual graph         [done]
+remove, add max Ologn                           [done]
 
-*initialize_push_relabel
+network store in_edges for each vertex          [done]
+network store out_edges for each vertex         [done]
 
-All forward edges out from source has capacity 
-u - f 0 so they are not take taken
+store the inflow and outflow of vertices
 
-All backward edges out from source has capacity
-f so they are taken
-
-*push
-
-decrease the capacity of the corresponding
-forward edge (maybe remove it): 
-
-
-increase the capacity of the backward edge
-(maybe add it)
+most time taken by vertex comparisons:
+change vertexpointer to vertex?
 
 RENAMINGS:
 

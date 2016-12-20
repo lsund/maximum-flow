@@ -17,7 +17,7 @@ static EdgePointer parse_edge(const VertexCollection vertexcollection, const cha
     VertexPointer first_vertex = vertexcollection_get_with_label(vertexcollection, label_first);
     VertexPointer second_vertex = vertexcollection_get_with_label(vertexcollection, label_second);
     if (first_vertex && second_vertex) {
-        ret = edge_p_make_vertices(first_vertex, second_vertex);
+        ret = edge_p_make_vertices(*first_vertex, *second_vertex);
     } else {
         ret = NULL;
         runtime_error("Parse edges: vertex null pointer");
@@ -29,9 +29,9 @@ static void update_source_sink(const NetworkPointer network, const char *first_t
 {
     Label label  = (unsigned int) strtol(first_token, NULL, 10);
     if (strcmp(second_token, "s") == 0) {
-        network->source = vertexcollection_get_with_label(network->graph.vertices, label);
+        network->source = *vertexcollection_get_with_label(network->graph.vertices, label);
     } else {
-        network->sink = vertexcollection_get_with_label(network->graph.vertices, label);
+        network->sink = *vertexcollection_get_with_label(network->graph.vertices, label);
     }
 }
 
@@ -78,6 +78,13 @@ Result parse(const char *filename, const NetworkPointer network)
     network->capacities      = calloc(n_edges, sizeof(unsigned int));
     network->flows           = calloc(2 * n_edges, sizeof(int));
     network->distance_labels = calloc(n_vertices, sizeof(Label));
+    network->in_edges        = malloc((n_vertices + 1) * sizeof(EdgeCollection));
+    network->out_edges       = malloc((n_vertices + 1) * sizeof(EdgeCollection));
+    size_t i;
+    for (i = 1; i <= n_vertices; i++) {
+        *(network->in_edges + i) = edgecollection_init(n_edges);
+        *(network->out_edges + i) = edgecollection_init(n_edges);
+    }
 
     unsigned int row;
     for (row = 0; row < table->populated_rows; row++) {
@@ -105,17 +112,18 @@ Result parse(const char *filename, const NetworkPointer network)
                         third_token
                     );
                 update_capacity(network, table, edge, row);
+                edgecollection_push(*(network->in_edges + edge->second.label), edge);
+                edgecollection_push(*(network->out_edges + edge->first.label), edge);
             }
         }
     }
     tokentable_destroy(table);
 
-    size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer p_edge = edgecollection_get(network->graph.edges, i);
-        Edge reverse_edge = edge_swapped(*p_edge);
-        edgecollection_push(network->reverse_edges, edge_p_make_edge(reverse_edge));
-
+        Edge reverse_edge_val = edge_swapped(*p_edge);
+        EdgePointer reverse_edge = edge_p_make_edge(reverse_edge_val);
+        edgecollection_push(network->reverse_edges, reverse_edge);
     }
 
     return SUCCESS;

@@ -8,8 +8,10 @@ NetworkPointer network_init()
     ret->residual_graph  = graph_init();
     ret->reverse_edges   = edgecollection_init(ARRAY_MIN_SIZE);
     ret->active_edges    = edgecollection_init(ARRAY_MIN_SIZE);
-    ret->source          = NULL;
-    ret->sink            = NULL;
+    ret->in_edges        = NULL;
+    ret->out_edges       = NULL;
+    ret->source          = vertex_empty();
+    ret->sink            = vertex_empty();
     ret->capacities      = NULL;
     ret->flows           = NULL;
     ret->distance_labels = NULL;

@@ -74,13 +74,13 @@ VertexCollection edgecollection_vertices(const EdgeCollection edges)
     size_t i;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        VertexPointer first = edge->first;
-        VertexPointer second = edge->second;
-        if (!vertexcollection_contains_label(vertices, first->label)) {
-            vertexcollection_push(vertices, first);
+        Vertex first = edge->first;
+        Vertex second = edge->second;
+        if (!vertexcollection_contains_label(vertices, first.label)) {
+            vertexcollection_push(vertices, vertex_p_make(first.label));
         }
-        if (!vertexcollection_contains_label(vertices, second->label)) {
-            vertexcollection_push(vertices, second);
+        if (!vertexcollection_contains_label(vertices, second.label)) {
+            vertexcollection_push(vertices, vertex_p_make(second.label));
         }
     }
     return vertices;
@@ -91,7 +91,7 @@ Result edgecollection_replace(const EdgeCollection edges, const EdgePointer edge
     if (!edgecollection_get(edges, position)) {
         runtime_error("set_edge: can only overwrite existing element");
     }
-    if (edge && (edge->first->label == edge->second->label)) {
+    if (edge && (edge->first.label == edge->second.label)) {
         runtime_error("set_edge: can't have looping edges");
     }
     if (position >= edges.members->capacity) {
@@ -205,7 +205,7 @@ bool edgecollection_contains_vertex(const EdgeCollection edges, const VertexPoin
     VertexCollection vertices = edgecollection_vertices(edges);
     size_t i;
     for (i = 0; i < vertexcollection_length(vertices); i++) {
-        if (vertex_equals(vertex, vertexcollection_get(vertices, i))) {
+        if (vertex_equals(*vertex, *vertexcollection_get(vertices, i))) {
             vertexcollection_destroy(vertices);
             return true;
         }
@@ -221,12 +221,12 @@ bool is_matching(const EdgeCollection edges)
     i = 0;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        if (*(visited + edge->first->label) || *(visited + edge->second->label)) {
+        if (*(visited + edge->first.label) || *(visited + edge->second.label)) {
             free(visited);
             return false;
         } else {
-            *(visited + edge->first->label) = true;
-            *(visited + edge->second->label) = true;
+            *(visited + edge->first.label) = true;
+            *(visited + edge->second.label) = true;
         } 
     }
     free(visited);
@@ -238,7 +238,7 @@ Result edgecollection_covered_by(const EdgeCollection edges, const VertexPointer
     size_t i;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer cand = edgecollection_get(edges, i);
-        if (edge_incident_with(cand, vertex)) {
+        if (edge_incident_with(cand, *vertex)) {
             *edge = cand;
             return SUCCESS;
         }
@@ -304,7 +304,7 @@ void edgecollection_print(const EdgeCollection edges)
     size_t i;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        printf("(%d, %d), ", edge->first->label, edge->second->label);
+        printf("(%d, %d), ", edge->first.label, edge->second.label);
     }
     printf("\n");
 }

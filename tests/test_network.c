@@ -17,8 +17,8 @@ char *utest_networkedge_is_reverse()
     parse(TEST_GRAPH, network);
     mu_assert("should have 7 edge", edgecollection_length(network->graph.edges) == 7);
     mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, edge2)); 
-    networkvertex_set_distance_label(network, vertex_p_make(1), 1);
-    networkvertex_set_distance_label(network, vertex_p_make(2), 0);
+    networkvertex_set_distance_label(network, vertex_make(1), 1);
+    networkvertex_set_distance_label(network, vertex_make(2), 0);
     mu_assert("should be reverse", networkedge_is_reverse(network, edger));
     mu_assert("should be reverse", networkedge_is_reverse(network, edge2r));
     mu_assert("edge should not be reverse", !networkedge_is_reverse(network, edge));
@@ -31,8 +31,8 @@ char *utest_networkvertex_is_active()
     NetworkPointer network = network_init();
     parse(TEST_GRAPH, network);
     networkedge_set_flow(network, edge_p_make_label(1, 2), 8);
-    mu_assert("should be active", networkvertex_is_active(network, vertex_p_make(2)));
-    mu_assert("should be 0", networkvertex_is_active(network, vertex_p_make(4)) == false);
+    mu_assert("should be active", networkvertex_is_active(network, vertex_make(2)));
+    mu_assert("should be 0", networkvertex_is_active(network, vertex_make(4)) == false);
     mu_assert("source should not be active", !networkvertex_is_active(network, network->source));
     mu_assert("source should not be active", !networkvertex_is_active(network, network->sink));
     return NULL;
@@ -46,8 +46,8 @@ char *utest_networkvertex_exflow()
     networkedge_set_flow(network, edge_p_make_label(1, 3), 10);
     networkedge_set_flow(network, edge_p_make_label(2, 4), 0);
     networkedge_set_flow(network, edge_p_make_label(2, 4), 0);
-    mu_assert("should be 10", networkvertex_exflow(network, vertex_p_make(2)) == 10);
-    mu_assert("should be 0", networkvertex_exflow(network, vertex_p_make(6)) == 0);
+    mu_assert("should be 10", networkvertex_exflow(network, vertex_make(2)) == 10);
+    mu_assert("should be 0", networkvertex_exflow(network, vertex_make(6)) == 0);
     return NULL; 
 }
 
@@ -61,7 +61,7 @@ char *utest_networkvertex_set_distance_label()
     network->graph = graph_make(vertices, edges);
     network->distance_labels = calloc(8, sizeof(Label));
     mu_assert("should be 0", *network->distance_labels == 0);
-    networkvertex_set_distance_label(network, vertexcollection_get(network->graph.vertices, 0), 77);
+    networkvertex_set_distance_label(network, *vertexcollection_get(network->graph.vertices, 0), 77);
     mu_assert("should be 77", *network->distance_labels == 77);
     return NULL;
 }
@@ -74,8 +74,8 @@ char *utest_networkvertex_distance_label()
     vertexcollection_push(vertices, vertex_p_make(0));
     network->graph = graph_make(vertices, edges);
     network->distance_labels = calloc(8, sizeof(Label));
-    networkvertex_set_distance_label(network, vertexcollection_get(network->graph.vertices, 0), 77);
-    mu_assert("should be 77", networkvertex_distance_label(network, vertexcollection_get(network->graph.vertices, 0)) == 77);
+    networkvertex_set_distance_label(network, *vertexcollection_get(network->graph.vertices, 0), 77);
+    mu_assert("should be 77", networkvertex_distance_label(network, *vertexcollection_get(network->graph.vertices, 0)) == 77);
     return NULL;
 }
 

@@ -55,7 +55,7 @@ TreeVertexPointer treevertex_subtree(TreeVertexPointer root, VertexPointer under
 
 TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content)
 {
-    if (vertex_equals(root->content, content)) {
+    if (vertex_equals(*root->content, *content)) {
         return root;
     }
     size_t i;

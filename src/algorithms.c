@@ -33,12 +33,12 @@ static Label find_min(const NetworkPointer network, const EdgeCollection edges)
             }
     }
     if (i == 0) {
-        runtime_error("relabel: vertex should have at least one outgoing edge");
+        runtime_error("find_min: vertex should have at least one outgoing edge");
     }
     return min;
 }
 
-static void push(const NetworkPointer network, const EdgePointer edge, const VertexPointer vertex)
+static void push(const NetworkPointer network, const EdgePointer edge, const Vertex vertex)
 {
     unsigned int exflow = networkvertex_exflow(network, vertex);
     unsigned int capacity = networkedge_residual_capacity(network, edge);
@@ -46,7 +46,7 @@ static void push(const NetworkPointer network, const EdgePointer edge, const Ver
     networkedge_augment(network, edge, gamma);
 }
 
-static void relabel(const NetworkPointer network, const VertexPointer vertex)
+static void relabel(const NetworkPointer network, const Vertex vertex)
 {
     graph_out_edges_from(network->residual_graph, vertex, &network->active_edges);
     Label min_label = find_min(network, network->active_edges);
@@ -56,8 +56,9 @@ static void relabel(const NetworkPointer network, const VertexPointer vertex)
 void push_relabel(NetworkPointer network)
 {
     push_relabel_initialize(network);
-    VertexPointer active = network_active_vertex(network);
-    while (active) {
+    Vertex active;
+    Result has_active = networkvertex_active(network, &active);
+    while (has_active == SUCCESS) {
         graph_out_edges_from(network->residual_graph, active, &network->active_edges);
         EdgePointer admissable = networkedge_admissable(network, network->active_edges);
         if (!admissable) {
@@ -65,7 +66,7 @@ void push_relabel(NetworkPointer network)
         } else {
             push(network, admissable, active);
         }
-        active = network_active_vertex(network);
+        has_active = networkvertex_active(network, &active);
     }
 }
 

@@ -38,12 +38,6 @@ size_t collection_length(const CollectionPointer collection)
 
 void *collection_get(const CollectionPointer collection, const unsigned int position)
 {
-    if (!collection) {
-        runtime_error("collection_get: argument is NULL");
-    }
-    if (position >= collection->length) {
-        return NULL;
-    }
     return *(collection->head + position);
 }
 

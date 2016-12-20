@@ -23,22 +23,9 @@ void graph_reset(Graph graph)
     edgecollection_reset(graph.edges);
 }
 
-VertexCollection graph_neighbors_of(const Graph graph, const VertexPointer vertex)
-{
-    VertexCollection ret = vertexcollection_init(vertexcollection_length(graph.vertices));
-    size_t i;
-    for (i = 0; i < edgecollection_length(graph.edges); i++) {
-        EdgePointer edge = edgecollection_get(graph.edges, i);
-        if (edge_incident_with(edge, vertex)) {
-            vertexcollection_push(ret, edge_get_adjacent(edge, vertex));
-        }
-    }
-    return ret;
-}
-
 void graph_out_edges_from(
         const Graph graph, 
-        const VertexPointer vertex,
+        const Vertex vertex,
         EdgeCollectionPointer ret)
 {
     edgecollection_reset(*ret);

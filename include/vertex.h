@@ -12,6 +12,8 @@ typedef struct vertex {
     Label label;
 } Vertex, *VertexPointer;
 
+Vertex vertex_empty();
+
 // Construct a vertex
 Vertex vertex_make(const Label label);
 
@@ -19,9 +21,9 @@ Vertex vertex_make(const Label label);
 VertexPointer vertex_p_make(const Label label);
 
 // Return true if the vertices are considered the same, false otherwise
-bool vertex_equals(const VertexPointer vertex_a, const VertexPointer vertex_b);
+bool vertex_equals(const Vertex vertex_a, const Vertex vertex_b);
 
 // Print the label of a vertex to stdout
-void vertex_print(const VertexPointer vertex);
+void vertex_print(const Vertex vertex);
 
 #endif

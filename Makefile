@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c99 -Wall -g -D_POSIX_SOURCE -D_GNU_SOURCE -I'include' -I'include/third_party' -O2
+CFLAGS=-std=c99 -Wall -g -D_POSIX_SOURCE -D_GNU_SOURCE -I'include' -I'include/third_party'
 SRC_DIR=src
 3P_SRC_DIR=src/third_party
 TEST_DIR=tests

@@ -41,7 +41,7 @@ char *utest_graph_make()
     Graph graph = graph_make(vertexcollection, edgecollection);
     mu_assert("should not be null", vertexcollection_get(graph.vertices, 0));
     mu_assert("should not be null", edgecollection_get(graph.edges, 0));
-    mu_assert("should be 1", edgecollection_get(graph.edges, 0)->first->label == 0);
+    mu_assert("should be 1", edgecollection_get(graph.edges, 0)->first.label == 0);
     return NULL;
 }
 

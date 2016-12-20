@@ -1,6 +1,13 @@
 
 #include "vertex.h"
 
+Vertex vertex_empty()
+{
+    Vertex ret;
+    ret.label = 0; // TODO
+    return ret;
+}
+
 Vertex vertex_make(const Label label)
 {
     Vertex ret;
@@ -15,16 +22,13 @@ VertexPointer vertex_p_make(const Label label)
     return ret;
 }
 
-bool vertex_equals(const VertexPointer vertex_a, const VertexPointer vertex_b)
+bool vertex_equals(const Vertex vertex_a, const Vertex vertex_b)
 {
-    if (!vertex_a || !vertex_b) {
-        return vertex_a == vertex_b;
-    } 
-    return vertex_a->label == vertex_b->label;
+    return vertex_a.label == vertex_b.label;
 }
 
-void vertex_print(const VertexPointer vertex)
+void vertex_print(const Vertex vertex)
 {
-    printf("%u\n", vertex->label);
+    printf("%u\n", vertex.label);
 }
 

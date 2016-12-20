@@ -48,7 +48,6 @@ VertexPointer vertexcollection_get(const VertexCollection vertices, const unsign
 {
     if (position >= vertices.members->capacity) {
         runtime_error("vertexcollection_get: index out of bounds");
-        return NULL;
     }
     return (VertexPointer) collection_get(vertices.members, position);
 }
@@ -62,14 +61,15 @@ VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, c
             return vertex;
         }
     }
+    runtime_error("vertexcollection_get_with_label: no vertex with that label");
     return NULL;
 }
 
-unsigned int vertexcollection_index_of(const VertexCollection vertices, const VertexPointer vertex)
+unsigned int vertexcollection_index_of(const VertexCollection vertices, const Vertex vertex)
 {
     size_t i;
     for (i = 0; i < vertexcollection_length(vertices); i++) {
-        if (vertex_equals(vertex, vertexcollection_get(vertices, i))) {
+        if (vertex_equals(vertex, *vertexcollection_get(vertices, i))) {
             return i;
         }
     }
@@ -110,8 +110,8 @@ bool vertexcollection_equals(const VertexCollection vertexcollection_a, const Ve
     }
     size_t i;
     for (i = 0; i < vertexcollection_length(vertexcollection_a); i++) {
-        VertexPointer vertex_a = vertexcollection_get(vertexcollection_a, i);
-        VertexPointer vertex_b = vertexcollection_get(vertexcollection_b, i);
+        Vertex vertex_a = *vertexcollection_get(vertexcollection_a, i);
+        Vertex vertex_b = *vertexcollection_get(vertexcollection_b, i);
         if (vertex_equals(vertex_a, vertex_b)) {
             return false;
         }
@@ -171,8 +171,8 @@ void vertexcollection_print(const VertexCollection vertices)
 {
     size_t i;
     for (i = 0; i < vertexcollection_length(vertices); i++) {
-        VertexPointer vertex = vertexcollection_get(vertices, i);
-            printf("%d, ", vertex->label);
+        Vertex vertex = *vertexcollection_get(vertices, i);
+            printf("%d, ", vertex.label);
     }
     printf("\n");
 }

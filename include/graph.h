@@ -21,11 +21,9 @@ Graph graph_make(const VertexCollection vertexcollection, const EdgeCollection e
 
 void graph_reset(Graph graph);
 
-VertexCollection graph_neighbors_of(const Graph graph, const VertexPointer vertex);
-
 void graph_out_edges_from(
         const Graph graph, 
-        const VertexPointer vertex,
+        const Vertex vertex,
         EdgeCollectionPointer ret);
 
 // Frees the structure
