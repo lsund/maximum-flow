@@ -2,12 +2,14 @@
 #ifndef EDGE_COLLECTION_H
 #define EDGE_COLLECTION_H
 
+#include "third_party/strmap.h"
 #include "edge.h"
 #include "util.h"
 #include "vertexcollection.h"
 
 typedef struct edgecollection {
     CollectionPointer members;
+    StrMap *indices;
 } EdgeCollection, *EdgeCollectionPointer;
 
 // Returns a dummy edgecollection with it's collection set to NULL
@@ -42,6 +44,9 @@ Result edgecollection_replace(const EdgeCollection edges, const EdgePointer edge
 // Sets the last element to the specified edge, and increments the number of
 // elements
 Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge);
+
+// Removes the element from the edgecollection
+void edgecollection_remove(EdgeCollection edges, const EdgePointer edge);
 
 // Returns true if the edgecollection has no initialized elements, false otherwise.
 bool edgecollection_is_empty(const EdgeCollection edges);

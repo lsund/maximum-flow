@@ -53,6 +53,8 @@ bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b);
 
 bool edge_equals_reverse(const EdgePointer edge_a, const EdgePointer edge_b);
 
+char *edge_string_representation(const EdgePointer edge);
+
 // Print an edge as "(v, w)" to stdout
 void edge_print(const Edge edge);
 

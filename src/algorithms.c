@@ -1,8 +1,6 @@
 
 #include "algorithms.h"
 
-EdgeCollection out_edges;
-
 static void push_relabel_initialize(NetworkPointer network)
 {
     size_t i;
@@ -11,8 +9,12 @@ static void push_relabel_initialize(NetworkPointer network)
         if (vertex_equals(edge->first, network->source)) {
             unsigned int capacity = networkedge_capacity(network, edge);
             networkedge_set_flow(network, edge, capacity);
+            EdgePointer residual_back_edge = edge_p_make_edge(edge_swapped(*edge));
+            edgecollection_push(network->residual_graph.edges, residual_back_edge);
         } else {
             networkedge_set_flow(network, edge, 0);
+            EdgePointer residual_edge = edge_p_make_edge(*edge);
+            edgecollection_push(network->residual_graph.edges, residual_edge);
         }
     }
     size_t n_vertices = vertexcollection_length(network->graph.vertices);
@@ -44,32 +46,26 @@ static void push(const NetworkPointer network, const EdgePointer edge, const Ver
     networkedge_augment(network, edge, gamma);
 }
 
-static void relabel(const NetworkPointer network, const VertexPointer vertex, GraphPointer residual_graph)
+static void relabel(const NetworkPointer network, const VertexPointer vertex)
 {
-    network_residual_graph(network, residual_graph);
-    graph_out_edges_from(*residual_graph, vertex, &out_edges);
-    Label min_label = find_min(network, out_edges);
+    graph_out_edges_from(network->residual_graph, vertex, &network->active_edges);
+    Label min_label = find_min(network, network->active_edges);
     networkvertex_set_distance_label(network, vertex, min_label);
 }
 
 void push_relabel(NetworkPointer network)
 {
-    Graph residual_graph = graph_init();
-    out_edges = edgecollection_init(edgecollection_length(network->graph.edges));
     push_relabel_initialize(network);
     VertexPointer active = network_active_vertex(network);
     while (active) {
-        network_residual_graph(network, &residual_graph);
-        graph_out_edges_from(residual_graph, active, &out_edges);
-        EdgePointer admissable = networkedge_admissable(network, out_edges, &residual_graph);
+        graph_out_edges_from(network->residual_graph, active, &network->active_edges);
+        EdgePointer admissable = networkedge_admissable(network, network->active_edges);
         if (!admissable) {
-            relabel(network, active, &residual_graph);
+            relabel(network, active);
         } else {
             push(network, admissable, active);
         }
         active = network_active_vertex(network);
     }
-    edgecollection_destroy(out_edges);
-    graph_destroy(residual_graph);
 }
 

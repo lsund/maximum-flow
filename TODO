@@ -1,10 +1,31 @@
 MISC:
 
-timer in ./bin/main
+timer in ./bin/main                             [done]
 add constructs to allow for constant access  
 (do not need to generate res_graph etc)
 clean up, sort network
 change spit to accept a network
+
+efficient maintanence of residual graph 
+remove, add max Ologn
+places where residual graph changes:
+
+*initialize_push_relabel
+
+All forward edges out from source has capacity 
+u - f 0 so they are not take taken
+
+All backward edges out from source has capacity
+f so they are taken
+
+*push
+
+decrease the capacity of the corresponding
+forward edge (maybe remove it): 
+
+
+increase the capacity of the backward edge
+(maybe add it)
 
 RENAMINGS:
 
@@ -27,21 +48,22 @@ is_admissable(edge)                             [done]
 network_residual                                ?
 float residualal_capacity(networkedge)          [done]
 network_edge_is_reverse                         [done]
-networkvertex_distance_label                   [done]
+networkvertex_distance_label                    [done]
+edgecollection_remove                           [done]
 
 TESTS FUNCTIONS:
 
 graph_incident_with                             [done]
-networkvertex_exflow                           [done]
+networkvertex_exflow                            [done]
 network_active_vertex                           [done]
 network_admissable_edge                         [] *
 edgecollection_index_of                         [] * (needs to be the d+(v))
 vertexcollection_index_of                       [] *
 network_edge_is_residual                        [] *
 edge_equals_reverse                             [] *
-networkedge_augment                            [] *
-networkvertex_set_distance_label               [done]
-networkvertex_distance_label                   [done]
+networkedge_augment                             [] *
+networkvertex_set_distance_label                [done]
+networkvertex_distance_label                    [done]
 push_relabel                                    [] *
 network_flow                                    []
 graph_neighbours_of                             [] 

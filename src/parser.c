@@ -115,6 +115,7 @@ Result parse(const char *filename, const NetworkPointer network)
         EdgePointer p_edge = edgecollection_get(network->graph.edges, i);
         Edge reverse_edge = edge_swapped(*p_edge);
         edgecollection_push(network->reverse_edges, edge_p_make_edge(reverse_edge));
+
     }
 
     return SUCCESS;

@@ -32,29 +32,26 @@ unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer ed
 
 static bool networkedge_is_admissable(
         const NetworkPointer network, 
-        const EdgePointer edge, 
-        GraphPointer residual_graph
+        const EdgePointer edge
     )
 {
     unsigned int label_first, label_second;
     label_first = networkvertex_distance_label(network, edge->first);
     label_second = networkvertex_distance_label(network, edge->second);
     bool cond_a = label_first == label_second + 1;
-    network_residual_graph(network, residual_graph);
-    bool cond_b = edgecollection_contains_edge(residual_graph->edges, edge);
+    bool cond_b = edgecollection_contains_edge(network->residual_graph.edges, edge);
     return cond_a && cond_b;
 }
 
 EdgePointer networkedge_admissable(
         const NetworkPointer network, 
-        const EdgeCollection edges, 
-        GraphPointer residual_graph
+        const EdgeCollection edges 
     )
 {
     size_t i;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        if (networkedge_is_admissable(network, edge, residual_graph)) {
+        if (networkedge_is_admissable(network, edge)) {
             return edge;
         } 
     }
@@ -93,6 +90,16 @@ EdgePointer networkedge_reverse(const NetworkPointer network, const EdgePointer 
 
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow)
 {
+    EdgePointer back_edge = edge_p_make_edge(edge_swapped(*edge));
+
+    unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
+    unsigned int residual_back_capacity = networkedge_residual_capacity(network, back_edge);
+    if (residual_capacity - added_flow <= 0) {
+        edgecollection_remove(network->residual_graph.edges, edge);
+    }
+    if (residual_back_capacity <= 0) {
+        edgecollection_push(network->residual_graph.edges, back_edge);
+    }
     EdgePointer reverse_edge = networkedge_reverse(network, edge);
     if (!reverse_edge) {
         int flow = networkedge_flow(network, edge);

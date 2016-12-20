@@ -7,6 +7,7 @@
 #include <string.h>
 #include <limits.h>
 
+#define MAX_NUM_LEN 10
 #define MAX_VERTICES 1000
 #define MAX_EDGES 1000
 #define TKN_MAX_LEN 64

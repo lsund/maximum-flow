@@ -1,6 +1,40 @@
 
 #include <stdlib.h>
 #include "test.h"
+#include "collection.h"
+
+char *utest_edgecollection_remove()
+{
+    EdgePointer a = edge_p_make_label(0, 1);
+    EdgePointer b = edge_p_make_label(1, 2);
+    EdgePointer c = edge_p_make_label(2, 3);
+    EdgeCollection edgecollection = edgecollection_init(ARRAY_MIN_SIZE);
+    edgecollection_push(edgecollection, a);
+    edgecollection_push(edgecollection, b);
+    edgecollection_push(edgecollection, c);
+    edgecollection_remove(edgecollection, b);
+
+    mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
+    mu_assert("should not have b", !edgecollection_contains_edge(edgecollection, b));
+    mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
+    edgecollection_remove(edgecollection, c);
+    mu_assert("should not have c", !edgecollection_contains_edge(edgecollection, c));
+    mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
+    edgecollection_remove(edgecollection, a);
+    mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, a));
+    edgecollection_push(edgecollection, a);
+    edgecollection_push(edgecollection, b);
+    edgecollection_push(edgecollection, c);
+    mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
+    mu_assert("should have b", edgecollection_contains_edge(edgecollection, b));
+    mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
+    edgecollection_remove(edgecollection, a);
+    mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, a));
+    mu_assert("should have b", edgecollection_contains_edge(edgecollection, b));
+    mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
+
+    return NULL;
+}
 
 char *utest_edgecollection_empty()
 {
@@ -102,8 +136,11 @@ char *utest_edgecollection_push()
 {
     EdgeCollection edgecollection;
     edgecollection = edgecollection_init(4);
+    EdgePointer a = edge_p_make_label(2, 3);
+    EdgePointer b = edge_p_make_label(2, 4);
     mu_assert("should not contain vertex 2", !edgecollection_contains_vertex(edgecollection, vertex_p_make(2)));
-    mu_assert("1 should succeed", edgecollection_push(edgecollection, edge_p_make_label(2, 3)) == SUCCESS);
+    mu_assert("1 should succeed", edgecollection_push(edgecollection, a) == SUCCESS);
+    mu_assert("should get 0 as index", edgecollection_index_of(edgecollection, a) == 0);
     mu_assert("should be 2", edgecollection_get(edgecollection, 0)->first->label == 2);
     mu_assert("should contain vertex 2", edgecollection_contains_vertex(edgecollection, vertex_p_make(2)));
     mu_assert("should contain vertex 3", edgecollection_contains_vertex(edgecollection, vertex_p_make(3)));
@@ -112,6 +149,8 @@ char *utest_edgecollection_push()
     mu_assert("vertexcollection should also contain 3", vertexcollection_contains_label(vertices, 3));
     mu_assert("capacity still 4", edgecollection.members->capacity == 4);
     mu_assert("length 1", edgecollection.members->length == 1);
+    mu_assert("1 should succeed", edgecollection_push(edgecollection, b) == SUCCESS);
+    mu_assert("b should get 1 as index", edgecollection_index_of(edgecollection, b) == 1);
     return NULL;
 }
 
@@ -427,5 +466,7 @@ char *test_edgecollection() {
     mu_run_utest(utest_edgecollection_contains_vertex);
     mu_message(UNIT, "is_matching\n");
     mu_run_utest(utest_is_matching);
+    mu_message(UNIT, "edgecollection_remove\n");
+    mu_run_utest(utest_edgecollection_remove);
     return NULL;
 }

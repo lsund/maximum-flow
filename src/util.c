@@ -32,4 +32,13 @@ size_t smaller(const size_t size_a, const size_t size_b)
     return size_a < size_b ? size_a : size_b;
 }
 
+unsigned int number_of_digits(unsigned int n, unsigned int base)
+{
+    unsigned int n_digits = 0;
 
+    do {
+            ++n_digits; 
+                n /= base;
+    } while (n);
+    return n_digits;
+}

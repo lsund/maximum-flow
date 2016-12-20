@@ -93,6 +93,13 @@ unsigned int edge_to_bitpos(const Edge edge, const unsigned int nvertices)
     return edge.first->label * nvertices + edge.second->label;
 }
 
+char *edge_string_representation(const EdgePointer edge)
+{
+    char *ret = malloc(sizeof(char) * MAX_NUM_LEN * 2 + 2);
+    sprintf(ret, "%u%u", edge->first->label, edge->second->label);
+    return ret;
+}
+
 void edge_print(const Edge edge)
 {
     printf("(%u, %u)\n", edge.first->label, edge.second->label);

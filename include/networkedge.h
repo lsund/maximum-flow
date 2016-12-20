@@ -17,7 +17,10 @@ EdgePointer networkedge_reverse(const NetworkPointer network, const EdgePointer 
 
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow);
 
-EdgePointer networkedge_admissable(const NetworkPointer network, const EdgeCollection edges, GraphPointer residual_graph);
+EdgePointer networkedge_admissable(
+        const NetworkPointer network, 
+        const EdgeCollection edges 
+    );
 
 void networkedge_set_capacity(
         const NetworkPointer network, 

@@ -28,4 +28,6 @@ size_t larger(const size_t size_a, const size_t size_b);
 // Return the smaller of the two inputs
 size_t smaller(const size_t size_a, const size_t size_b);
 
+unsigned int number_of_digits(unsigned int n, unsigned int base);
+
 #endif
