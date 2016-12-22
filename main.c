@@ -13,9 +13,9 @@ int main(int argc, char *argv[])
     if (argc == 2) {
         parse(argv[1], network);
     } else {
-        // 13x13 2.4 (2.1)
+        // 20x20 10.6 s
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
-        parse("/home/lsund/Data/graphs/data/networks/set/gen13x13.dmx", network);
+        parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network);
     }
     clock_t start = clock(), diff;
     push_relabel(network);

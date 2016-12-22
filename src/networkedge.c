@@ -39,7 +39,7 @@ static bool networkedge_is_admissable(
     label_first = networkvertex_distance_label(network, edge->first);
     label_second = networkvertex_distance_label(network, edge->second);
     bool cond_a = label_first == label_second + 1;
-    bool cond_b = edgecollection_contains_edge(*(network->out_edges + edge->first.label), edge);
+    bool cond_b = edgecollection_contains_edge(*(network->residual_edges + edge->first.label), edge);
     return cond_a && cond_b;
 }
 
@@ -104,10 +104,10 @@ void networkedge_augment(const NetworkPointer network, const EdgePointer edge, c
     unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
     unsigned int residual_back_capacity = networkedge_residual_capacity(network, back_edge);
     if (residual_capacity - added_flow <= 0) {
-        edgecollection_remove(*(network->out_edges + edge->first.label), edge); 
+        edgecollection_remove(*(network->residual_edges + edge->first.label), edge); 
     }
     if (residual_back_capacity <= 0) {
-        edgecollection_push(*(network->out_edges + edge->second.label), back_edge); 
+        edgecollection_push(*(network->residual_edges + edge->second.label), back_edge); 
     }
     EdgePointer reverse_edge = networkedge_reverse(network, edge);
     if (!reverse_edge) {
