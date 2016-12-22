@@ -113,9 +113,13 @@ void networkedge_augment(const NetworkPointer network, const EdgePointer edge, c
     if (!reverse_edge) {
         int flow = networkedge_flow(network, edge);
         networkedge_set_flow(network, edge, flow + added_flow);
+        *(network->inflows + edge->second.label) += added_flow;
+        *(network->outflows + edge->first.label) += added_flow;
     } else {
         int flow = networkedge_flow(network, reverse_edge);
         networkedge_set_flow(network, reverse_edge, flow - added_flow);
+        *(network->inflows + reverse_edge->second.label) -= added_flow;
+        *(network->outflows + reverse_edge->first.label) -= added_flow;
     }
 }
 

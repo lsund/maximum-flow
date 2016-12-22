@@ -9,6 +9,8 @@ static void push_relabel_initialize(NetworkPointer network)
         if (vertex_equals(edge->first, network->source)) {
             unsigned int capacity = networkedge_capacity(network, edge);
             networkedge_set_flow(network, edge, capacity);
+            *(network->inflows + edge->second.label) = capacity;
+            *(network->outflows + edge->first.label) = capacity;
             Edge back_edge_val = edge_swapped(*edge);
             int index = edgecollection_index_of(network->reverse_edges, &back_edge_val);
             EdgePointer residual_back_edge = edgecollection_get(network->reverse_edges, index);

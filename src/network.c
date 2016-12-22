@@ -8,13 +8,13 @@ NetworkPointer network_init()
     ret->residual_graph  = graph_init();
     ret->reverse_edges   = edgecollection_init(ARRAY_MIN_SIZE);
     ret->active_edges    = edgecollection_init(ARRAY_MIN_SIZE);
-    ret->in_edges        = NULL;
-    ret->out_edges       = NULL;
     ret->source          = vertex_empty();
     ret->sink            = vertex_empty();
     ret->capacities      = NULL;
     ret->flows           = NULL;
     ret->distance_labels = NULL;
+    ret->inflows         = NULL;
+    ret->outflows        = NULL;
     return ret;
 }
 
@@ -39,14 +39,6 @@ void network_destroy(NetworkPointer network)
         VertexPointer vertex = vertexcollection_get(network->graph.vertices, i);
         free(vertex);
     }
-    for (i = 1; i <= vertexcollection_length(network->graph.vertices); i++) {
-        EdgeCollection in_edges = *(network->in_edges + i);
-        EdgeCollection out_edges = *(network->out_edges + i);
-        edgecollection_destroy(in_edges);
-        edgecollection_destroy(out_edges);
-    }
-    free(network->in_edges);
-    free(network->out_edges);
     edgecollection_destroy(network->reverse_edges);
     edgecollection_destroy(network->active_edges);
     graph_destroy(network->graph);

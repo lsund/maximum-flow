@@ -86,11 +86,6 @@ bool edge_incident_with(const EdgePointer edge, const Vertex vertex)
     return vertex_equals(edge->first, vertex) || vertex_equals(edge->second, vertex); 
 }
 
-unsigned int edge_to_bitpos(const Edge edge, const unsigned int nvertices)
-{
-    return edge.first.label * nvertices + edge.second.label;
-}
-
 unsigned int edge_hash(const EdgePointer edge)
 {
     unsigned int a = edge->first.label;

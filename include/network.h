@@ -7,11 +7,9 @@ typedef struct network {
     Graph                   graph;
     Graph                   residual_graph;
     EdgeCollection          reverse_edges, active_edges;
-    EdgeCollectionPointer   in_edges, out_edges;
     Vertex                  source;
     Vertex                  sink;
-    unsigned int            *capacities;
-    unsigned int            *residual_capacities;
+    unsigned int            *capacities, *inflows, *outflows;
     int                     *flows;
     Label                   *distance_labels;
 } Network, *NetworkPointer;

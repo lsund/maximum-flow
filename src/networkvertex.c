@@ -8,34 +8,14 @@ Label networkvertex_distance_label(const NetworkPointer network, const Vertex ve
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex)
 {
-    unsigned int inflow;
-    inflow = 0;
-    size_t i;
-    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer edge = edgecollection_get(network->graph.edges, i);
-        if (vertex_equals(edge->second, vertex)) {
-            inflow += networkedge_flow(network, edge);
-        }
-    }
-    return inflow;
+    return *(network->inflows + vertex.label);
 }
 
 int networkvertex_exflow(const NetworkPointer network, const Vertex vertex)
 {
     unsigned int inflow, outflow;
-    inflow = 0;
-    outflow = 0;
-    size_t i;
-    EdgeCollection in_edges = *(network->in_edges + vertex.label);
-    EdgeCollection out_edges = *(network->out_edges + vertex.label);
-    for (i = 0; i < edgecollection_length(in_edges); i++) {
-            EdgePointer edge = edgecollection_get(*(network->in_edges + vertex.label), i);
-            inflow += networkedge_flow(network, edge);
-    }
-    for (i = 0; i < edgecollection_length(out_edges); i++) {
-            EdgePointer edge = edgecollection_get(*(network->out_edges + vertex.label), i);
-            outflow += networkedge_flow(network, edge);
-    }
+    inflow = *(network->inflows + vertex.label);
+    outflow = *(network->outflows + vertex.label);
     return inflow - outflow;
 }
 
