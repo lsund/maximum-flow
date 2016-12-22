@@ -39,7 +39,7 @@ static bool networkedge_is_admissable(
     label_first = networkvertex_distance_label(network, edge->first);
     label_second = networkvertex_distance_label(network, edge->second);
     bool cond_a = label_first == label_second + 1;
-    bool cond_b = edgecollection_contains_edge(network->residual_graph.edges, edge);
+    bool cond_b = edgecollection_contains_edge(*(network->out_edges + edge->first.label), edge);
     return cond_a && cond_b;
 }
 
@@ -104,22 +104,16 @@ void networkedge_augment(const NetworkPointer network, const EdgePointer edge, c
     unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
     unsigned int residual_back_capacity = networkedge_residual_capacity(network, back_edge);
     if (residual_capacity - added_flow <= 0) {
-        edgecollection_remove(network->residual_graph.edges, edge);
+        edgecollection_remove(*(network->out_edges + edge->first.label), edge); 
     }
     if (residual_back_capacity <= 0) {
-        edgecollection_push(network->residual_graph.edges, back_edge);
+        edgecollection_push(*(network->out_edges + edge->second.label), back_edge); 
     }
     EdgePointer reverse_edge = networkedge_reverse(network, edge);
     if (!reverse_edge) {
-        int flow = networkedge_flow(network, edge);
-        networkedge_set_flow(network, edge, flow + added_flow);
-        *(network->inflows + edge->second.label) += added_flow;
-        *(network->outflows + edge->first.label) += added_flow;
+        networkedge_add_flow(network, edge, added_flow);
     } else {
-        int flow = networkedge_flow(network, reverse_edge);
-        networkedge_set_flow(network, reverse_edge, flow - added_flow);
-        *(network->inflows + reverse_edge->second.label) -= added_flow;
-        *(network->outflows + reverse_edge->first.label) -= added_flow;
+        networkedge_add_flow(network, reverse_edge, -added_flow);
     }
 }
 
@@ -131,6 +125,19 @@ void networkedge_set_flow(
 {
     unsigned int index = edgecollection_index_of(network->graph.edges, edge);
     *(network->flows + index) = flow;
+}
+
+void networkedge_add_flow(
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        int added_flow
+    )
+{
+    int flow = networkedge_flow(network, edge);
+    unsigned int index = edgecollection_index_of(network->graph.edges, edge);
+    *(network->flows + index) = flow + added_flow;
+    *(network->inflows + edge->second.label) += added_flow;
+    *(network->outflows + edge->first.label) += added_flow;
 }
 
 void networkedge_set_capacity(

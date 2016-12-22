@@ -8,15 +8,10 @@ static void push_relabel_initialize(NetworkPointer network)
         EdgePointer edge = edgecollection_get(network->graph.edges, i);
         if (vertex_equals(edge->first, network->source)) {
             unsigned int capacity = networkedge_capacity(network, edge);
-            networkedge_set_flow(network, edge, capacity);
-            *(network->inflows + edge->second.label) = capacity;
-            *(network->outflows + edge->first.label) = capacity;
-            Edge back_edge_val = edge_swapped(*edge);
-            int index = edgecollection_index_of(network->reverse_edges, &back_edge_val);
-            EdgePointer residual_back_edge = edgecollection_get(network->reverse_edges, index);
-            edgecollection_push(network->residual_graph.edges, residual_back_edge);
+            networkedge_augment(network, edge, capacity);
         } else {
             networkedge_set_flow(network, edge, 0);
+            edgecollection_push(*(network->out_edges + edge->first.label), edge); 
             edgecollection_push(network->residual_graph.edges, edge);
         }
     }
@@ -51,7 +46,7 @@ static void push(const NetworkPointer network, const EdgePointer edge, const Ver
 
 static void relabel(const NetworkPointer network, const Vertex vertex)
 {
-    graph_out_edges_from(network->residual_graph, vertex, &network->active_edges);
+    network->active_edges = *(network->out_edges + vertex.label);
     Label min_label = find_min(network, network->active_edges);
     networkvertex_set_distance_label(network, vertex, min_label);
 }
@@ -62,7 +57,7 @@ void push_relabel(NetworkPointer network)
     Vertex active;
     Result has_active = networkvertex_active(network, &active);
     while (has_active == SUCCESS) {
-        graph_out_edges_from(network->residual_graph, active, &network->active_edges);
+        network->active_edges = *(network->out_edges + active.label);
         EdgePointer admissable = networkedge_admissable(network, network->active_edges);
         if (!admissable) {
             relabel(network, active);

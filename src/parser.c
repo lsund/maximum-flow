@@ -80,6 +80,11 @@ Result parse(const char *filename, const NetworkPointer network)
     network->inflows         = calloc(n_vertices + 1, sizeof(unsigned int));
     network->outflows         = calloc(n_vertices + 1, sizeof(unsigned int));
     network->distance_labels = calloc(n_vertices, sizeof(Label));
+    network->out_edges      = malloc((n_vertices + 1) * sizeof(EdgeCollection));
+    size_t i;
+    for (i = 1; i <= n_vertices; i++) {
+        *(network->out_edges + i) = edgecollection_init(n_edges);
+    }
 
     unsigned int row;
     for (row = 0; row < table->populated_rows; row++) {
@@ -111,7 +116,6 @@ Result parse(const char *filename, const NetworkPointer network)
         }
     }
     tokentable_destroy(table);
-    size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer p_edge = edgecollection_get(network->graph.edges, i);
         Edge reverse_edge_val = edge_swapped(*p_edge);

@@ -15,6 +15,7 @@ NetworkPointer network_init()
     ret->distance_labels = NULL;
     ret->inflows         = NULL;
     ret->outflows        = NULL;
+    ret->out_edges       = NULL;
     return ret;
 }
 
@@ -28,6 +29,8 @@ void network_destroy(NetworkPointer network)
     free(network->distance_labels);
     free(network->flows);
     free(network->capacities);
+    free(network->inflows);
+    free(network->outflows);
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer edge = edgecollection_get(network->graph.edges, i);

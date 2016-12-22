@@ -34,4 +34,10 @@ void networkedge_set_flow(
         const int flow
     );
 
+void networkedge_add_flow(
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        int added_flow
+    );
+
 #endif

@@ -10,13 +10,7 @@
 
 *****************************************************************************/
 
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <unistd.h>
 #include "test.h"
-#include "minunit.h"
 
 #ifndef TEST
 #define TEST 0

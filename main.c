@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     if (argc == 2) {
         parse(argv[1], network);
     } else {
-        // 13x13 3.3s, (2.8)
+        // 13x13 2.4 (2.1)
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
         parse("/home/lsund/Data/graphs/data/networks/set/gen13x13.dmx", network);
     }

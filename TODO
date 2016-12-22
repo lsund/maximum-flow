@@ -10,12 +10,15 @@ efficient maintanence of residual graph         [done]
 remove, add max Ologn                           [done]
 
 network store in_edges for each vertex          [done]
-network store out_edges for each vertex         [done]
+network store out_edges for each vertex         []
 
-store the inflow and outflow of vertices
+store the inflow and outflow of vertices        [done]
 
-most time taken by vertex comparisons:
+most time taken by vertex comparisons:          [done]
 change vertexpointer to vertex?
+
+need not flows of edges? enough with vertex
+in/out flows?
 
 RENAMINGS:
 
