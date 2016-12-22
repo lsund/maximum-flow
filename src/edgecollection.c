@@ -16,7 +16,7 @@ EdgeCollection edgecollection_init(const size_t size)
     } else {
         EdgeCollection ret;
         ret.members = collection_p_init(size);
-        ret.indices = sm_new(size);
+        ret.indices = map_create();
         return ret;
     }
 }
@@ -30,8 +30,7 @@ EdgeCollectionPointer edgecollection_p_init(const unsigned int nvertices)
 
 void edgecollection_reset(EdgeCollection edges)
 {
-    free(edges.indices);
-    edges.indices = sm_new(edges.members->capacity);
+    map_reset(edges.indices);
     collection_reset(edges.members);
 }
 
@@ -49,15 +48,13 @@ EdgePointer edgecollection_get(const EdgeCollection edges, const unsigned int po
     return collection_get(edges.members, position);
 }
 
-unsigned int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge)
+int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge)
 {
-int sm_get(const StrMap *map, const char *key, char *out_buf, unsigned int n_out_buf);
-    char s_index[MAX_NUM_LEN];
-    char *s_rep = edge_string_representation(edge);
-    sm_get(edges.indices, s_rep, s_index, MAX_NUM_LEN); 
-    unsigned int ret = strtol(s_index, NULL, 10);
-    free(s_rep);
-    return ret;
+    if (map_exists(edges.indices, edge_hash(edge))) {
+        return map_get(edges.indices, edge_hash(edge));
+    } else {
+        return -1;
+    }
 }
 
 size_t edgecollection_vertex_count(const EdgeCollection edges)
@@ -104,11 +101,7 @@ Result edgecollection_replace(const EdgeCollection edges, const EdgePointer edge
 Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
     if (!edgecollection_contains_edge(edges, edge)) {
-        unsigned int index = edgecollection_length(edges);
-        char *s_rep   = edge_string_representation(edge);
-        char *s_index = malloc(sizeof(char) * number_of_digits(index, 10) + 1);
-        sprintf(s_index, "%u", index);
-        sm_put(edges.indices, s_rep, s_index);
+        map_put(edges.indices, edge_hash(edge), edgecollection_length(edges));
         return collection_push(edges.members, edge);
     } else {
         return FAIL;
@@ -117,22 +110,21 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 
 void edgecollection_remove(EdgeCollection edges, const EdgePointer edge)
 {
-    char *s_rep = edge_string_representation(edge);
-    sm_put(edges.indices, s_rep, "x");
-    free(s_rep);
+    map_put(edges.indices, edge_hash(edge), -1);
     size_t i, n_edges = edgecollection_length(edges);
-    EdgeCollection ret = edgecollection_init(n_edges);
+    EdgeCollection temp = edgecollection_init(n_edges);
     for (i = 0; i < n_edges; i++) {
         EdgePointer current = edgecollection_get(edges, i);
         if (!edge_equals(edge, current)) {
-            edgecollection_push(ret, current);  
+            edgecollection_push(temp, current);  
         }
     }
     edgecollection_reset(edges);
-    for (i = 0; i < edgecollection_length(ret); i++) {
-        EdgePointer current = edgecollection_get(ret, i);
+    for (i = 0; i < edgecollection_length(temp); i++) {
+        EdgePointer current = edgecollection_get(temp, i);
         edgecollection_push(edges, current);
     }
+    edgecollection_destroy(temp);
 }
 
 bool edgecollection_is_empty(const EdgeCollection edges)
@@ -189,15 +181,12 @@ bool edgecollection_is_sub(const EdgeCollection sub, const EdgeCollection super)
 
 bool edgecollection_contains_edge(const EdgeCollection edges, const EdgePointer edge)
 {
-    char *s_rep = edge_string_representation(edge);
-    if (!sm_exists(edges.indices, s_rep)) {
-        free(s_rep);
+    unsigned int key = edge_hash(edge);
+    if (!map_exists(edges.indices, key)) {
         return false;
+    } else {
+        return map_get(edges.indices, key) != -1;
     }
-    char s_index[MAX_NUM_LEN];
-    sm_get(edges.indices, s_rep, s_index, MAX_NUM_LEN);
-    free(s_rep);
-    return strcmp(s_index, "x") != 0;
 }
 
 bool edgecollection_contains_vertex(const EdgeCollection edges, const VertexPointer vertex)
@@ -312,7 +301,7 @@ void edgecollection_print(const EdgeCollection edges)
 Result edgecollection_destroy(EdgeCollection edges)
 {
     collection_destroy(edges.members);
-    sm_delete(edges.indices);
+    map_destroy(edges.indices);
     return SUCCESS;
 }
 

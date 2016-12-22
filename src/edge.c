@@ -91,11 +91,11 @@ unsigned int edge_to_bitpos(const Edge edge, const unsigned int nvertices)
     return edge.first.label * nvertices + edge.second.label;
 }
 
-char *edge_string_representation(const EdgePointer edge)
+unsigned int edge_hash(const EdgePointer edge)
 {
-    char *ret = malloc(sizeof(char) * MAX_NUM_LEN * 2 + 2);
-    sprintf(ret, "%u%u", edge->first.label, edge->second.label);
-    return ret;
+    unsigned int a = edge->first.label;
+    unsigned int b = edge->second.label;
+    return a >= b ? a * a + a + b : a + b * b; 
 }
 
 void edge_print(const Edge edge)

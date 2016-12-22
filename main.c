@@ -5,6 +5,7 @@
 
 #include "parser.h"
 #include "algorithms.h"
+#include "map.h"
 
 int main(int argc, char *argv[]) 
 {
@@ -13,8 +14,8 @@ int main(int argc, char *argv[])
         parse(argv[1], network);
     } else {
         // 13x13 3.3s, (2.8)
-        parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network);
-        /* parse("/home/lsund/Data/graphs/data/networks/set/gen13x13.dmx", network); */
+        /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
+        parse("/home/lsund/Data/graphs/data/networks/set/gen13x13.dmx", network);
     }
     clock_t start = clock(), diff;
     push_relabel(network);

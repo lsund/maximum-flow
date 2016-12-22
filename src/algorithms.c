@@ -9,12 +9,13 @@ static void push_relabel_initialize(NetworkPointer network)
         if (vertex_equals(edge->first, network->source)) {
             unsigned int capacity = networkedge_capacity(network, edge);
             networkedge_set_flow(network, edge, capacity);
-            EdgePointer residual_back_edge = edge_p_make_edge(edge_swapped(*edge));
+            Edge back_edge_val = edge_swapped(*edge);
+            int index = edgecollection_index_of(network->reverse_edges, &back_edge_val);
+            EdgePointer residual_back_edge = edgecollection_get(network->reverse_edges, index);
             edgecollection_push(network->residual_graph.edges, residual_back_edge);
         } else {
             networkedge_set_flow(network, edge, 0);
-            EdgePointer residual_edge = edge_p_make_edge(*edge);
-            edgecollection_push(network->residual_graph.edges, residual_edge);
+            edgecollection_push(network->residual_graph.edges, edge);
         }
     }
     size_t n_vertices = vertexcollection_length(network->graph.vertices);

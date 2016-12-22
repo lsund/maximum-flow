@@ -7,14 +7,17 @@ SRCS := $(shell find $(SRC_DIR)/* -maxdepth 0 -name '*.c')
 3P_SRCS := $(shell find $(3P_SRC_DIR)/* -maxdepth 0 -name '*.c')
 TEST_SRCS := $(shell find $(TEST_DIR)/* -maxdepth 0 -name '*.c')
 
-all: dirs
-	$(CC) $(CFLAGS) $(SRCS) $(3P_SRCS) main.c -o bin/main -lm
+all: dirs lib
+	$(CC) $(CFLAGS) $(SRCS) $(3P_SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
+
+lib: dirs
+	g++ -c src/cpp/map.cpp && ar rvs lib/map.a map.o && rm map.o
 
 run: all
 	./bin/main
 
-test: dirs
-	$(CC) $(CFLAGS) $(SRCS) $(3P_SRCS) $(TEST_SRCS) -o bin/test -lm
+test: dirs lib
+	$(CC) $(CFLAGS) $(SRCS) $(3P_SRCS) $(TEST_SRCS) lib/map.a -o bin/test -lm -lstdc++
 
 runtest: test
 	./bin/test
@@ -28,5 +31,5 @@ gprof: dirs
 
 
 dirs: 
-	mkdir -p bin prof
+	mkdir -p bin prof lib
 

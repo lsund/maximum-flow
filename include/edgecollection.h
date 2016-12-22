@@ -2,14 +2,14 @@
 #ifndef EDGE_COLLECTION_H
 #define EDGE_COLLECTION_H
 
-#include "third_party/strmap.h"
 #include "edge.h"
 #include "util.h"
 #include "vertexcollection.h"
+#include "map.h"
 
 typedef struct edgecollection {
     CollectionPointer members;
-    StrMap *indices;
+    Map indices;
 } EdgeCollection, *EdgeCollectionPointer;
 
 // Returns a dummy edgecollection with it's collection set to NULL
@@ -30,7 +30,7 @@ size_t edgecollection_length(const EdgeCollection edges);
 // Get the edge at the specified position
 EdgePointer edgecollection_get(const EdgeCollection edges , const unsigned int position);
 
-unsigned int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge);
+int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge);
 
 size_t edgecollection_vertex_count(const EdgeCollection edges);
 

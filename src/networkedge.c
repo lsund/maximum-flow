@@ -90,7 +90,16 @@ EdgePointer networkedge_reverse(const NetworkPointer network, const EdgePointer 
 
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow)
 {
-    EdgePointer back_edge = edge_p_make_edge(edge_swapped(*edge));
+    EdgePointer back_edge;
+    Edge back_edge_val = edge_swapped(*edge);
+    int index;
+    index = edgecollection_index_of(network->reverse_edges, &back_edge_val);
+    if (index == -1) {
+        index = edgecollection_index_of(network->graph.edges, &back_edge_val);
+        back_edge = edgecollection_get(network->graph.edges, index);
+    } else {
+        back_edge = edgecollection_get(network->reverse_edges, index);
+    }
 
     unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
     unsigned int residual_back_capacity = networkedge_residual_capacity(network, back_edge);
