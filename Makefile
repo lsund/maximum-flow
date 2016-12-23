@@ -9,7 +9,7 @@ all: dirs lib
 	$(CC) $(CFLAGS) $(SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
 
 lib: dirs
-	g++ -c src/cpp/map.cpp && ar rvs lib/map.a map.o && rm map.o
+	g++ -std=c++11 -c src/cpp/map.cpp && ar rvs lib/map.a map.o && rm map.o
 
 run: all
 	./bin/main

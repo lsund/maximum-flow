@@ -12,6 +12,7 @@ typedef struct network {
     unsigned int            *capacities, *inflows, *outflows;
     int                     *flows;
     Label                   *distance_labels;
+    Map                     is_reverse;
 } Network, *NetworkPointer;
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);

@@ -2,6 +2,7 @@
 #define ARRAY_H
 
 #include "util.h"
+#include "map.h"
 
 #define ARRAY_MIN_SIZE 4
 

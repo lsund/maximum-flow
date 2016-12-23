@@ -12,6 +12,7 @@
 typedef struct edge {
     Vertex first;
     Vertex second;
+    bool residual;
 } Edge, *EdgePointer;
 
 Edge edge_init();

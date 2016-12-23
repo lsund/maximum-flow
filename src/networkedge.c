@@ -8,7 +8,10 @@ unsigned int networkedge_capacity(const NetworkPointer network, const EdgePointe
     return capacity;
 }
 
-unsigned int networkedge_residual_capacity(const NetworkPointer network, const EdgePointer edge)
+unsigned int networkedge_residual_capacity(
+        const NetworkPointer network, 
+        const EdgePointer edge
+    )
 {
     unsigned int index, capacity, flow;
     if (networkedge_is_reverse(network, edge)) {
@@ -39,15 +42,15 @@ static bool networkedge_is_admissable(
     label_first = networkvertex_distance_label(network, edge->first);
     label_second = networkvertex_distance_label(network, edge->second);
     bool cond_a = label_first == label_second + 1;
-    bool cond_b = edgecollection_contains_edge(*(network->residual_edges + edge->first.label), edge);
-    return cond_a && cond_b;
+    return cond_a;
 }
 
 EdgePointer networkedge_admissable(
         const NetworkPointer network, 
-        const EdgeCollection edges 
+        const Vertex active
     )
 {
+    EdgeCollection edges = *(network->residual_edges + active.label);
     size_t i;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
@@ -60,17 +63,8 @@ EdgePointer networkedge_admissable(
 
 bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge)
 {
-    size_t i;
-    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer current = edgecollection_get(network->graph.edges, i);
-        if (edge_equals_reverse(edge, current)) {
-            return true;
-        } else if (edge_equals(edge, current)) {
-            return false;
-        }
-    }
-    runtime_error("networkedge_is_reverse: the edge is neither forward or backward");
-    return false;
+    unsigned int key = edge_hash(edge);
+    return map_get(network->is_reverse, key) == 1;
 }
 
 EdgePointer networkedge_reverse(const NetworkPointer network, const EdgePointer edge)
@@ -103,10 +97,10 @@ void networkedge_augment(const NetworkPointer network, const EdgePointer edge, c
 
     unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
     unsigned int residual_back_capacity = networkedge_residual_capacity(network, back_edge);
-    if (residual_capacity - added_flow <= 0) {
-        edgecollection_remove(*(network->residual_edges + edge->first.label), edge); 
+    if (residual_capacity - added_flow == 0) {
+        edgecollection_remove((network->residual_edges + edge->first.label), edge); 
     }
-    if (residual_back_capacity <= 0) {
+    if (residual_back_capacity == 0) {
         edgecollection_push(*(network->residual_edges + edge->second.label), back_edge); 
     }
     EdgePointer reverse_edge = networkedge_reverse(network, edge);

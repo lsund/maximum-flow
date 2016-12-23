@@ -13,7 +13,8 @@ NetworkPointer network_init()
     ret->distance_labels = NULL;
     ret->inflows         = NULL;
     ret->outflows        = NULL;
-    ret->residual_edges       = NULL;
+    ret->residual_edges  = NULL;
+    ret->is_reverse      = map_create();
     return ret;
 }
 

@@ -12,15 +12,15 @@ char *utest_edgecollection_remove()
     edgecollection_push(edgecollection, a);
     edgecollection_push(edgecollection, b);
     edgecollection_push(edgecollection, c);
-    edgecollection_remove(edgecollection, b);
+    edgecollection_remove(&edgecollection, b);
 
     mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
     mu_assert("should not have b", !edgecollection_contains_edge(edgecollection, b));
     mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
-    edgecollection_remove(edgecollection, c);
+    edgecollection_remove(&edgecollection, c);
     mu_assert("should not have c", !edgecollection_contains_edge(edgecollection, c));
     mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
-    edgecollection_remove(edgecollection, a);
+    edgecollection_remove(&edgecollection, a);
     mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, a));
     edgecollection_push(edgecollection, a);
     edgecollection_push(edgecollection, b);
@@ -28,7 +28,7 @@ char *utest_edgecollection_remove()
     mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
     mu_assert("should have b", edgecollection_contains_edge(edgecollection, b));
     mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
-    edgecollection_remove(edgecollection, a);
+    edgecollection_remove(&edgecollection, a);
     mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, a));
     mu_assert("should have b", edgecollection_contains_edge(edgecollection, b));
     mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
@@ -103,22 +103,6 @@ char *utest_edgecollection_vertices()
     mu_assert("should be", vertexcollection_get(vertexcollection, 2)->label == 1);
     mu_assert("should be", vertexcollection_get(vertexcollection, 3)->label == 3);
     mu_assert("should be", vertexcollection_get(vertexcollection, 4)->label == 4);
-    return NULL;
-}
-
-char *utest_edgecollection_replace()
-{
-    EdgeCollection edgecollection;
-    edgecollection = edgecollection_init(4);
-    edgecollection_push(edgecollection, edge_p_make_label(0, 2));
-    edgecollection_push(edgecollection, edge_p_make_label(2, 1));
-    edgecollection_push(edgecollection, edge_p_make_label(1, 2));
-    edgecollection_push(edgecollection, edge_p_make_label(3, 4));
-    EdgePointer e = edge_p_make_label(77, 78);
-    edgecollection_replace(edgecollection, NULL, 0);
-    edgecollection_replace(edgecollection, e, 1);
-    mu_assert("should be null", edge_equals(edgecollection_get(edgecollection, 0), NULL));
-    mu_assert("should be null", edge_equals(edgecollection_get(edgecollection, 1), e));
     return NULL;
 }
 
@@ -438,8 +422,6 @@ char *test_edgecollection() {
     mu_run_utest(utest_edgecollection_vertex_count);
     mu_message(UNIT, "edgecollection_vertices\n");
     mu_run_utest(utest_edgecollection_vertices);
-    mu_message(UNIT, "edgecollection_replace\n");
-    mu_run_utest(utest_edgecollection_replace);
     mu_message(UNIT, "edgecollection_push\n");
     mu_run_utest(utest_edgecollection_push);
     mu_message(UNIT, "edgecollection_init\n");

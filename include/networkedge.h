@@ -19,7 +19,7 @@ void networkedge_augment(const NetworkPointer network, const EdgePointer edge, c
 
 EdgePointer networkedge_admissable(
         const NetworkPointer network, 
-        const EdgeCollection edges 
+        const Vertex active
     );
 
 void networkedge_set_capacity(

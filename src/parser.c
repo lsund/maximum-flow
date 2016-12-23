@@ -112,6 +112,8 @@ Result parse(const char *filename, const NetworkPointer network)
                         third_token
                     );
                 update_capacity(network, table, edge, row);
+                unsigned int key = edge_hash(edge); 
+                map_put(network->is_reverse, key, 0);
             }
         }
     }
@@ -121,6 +123,8 @@ Result parse(const char *filename, const NetworkPointer network)
         Edge reverse_edge_val = edge_swapped(*p_edge);
         EdgePointer reverse_edge = edge_p_make_edge(reverse_edge_val);
         edgecollection_push(network->reverse_edges, reverse_edge);
+        unsigned int key = edge_hash(reverse_edge); 
+        map_put(network->is_reverse, key, 1);
     }
 
     return SUCCESS;

@@ -83,21 +83,6 @@ VertexCollection edgecollection_vertices(const EdgeCollection edges)
     return vertices;
 }
 
-Result edgecollection_replace(const EdgeCollection edges, const EdgePointer edge, const unsigned int position)
-{
-    if (!edgecollection_get(edges, position)) {
-        runtime_error("set_edge: can only overwrite existing element");
-    }
-    if (edge && (edge->first.label == edge->second.label)) {
-        runtime_error("set_edge: can't have looping edges");
-    }
-    if (position >= edges.members->capacity) {
-        runtime_error("set_edge: index out of bounds");
-    }
-    collection_replace(edges.members, edge, position);
-    return SUCCESS;
-}
-
 Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
     if (!edgecollection_contains_edge(edges, edge)) {
@@ -108,23 +93,19 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
     }
 }
 
-void edgecollection_remove(EdgeCollection edges, const EdgePointer edge)
+void edgecollection_remove(EdgeCollectionPointer edges, const EdgePointer edge)
 {
-    map_put(edges.indices, edge_hash(edge), -1);
-    size_t i, n_edges = edgecollection_length(edges);
+    size_t i, n_edges = edgecollection_length(*edges);
+    EdgeCollection edges_val = *edges;
     EdgeCollection temp = edgecollection_init(n_edges);
     for (i = 0; i < n_edges; i++) {
-        EdgePointer current = edgecollection_get(edges, i);
+        EdgePointer current = edgecollection_get(edges_val, i);
         if (!edge_equals(edge, current)) {
             edgecollection_push(temp, current);  
         }
     }
-    edgecollection_reset(edges);
-    for (i = 0; i < edgecollection_length(temp); i++) {
-        EdgePointer current = edgecollection_get(temp, i);
-        edgecollection_push(edges, current);
-    }
-    edgecollection_destroy(temp);
+    edgecollection_destroy(edges_val);
+    *edges = temp;
 }
 
 bool edgecollection_is_empty(const EdgeCollection edges)
@@ -182,11 +163,7 @@ bool edgecollection_is_sub(const EdgeCollection sub, const EdgeCollection super)
 bool edgecollection_contains_edge(const EdgeCollection edges, const EdgePointer edge)
 {
     unsigned int key = edge_hash(edge);
-    if (!map_exists(edges.indices, key)) {
-        return false;
-    } else {
-        return map_get(edges.indices, key) != -1;
-    }
+    return map_exists(edges.indices, key);
 }
 
 bool edgecollection_contains_vertex(const EdgeCollection edges, const VertexPointer vertex)

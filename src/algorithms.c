@@ -3,11 +3,13 @@
 
 static void push_relabel_initialize(NetworkPointer network)
 {
+    EdgePointer edge;
+    unsigned int capacity;
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer edge = edgecollection_get(network->graph.edges, i);
+        edge = edgecollection_get(network->graph.edges, i);
         if (vertex_equals(edge->first, network->source)) {
-            unsigned int capacity = networkedge_capacity(network, edge);
+            capacity = networkedge_capacity(network, edge);
             networkedge_augment(network, edge, capacity);
         } else {
             networkedge_set_flow(network, edge, 0);
@@ -18,16 +20,17 @@ static void push_relabel_initialize(NetworkPointer network)
     networkvertex_set_distance_label(network, network->source, n_vertices);
 }
 
-static Label find_min(const NetworkPointer network, const EdgeCollection edges)
+static Label find_min(const NetworkPointer network, const Vertex vertex)
 {
     Label min = INT_MAX;
     size_t i;
+    EdgeCollection edges = *(network->residual_edges + vertex.label);
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-            Label label = networkvertex_distance_label(network, edge->second) + 1;
-            if (label < min) {
-                min = label;
-            }
+        Label label = networkvertex_distance_label(network, edge->second) + 1;
+        if (label < min) {
+            min = label;
+        }
     }
     if (i == 0) {
         runtime_error("find_min: vertex should have at least one outgoing edge");
@@ -45,7 +48,7 @@ static void push(const NetworkPointer network, const EdgePointer edge, const Ver
 
 static void relabel(const NetworkPointer network, const Vertex vertex)
 {
-    Label min_label = find_min(network, *(network->residual_edges + vertex.label));
+    Label min_label = find_min(network, vertex);
     networkvertex_set_distance_label(network, vertex, min_label);
 }
 
@@ -55,7 +58,7 @@ void push_relabel(NetworkPointer network)
     Vertex active;
     Result has_active = networkvertex_active(network, &active);
     while (has_active == SUCCESS) {
-        EdgePointer admissable = networkedge_admissable(network, *(network->residual_edges + active.label));
+        EdgePointer admissable = networkedge_admissable(network, active);
         if (!admissable) {
             relabel(network, active);
         } else {

@@ -17,8 +17,34 @@ store the inflow and outflow of vertices        [done]
 most time taken by vertex comparisons:          [done]
 change vertexpointer to vertex?
 
-need not flows of edges? enough with vertex
+need not flows of edges? enough with vertex     [done]
 in/out flows?
+
+better time remove                              [done]
+
+store active vertices                           []
+
+instead of removing, I could add a guard to
+make edges residual. residual edges are only
+added and removed at two places. 
+1. the initialization of the algorithm
+2. when augmenting
+At these places I could set a residual 
+property to true/false
+
+The residual edges are used at
+1. find_min
+2. networkedge_is_admissable
+nowhere else.
+
+Where do i iterate over residual edges?
+* find_min
+I could have a map is_residual that I check in  [done]
+find_min
+networkedge_admissable
+turn out it's actually more expensive to check
+this map, than to perform the remove explicitly.
+aborting.
 
 RENAMINGS:
 
