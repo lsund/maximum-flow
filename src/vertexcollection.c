@@ -4,7 +4,7 @@
 VertexCollection empty_vertexcollection()
 {
     VertexCollection ret;
-    ret.members         = NULL;
+    ret.members = NULL;
     return ret;
 
 }
@@ -16,8 +16,8 @@ VertexCollection vertexcollection_init(const size_t init_length)
         runtime_error("vertexcollection_init: too many vertices");
         return empty_vertexcollection();
     } else {
-        ret.members           = collection_p_init(init_length);
-        ret.members->capacity = init_length;
+        ret.members = collection_p_init(init_length);
+        ret.indices = map_create();
     }
     return ret;
 }
@@ -32,6 +32,7 @@ VertexCollectionPointer init_p_vertexcollection(const size_t init_length)
 void vertexcollection_reset(VertexCollection vertices)
 {
     collection_reset(vertices.members);
+    map_reset(vertices.indices);
 }
 
 bool vertexcollection_is_empty(const VertexCollection vertices)
@@ -52,6 +53,11 @@ VertexPointer vertexcollection_get(const VertexCollection vertices, const unsign
     return (VertexPointer) collection_get(vertices.members, position);
 }
 
+VertexPointer vertexcollection_get_first(const VertexCollection vertices)
+{
+    return vertexcollection_get(vertices, 0);
+}
+
 VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label)
 {
     size_t i;
@@ -67,25 +73,16 @@ VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, c
 
 unsigned int vertexcollection_index_of(const VertexCollection vertices, const Vertex vertex)
 {
-    size_t i;
-    for (i = 0; i < vertexcollection_length(vertices); i++) {
-        if (vertex_equals(vertex, *vertexcollection_get(vertices, i))) {
-            return i;
-        }
+    if (map_exists(vertices.indices, vertex.label)) {
+        return map_get(vertices.indices, vertex.label);
+    } else {
+        return -1;
     }
-    runtime_error("edgecollection_index_of: the collection does not contain the specified edge");
-    return 0;
 }
 
 bool vertexcollection_contains_label(const VertexCollection vertices, const Label label)
 {
-    size_t i;
-    for (i = 0; i < vertexcollection_length(vertices); i++) {
-        if (label == vertexcollection_get(vertices, i)->label) {
-            return true;
-        }
-    }
-    return false;
+    return map_exists(vertices.indices, label);
 }
 
 bool vertexcollection_is_super(const VertexCollection super, const VertexCollection sub)
@@ -140,10 +137,26 @@ Result vertexcollection_replace(const VertexCollection vertices, const VertexPoi
 Result vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex)
 {
     if (!vertexcollection_contains_label(vertices, vertex->label)) {
+        map_put(vertices.indices, vertex->label, vertexcollection_length(vertices));
         return collection_push(vertices.members, vertex);
     } else {
         return FAIL;
     }
+}
+
+void vertexcollection_remove(VertexCollectionPointer vertices, const Vertex vertex)
+{
+    size_t i, n_vertices = vertexcollection_length(*vertices);
+    VertexCollection vertices_val = *vertices;
+    VertexCollection temp = vertexcollection_init(n_vertices);
+    for (i = 0; i < n_vertices; i++) {
+        VertexPointer current = vertexcollection_get(vertices_val, i);
+        if (!vertex_equals(vertex, *current)) {
+            vertexcollection_push(temp, current);  
+        }
+    }
+    vertexcollection_destroy(vertices_val);
+    *vertices = temp;
 }
 
 Result vertexcollection_complement(const VertexCollection vertexcollection_a, const VertexCollection vertexcollection_b, VertexCollectionPointer ret)
@@ -179,6 +192,7 @@ void vertexcollection_print(const VertexCollection vertices)
 
 Result vertexcollection_destroy(VertexCollection vertices)
 {
+    map_destroy(vertices.indices);
     collection_destroy(vertices.members);
     return SUCCESS;
 }

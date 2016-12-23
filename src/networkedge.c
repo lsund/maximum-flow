@@ -1,5 +1,36 @@
 #include "networkedge.h"
 
+static void activate_vertices(
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        const unsigned int first_exflow_before,
+        const unsigned int second_exflow_before,
+        const unsigned int first_exflow,
+        const unsigned int second_exflow)
+{
+    if (first_exflow_before > 0 && first_exflow == 0) {
+        vertexcollection_remove(&network->active_vertices, edge->first);
+    }
+    if (second_exflow_before > 0 && second_exflow == 0) {
+        vertexcollection_remove(&network->active_vertices, edge->second);
+    }
+    VertexCollection vertices= network->graph.vertices;
+    if (first_exflow_before == 0 && first_exflow > 0) {
+        if (edge->first.label != network->source.label) {
+            unsigned int index = vertexcollection_index_of(vertices, edge->first);
+            VertexPointer vertex = vertexcollection_get(vertices, index);
+            vertexcollection_push(network->active_vertices, vertex);
+        }
+    }
+    if (second_exflow_before == 0 && second_exflow > 0) {
+        if (edge->second.label != network->sink.label) {
+            unsigned int index = vertexcollection_index_of(vertices, edge->second);
+            VertexPointer vertex = vertexcollection_get(vertices, index);
+            vertexcollection_push(network->active_vertices, vertex);
+        }
+    }
+}
+
 unsigned int networkedge_capacity(const NetworkPointer network, const EdgePointer edge)
 {
     unsigned int index, capacity;
@@ -127,11 +158,26 @@ void networkedge_add_flow(
         int added_flow
     )
 {
-    int flow = networkedge_flow(network, edge);
+    unsigned int first_exflow_before = networkvertex_exflow(network, edge->first);
+    unsigned int second_exflow_before = networkvertex_exflow(network, edge->second);
+
     unsigned int index = edgecollection_index_of(network->graph.edges, edge);
+    int flow = networkedge_flow(network, edge);
     *(network->flows + index) = flow + added_flow;
     *(network->inflows + edge->second.label) += added_flow;
     *(network->outflows + edge->first.label) += added_flow;
+
+    unsigned int first_exflow = networkvertex_exflow(network, edge->first);
+    unsigned int second_exflow = networkvertex_exflow(network, edge->second);
+
+    activate_vertices(
+            network,
+            edge,
+            first_exflow_before, 
+            second_exflow_before, 
+            first_exflow, 
+            second_exflow
+        );
 }
 
 void networkedge_set_capacity(

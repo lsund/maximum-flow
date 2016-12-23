@@ -21,23 +21,18 @@ int networkvertex_exflow(const NetworkPointer network, const Vertex vertex)
 
 bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex)
 {
-    if (vertex_equals(network->source, vertex) || vertex_equals(network->sink, vertex)) {
-        return false;
-    }
     return networkvertex_exflow(network, vertex) > 0;
 }
 
 Result networkvertex_active(const NetworkPointer network, VertexPointer vertex)
 {
-    size_t i;
-    for (i = 0; i < vertexcollection_length(network->graph.vertices); i++) {
-        VertexPointer current = vertexcollection_get(network->graph.vertices, i); 
-        if (networkvertex_is_active(network, *current)) {
-            *vertex = *current;
-            return SUCCESS;
-        }
+    VertexPointer first_active = vertexcollection_get_first(network->active_vertices);
+    if (first_active) {
+        *vertex = *first_active;
+        return SUCCESS;
+    } else {
+        return FAIL;
     }
-    return FAIL;
 }
 
 void networkvertex_set_distance_label(const NetworkPointer network, const Vertex vertex, const unsigned int label)

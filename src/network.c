@@ -6,6 +6,7 @@ NetworkPointer network_init()
     NetworkPointer ret   = malloc(sizeof(Network));
     ret->graph           = graph_init();
     ret->reverse_edges   = edgecollection_init(ARRAY_MIN_SIZE);
+    ret->active_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
     ret->source          = vertex_empty();
     ret->sink            = vertex_empty();
     ret->capacities      = NULL;

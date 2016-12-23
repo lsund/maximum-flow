@@ -9,6 +9,7 @@
 // Field contains:  bitmap for keeping track of which elements are in the set
 typedef struct vertexcollection {
     CollectionPointer members;
+    Map indices;
 } VertexCollection, *VertexCollectionPointer;
 
 // Initializes a vertexcollection of size init_length. 
@@ -24,6 +25,8 @@ size_t vertexcollection_length(const VertexCollection vertices);
 
 // Get the vertex at the specified position in the set 
 VertexPointer vertexcollection_get(const VertexCollection vertices, const unsigned int position);
+
+VertexPointer vertexcollection_get_first(const VertexCollection vertices);
 
 VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label);
 
@@ -41,6 +44,8 @@ bool vertexcollection_equals(const VertexCollection vertexcollection_a, const Ve
 Result vertexcollection_replace(const VertexCollection vertices, const VertexPointer vertex, const unsigned int position);
 
 Result vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex);
+
+void vertexcollection_remove(VertexCollectionPointer vertices, const Vertex vertex);
 
 // Find the relative complement of a vertexcollection and store it in ret
 Result vertexcollection_complement(const VertexCollection vertexcollection_a, const VertexCollection vertexcollection_b, VertexCollectionPointer ret);

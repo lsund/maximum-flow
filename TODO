@@ -23,6 +23,10 @@ in/out flows?
 better time remove                              [done]
 
 store active vertices                           []
+an active vertex is a vertex with exflow > 0
+active vertex change = exflow change
+exflow change = inflow, outflow change
+inflow, outflow change only in add_flow 
 
 instead of removing, I could add a guard to
 make edges residual. residual edges are only

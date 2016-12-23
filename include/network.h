@@ -6,6 +6,7 @@
 typedef struct network {
     Graph                   graph;
     EdgeCollection          reverse_edges;
+    VertexCollection        active_vertices;
     EdgeCollectionPointer   residual_edges;
     Vertex                  source;
     Vertex                  sink;
