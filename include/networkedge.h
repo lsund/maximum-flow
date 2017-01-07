@@ -19,11 +19,6 @@ EdgePointer networkedge_reverse(const NetworkPointer network, const EdgePointer 
 
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow);
 
-EdgePointer networkedge_admissable(
-        const NetworkPointer network, 
-        const Vertex active
-    );
-
 void networkedge_set_capacity(
         const NetworkPointer network, 
         const EdgePointer edge, 

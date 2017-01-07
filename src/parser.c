@@ -74,12 +74,13 @@ Result parse(const char *filename, const NetworkPointer network)
     n_edges = dimension.y;
 
     parse_vertices(network->graph.vertices, n_vertices);
-
+    #ifdef PUSH_RELABEL
+    network->distance_labels = calloc(n_vertices, sizeof(Label));
+    #endif
     network->capacities      = calloc(n_edges, sizeof(unsigned int));
     network->flows           = calloc(2 * n_edges, sizeof(int));
     network->inflows         = calloc(n_vertices + 1, sizeof(unsigned int));
     network->outflows         = calloc(n_vertices + 1, sizeof(unsigned int));
-    network->distance_labels = calloc(n_vertices, sizeof(Label));
     network->residual_edges      = malloc((n_vertices + 1) * sizeof(EdgeCollection));
     size_t i;
     for (i = 1; i <= n_vertices; i++) {

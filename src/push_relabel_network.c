@@ -43,3 +43,37 @@ void activate_vertices(
     }
 }
 
+Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex)
+{
+    unsigned int index = vertexcollection_index_of(network->graph.vertices, vertex);
+    return *(network->distance_labels + index);
+}
+
+void networkvertex_set_distance_label(const NetworkPointer network, const Vertex vertex, const unsigned int label)
+{
+    if (!network) {
+        runtime_error("networkvertex_set_distance_label: null argument");
+    }
+    unsigned int index = vertexcollection_index_of(network->graph.vertices, vertex);
+    *(network->distance_labels + index) = label; 
+}
+
+EdgePointer networkedge_admissable(
+        const NetworkPointer network, 
+        const Vertex active
+    )
+{
+    EdgeCollection edges = *(network->residual_edges + active.label);
+    size_t i;
+    unsigned int label_first, label_second;
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
+        label_first = networkvertex_distance_label(network, edge->first);
+        label_second = networkvertex_distance_label(network, edge->second);
+        if (label_first == label_second + 1) {
+            return edge;
+        }
+    }
+    return NULL;
+}
+

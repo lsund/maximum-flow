@@ -14,4 +14,13 @@ void activate_vertices(
         const unsigned int second_exflow
     );
 
+Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex);
+
+void networkvertex_set_distance_label(const NetworkPointer network, const Vertex vertex, const unsigned int label);
+
+EdgePointer networkedge_admissable(
+        const NetworkPointer network, 
+        const Vertex active
+    );
+
 #endif

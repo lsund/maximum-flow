@@ -37,25 +37,6 @@ unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer ed
     return *(network->flows + index);
 }
 
-EdgePointer networkedge_admissable(
-        const NetworkPointer network, 
-        const Vertex active
-    )
-{
-    EdgeCollection edges = *(network->residual_edges + active.label);
-    size_t i;
-    unsigned int label_first, label_second;
-    for (i = 0; i < edgecollection_length(edges); i++) {
-        EdgePointer edge = edgecollection_get(edges, i);
-        label_first = networkvertex_distance_label(network, edge->first);
-        label_second = networkvertex_distance_label(network, edge->second);
-        if (label_first == label_second + 1) {
-            return edge;
-        }
-    }
-    return NULL;
-}
-
 bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge)
 {
     unsigned int key = edge_hash(edge);
@@ -109,8 +90,9 @@ void networkedge_add_flow(
         int added_flow
     )
 {
-    unsigned int first_exflow_before, second_exflow_before, first_exflow, 
-                 second_exflow, index;
+#ifdef PUSH_RELABEL
+    unsigned int first_exflow, second_exflow, index;
+    unsigned int first_exflow_before, second_exflow_before;
     first_exflow_before = networkvertex_exflow(network, edge->first);
     second_exflow_before = networkvertex_exflow(network, edge->second);
 
@@ -123,7 +105,6 @@ void networkedge_add_flow(
 
     first_exflow = networkvertex_exflow(network, edge->first);
     second_exflow = networkvertex_exflow(network, edge->second);
-
     activate_vertices(
             network,
             edge,
@@ -132,6 +113,7 @@ void networkedge_add_flow(
             first_exflow, 
             second_exflow
         );
+#endif
 }
 
 void networkedge_set_capacity(

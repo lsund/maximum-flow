@@ -5,7 +5,7 @@ I would like to use the network modules for the
 next algorithm as well. Need to be careful what 
 is native to push/relabel and not psuedoflow:
 * network->active_vertices                      []
-    - activate_vertices
+    - activate_vertices                         [done]
     - initialize
     - networkvertex_active
 * network->distance_labels                      []

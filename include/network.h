@@ -3,6 +3,8 @@
 
 #include "graph.h"
 
+#if PUSH_RELABEL
+
 typedef struct network {
     Graph                   graph;
     EdgeCollection          reverse_edges;
@@ -15,6 +17,21 @@ typedef struct network {
     Label                   *distance_labels;
     Map                     is_reverse;
 } Network, *NetworkPointer;
+
+#elif PSEUDOFLOW
+
+typedef struct network {
+    Graph                   graph;
+    EdgeCollection          reverse_edges;
+    EdgeCollectionPointer   residual_edges;
+    Vertex                  source;
+    Vertex                  sink;
+    unsigned int            *capacities, *inflows, *outflows;
+    int                     *flows;
+    Map                     is_reverse;
+} Network, *NetworkPointer;
+
+#endif
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);
 

@@ -1,11 +1,5 @@
 #include "networkvertex.h"
 
-Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex)
-{
-    unsigned int index = vertexcollection_index_of(network->graph.vertices, vertex);
-    return *(network->distance_labels + index);
-}
-
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex)
 {
     return *(network->inflows + vertex.label);
@@ -22,14 +16,5 @@ int networkvertex_exflow(const NetworkPointer network, const Vertex vertex)
 bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex)
 {
     return networkvertex_exflow(network, vertex) > 0;
-}
-
-void networkvertex_set_distance_label(const NetworkPointer network, const Vertex vertex, const unsigned int label)
-{
-    if (!network) {
-        runtime_error("networkvertex_set_distance_label: null argument");
-    }
-    unsigned int index = vertexcollection_index_of(network->graph.vertices, vertex);
-    *(network->distance_labels + index) = label; 
 }
 
