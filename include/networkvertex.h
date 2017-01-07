@@ -16,6 +16,4 @@ void networkvertex_set_distance_label(const NetworkPointer network, const Vertex
 
 bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex);
 
-Result networkvertex_active(const NetworkPointer network, VertexPointer vertex);
-
 #endif

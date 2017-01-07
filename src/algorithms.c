@@ -1,5 +1,5 @@
 
-#include "algorithms.h"
+#include "push_relabel.h"
 
 static void push_relabel_initialize(NetworkPointer network)
 {

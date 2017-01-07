@@ -24,17 +24,6 @@ bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex)
     return networkvertex_exflow(network, vertex) > 0;
 }
 
-Result networkvertex_active(const NetworkPointer network, VertexPointer vertex)
-{
-    VertexPointer first_active = vertexcollection_get_first(network->active_vertices);
-    if (first_active) {
-        *vertex = *first_active;
-        return SUCCESS;
-    } else {
-        return FAIL;
-    }
-}
-
 void networkvertex_set_distance_label(const NetworkPointer network, const Vertex vertex, const unsigned int label)
 {
     if (!network) {

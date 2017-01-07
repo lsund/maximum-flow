@@ -2,6 +2,7 @@
 #define NETWORK_EDGE_H
 
 #include "network.h"
+#include "push_relabel_network.h"
 
 Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex);
 int networkvertex_exflow(const NetworkPointer network, const Vertex vertex);

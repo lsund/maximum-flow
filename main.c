@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "parser.h"
-#include "algorithms.h"
+#include "push_relabel.h"
 #include "map.h"
 
 int main(int argc, char *argv[]) 
