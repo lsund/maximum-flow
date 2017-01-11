@@ -24,7 +24,8 @@ lib: dirs
 	g++ -std=c++11 -c src/cpp/map.cpp && ar rvs lib/map.a map.o && rm map.o
 
 test: dirs lib
-	$(CC) $(CFLAGS) $(PR_SRCS) $(TEST_SRCS) lib/map.a -o bin/test -lm -lstdc++
+	$(CC) $(CFLAGS) $(PR_SRCS) $(TEST_SRCS) lib/map.a -o bin/test -D PUSH_RELABEL \
+		-lm -lstdc++
 
 runtest: test
 	./bin/test

@@ -1,6 +1,9 @@
 #include "parser.h"
 
-static void parse_vertices(const VertexCollection vertexcollection, const unsigned int n_vertices)
+static void parse_vertices(
+        const VertexCollection vertexcollection, 
+        const unsigned int n_vertices
+    )
 {
     size_t i;
     for (i = 1; i <= n_vertices; i++) {
@@ -9,13 +12,22 @@ static void parse_vertices(const VertexCollection vertexcollection, const unsign
     }
 }
 
-static EdgePointer parse_edge(const VertexCollection vertexcollection, const char *first_token, const char*second_token)
+static EdgePointer parse_edge(
+        const VertexCollection vertexcollection, 
+        const char *first_token, const char*second_token
+    )
 {
     EdgePointer ret;
     Label label_first  = (unsigned int) strtol(first_token, NULL, 10);
     Label label_second = (unsigned int) strtol(second_token, NULL, 10);
-    VertexPointer first_vertex = vertexcollection_get_with_label(vertexcollection, label_first);
-    VertexPointer second_vertex = vertexcollection_get_with_label(vertexcollection, label_second);
+    VertexPointer first_vertex = vertexcollection_get_with_label(
+            vertexcollection, 
+            label_first
+        );
+    VertexPointer second_vertex = vertexcollection_get_with_label(
+            vertexcollection, 
+            label_second
+        );
     if (first_vertex && second_vertex) {
         ret = edge_p_make_vertices(*first_vertex, *second_vertex);
     } else {
@@ -74,9 +86,11 @@ Result parse(const char *filename, const NetworkPointer network)
     n_edges = dimension.y;
 
     parse_vertices(network->graph.vertices, n_vertices);
-    #ifdef PUSH_RELABEL
-    network->distance_labels = calloc(n_vertices, sizeof(Label));
-    #endif
+    if (network->type == PR) {
+        network->distance_labels = calloc(n_vertices, sizeof(Label));
+    } else {
+        network->distance_labels = NULL;
+    }
     network->capacities      = calloc(n_edges, sizeof(unsigned int));
     network->flows           = calloc(2 * n_edges, sizeof(int));
     network->inflows         = calloc(n_vertices + 1, sizeof(unsigned int));

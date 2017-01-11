@@ -11,7 +11,7 @@
 #include "tree.h"
 #include "disjointset.h"
 #include "network.h"
-#include "algorithms.h"
+#include "push_relabel.h"
 
 #define TEST_GRAPH "/home/lsund/Data/graphs/data/networks/small.dmx"
 

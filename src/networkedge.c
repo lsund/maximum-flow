@@ -85,35 +85,35 @@ void networkedge_set_flow(
 }
 
 void networkedge_add_flow(
-        const NetworkPointer network, 
-        const EdgePointer edge, 
+        NetworkPointer network,
+        const EdgePointer edge,
         int added_flow
     )
 {
-#ifdef PUSH_RELABEL
-    unsigned int first_exflow, second_exflow, index;
-    unsigned int first_exflow_before, second_exflow_before;
-    first_exflow_before = networkvertex_exflow(network, edge->first);
-    second_exflow_before = networkvertex_exflow(network, edge->second);
+    if (network->type == PR) {
+        unsigned int first_exflow, second_exflow, index;
+        unsigned int first_exflow_before, second_exflow_before;
+        first_exflow_before = networkvertex_exflow(network, edge->first);
+        second_exflow_before = networkvertex_exflow(network, edge->second);
 
-    int flow;
-    index = edgecollection_index_of(network->graph.edges, edge);
-    flow = networkedge_flow(network, edge);
-    *(network->flows + index) = flow + added_flow;
-    *(network->inflows + edge->second.label) += added_flow;
-    *(network->outflows + edge->first.label) += added_flow;
+        int flow;
+        index = edgecollection_index_of(network->graph.edges, edge);
+        flow = networkedge_flow(network, edge);
+        *(network->flows + index) = flow + added_flow;
+        *(network->inflows + edge->second.label) += added_flow;
+        *(network->outflows + edge->first.label) += added_flow;
 
-    first_exflow = networkvertex_exflow(network, edge->first);
-    second_exflow = networkvertex_exflow(network, edge->second);
-    activate_vertices(
-            network,
-            edge,
-            first_exflow_before, 
-            second_exflow_before, 
-            first_exflow, 
-            second_exflow
-        );
-#endif
+        first_exflow = networkvertex_exflow(network, edge->first);
+        second_exflow = networkvertex_exflow(network, edge->second);
+        activate_vertices(
+                network,
+                edge,
+                first_exflow_before, 
+                second_exflow_before, 
+                first_exflow, 
+                second_exflow
+            );
+    }
 }
 
 void networkedge_set_capacity(

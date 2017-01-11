@@ -32,7 +32,7 @@ void networkedge_set_flow(
     );
 
 void networkedge_add_flow(
-        const NetworkPointer network, 
+        const NetworkPointer network,
         const EdgePointer edge, 
         int added_flow
     );

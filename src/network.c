@@ -1,45 +1,26 @@
 
 #include "network.h"
 
-#ifdef PUSH_RELABEL
-
-NetworkPointer network_init()
+NetworkPointer network_init(NetworkType type)
 {
     NetworkPointer ret   = malloc(sizeof(Network));
     ret->graph           = graph_init();
     ret->reverse_edges   = edgecollection_init(ARRAY_MIN_SIZE);
+    ret->source          = vertex_empty();
+    ret->sink            = vertex_empty();
+    ret->capacities      = NULL;
+    ret->flows           = NULL;
+    ret->inflows         = NULL;
+    ret->outflows        = NULL;
+    ret->residual_edges  = NULL;
+    ret->is_reverse      = map_create();
+    ret->type            = type;
+
     ret->active_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
-    ret->source          = vertex_empty();
-    ret->sink            = vertex_empty();
-    ret->capacities      = NULL;
-    ret->flows           = NULL;
     ret->distance_labels = NULL;
-    ret->inflows         = NULL;
-    ret->outflows        = NULL;
-    ret->residual_edges  = NULL;
-    ret->is_reverse      = map_create();
+
     return ret;
 }
-
-#else 
-
-NetworkPointer network_init()
-{
-    NetworkPointer ret   = malloc(sizeof(Network));
-    ret->graph           = graph_init();
-    ret->reverse_edges   = edgecollection_init(ARRAY_MIN_SIZE);
-    ret->source          = vertex_empty();
-    ret->sink            = vertex_empty();
-    ret->capacities      = NULL;
-    ret->flows           = NULL;
-    ret->inflows         = NULL;
-    ret->outflows        = NULL;
-    ret->residual_edges  = NULL;
-    ret->is_reverse      = map_create();
-    return ret;
-}
-
-#endif
 
 unsigned int network_flow(const NetworkPointer network)
 {
@@ -48,9 +29,10 @@ unsigned int network_flow(const NetworkPointer network)
 
 void network_destroy(NetworkPointer network)
 {
-    #ifdef PUSH_RELABEL
-    free(network->distance_labels);
-    #endif
+    if (network->type == PR) {
+        free(network->distance_labels);
+        vertexcollection_destroy(network->active_vertices);
+    }
     free(network->flows);
     free(network->capacities);
     free(network->inflows);

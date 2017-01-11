@@ -9,18 +9,20 @@
 
 int main(int argc, char *argv[]) 
 {
-    NetworkPointer network = network_init();
+    NetworkPointer network = network_init(PR);
     if (argc == 2) {
         parse(argv[1], network);
     } else {
         // 20x20 3.5s
-        /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
-        parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network);
+        parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network);
+        /* parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network); */
     }
     clock_t start = clock(), diff;
-#ifdef PUSH_RELABEL
-    push_relabel(network);
-#endif
+    if (network->type == PR) {
+        push_relabel(network);
+    } else {
+        return 0;
+    }
     diff = clock() - start;
     int msec = diff * 1000 / CLOCKS_PER_SEC;
     printf("Time taken %d seconds %d milliseconds\n", msec/1000, msec%1000);

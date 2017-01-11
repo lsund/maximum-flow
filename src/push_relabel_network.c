@@ -49,7 +49,11 @@ Label networkvertex_distance_label(const NetworkPointer network, const Vertex ve
     return *(network->distance_labels + index);
 }
 
-void networkvertex_set_distance_label(const NetworkPointer network, const Vertex vertex, const unsigned int label)
+void networkvertex_set_distance_label(
+        const NetworkPointer network, 
+        const Vertex vertex, 
+        const unsigned int label
+    )
 {
     if (!network) {
         runtime_error("networkvertex_set_distance_label: null argument");

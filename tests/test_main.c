@@ -10,7 +10,7 @@ char *test_main()
         char *file = tokentable_get(table, i, 0);
         char *s_opt = tokentable_get(table, i, 1);
         long opt = strtol(s_opt, NULL, 10);
-        NetworkPointer network = network_init();
+        NetworkPointer network = network_init(PR);
         parse(file, network);
         push_relabel(network);
         long res = (long) network_flow(network);

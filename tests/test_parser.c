@@ -3,7 +3,7 @@
 #include "test.h"
 
 char *utest_parse() {
-    NetworkPointer network = network_init();
+    NetworkPointer network = network_init(PR);
     mu_assert("should succeed", parse(TEST_GRAPH, network));
     mu_assert("should not be empty", !edgecollection_is_empty(network->graph.edges));
     mu_assert("should not be empty", !vertexcollection_is_empty(network->graph.vertices));

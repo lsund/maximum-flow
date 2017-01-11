@@ -13,7 +13,7 @@ char *utest_networkedge_is_reverse()
     EdgePointer edge2r = edge_p_make_label(3, 1);
     mu_assert("should be the reversed version", edge_equals_reverse(edge, edger));
     mu_assert("should be the reversed version", edge_equals_reverse(edge2, edge2r));
-    NetworkPointer network = network_init();
+    NetworkPointer network = network_init(PR);
     parse(TEST_GRAPH, network);
     mu_assert("should have 7 edge", edgecollection_length(network->graph.edges) == 7);
     mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, edge2)); 
@@ -59,7 +59,7 @@ char *utest_networkvertex_exflow()
 
 char *utest_networkvertex_set_distance_label()
 {
-    NetworkPointer network = network_init();
+    NetworkPointer network = network_init(PR);
     VertexCollection vertices = vertexcollection_init(8);
     EdgeCollection edges = edgecollection_init(8);
     vertexcollection_push(vertices, vertex_p_make(0));
@@ -73,7 +73,7 @@ char *utest_networkvertex_set_distance_label()
 
 char *utest_networkvertex_distance_label()
 {
-    NetworkPointer network = network_init();
+    NetworkPointer network = network_init(PR);
     VertexCollection vertices = vertexcollection_init(8);
     EdgeCollection edges = edgecollection_init(8);
     vertexcollection_push(vertices, vertex_p_make(0));
@@ -86,7 +86,7 @@ char *utest_networkvertex_distance_label()
 
 char *utest_networkedge_set_flow()
 {
-    NetworkPointer network = network_init();
+    NetworkPointer network = network_init(PR);
     VertexCollection vertices = vertexcollection_init(8);
     vertexcollection_push(vertices, vertex_p_make(0));
     vertexcollection_push(vertices, vertex_p_make(1));
@@ -105,7 +105,7 @@ char *utest_networkedge_set_flow()
 
 char *utest_networkedge_set_capacity()
 {
-    NetworkPointer network = network_init();
+    NetworkPointer network = network_init(PR);
     VertexCollection vertices = vertexcollection_init(8);
     vertexcollection_push(vertices, vertex_p_make(0));
     vertexcollection_push(vertices, vertex_p_make(1));
