@@ -86,16 +86,21 @@ Result parse(const char *filename, const NetworkPointer network)
     n_edges = dimension.y;
 
     parse_vertices(network->graph.vertices, n_vertices);
+
     if (network->type == PR) {
         network->distance_labels = calloc(n_vertices, sizeof(Label));
+        network->active_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
     } else {
-        network->distance_labels = NULL;
+        network->strong_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
+        network->weak_vertices   = vertexcollection_init(ARRAY_MIN_SIZE);
     }
-    network->capacities      = calloc(n_edges, sizeof(unsigned int));
-    network->flows           = calloc(2 * n_edges, sizeof(int));
-    network->inflows         = calloc(n_vertices + 1, sizeof(unsigned int));
-    network->outflows         = calloc(n_vertices + 1, sizeof(unsigned int));
-    network->residual_edges      = malloc((n_vertices + 1) * sizeof(EdgeCollection));
+
+    network->reverse_edges  = edgecollection_init(ARRAY_MIN_SIZE);
+    network->capacities     = calloc(n_edges, sizeof(unsigned int));
+    network->flows          = calloc(2 * n_edges, sizeof(int));
+    network->inflows        = calloc(n_vertices + 1, sizeof(unsigned int));
+    network->outflows       = calloc(n_vertices + 1, sizeof(unsigned int));
+    network->residual_edges = malloc((n_vertices + 1) * sizeof(EdgeCollection));
     size_t i;
     for (i = 1; i <= n_vertices; i++) {
         *(network->residual_edges + i) = edgecollection_init(n_edges);

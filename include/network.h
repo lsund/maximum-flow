@@ -6,6 +6,7 @@
 typedef enum networktype { PR, PS } NetworkType;
 
 typedef struct network {
+    NetworkType             type;
     Graph                   graph;
     EdgeCollection          reverse_edges;
     EdgeCollectionPointer   residual_edges;
@@ -14,9 +15,12 @@ typedef struct network {
     unsigned int            *capacities, *inflows, *outflows;
     int                     *flows;
     Map                     is_reverse;
+
     VertexCollection        active_vertices;
     Label                   *distance_labels;
-    NetworkType             type;
+
+    VertexCollection        strong_vertices, weak_vertices; 
+    int                     *excesses;
 } Network, *NetworkPointer;
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);

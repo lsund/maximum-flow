@@ -5,7 +5,7 @@ NetworkPointer network_init(NetworkType type)
 {
     NetworkPointer ret   = malloc(sizeof(Network));
     ret->graph           = graph_init();
-    ret->reverse_edges   = edgecollection_init(ARRAY_MIN_SIZE);
+    ret->reverse_edges   = edgecollection_empty();
     ret->source          = vertex_empty();
     ret->sink            = vertex_empty();
     ret->capacities      = NULL;
@@ -16,8 +16,12 @@ NetworkPointer network_init(NetworkType type)
     ret->is_reverse      = map_create();
     ret->type            = type;
 
-    ret->active_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
+    ret->active_vertices = vertexcollection_empty();
     ret->distance_labels = NULL;
+
+    ret->excesses        = NULL;
+    ret->strong_vertices = vertexcollection_empty();
+    ret->weak_vertices = vertexcollection_empty();
 
     return ret;
 }

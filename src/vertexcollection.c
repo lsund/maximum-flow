@@ -1,7 +1,7 @@
 
 #include "vertexcollection.h"
 
-VertexCollection empty_vertexcollection()
+VertexCollection vertexcollection_empty()
 {
     VertexCollection ret;
     ret.members = NULL;
@@ -14,7 +14,7 @@ VertexCollection vertexcollection_init(const size_t init_length)
     VertexCollection ret;
     if (init_length > MAX_VERTICES) {
         runtime_error("vertexcollection_init: too many vertices");
-        return empty_vertexcollection();
+        return vertexcollection_empty();
     } else {
         ret.members = collection_p_init(init_length);
         ret.indices = map_create();
@@ -58,7 +58,21 @@ VertexPointer vertexcollection_get_first(const VertexCollection vertices)
     return vertexcollection_get(vertices, 0);
 }
 
-VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label)
+VertexPointer vertexcollection_get_reference(
+        const VertexCollection vertices,
+        const Vertex vertex
+    )
+{
+    unsigned int index = vertexcollection_index_of(vertices, vertex);
+    VertexPointer ret = vertexcollection_get(vertices, index);
+    return ret;
+}
+
+
+VertexPointer vertexcollection_get_with_label(
+        const VertexCollection vertices, 
+        const Label label
+    )
 {
     size_t i;
     for (i = 0; i < vertices.members->capacity; i++) {

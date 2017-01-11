@@ -1,15 +1,31 @@
+
+FUNCTIONS:
+
+initialize_pseudoflow_algorithm                 []
+
+get_merger_edge()                               []
+scan the residual edges. Each vertex in the tree
+represents a vertex in the graph. The excess of 
+each node is always updated and maintained. So
+we need a 
+    int *excess
+pointer where we store that.
+
 MISC:
+
+save index together with edge in edgeset?
+avoid get_index?                                []
 
 push_relabel_network.{c,h}
 I would like to use the network modules for the
 next algorithm as well. Need to be careful what 
 is native to push/relabel and not psuedoflow:
-* network->active_vertices                      []
+* network->active_vertices                      [done]
     - activate_vertices                         [done]
     - initialize
     - networkvertex_active
-* network->distance_labels                      []
-* network->is_reverse (?)                       []
+* network->distance_labels                      [done]
+* network->is_reverse (?)                       [done]
 
 Excesses depends on inflows/outflows, but it's
 more general than exflow: instead of a single
@@ -21,7 +37,8 @@ are completely for push_relabel, should move
 to a new module                                 [done]
 
 is_active(vertex) needs to be extended to
-is_strong(vertexset)                            []
+is_strong(vertexset) because the pseudoflow-
+algorithm works on subtrees aka vertexsets      [done]
 
 Then rename algorithms to push_relabel and      [done]
 initialize a new module for psuedoflow          [done]

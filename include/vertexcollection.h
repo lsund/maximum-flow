@@ -12,6 +12,8 @@ typedef struct vertexcollection {
     Map indices;
 } VertexCollection, *VertexCollectionPointer;
 
+VertexCollection vertexcollection_empty();
+
 // Initializes a vertexcollection of size init_length. 
 VertexCollection vertexcollection_init(const size_t init_length);
 
@@ -25,6 +27,11 @@ size_t vertexcollection_length(const VertexCollection vertices);
 
 // Get the vertex at the specified position in the set 
 VertexPointer vertexcollection_get(const VertexCollection vertices, const unsigned int position);
+
+VertexPointer vertexcollection_get_reference(
+        const VertexCollection vertices,
+        const Vertex vertex
+    );
 
 VertexPointer vertexcollection_get_first(const VertexCollection vertices);
 

@@ -27,17 +27,16 @@ void activate_vertices(
         vertexcollection_remove(&network->active_vertices, edge->second);
     }
     VertexCollection vertices= network->graph.vertices;
+    VertexPointer vertex;
     if (first_exflow_before == 0 && first_exflow > 0) {
         if (edge->first.label != network->source.label) {
-            unsigned int index = vertexcollection_index_of(vertices, edge->first);
-            VertexPointer vertex = vertexcollection_get(vertices, index);
+            vertex = vertexcollection_get_reference(vertices, edge->first);
             vertexcollection_push(network->active_vertices, vertex);
         }
     }
     if (second_exflow_before == 0 && second_exflow > 0) {
         if (edge->second.label != network->sink.label) {
-            unsigned int index = vertexcollection_index_of(vertices, edge->second);
-            VertexPointer vertex = vertexcollection_get(vertices, index);
+            vertex = vertexcollection_get_reference(vertices, edge->second);
             vertexcollection_push(network->active_vertices, vertex);
         }
     }
