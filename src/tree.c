@@ -98,6 +98,16 @@ Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
     return SUCCESS;
 }
 
+Result tree_insert_under_root(VertexPointer vertex, Tree tree)
+{
+    Label rootlabel = tree.root->content->label;
+    if (tree_insert(make_p_tree_vertex(vertex), rootlabel, tree) == FAIL) {
+        return FAIL;
+    } else {
+        return SUCCESS;
+    }
+}
+
 void tree_evens_odds(Tree tree, VertexCollectionPointer evens, VertexCollectionPointer odds)
 {
     treevertex_odds_evens(tree.root, true, evens, odds);

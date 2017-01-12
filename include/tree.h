@@ -36,6 +36,8 @@ bool tree_contains_vertex(Tree tree, VertexPointer vertex);
 // the tree. Retruns SUCCESS if successful, FAIL otherwise.
 Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree);
 
+Result tree_insert_under_root(VertexPointer vertex, Tree tree);
+
 // Stores references to all vertices that have even / odd distance to the root
 // of the tree the two respective sets 
 void tree_evens_odds(Tree tree, VertexCollectionPointer evens, VertexCollectionPointer odds);

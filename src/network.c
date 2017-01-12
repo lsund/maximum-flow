@@ -21,7 +21,8 @@ NetworkPointer network_init(NetworkType type)
 
     ret->excesses        = NULL;
     ret->strong_vertices = vertexcollection_empty();
-    ret->weak_vertices = vertexcollection_empty();
+    ret->weak_vertices   = vertexcollection_empty();
+    ret->tree            = tree_empty();
 
     return ret;
 }
