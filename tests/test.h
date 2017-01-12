@@ -12,6 +12,7 @@
 #include "disjointset.h"
 #include "network.h"
 #include "push_relabel.h"
+#include "pseudoflow.h"
 
 #define TEST_GRAPH "/home/lsund/Data/graphs/data/networks/small.dmx"
 
@@ -30,6 +31,7 @@ char *test_disjointset();
 char *test_network();
 char *test_main();
 char *test_tokentable();
+char *test_pseudoflow();
 
 
 enum MessageOption { 

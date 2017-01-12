@@ -3,6 +3,8 @@
 
 #include "network_functions.h"
 
+void pseudoflow_initialize(NetworkPointer network);
+
 void pseudoflow(NetworkPointer network);
 
 #endif

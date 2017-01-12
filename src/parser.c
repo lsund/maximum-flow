@@ -95,6 +95,7 @@ Result parse(const char *filename, const NetworkPointer network)
         network->weak_vertices   = vertexcollection_init(ARRAY_MIN_SIZE);
         VertexPointer root       = vertex_p_make(n_vertices + 1);
         network->tree            = tree_singleton(root, n_vertices);
+        network->excesses        = calloc(n_vertices, sizeof(int));
     }
 
     network->reverse_edges  = edgecollection_init(ARRAY_MIN_SIZE);

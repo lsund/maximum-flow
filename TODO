@@ -1,8 +1,9 @@
+TESTS:
+initialize_pseudoflow                           [done]
 
 FUNCTIONS:
 
-initialize_pseudoflow_algorithm                 []
-
+initialize_pseudoflow_algorithm                 [done]
 get_merger_edge()                               []
 scan the residual edges. Each vertex in the tree
 represents a vertex in the graph. The excess of 
@@ -10,6 +11,16 @@ each node is always updated and maintained. So
 we need a 
     int *excess
 pointer where we store that.
+
+A vertex is strong if excess(T_ri) > 0 and weak
+otherwise. Could initially create a function that 
+scans the tree, for each vertex met, check the excess.
+since the excess is maintained for ri by the algorithm,
+we could quickly get a tuple of strong and weak vertices.
+
+Now, we would like to find a residual edge that connects
+these two sets S, W. Naive: Scan the residual edges. for an 
+edge (u, v), check if u in S and v in W.
 
 MISC:
 

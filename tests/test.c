@@ -49,6 +49,8 @@ static char *test()
     mu_run_test(test_util);
 	mu_message(MODULE,"main\n");
     mu_run_test(test_main);
+    mu_message(MODULE, "pseudoflow\n");
+    mu_run_test(test_pseudoflow);
     return 0;
 }
 
@@ -89,6 +91,8 @@ static char *one_test(const char *module)
         mu_run_test(test_edgecollection);
     } else if (strcmp(module, "tree") == 0) {
         mu_run_test(test_tree);
+    } else if (strcmp(module, "pseudoflow") == 0) {
+        mu_run_test(test_pseudoflow);
     }
     return 0;
 }
@@ -112,6 +116,8 @@ int main(int argc, char **argv) {
             result = one_test("edgecollection");
         } else if (strcmp(argv[1], "tree") == 0) {
             result = one_test("tree");
+        } else if (strcmp(argv[1], "pseudoflow") == 0) {
+            result = one_test("pseudoflow");
         } else {
             result = NULL;
             runtime_error("invalid argument to test");

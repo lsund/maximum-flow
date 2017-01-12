@@ -21,7 +21,6 @@ static void initialize_vertex(
         *(network->excesses + i) = capacity;
         vertex = vertexcollection_get_reference(vertices, edge->second);
         vertexcollection_push(strongs, vertex);
-        tree_insert_under_root(vertex, network->tree);
     } else {
         weaks = network->weak_vertices;
         capacity = networkedge_capacity(network, edge);
@@ -33,7 +32,7 @@ static void initialize_vertex(
     tree_insert_under_root(vertex, network->tree);
 }
 
-static void pseudoflow_initialize(NetworkPointer network)
+void pseudoflow_initialize(NetworkPointer network)
 {
     EdgePointer edge;
     VertexPointer vertex;
@@ -54,7 +53,9 @@ static void pseudoflow_initialize(NetworkPointer network)
         Label label = vertex->label;
         if (
                 !vertexcollection_contains_label(strongs, label) && 
-                !vertexcollection_contains_label(weaks, label)
+                !vertexcollection_contains_label(weaks, label) &&
+                !vertex_equals(*vertex, network->source) &&
+                !vertex_equals(*vertex, network->sink)
            ) {
             *(network->excesses + i) = 0;
             vertexcollection_push(weaks, vertex);
