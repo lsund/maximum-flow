@@ -13,6 +13,7 @@
 #include "network.h"
 #include "push_relabel.h"
 #include "pseudoflow.h"
+#include "pseudoflow_network.h"
 
 #define TEST_GRAPH "/home/lsund/Data/graphs/data/networks/small.dmx"
 
