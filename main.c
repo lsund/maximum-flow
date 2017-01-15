@@ -5,22 +5,25 @@
 
 #include "parser.h"
 #include "push_relabel.h"
+#include "pseudoflow.h"
 #include "map.h"
 
 int main(int argc, char *argv[]) 
 {
-    NetworkPointer network = network_init(PR);
+    /* NetworkPointer network = network_init(PR); */
+    NetworkPointer network = network_init(PS);
     if (argc == 2) {
         parse(argv[1], network);
     } else {
         // 20x20 3.5s
-        /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
-        parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network);
+        parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network);
+        /* parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network); */
     }
     clock_t start = clock(), diff;
     if (network->type == PR) {
         push_relabel(network);
     } else {
+        pseudoflow(network);
         return 0;
     }
     diff = clock() - start;

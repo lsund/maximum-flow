@@ -5,32 +5,25 @@
 
 // A tree graph, a undirected graph with no cycles.
 // Field root:      the root vertex
-// Field contains:  bitmap for keeping track of which vertices are in tree
-// Field maxsize:   limit for |V| for this tree
 typedef struct tree {
     TreeVertexPointer root;
-    bool *contains;
-    size_t maxsize;
-    size_t *nvertices;
 } Tree, *TreePointer;
 
 // Construct a empty tree
 Tree tree_empty();
 
-// Construct a tree with just a rootvertex as given, capable of
-// having a maximum number of vertices specified as maxsize
-Tree tree_singleton(const VertexPointer vertex, const size_t maxsize);
+// Construct a tree with just a rootvertex as given;
+Tree tree_singleton(const VertexPointer vertex);
 
-// Construct a tree with just a rootvertex with the specified label, capable of
-// having a maximum number of vertices specified as maxsize
-Tree tree_singleton_label(const Label rootlabel, const size_t maxsize);
+// Construct a tree with just a rootvertex with the specified label;
+Tree tree_singleton_label(const Label rootlabel);
 
-// Construct a tree using a treevertexpointer capable of having a maximum number
-// of vertices specified as maxsize
-Tree tree_make(const TreeVertexPointer root, const size_t maxsize);
+// Construct a tree using a treevertexpointer;
+Tree tree_make(const TreeVertexPointer root);
 
-// Returns true if the vertex contains the specified vertex, false otherwise.
-bool tree_contains_vertex(Tree tree, VertexPointer vertex);
+Tree tree_get(Tree tree, VertexPointer vertex);
+
+size_t tree_size(Tree tree);
 
 // Attempts to tree_insert the tree-vertex under a vertex with the specified label in
 // the tree. Retruns SUCCESS if successful, FAIL otherwise.

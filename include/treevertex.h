@@ -10,7 +10,7 @@
 typedef struct treevertex {
     VertexPointer content;
     size_t rank;
-    void * parent;
+    void *parent;
     bool is_root;
     CollectionPointer children;
 } TreeVertex, *TreeVertexPointer;
@@ -21,14 +21,21 @@ TreeVertexPointer make_p_tree_vertex(VertexPointer vertex);
 // Creates a pointer to a treevertex using a label
 TreeVertexPointer make_p_tree_vertex_label(const Label label);
 
+// Inserts The treevertex tree_a under the specified label in in the
+// treevertex tree_b
 Result treevertex_insert(
         TreeVertexPointer tree_a, 
         const Label under, 
         TreeVertexPointer tree_b
     );
 
-// Return a pointer to the TreeVertex corresponding to the given vertex 
+// Return a pointer to the TreeVertex corresponding to the given vertex that is
+// contained in the treevertex root.
 TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content);
+
+TreeVertexPointer treevertex_get_root_child(TreeVertexPointer of);
+
+size_t treevertex_size(TreeVertexPointer root);
 
 // Attempts to return the vertices of the tree rooted in root. Returns SUCCESS
 // when successful with the vertices stored as a vertexcollection in the return

@@ -1,10 +1,28 @@
+
+LOGIC:
+
+Get the subtrees which has as root a particular
+vertex                                          []
+Have no such function in tree. Need to
+implement it. However, I have a treevertex_get.
+Just need to wrap it in tree.
+*** IMPORTANT *** Need to take action with trees contains
+structure. Is it needed for the algorithm? If 
+I can delete it, it would mean a much simpler
+tree. If not deleted, both make_tree and tree_get
+is BROKEN.
+I don't expcilitly need to check if a tree 
+contains a vertex => can remove this 
+functionality                                   []
+
 TESTS:
 initialize_pseudoflow                           [done]
+merger_edge                                     [done]
 
 FUNCTIONS:
 
 initialize_pseudoflow_algorithm                 [done]
-get_merger_edge()                               []
+get_merger_edge()                               [done]
 scan the residual edges. Each vertex in the tree
 represents a vertex in the graph. The excess of 
 each node is always updated and maintained. So

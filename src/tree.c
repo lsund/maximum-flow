@@ -18,8 +18,6 @@ TreeVertexPointer make_p_tree_vertex_label(const Label label) {
 Tree tree_empty() {
     Tree ret;
     ret.root = NULL;
-    ret.contains = NULL;
-    ret.nvertices = NULL;
     return ret;
 }
 
@@ -30,34 +28,26 @@ TreePointer empty_p_tree() {
 }
 
 bool is_emtpy_tree(Tree tree) {
-    return tree.root == NULL || tree.contains == NULL; 
+    return tree.root == NULL;
 }
 
-Tree tree_singleton(const VertexPointer vertex, const size_t maxsize)
+Tree tree_singleton(const VertexPointer vertex)
 {
     Tree ret;
     ret.root                    = make_p_tree_vertex(vertex);
     ret.root->is_root           = true;
-    ret.maxsize                 = maxsize;
-    ret.nvertices               = malloc(sizeof(size_t));
-    *ret.nvertices              = 1;
-    ret.contains                = calloc(sizeof(bool), maxsize);
-    *(ret.contains + vertex->label) = true;
     return ret;
 }
 
-Tree tree_singleton_label(const Label rootlabel, const size_t maxsize)
+Tree tree_singleton_label(const Label rootlabel)
 {
-    return tree_singleton(vertex_p_make(rootlabel), maxsize);
+    return tree_singleton(vertex_p_make(rootlabel));
 }
 
-Tree tree_make(const TreeVertexPointer root, const size_t maxsize)
+Tree tree_make(const TreeVertexPointer root)
 {
     Tree ret;
     ret.root = root;
-    ret.maxsize = maxsize;
-    ret.contains = calloc(sizeof(bool), maxsize);
-    *(ret.contains + root->content->label) = true;
     return ret;
 }
 
@@ -68,34 +58,30 @@ TreePointer make_p_tree(const TreeVertexPointer root)
     return ret;
 }
 
-bool tree_contains_vertex(Tree tree, VertexPointer vertex)
+Tree tree_get(Tree tree, VertexPointer vertex)
 {
-    if (vertex->label > tree.maxsize) {
-        return false;
-    }
-    return *(tree.contains + vertex->label);
+    TreeVertexPointer subtree = treevertex_get(tree.root, vertex);
+    return tree_make(subtree);
+}
+
+Tree tree_get_branch(Tree tree, VertexPointer vertex)
+{
+    TreeVertexPointer subtree = treevertex_get(tree.root, vertex);
+    return tree_make(treevertex_get_root_child(subtree));
+}
+
+size_t tree_size(Tree tree)
+{
+    return treevertex_size(tree.root);
 }
 
 Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
 {
-    VertexCollection inserted_vertices = vertexcollection_init(tree.maxsize);
-    if (inserted_vertices.members->capacity == 0) {
-        return FAIL;
-    }
-    if (treevertex_vertices(treevertex, inserted_vertices) == FAIL) {
-        return FAIL;
-    }
 	if (treevertex_insert(treevertex, under, tree.root) == FAIL) {
         return FAIL;
+    } else {
+        return SUCCESS;
     }
-    size_t i;
-    for (i = 0; i < inserted_vertices.members->length; i++) {
-        VertexPointer vertex = vertexcollection_get(inserted_vertices, i);
-            *(tree.contains + vertex->label) = true;
-    }
-    *(tree.nvertices) += inserted_vertices.members->length;
-    vertexcollection_destroy(inserted_vertices);
-    return SUCCESS;
 }
 
 Result tree_insert_under_root(VertexPointer vertex, Tree tree)
@@ -131,8 +117,6 @@ void tree_print(Tree tree)
 
 Result tree_destroy(Tree tree)
 {
-    free(tree.contains);
-    free(tree.nvertices);
     if (treevertex_destroy(tree.root) == FAIL) {
         return FAIL;
     } else {

@@ -4,13 +4,8 @@
 
 char *utest_tree_singleton_label()
 {
-    Tree tree = tree_singleton_label(3, 10);
+    Tree tree = tree_singleton_label(3);
     mu_assert("label should be 3", tree.root->content->label == 3);
-    mu_assert("contains should be initialized", tree.contains); 
-    mu_assert("tree should contain vertex 3", *(tree.contains + 3)); 
-    mu_assert("should not contain anything else", !*(tree.contains + 1)); 
-    mu_assert("should not contain anything else", !*(tree.contains + 2)); 
-    mu_assert("max size should be set", tree.maxsize == 10); 
     return NULL;
 }
 
@@ -24,7 +19,7 @@ char *utesmake_p_tree_vertex_label()
 
 char *utest_treevertex_vertices()
 {
-    Tree tree = tree_singleton_label(0, 10);
+    Tree tree = tree_singleton_label(0);
     tree_insert(make_p_tree_vertex_label(1), 0, tree);
     tree_insert(make_p_tree_vertex_label(2), 0, tree);
     tree_insert(make_p_tree_vertex_label(3), 2, tree);
@@ -40,10 +35,9 @@ char *utest_treevertex_vertices()
 
 char *utest_treevertex_insert()
 {
-    Tree tree = tree_singleton_label(1, 5);
+    Tree tree = tree_singleton_label(1);
     TreeVertexPointer root = tree.root;
     mu_assert("should be root", root->is_root);
-    mu_assert("should contain 1", tree_contains_vertex(tree_make(root, 10), vertex_p_make(1)));
     mu_assert("parent should be null", root->parent == NULL); 
     mu_assert("should succed", treevertex_insert(make_p_tree_vertex_label(2), 1, root) == SUCCESS);
     mu_assert("root should exist", root);
@@ -77,41 +71,40 @@ char *utest_treevertex_insert()
     return NULL;
 }
 
+char *utest_tree_size()
+{
+    Tree tree = tree_singleton_label(1);
+    mu_assert("should have size 1", tree_size(tree) == 1);
+    tree_insert(make_p_tree_vertex_label(2), 1, tree);
+    mu_assert("should have size 1", tree_size(tree) == 2);
+    tree_insert(make_p_tree_vertex_label(3), 1, tree);
+    mu_assert("should have size 1", tree_size(tree) == 3);
+    Tree tree2 = tree_singleton_label(77);
+    tree_insert(make_p_tree_vertex_label(78), 77, tree2);
+    tree_insert(make_p_tree_vertex_label(79), 77, tree2);
+    tree_insert(tree2.root, 2, tree);
+    mu_assert("should have size 6", tree_size(tree) == 6);
+    return NULL;
+}
+
 char *utest_insert()
 {
-    Tree tree = tree_singleton_label(1, 10);
-    mu_assert("should contain 1", tree_contains_vertex(tree, vertex_p_make(1)));
+    Tree tree = tree_singleton_label(1);
     mu_assert("should work", tree_insert(make_p_tree_vertex_label(2), 1, tree) == SUCCESS);
-    mu_assert("should contain 2", tree_contains_vertex(tree, vertex_p_make(2)));
-    mu_assert("should still contain 1", tree_contains_vertex(tree, vertex_p_make(1)));
-    mu_assert("but not 0 or 3", !tree_contains_vertex(tree, vertex_p_make(0)));
-    mu_assert("but not 0 or 3", !tree_contains_vertex(tree, vertex_p_make(3)));
-    mu_assert("should have 2 vertex", *tree.nvertices == 2);
     tree_destroy(tree);
-    tree = tree_singleton_label(1, 10);
-    Tree tree2 = tree_singleton_label(3, 10);
+    tree = tree_singleton_label(1);
+    Tree tree2 = tree_singleton_label(3);
     tree_insert(make_p_tree_vertex_label(2), 1, tree);
     tree_insert(make_p_tree_vertex_label(4), 3, tree2);
     tree_insert(make_p_tree_vertex_label(5), 3, tree2);
-    mu_assert("should have 3 vertices", *tree2.nvertices == 3);
-    mu_assert("tree contains one and two", tree_contains_vertex(tree, vertex_p_make(1)));
-    mu_assert("tree contains one and two", tree_contains_vertex(tree, vertex_p_make(2)));
-    mu_assert("tree2 contains 3,4,5", tree_contains_vertex(tree2, vertex_p_make(3)));
-    mu_assert("tree2 contains 3,4,5", tree_contains_vertex(tree2, vertex_p_make(4)));
-    mu_assert("tree2 contains 3,4,5", tree_contains_vertex(tree2, vertex_p_make(5)));
     mu_assert("should succed", tree_insert(tree2.root, 1, tree) == SUCCESS); 
-    mu_assert("tree contains 1", tree_contains_vertex(tree, vertex_p_make(1)));
-    mu_assert("tree contains 2", tree_contains_vertex(tree, vertex_p_make(2)));
-    mu_assert("tree contains 3", tree_contains_vertex(tree, vertex_p_make(3)));
-    mu_assert("tree contains 4", tree_contains_vertex(tree, vertex_p_make(4)));
-    mu_assert("tree contains 5", tree_contains_vertex(tree, vertex_p_make(5)));
     return NULL;
 }
 
 
 char *utest_tree_evens_odds()
 {
-    Tree root = tree_singleton_label(0, 10);
+    Tree root = tree_singleton_label(0);
     tree_insert(make_p_tree_vertex_label(1), 0, root);
     tree_insert(make_p_tree_vertex_label(2), 0, root);
     tree_insert(make_p_tree_vertex_label(3), 1, root);
@@ -137,7 +130,7 @@ char *utest_tree_evens_odds()
 
 char *utest_evens()
 {
-    Tree root = tree_singleton_label(0, 10);
+    Tree root = tree_singleton_label(0);
     tree_insert(make_p_tree_vertex_label(1), 0, root);
     tree_insert(make_p_tree_vertex_label(2), 0, root);
     tree_insert(make_p_tree_vertex_label(3), 1, root);
@@ -159,7 +152,7 @@ char *utest_evens()
 
 char *utest_odds()
 {
-    Tree root = tree_singleton_label(0, 10);
+    Tree root = tree_singleton_label(0);
     tree_insert(make_p_tree_vertex_label(1), 0, root);
     tree_insert(make_p_tree_vertex_label(2), 0, root);
     tree_insert(make_p_tree_vertex_label(3), 1, root);
@@ -192,7 +185,7 @@ char *test_is_frustrated()
 
 char *utest_treevertex_get()
 {
-    Tree tree = tree_singleton_label(0, 5);
+    Tree tree = tree_singleton_label(0);
     VertexPointer a = vertex_p_make(1);
     VertexPointer b = vertex_p_make(2);
     VertexPointer c = vertex_p_make(3);
@@ -213,6 +206,11 @@ char *utest_treevertex_get()
     return NULL;
 }
 
+char *utest_get_root_child_of()
+{
+    return NULL;
+}
+
 char *test_tree() {
     mu_message(UNIT, "make_p_tree_vertex_label\n");
     mu_run_utest(utesmake_p_tree_vertex_label);
@@ -222,6 +220,8 @@ char *test_tree() {
     mu_run_utest(utest_treevertex_insert);
     mu_message(UNIT, "tree_insert\n");
     mu_run_utest(utest_insert);
+    mu_message(UNIT, "tree_size\n");
+    mu_run_utest(utest_tree_size);
     mu_message(UNIT, "tree_evens_odds\n");
     mu_run_utest(utest_tree_evens_odds);
     mu_message(UNIT, "evens\n");

@@ -6,17 +6,17 @@ char *utest_psuedoflow_initialize()
     parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network);
     pseudoflow_initialize(network);
     mu_assert("should contain the same number of elements as the graph + 1",
-            *network->tree.nvertices == 5);
+            tree_size(network->tree) == 5);
     network = network_init(PS);
     parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network);
     pseudoflow_initialize(network);
     mu_assert("should contain the same number of elements as the graph + 1",
-            *network->tree.nvertices == 401);
+            tree_size(network->tree) == 401);
     network = network_init(PS);
     parse("/home/lsund/Data/graphs/data/networks/set/gen3x3.dmx", network);
     pseudoflow_initialize(network);
     mu_assert("should contain the same number of elements as the graph + 1",
-            *network->tree.nvertices == 10);
+            tree_size(network->tree) == 10);
     mu_assert("number of strong vertices should be 3",
             vertexcollection_length(network->strong_vertices) == 3);
     mu_assert("number of weak vertices should be 6",

@@ -53,6 +53,16 @@ TreeVertexPointer treevertex_subtree(TreeVertexPointer root, VertexPointer under
     }
 }
 
+size_t treevertex_size(TreeVertexPointer root)
+{
+    size_t i;
+    size_t size = 0;
+    for (i = 0; i < root->children->length; i++) {
+        size += treevertex_size(collection_get(root->children, i));
+    }
+    return size + 1;
+}
+
 TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content)
 {
     if (vertex_equals(*root->content, *content)) {
@@ -66,6 +76,21 @@ TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content)
         }
     }
     return NULL;
+}
+
+TreeVertexPointer treevertex_get_root_child(TreeVertexPointer of)
+{
+    if (of->is_root) {
+        return NULL;
+    } else {
+        TreeVertexPointer cursor = (TreeVertexPointer) of->parent;
+        TreeVertexPointer current = of;
+        while (!cursor->is_root) {
+            current = cursor;
+            cursor = cursor->parent;
+        }
+        return current;
+    }
 }
 
 Result treevertex_vertices(TreeVertexPointer root, VertexCollection acc)

@@ -67,6 +67,31 @@ void pseudoflow_initialize(NetworkPointer network)
 void pseudoflow(NetworkPointer network)
 {
     pseudoflow_initialize(network);
+    EdgePointer merger = merger_edge(network);
+    VertexPointer strong_vertex, weak_vertex;
+    while (merger) {
+        edge_print(*merger_edge(network));
+        strong_vertex = vertexcollection_get_reference(
+                network->strong_vertices, 
+                merger->first
+        );
+        weak_vertex = vertexcollection_get_reference(
+                network->strong_vertices,
+                merger->second
+        );
+        // Maybe the branches is the direct ancestors of the root, 
+        // in that case this is wrong (yes)
+        Tree strong_branch = tree_get(network->tree, strong_vertex); 
+        Tree weak_branch = tree_get(network->tree, weak_vertex);
+        unsigned int delta = *(network->excesses + strong_vertex->label);
+
+        // deattach the strong branch from the root, connect the tree with
+        // (s, w)
+
+
+
+        merger = merger_edge(network);
+    }
     // blah
     return;
 }
