@@ -64,10 +64,16 @@ Tree tree_get(Tree tree, VertexPointer vertex)
     return tree_make(subtree);
 }
 
-Tree tree_get_branch(Tree tree, VertexPointer vertex)
+Result tree_get_branch(Tree tree, VertexPointer vertex, TreePointer result)
 {
     TreeVertexPointer subtree = treevertex_get(tree.root, vertex);
-    return tree_make(treevertex_get_root_child(subtree));
+    TreeVertexPointer ret = treevertex_get_root_child(subtree);
+    if (ret == NULL) {
+        return FAIL;
+    } else {
+        *result = tree_make(ret);
+        return SUCCESS;
+    }
 }
 
 size_t tree_size(Tree tree)

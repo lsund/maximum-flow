@@ -1,3 +1,8 @@
+MISC:
+
+change tree_insert to insert a vertexpointer
+not a treevertexpointer. Should probably try
+to minimize interaction with vertexpointer.
 
 LOGIC:
 

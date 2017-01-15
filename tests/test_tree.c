@@ -87,6 +87,26 @@ char *utest_tree_size()
     return NULL;
 }
 
+char *utest_tree_get_branch()
+{
+    Tree tree = tree_singleton_label(1);
+    Tree placeholder = tree_empty();
+    tree_insert(make_p_tree_vertex_label(2), 1, tree);
+    tree_insert(make_p_tree_vertex_label(3), 2, tree);
+    tree_insert(make_p_tree_vertex_label(5), 1, tree);
+    tree_insert(make_p_tree_vertex_label(6), 5, tree);
+    tree_insert(make_p_tree_vertex_label(7), 5, tree);
+    mu_assert("should not succeed", FAIL == tree_get_branch(tree, vertex_p_make(1), NULL));
+    mu_assert("should succeed", SUCCESS == tree_get_branch(tree, vertex_p_make(2), &placeholder));
+    mu_assert("should be 2", 2 == placeholder.root->content->label);
+    mu_assert("should succeed", SUCCESS == tree_get_branch(tree, vertex_p_make(3), &placeholder));
+    mu_assert("should be 2", 2 == placeholder.root->content->label);
+    mu_assert("size should be 6", tree_size(tree) == 6);
+    mu_assert("should succeed", SUCCESS == tree_get_branch(tree, vertex_p_make(7), &placeholder));
+    mu_assert("should be 5", 5 == placeholder.root->content->label);
+    return NULL;
+}
+
 char *utest_insert()
 {
     Tree tree = tree_singleton_label(1);
@@ -206,11 +226,6 @@ char *utest_treevertex_get()
     return NULL;
 }
 
-char *utest_get_root_child_of()
-{
-    return NULL;
-}
-
 char *test_tree() {
     mu_message(UNIT, "make_p_tree_vertex_label\n");
     mu_run_utest(utesmake_p_tree_vertex_label);
@@ -236,5 +251,7 @@ char *test_tree() {
     mu_run_utest(utest_insert);
     mu_message(UNIT, "treevertex_get\n");
     mu_run_utest(utest_treevertex_get);
+    mu_message(UNIT, "tree_get_branch\n");
+    mu_run_utest(utest_tree_get_branch);
     return NULL;
 }

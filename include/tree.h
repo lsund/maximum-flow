@@ -23,6 +23,8 @@ Tree tree_make(const TreeVertexPointer root);
 
 Tree tree_get(Tree tree, VertexPointer vertex);
 
+Result tree_get_branch(Tree tree, VertexPointer vertex, TreePointer result);
+
 size_t tree_size(Tree tree);
 
 // Attempts to tree_insert the tree-vertex under a vertex with the specified label in
