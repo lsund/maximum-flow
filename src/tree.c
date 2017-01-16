@@ -108,6 +108,7 @@ Result tree_deattach(Tree tree, VertexPointer vertex)
 {
     TreeVertexPointer subtree = treevertex_get(tree.root, vertex);
     if (subtree && subtree->parent) {
+        collection_remove(subtree->parent, subtree);
         subtree->parent = NULL;
         return SUCCESS;
     } else {

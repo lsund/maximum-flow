@@ -33,8 +33,11 @@ Result treevertex_insert(
 // contained in the treevertex root.
 TreeVertexPointer treevertex_get(TreeVertexPointer root, VertexPointer content);
 
+// The child of the root, identical to the specified treevertex
+// reference
 TreeVertexPointer treevertex_get_root_child(TreeVertexPointer of);
 
+// The number of ancestors starting in root + 1
 size_t treevertex_size(TreeVertexPointer root);
 
 // Attempts to return the vertices of the tree rooted in root. Returns SUCCESS
@@ -42,10 +45,14 @@ size_t treevertex_size(TreeVertexPointer root);
 // parameter. Returns FAIL otherwise.
 Result treevertex_vertices(TreeVertexPointer root, VertexCollection ret_vertexcollection);
 
+// Stores references to all vertices that have even / odd distance to the root
+// of the tree the two respective sets 
 void treevertex_odds_evens(TreeVertexPointer root, bool even, VertexCollectionPointer evens, VertexCollectionPointer odds);
 
+// Prints a string representation of the tree vertex
 void treevertex_print(TreeVertexPointer root);
 
+// The subtree under root, which has it's own root under the specified vertex
 TreeVertexPointer treevertex_subtree(TreeVertexPointer root, VertexPointer under);
 
 // frees the structure

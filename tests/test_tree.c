@@ -15,6 +15,9 @@ char *utest_tree_deattach()
     tree_insert(v3, 2, tree);
     tree_insert(v4, 2, tree);
     tree_insert(v5, 3, tree);
+    mu_assert("should have 6 nodes", tree_size(tree) == 6);
+    tree_deattach(tree, v2);
+    mu_assert("should have 2 nodes", tree_size(tree) == 2);
     return NULL;
 }
 

@@ -34,6 +34,7 @@ Result tree_insert_under_root(VertexPointer vertex, Tree tree);
 // Attaches the tree rooted in treevertex to the specified tree under the label.
 Result tree_attach(TreeVertexPointer treevertex, const Label under, Tree tree);
 
+// Deattaches the tree rooted in the specified vertex from the tree
 Result tree_deattach(Tree tree, VertexPointer vertex);
 
 // Stores references to all vertices that have even / odd distance to the root

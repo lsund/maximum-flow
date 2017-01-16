@@ -1,8 +1,11 @@
 MISC:
 
+change tree_insert order of arguments to 
+something sane                                  []
+
 change tree_insert to insert a vertexpointer
 not a treevertexpointer. Should probably try
-to minimize interaction with vertexpointer.     []
+to minimize interaction with vertexpointer.     [done]
 
 For the merge step, need to detach the strong
 branch from the root and connect the tree 
@@ -13,7 +16,7 @@ we need to
 
 To connect the tree using (s, w) we need to
 (1) take the subtree s and insert it under w
-using tree_insert
+using tree_insert.
 
 LOGIC:
 
@@ -38,6 +41,7 @@ functionality                                   [done]
 TESTS:
 initialize_pseudoflow                           [done]
 merger_edge                                     [done]
+tree_deattach                                   []
 
 FUNCTIONS:
 

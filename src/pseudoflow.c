@@ -85,10 +85,8 @@ void pseudoflow(NetworkPointer network)
         unsigned int delta = *(network->excesses + strong_vertex->label);
 
         //deattach the strong branch from the root
-        
-
-        // deattach the strong branch from the root, connect the tree with
-        // (s, w)
+        tree_deattach(network->tree, strong_branch->content);
+        // connect the tree with (s, w)
 
         merger = merger_edge(network);
     }
