@@ -6,3 +6,4 @@ main
 third_party
 generator
 prof
+valgrind_fail

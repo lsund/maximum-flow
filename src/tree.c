@@ -84,7 +84,7 @@ Result tree_attach(TreeVertexPointer treevertex, const Label under, Tree tree)
     }
 }
 
-Result tree_insert(VertexPointer vertex, const Label under, Tree tree)
+Result tree_insert(Tree tree, VertexPointer vertex, const Label under)
 {
     TreeVertexPointer inserted = make_p_tree_vertex(vertex);
 	if (treevertex_insert(inserted, under, tree.root) == FAIL) {
@@ -97,7 +97,7 @@ Result tree_insert(VertexPointer vertex, const Label under, Tree tree)
 Result tree_insert_under_root(VertexPointer vertex, Tree tree)
 {
     Label rootlabel = tree.root->content->label;
-    if (tree_insert(vertex, rootlabel, tree) == FAIL) {
+    if (tree_insert(tree, vertex, rootlabel) == FAIL) {
         return FAIL;
     } else {
         return SUCCESS;

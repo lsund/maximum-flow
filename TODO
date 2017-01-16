@@ -29,7 +29,8 @@ vertex                                          [done]
 Have no such function in tree. Need to
 implement it. However, I have a treevertex_get.
 Just need to wrap it in tree.
-*** IMPORTANT *** Need to take action with trees contains
+*** IMPORTANT *** Need to take action with 
+trees contains
 structure. Is it needed for the algorithm? If 
 I can delete it, it would mean a much simpler
 tree. If not deleted, both make_tree and tree_get

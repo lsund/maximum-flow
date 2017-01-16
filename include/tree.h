@@ -23,11 +23,12 @@ Tree tree_make(const TreeVertexPointer root);
 
 Result tree_get_branch(Tree tree, VertexPointer vertex, TreeVertexPointer *result);
 
+// The number of vertices in the tree 
 size_t tree_size(Tree tree);
 
 // Attempts to tree_insert the tree-vertex under a vertex with the specified label in
 // the tree. Retruns SUCCESS if successful, FAIL otherwise.
-Result tree_insert(VertexPointer vertex, const Label under, Tree tree);
+Result tree_insert(Tree tree, VertexPointer vertex, const Label under);
 
 Result tree_insert_under_root(VertexPointer vertex, Tree tree);
 

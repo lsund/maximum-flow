@@ -86,6 +86,7 @@ void pseudoflow(NetworkPointer network)
 
         //deattach the strong branch from the root
         tree_deattach(network->tree, strong_branch->content);
+        tree_attach(strong_branch, merger->second.label, network->tree);
         // connect the tree with (s, w)
 
         merger = merger_edge(network);
