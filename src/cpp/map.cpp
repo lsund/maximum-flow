@@ -17,6 +17,12 @@ extern "C" {
         m->insert(std::pair<unsigned int, int>(k, v));
     }
 
+    void map_remove(void *map, unsigned int k)
+    {
+        Map *m = reinterpret_cast<Map *> (map);
+        m->erase(k); 
+    }
+
     void map_update(void *map, unsigned int k, int v)
     {
         Map *m = reinterpret_cast<Map *> (map);

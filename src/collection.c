@@ -87,6 +87,21 @@ void *collection_pop(const CollectionPointer collection)
     return temp;
 }
 
+void collection_remove(CollectionPointer *collection, void *element)
+{
+    CollectionPointer collection_val = *collection;
+    size_t i, n_elements = collection_length(collection_val);
+    CollectionPointer temp = collection_p_init(n_elements);
+    for (i = 0; i < n_elements; i++) {
+        void *current = collection_get(collection_val, i);
+        if (element != current) {
+            collection_push(temp, element);
+        }
+    }
+    collection_destroy(collection_val);
+    *collection = temp;
+}
+
 bool collection_is_empty(const CollectionPointer collection)
 {
     return !collection || !collection->head || collection->length == 0;

@@ -58,20 +58,14 @@ TreePointer make_p_tree(const TreeVertexPointer root)
     return ret;
 }
 
-Tree tree_get(Tree tree, VertexPointer vertex)
-{
-    TreeVertexPointer subtree = treevertex_get(tree.root, vertex);
-    return tree_make(subtree);
-}
-
-Result tree_get_branch(Tree tree, VertexPointer vertex, TreePointer result)
+Result tree_get_branch(Tree tree, VertexPointer vertex, TreeVertexPointer *result)
 {
     TreeVertexPointer subtree = treevertex_get(tree.root, vertex);
     TreeVertexPointer ret = treevertex_get_root_child(subtree);
     if (ret == NULL) {
         return FAIL;
     } else {
-        *result = tree_make(ret);
+        *result = ret;
         return SUCCESS;
     }
 }
@@ -81,9 +75,19 @@ size_t tree_size(Tree tree)
     return treevertex_size(tree.root);
 }
 
-Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
+Result tree_attach(TreeVertexPointer treevertex, const Label under, Tree tree)
 {
 	if (treevertex_insert(treevertex, under, tree.root) == FAIL) {
+        return FAIL;
+    } else {
+        return SUCCESS;
+    }
+}
+
+Result tree_insert(VertexPointer vertex, const Label under, Tree tree)
+{
+    TreeVertexPointer inserted = make_p_tree_vertex(vertex);
+	if (treevertex_insert(inserted, under, tree.root) == FAIL) {
         return FAIL;
     } else {
         return SUCCESS;
@@ -93,10 +97,21 @@ Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree)
 Result tree_insert_under_root(VertexPointer vertex, Tree tree)
 {
     Label rootlabel = tree.root->content->label;
-    if (tree_insert(make_p_tree_vertex(vertex), rootlabel, tree) == FAIL) {
+    if (tree_insert(vertex, rootlabel, tree) == FAIL) {
         return FAIL;
     } else {
         return SUCCESS;
+    }
+}
+
+Result tree_deattach(Tree tree, VertexPointer vertex)
+{
+    TreeVertexPointer subtree = treevertex_get(tree.root, vertex);
+    if (subtree && subtree->parent) {
+        subtree->parent = NULL;
+        return SUCCESS;
+    } else {
+        return FAIL;
     }
 }
 

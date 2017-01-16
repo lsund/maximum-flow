@@ -42,6 +42,8 @@ Result collection_push(const CollectionPointer collection, void *element);
 // get the last element of an collection
 void *collection_pop(CollectionPointer collection);
 
+void collection_remove(CollectionPointer *collection, void *element);
+
 // Returns true if the collection is considered empty
 bool collection_is_empty(const CollectionPointer collection);
 

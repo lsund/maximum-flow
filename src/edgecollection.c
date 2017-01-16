@@ -95,17 +95,8 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 
 void edgecollection_remove(EdgeCollectionPointer edges, const EdgePointer edge)
 {
-    size_t i, n_edges = edgecollection_length(*edges);
-    EdgeCollection edges_val = *edges;
-    EdgeCollection temp = edgecollection_init(n_edges);
-    for (i = 0; i < n_edges; i++) {
-        EdgePointer current = edgecollection_get(edges_val, i);
-        if (!edge_equals(edge, current)) {
-            edgecollection_push(temp, current);  
-        }
-    }
-    edgecollection_destroy(edges_val);
-    *edges = temp;
+    collection_remove(&edges->members, edge);
+    map_remove(edges->indices, edge_hash(edge));
 }
 
 bool edgecollection_is_empty(const EdgeCollection edges)

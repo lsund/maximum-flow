@@ -21,17 +21,20 @@ Tree tree_singleton_label(const Label rootlabel);
 // Construct a tree using a treevertexpointer;
 Tree tree_make(const TreeVertexPointer root);
 
-Tree tree_get(Tree tree, VertexPointer vertex);
-
-Result tree_get_branch(Tree tree, VertexPointer vertex, TreePointer result);
+Result tree_get_branch(Tree tree, VertexPointer vertex, TreeVertexPointer *result);
 
 size_t tree_size(Tree tree);
 
 // Attempts to tree_insert the tree-vertex under a vertex with the specified label in
 // the tree. Retruns SUCCESS if successful, FAIL otherwise.
-Result tree_insert(TreeVertexPointer treevertex, const Label under, Tree tree);
+Result tree_insert(VertexPointer vertex, const Label under, Tree tree);
 
 Result tree_insert_under_root(VertexPointer vertex, Tree tree);
+
+// Attaches the tree rooted in treevertex to the specified tree under the label.
+Result tree_attach(TreeVertexPointer treevertex, const Label under, Tree tree);
+
+Result tree_deattach(Tree tree, VertexPointer vertex);
 
 // Stores references to all vertices that have even / odd distance to the root
 // of the tree the two respective sets 

@@ -2,12 +2,27 @@ MISC:
 
 change tree_insert to insert a vertexpointer
 not a treevertexpointer. Should probably try
-to minimize interaction with vertexpointer.
+to minimize interaction with vertexpointer.     []
+
+For the merge step, need to detach the strong
+branch from the root and connect the tree 
+using (s, w). To detach the strong branch, 
+we need to 
+(1) remove the pointer from s to root.
+(2) romeve the pointer from root to s
+
+To connect the tree using (s, w) we need to
+(1) take the subtree s and insert it under w
+using tree_insert
 
 LOGIC:
 
-Get the subtrees which has as root a particular
-vertex                                          []
+to remove something from edgecollection, it 
+is not enough to use collection to remove.
+We also need to update the indices map.
+
+Get the branch which contains a particular
+vertex                                          [done]
 Have no such function in tree. Need to
 implement it. However, I have a treevertex_get.
 Just need to wrap it in tree.
@@ -18,7 +33,7 @@ tree. If not deleted, both make_tree and tree_get
 is BROKEN.
 I don't expcilitly need to check if a tree 
 contains a vertex => can remove this 
-functionality                                   []
+functionality                                   [done]
 
 TESTS:
 initialize_pseudoflow                           [done]

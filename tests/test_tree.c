@@ -2,6 +2,22 @@
 #include <stdlib.h>
 #include "test.h"
 
+char *utest_tree_deattach()
+{
+    Tree tree = tree_singleton_label(0);
+    VertexPointer v1 = vertex_p_make(1);
+    VertexPointer v2 = vertex_p_make(2);
+    VertexPointer v3 = vertex_p_make(3);
+    VertexPointer v4 = vertex_p_make(4);
+    VertexPointer v5 = vertex_p_make(5);
+    tree_insert(v1, 0, tree);
+    tree_insert(v2, 0, tree);
+    tree_insert(v3, 2, tree);
+    tree_insert(v4, 2, tree);
+    tree_insert(v5, 3, tree);
+    return NULL;
+}
+
 char *utest_tree_singleton_label()
 {
     Tree tree = tree_singleton_label(3);
@@ -20,10 +36,10 @@ char *utesmake_p_tree_vertex_label()
 char *utest_treevertex_vertices()
 {
     Tree tree = tree_singleton_label(0);
-    tree_insert(make_p_tree_vertex_label(1), 0, tree);
-    tree_insert(make_p_tree_vertex_label(2), 0, tree);
-    tree_insert(make_p_tree_vertex_label(3), 2, tree);
-    tree_insert(make_p_tree_vertex_label(4), 2, tree);
+    tree_insert(vertex_p_make(1), 0, tree);
+    tree_insert(vertex_p_make(2), 0, tree);
+    tree_insert(vertex_p_make(3), 2, tree);
+    tree_insert(vertex_p_make(4), 2, tree);
     VertexCollection vertexcollection = vertexcollection_init(10);
     treevertex_vertices(tree.root, vertexcollection);
     mu_assert("should contain 1", vertexcollection_contains_label(vertexcollection, 1));
@@ -75,14 +91,14 @@ char *utest_tree_size()
 {
     Tree tree = tree_singleton_label(1);
     mu_assert("should have size 1", tree_size(tree) == 1);
-    tree_insert(make_p_tree_vertex_label(2), 1, tree);
+    tree_insert(vertex_p_make(2), 1, tree);
     mu_assert("should have size 1", tree_size(tree) == 2);
-    tree_insert(make_p_tree_vertex_label(3), 1, tree);
+    tree_insert(vertex_p_make(3), 1, tree);
     mu_assert("should have size 1", tree_size(tree) == 3);
     Tree tree2 = tree_singleton_label(77);
-    tree_insert(make_p_tree_vertex_label(78), 77, tree2);
-    tree_insert(make_p_tree_vertex_label(79), 77, tree2);
-    tree_insert(tree2.root, 2, tree);
+    tree_insert(vertex_p_make(78), 77, tree2);
+    tree_insert(vertex_p_make(79), 77, tree2);
+    tree_attach(tree2.root, 2, tree);
     mu_assert("should have size 6", tree_size(tree) == 6);
     return NULL;
 }
@@ -90,34 +106,34 @@ char *utest_tree_size()
 char *utest_tree_get_branch()
 {
     Tree tree = tree_singleton_label(1);
-    Tree placeholder = tree_empty();
-    tree_insert(make_p_tree_vertex_label(2), 1, tree);
-    tree_insert(make_p_tree_vertex_label(3), 2, tree);
-    tree_insert(make_p_tree_vertex_label(5), 1, tree);
-    tree_insert(make_p_tree_vertex_label(6), 5, tree);
-    tree_insert(make_p_tree_vertex_label(7), 5, tree);
+    TreeVertexPointer placeholder;
+    tree_insert(vertex_p_make(2), 1, tree);
+    tree_insert(vertex_p_make(3), 2, tree);
+    tree_insert(vertex_p_make(5), 1, tree);
+    tree_insert(vertex_p_make(6), 5, tree);
+    tree_insert(vertex_p_make(7), 5, tree);
     mu_assert("should not succeed", FAIL == tree_get_branch(tree, vertex_p_make(1), NULL));
     mu_assert("should succeed", SUCCESS == tree_get_branch(tree, vertex_p_make(2), &placeholder));
-    mu_assert("should be 2", 2 == placeholder.root->content->label);
+    mu_assert("should be 2", 2 == placeholder->content->label);
     mu_assert("should succeed", SUCCESS == tree_get_branch(tree, vertex_p_make(3), &placeholder));
-    mu_assert("should be 2", 2 == placeholder.root->content->label);
+    mu_assert("should be 2", 2 == placeholder->content->label);
     mu_assert("size should be 6", tree_size(tree) == 6);
     mu_assert("should succeed", SUCCESS == tree_get_branch(tree, vertex_p_make(7), &placeholder));
-    mu_assert("should be 5", 5 == placeholder.root->content->label);
+    mu_assert("should be 5", 5 == placeholder->content->label);
     return NULL;
 }
 
 char *utest_insert()
 {
     Tree tree = tree_singleton_label(1);
-    mu_assert("should work", tree_insert(make_p_tree_vertex_label(2), 1, tree) == SUCCESS);
+    mu_assert("should work", tree_insert(vertex_p_make(2), 1, tree) == SUCCESS);
     tree_destroy(tree);
     tree = tree_singleton_label(1);
     Tree tree2 = tree_singleton_label(3);
-    tree_insert(make_p_tree_vertex_label(2), 1, tree);
-    tree_insert(make_p_tree_vertex_label(4), 3, tree2);
-    tree_insert(make_p_tree_vertex_label(5), 3, tree2);
-    mu_assert("should succed", tree_insert(tree2.root, 1, tree) == SUCCESS); 
+    tree_insert(vertex_p_make(2), 1, tree);
+    tree_insert(vertex_p_make(4), 3, tree2);
+    tree_insert(vertex_p_make(5), 3, tree2);
+    mu_assert("should succed", tree_attach(tree2.root, 1, tree) == SUCCESS); 
     return NULL;
 }
 
@@ -125,10 +141,10 @@ char *utest_insert()
 char *utest_tree_evens_odds()
 {
     Tree root = tree_singleton_label(0);
-    tree_insert(make_p_tree_vertex_label(1), 0, root);
-    tree_insert(make_p_tree_vertex_label(2), 0, root);
-    tree_insert(make_p_tree_vertex_label(3), 1, root);
-    tree_insert(make_p_tree_vertex_label(4), 1, root);
+    tree_insert(vertex_p_make(1), 0, root);
+    tree_insert(vertex_p_make(2), 0, root);
+    tree_insert(vertex_p_make(3), 1, root);
+    tree_insert(vertex_p_make(4), 1, root);
     VertexCollection evens, odds;
     evens = vertexcollection_init(5);
     odds = vertexcollection_init(5);
@@ -151,10 +167,10 @@ char *utest_tree_evens_odds()
 char *utest_evens()
 {
     Tree root = tree_singleton_label(0);
-    tree_insert(make_p_tree_vertex_label(1), 0, root);
-    tree_insert(make_p_tree_vertex_label(2), 0, root);
-    tree_insert(make_p_tree_vertex_label(3), 1, root);
-    tree_insert(make_p_tree_vertex_label(4), 1, root);
+    tree_insert(vertex_p_make(1), 0, root);
+    tree_insert(vertex_p_make(2), 0, root);
+    tree_insert(vertex_p_make(3), 1, root);
+    tree_insert(vertex_p_make(4), 1, root);
     VertexCollection evens;
     evens = vertexcollection_init(6);
     tree_evens(root, &evens);
@@ -162,8 +178,8 @@ char *utest_evens()
     mu_assert("second even should be 3", ((VertexPointer) vertexcollection_get(evens, 1))->label == 3);
     mu_assert("Third even should be 4", ((VertexPointer) vertexcollection_get(evens, 2))->label == 4);
 
-    tree_insert(make_p_tree_vertex_label(5), 2, root);
-    tree_insert(make_p_tree_vertex_label(6), 2, root);
+    tree_insert(vertex_p_make(5), 2, root);
+    tree_insert(vertex_p_make(6), 2, root);
     tree_evens(root, &evens);
     mu_assert("fourth even should be 5", ((VertexPointer) vertexcollection_get(evens, 3))->label == 5);
     mu_assert("fifth even should be 6", ((VertexPointer) vertexcollection_get(evens, 4))->label == 6);
@@ -173,10 +189,10 @@ char *utest_evens()
 char *utest_odds()
 {
     Tree root = tree_singleton_label(0);
-    tree_insert(make_p_tree_vertex_label(1), 0, root);
-    tree_insert(make_p_tree_vertex_label(2), 0, root);
-    tree_insert(make_p_tree_vertex_label(3), 1, root);
-    tree_insert(make_p_tree_vertex_label(4), 3, root);
+    tree_insert(vertex_p_make(1), 0, root);
+    tree_insert(vertex_p_make(2), 0, root);
+    tree_insert(vertex_p_make(3), 1, root);
+    tree_insert(vertex_p_make(4), 3, root);
     VertexCollection odds;
     odds = vertexcollection_init(6);
     tree_odds(root, &odds);
@@ -184,8 +200,8 @@ char *utest_odds()
     mu_assert("second odd should be 4", ((VertexPointer) vertexcollection_get(odds, 1))->label == 4);
     mu_assert("third odd should be 2", ((VertexPointer) vertexcollection_get(odds, 2))->label == 2);
 
-    tree_insert(make_p_tree_vertex_label(5), 2, root);
-    tree_insert(make_p_tree_vertex_label(6), 5, root);
+    tree_insert(vertex_p_make(5), 2, root);
+    tree_insert(vertex_p_make(6), 5, root);
     tree_odds(root, &odds);
     mu_assert("fourth odd should be 6", ((VertexPointer) vertexcollection_get(odds, 3))->label == 6);
     return NULL;
@@ -209,12 +225,9 @@ char *utest_treevertex_get()
     VertexPointer a = vertex_p_make(1);
     VertexPointer b = vertex_p_make(2);
     VertexPointer c = vertex_p_make(3);
-    TreeVertexPointer ta = make_p_tree_vertex(a);
-    TreeVertexPointer tb = make_p_tree_vertex(b);
-    TreeVertexPointer tc = make_p_tree_vertex(c);
-    tree_insert(ta, 0, tree);
-    tree_insert(tb, 0, tree);
-    tree_insert(tc, 1, tree);
+    tree_insert(a, 0, tree);
+    tree_insert(b, 0, tree);
+    tree_insert(c, 1, tree);
 
     TreeVertexPointer taprime = treevertex_get(tree.root, a);
     TreeVertexPointer tbprime = treevertex_get(tree.root, b);
@@ -227,7 +240,7 @@ char *utest_treevertex_get()
 }
 
 char *test_tree() {
-    mu_message(UNIT, "make_p_tree_vertex_label\n");
+    mu_message(UNIT, "VertexPointer\n");
     mu_run_utest(utesmake_p_tree_vertex_label);
     mu_message(UNIT, "tree_singleton_label\n");
     mu_run_utest(utest_tree_singleton_label);
