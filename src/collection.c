@@ -87,19 +87,27 @@ void *collection_pop(const CollectionPointer collection)
     return temp;
 }
 
-void collection_remove(CollectionPointer *collection, void *element)
+void collection_set(CollectionPointer collection, void *element, unsigned int pos)
 {
-    CollectionPointer collection_val = *collection;
-    size_t i, n_elements = collection_length(collection_val);
-    CollectionPointer temp = collection_p_init(n_elements);
+    *(collection->head + pos) = element;    
+}
+
+void collection_remove(CollectionPointer collection, void *element)
+{
+    size_t i, n_elements = collection_length(collection);
+    bool found = false;
     for (i = 0; i < n_elements; i++) {
-        void *current = collection_get(collection_val, i);
+        void *current = collection_get(collection, i);
         if (element != current) {
-            collection_push(temp, element);
+            if (found) {
+                collection_set(collection, current, i - 1);
+            } else {
+                collection_set(collection, current, i);
+            }
+        } else {
+            found = true;
         }
     }
-    collection_destroy(collection_val);
-    *collection = temp;
 }
 
 bool collection_is_empty(const CollectionPointer collection)

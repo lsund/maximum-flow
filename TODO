@@ -1,7 +1,18 @@
 MISC:
 
+Why Can't I implement vertexcollection as 
+a cpp map etc?
+
+when deattaching and merging the tree, 
+the order becomes inversed. Alternatives:
+(1) keep the tree (????)
+(2) new root for the tree
+can be done in logn according to paper
+Flip the pointers on the path from vertex to 
+current root
+
 change tree_insert order of arguments to 
-something sane                                  []
+something sane                                  [done]
 
 change tree_insert to insert a vertexpointer
 not a treevertexpointer. Should probably try
@@ -42,10 +53,17 @@ functionality                                   [done]
 TESTS:
 initialize_pseudoflow                           [done]
 merger_edge                                     [done]
-tree_deattach                                   []
+tree_deattach                                   [done]
 
 FUNCTIONS:
 
+tree_set_root                                   []
+for each vertex on the path from v to root:
+(1) add parent(v) to children(v)
+(2) remove v from children(parent)
+(3) set parent(v) = null
+(4) set parent(parent) = v
+tree_path                                       []
 initialize_pseudoflow_algorithm                 [done]
 get_merger_edge()                               [done]
 scan the residual edges. Each vertex in the tree

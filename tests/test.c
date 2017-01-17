@@ -93,6 +93,8 @@ static char *one_test(const char *module)
         mu_run_test(test_tree);
     } else if (strcmp(module, "pseudoflow") == 0) {
         mu_run_test(test_pseudoflow);
+    } else if (strcmp(module, "collection") == 0) {
+        mu_run_test(test_collection);
     }
     return 0;
 }
@@ -118,6 +120,8 @@ int main(int argc, char **argv) {
             result = one_test("tree");
         } else if (strcmp(argv[1], "pseudoflow") == 0) {
             result = one_test("pseudoflow");
+        } else if (strcmp(argv[1], "collection") == 0) {
+            result = one_test("collection");
         } else {
             result = NULL;
             runtime_error("invalid argument to test");

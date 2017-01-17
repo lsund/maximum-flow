@@ -30,10 +30,10 @@ size_t tree_size(Tree tree);
 // the tree. Retruns SUCCESS if successful, FAIL otherwise.
 Result tree_insert(Tree tree, VertexPointer vertex, const Label under);
 
-Result tree_insert_under_root(VertexPointer vertex, Tree tree);
+Result tree_insert_under_root(Tree tree, VertexPointer vertex);
 
 // Attaches the tree rooted in treevertex to the specified tree under the label.
-Result tree_attach(TreeVertexPointer treevertex, const Label under, Tree tree);
+Result tree_attach(Tree tree, TreeVertexPointer treevertex, const Label under);
 
 // Deattaches the tree rooted in the specified vertex from the tree
 Result tree_deattach(Tree tree, VertexPointer vertex);
@@ -47,6 +47,12 @@ void tree_evens(Tree tree, VertexCollectionPointer evens);
 
 // See tree_evens_odds
 void tree_odds(Tree tree, VertexCollectionPointer odds);
+
+// The path from the specified vertex to root
+EdgeCollection tree_path(Tree tree, VertexPointer vertex);
+
+// sets the specified vertex as root
+void tree_set_root(Tree tree, VertexPointer vertex);
 
 // Traverse the tree, print to stdout
 void tree_print(Tree tree);

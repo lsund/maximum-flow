@@ -5,7 +5,7 @@
 char *utest_disjointset_make()
 {
     TreeVertexPointer t1 = disjointset_make(vertex_p_make(7));
-    TreeVertexPointer t2 = make_p_tree_vertex(vertex_p_make(7));
+    TreeVertexPointer t2 = treevertex_p_make(vertex_p_make(7));
     mu_assert("should be the same...", vertex_equals(*t1->content, *t2->content));
     mu_assert("rank should be 0", t1->rank == 0);
     return NULL;

@@ -86,10 +86,15 @@ bool edge_incident_with(const EdgePointer edge, const Vertex vertex)
     return vertex_equals(edge->first, vertex) || vertex_equals(edge->second, vertex); 
 }
 
-unsigned int edge_hash(const EdgePointer edge)
+unsigned int edge_p_hash(const EdgePointer edge)
 {
-    unsigned int a = edge->first.label;
-    unsigned int b = edge->second.label;
+    return edge_hash(*edge);
+}
+
+unsigned int edge_hash(const Edge edge)
+{
+    unsigned int a = edge.first.label;
+    unsigned int b = edge.second.label;
     return a >= b ? a * a + a + b : a + b * b; 
 }
 

@@ -3,7 +3,7 @@
 
 TreeVertexPointer disjointset_make(VertexPointer vertex)
 {
-    TreeVertexPointer ret = make_p_tree_vertex(vertex);
+    TreeVertexPointer ret = treevertex_p_make(vertex);
     ret->is_root = true;
     return ret;
 }

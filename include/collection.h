@@ -43,7 +43,7 @@ Result collection_push(const CollectionPointer collection, void *element);
 void *collection_pop(CollectionPointer collection);
 
 // Removes the specified element from the collection
-void collection_remove(CollectionPointer *collection, void *element);
+void collection_remove(CollectionPointer collection, void *element);
 
 // Returns true if the collection is considered empty
 bool collection_is_empty(const CollectionPointer collection);

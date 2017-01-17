@@ -16,10 +16,10 @@ typedef struct treevertex {
 } TreeVertex, *TreeVertexPointer;
 
 // Creates a pointer to a treevertex using a vertex
-TreeVertexPointer make_p_tree_vertex(VertexPointer vertex);
+TreeVertexPointer treevertex_p_make(VertexPointer vertex);
 
 // Creates a pointer to a treevertex using a label
-TreeVertexPointer make_p_tree_vertex_label(const Label label);
+TreeVertexPointer treevertex_p_make_label(const Label label);
 
 // Inserts The treevertex tree_a under the specified label in in the
 // treevertex tree_b

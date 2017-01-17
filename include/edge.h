@@ -54,7 +54,9 @@ bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b);
 
 bool edge_equals_reverse(const EdgePointer edge_a, const EdgePointer edge_b);
 
-unsigned int edge_hash(const EdgePointer edge);
+unsigned int edge_p_hash(const EdgePointer edge);
+
+unsigned int edge_hash(const Edge edge);
 
 // Print an edge as "(v, w)" to stdout
 void edge_print(const Edge edge);

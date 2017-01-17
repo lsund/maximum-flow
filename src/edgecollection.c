@@ -50,8 +50,8 @@ EdgePointer edgecollection_get(const EdgeCollection edges, const unsigned int po
 
 int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge)
 {
-    if (map_exists(edges.indices, edge_hash(edge))) {
-        return map_get(edges.indices, edge_hash(edge));
+    if (map_exists(edges.indices, edge_p_hash(edge))) {
+        return map_get(edges.indices, edge_p_hash(edge));
     } else {
         return -1;
     }
@@ -86,7 +86,7 @@ VertexCollection edgecollection_vertices(const EdgeCollection edges)
 Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
     if (!edgecollection_contains_edge(edges, edge)) {
-        map_put(edges.indices, edge_hash(edge), edgecollection_length(edges));
+        map_put(edges.indices, edge_p_hash(edge), edgecollection_length(edges));
         return collection_push(edges.members, edge);
     } else {
         return FAIL;
@@ -95,8 +95,19 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 
 void edgecollection_remove(EdgeCollectionPointer edges, const EdgePointer edge)
 {
-    collection_remove(&edges->members, edge);
-    map_remove(edges->indices, edge_hash(edge));
+    /* collection_remove(edges->members, edge); */
+    /* map_remove(edges->indices, edge_p_hash(edge)); */
+    size_t i, n_edges = edgecollection_length(*edges);
+    EdgeCollection edges_val = *edges;
+    EdgeCollection temp = edgecollection_init(n_edges);
+    for (i = 0; i < n_edges; i++) {
+        EdgePointer current = edgecollection_get(edges_val, i);
+        if (!edge_equals(edge, current)) {
+            edgecollection_push(temp, current);  
+        }
+    }
+    edgecollection_destroy(edges_val);
+    *edges = temp;
 }
 
 bool edgecollection_is_empty(const EdgeCollection edges)
@@ -153,7 +164,7 @@ bool edgecollection_is_sub(const EdgeCollection sub, const EdgeCollection super)
 
 bool edgecollection_contains_edge(const EdgeCollection edges, const EdgePointer edge)
 {
-    unsigned int key = edge_hash(edge);
+    unsigned int key = edge_p_hash(edge);
     return map_exists(edges.indices, key);
 }
 

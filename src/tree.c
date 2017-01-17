@@ -1,19 +1,6 @@
 
 #include "tree.h"
 
-TreeVertexPointer make_p_tree_vertex(VertexPointer vertex) {
-    TreeVertexPointer ret = malloc(sizeof(TreeVertex));
-    ret->content          = vertex;
-    ret->parent           = NULL;
-    ret->is_root          = false;
-    ret->rank             = 0;
-    ret->children         = collection_p_init(0);
-    return ret;
-}
-
-TreeVertexPointer make_p_tree_vertex_label(const Label label) {
-    return make_p_tree_vertex(vertex_p_make(label));
-}
 
 Tree tree_empty() {
     Tree ret;
@@ -34,7 +21,7 @@ bool is_emtpy_tree(Tree tree) {
 Tree tree_singleton(const VertexPointer vertex)
 {
     Tree ret;
-    ret.root                    = make_p_tree_vertex(vertex);
+    ret.root                    = treevertex_p_make(vertex);
     ret.root->is_root           = true;
     return ret;
 }
@@ -75,7 +62,7 @@ size_t tree_size(Tree tree)
     return treevertex_size(tree.root);
 }
 
-Result tree_attach(TreeVertexPointer treevertex, const Label under, Tree tree)
+Result tree_attach(Tree tree, TreeVertexPointer treevertex, const Label under)
 {
 	if (treevertex_insert(treevertex, under, tree.root) == FAIL) {
         return FAIL;
@@ -86,7 +73,7 @@ Result tree_attach(TreeVertexPointer treevertex, const Label under, Tree tree)
 
 Result tree_insert(Tree tree, VertexPointer vertex, const Label under)
 {
-    TreeVertexPointer inserted = make_p_tree_vertex(vertex);
+    TreeVertexPointer inserted = treevertex_p_make(vertex);
 	if (treevertex_insert(inserted, under, tree.root) == FAIL) {
         return FAIL;
     } else {
@@ -94,7 +81,7 @@ Result tree_insert(Tree tree, VertexPointer vertex, const Label under)
     }
 }
 
-Result tree_insert_under_root(VertexPointer vertex, Tree tree)
+Result tree_insert_under_root(Tree tree, VertexPointer vertex)
 {
     Label rootlabel = tree.root->content->label;
     if (tree_insert(tree, vertex, rootlabel) == FAIL) {
@@ -129,6 +116,34 @@ void tree_evens(Tree tree, VertexCollectionPointer evens)
 void tree_odds(Tree tree, VertexCollectionPointer odds)
 {
     tree_evens_odds(tree, NULL, odds);
+}
+
+EdgeCollection tree_path(Tree tree, VertexPointer vertex)
+{
+    EdgeCollection ret = edgecollection_init(ARRAY_MIN_SIZE);
+    /* TreeVertexPointer t_vertex = treevertex_get(tree.root, vertex); */
+    /* while (t_vertex->parent) { */
+    /*     Edge edge = edge_make_vertices(t_vertex->content, t_vertex->parent); */
+    /*     /1* t_vertex = t_vertex->parent; *1/ */
+    /* } */
+    // tbi
+    return ret;
+}
+
+void tree_set_root(Tree tree, VertexPointer vertex)
+{
+    TreeVertexPointer t_vertex = treevertex_get(tree.root, vertex);    
+    while (t_vertex->parent) {
+        TreeVertexPointer parent = (TreeVertexPointer) t_vertex->parent;
+        collection_push(t_vertex->children, parent);
+        collection_remove(parent->children, t_vertex);
+
+
+
+        Edge edge = edge_make_vertices(*t_vertex->content, *parent->content);
+        edge_print(edge);
+        t_vertex = t_vertex->parent;
+    }
 }
 
 void tree_print(Tree tree)
