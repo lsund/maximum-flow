@@ -32,7 +32,8 @@ static char *test()
 	mu_message(MODULE,"edgecollection\n");
     mu_run_test(test_edgecollection);
 	mu_message(MODULE,"tree\n");
-    mu_run_test(test_tree);
+    /* mu_run_test(test_tree); */
+    mu_run_test(test_tree_simple);
 	mu_message(MODULE,"disjoint set\n");
     mu_run_test(test_disjointset);
 	mu_message(MODULE,"tokentable\n");
@@ -90,7 +91,8 @@ static char *one_test(const char *module)
     if (strcmp(module, "edgecollection") == 0) {
         mu_run_test(test_edgecollection);
     } else if (strcmp(module, "tree") == 0) {
-        mu_run_test(test_tree);
+        /* mu_run_test(test_tree); */
+        mu_run_test(test_tree_simple);
     } else if (strcmp(module, "pseudoflow") == 0) {
         mu_run_test(test_pseudoflow);
     } else if (strcmp(module, "collection") == 0) {

@@ -1,3 +1,8 @@
+
+***IMPORTANT*** May not need a pointer to 
+the children. May just need to maintain 
+parent pointers.
+
 MISC:
 
 Why Can't I implement vertexcollection as 

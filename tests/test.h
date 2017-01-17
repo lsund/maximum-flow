@@ -9,6 +9,7 @@
 #include "edgecollection.h"
 #include "vertexcollection.h"
 #include "tree.h"
+#include "tree-simple.h"
 #include "disjointset.h"
 #include "network.h"
 #include "push_relabel.h"
@@ -24,7 +25,8 @@ char *test_util();
 char *test_edgecollection(); 
 char *test_vertexcollection(); 
 char *test_collection();
-char *test_tree();
+/* char *test_tree(); */
+char *test_tree_simple();
 char *test_vertex();
 char *test_edge();
 char *test_matching();
