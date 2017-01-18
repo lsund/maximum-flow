@@ -17,10 +17,13 @@ STreePointer stree_singleton_label(const Label label);
 STreePointer stree_singleton(const VertexPointer vertex);
 
 // Find the root of the tree that v belongs to
-VertexPointer stree_find_root(STreePointer tree);
+VertexPointer stree_find_root(const STreePointer tree);
 
 // Find the minimum key on the path from v to the root if its tree
 VertexPointer stree_find_min(STreePointer tree);
+
+// The path from the vertex to the root, as a reference to a collection
+CollectionPointer stree_path_to_root(const STreePointer tree);
 
 // Add the value delta to the keys of all nodes on the path from v to the root
 // of its tree
