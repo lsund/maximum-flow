@@ -29,7 +29,8 @@ static void initialize_vertex(
         vertex = vertexcollection_get_reference(vertices, edge->first);
         vertexcollection_push(weaks, vertex);
     }
-    tree_insert_under_root(network->tree, vertex);
+    /* stree_merge(network->sink, vertex); */
+    //TODO
 }
 
 void pseudoflow_initialize(NetworkPointer network)
@@ -59,7 +60,8 @@ void pseudoflow_initialize(NetworkPointer network)
            ) {
             *(network->excesses + i) = 0;
             vertexcollection_push(weaks, vertex);
-            tree_insert_under_root(network->tree, vertex);
+            /* tree_insert_under_root(network->tree, vertex); */
+            //TODO
         }
     }
 }
@@ -79,15 +81,19 @@ void pseudoflow(NetworkPointer network)
                 network->strong_vertices,
                 merger->second
         );
-        TreeVertexPointer strong_branch, weak_branch;
-        tree_get_branch(network->tree, strong_vertex, &strong_branch);
-        tree_get_branch(network->tree, weak_vertex, &weak_branch);
-        unsigned int delta = *(network->excesses + strong_vertex->label);
+        /* VertexPointer strong_branch, weak_branch; */
+        /* tree_get_branch(network->tree, strong_vertex, &strong_branch); */
+        //TODO
+        /* tree_get_branch(network->tree, weak_vertex, &weak_branch); */
+        //TODO
+        /* unsigned int delta = *(network->excesses + strong_vertex->label); */
+        /* stree_merge(weak_vertex, strong_vertex); */
+        //TODO
+        
 
         //deattach the strong branch from the root
-        tree_deattach(network->tree, strong_branch->content);
-        tree_attach(network->tree, strong_branch, merger->second.label);
         // connect the tree with (s, w)
+        // //TODO
 
         merger = merger_edge(network);
     }

@@ -1,9 +1,14 @@
 
-***IMPORTANT*** May not need a pointer to 
-the children. May just need to maintain 
-parent pointers.
-
 MISC:
+
+May not need a pointer to 
+the children. May just need to maintain 
+parent pointers.                                [done]
+
+Also, might be necessary to store make
+stree work with normal vertices instead of
+a special structure. Keep parent pointers
+in struct vertex.                               []
 
 Why Can't I implement vertexcollection as 
 a cpp map etc?

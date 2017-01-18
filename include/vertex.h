@@ -5,12 +5,14 @@
 
 // Type synonym
 typedef unsigned int Label; 
+typedef struct vertex Vertex, *VertexPointer;
 
 // A vertex is some data point
 // Field label: Its (unique) identifier 
-typedef struct vertex {
+struct vertex {
     Label label;
-} Vertex, *VertexPointer;
+    VertexPointer parent;
+};
 
 Vertex vertex_empty();
 

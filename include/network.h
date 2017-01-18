@@ -22,7 +22,6 @@ typedef struct network {
 
     VertexCollection        strong_vertices, weak_vertices; 
     int                     *excesses;
-    Tree                    tree;
 } Network, *NetworkPointer;
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);

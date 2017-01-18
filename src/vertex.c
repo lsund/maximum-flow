@@ -5,6 +5,7 @@ Vertex vertex_empty()
 {
     Vertex ret;
     ret.label = 0; // TODO
+    ret.parent = NULL;
     return ret;
 }
 
@@ -12,6 +13,7 @@ Vertex vertex_make(const Label label)
 {
     Vertex ret;
     ret.label = label;
+    ret.parent = NULL;
     return ret;
 }
 

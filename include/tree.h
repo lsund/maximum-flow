@@ -1,63 +1,31 @@
-#ifndef TREE_H
-#define TREE_H
+#ifndef TREE_SIMPLE__H
+#define TREE_SIMPLE__H
 
-#include "treevertex.h"
+#include "graph.h"
 
-// A tree graph, a undirected graph with no cycles.
-// Field root:      the root vertex
-typedef struct tree {
-    TreeVertexPointer root;
-} Tree, *TreePointer;
+// Find the root of the vertex that v belongs to
+VertexPointer tree_find_root(const VertexPointer vertex);
 
-// Construct a empty tree
-Tree tree_empty();
+// Find the minimum key on the path from v to the root if its vertex
+VertexPointer tree_find_min(VertexPointer vertex);
 
-// Construct a tree with just a rootvertex as given;
-Tree tree_singleton(const VertexPointer vertex);
+// The path from the vertex to the root, as a reference to a collection
+CollectionPointer tree_path_to_root(const VertexPointer vertex);
 
-// Construct a tree with just a rootvertex with the specified label;
-Tree tree_singleton_label(const Label rootlabel);
+// Add the value delta to the keys of all nodes on the path from v to the root
+// of its vertex
+void tree_add_cost(VertexPointer vertex, unsigned int delta);
 
-// Construct a tree using a treevertexpointer;
-Tree tree_make(const TreeVertexPointer root);
+// invert the vertex so that the vertex belongs to so it is rooted at vertex instead of
+// tree_find_root(vertex)
+void tree_invert(VertexPointer vertex);
 
-Result tree_get_branch(Tree tree, VertexPointer vertex, TreeVertexPointer *result);
+// Link a vertex rooted at u with node v of another vertex so that tree_a becomes the
+// parent of tree_b
+void tree_merge(VertexPointer vertex_a, VertexPointer vertex_b);
 
-// The number of vertices in the tree 
-size_t tree_size(Tree tree);
-
-// Attempts to tree_insert the tree-vertex under a vertex with the specified label in
-// the tree. Retruns SUCCESS if successful, FAIL otherwise.
-Result tree_insert(Tree tree, VertexPointer vertex, const Label under);
-
-Result tree_insert_under_root(Tree tree, VertexPointer vertex);
-
-// Attaches the tree rooted in treevertex to the specified tree under the label.
-Result tree_attach(Tree tree, TreeVertexPointer treevertex, const Label under);
-
-// Deattaches the tree rooted in the specified vertex from the tree
-Result tree_deattach(Tree tree, VertexPointer vertex);
-
-// Stores references to all vertices that have even / odd distance to the root
-// of the tree the two respective sets 
-void tree_evens_odds(Tree tree, VertexCollectionPointer evens, VertexCollectionPointer odds);
-
-// See tree_evens_odds
-void tree_evens(Tree tree, VertexCollectionPointer evens);
-
-// See tree_evens_odds
-void tree_odds(Tree tree, VertexCollectionPointer odds);
-
-// The path from the specified vertex to root
-EdgeCollection tree_path(Tree tree, VertexPointer vertex);
-
-// sets the specified vertex as root
-void tree_set_root(Tree tree, VertexPointer vertex);
-
-// Traverse the tree, print to stdout
-void tree_print(Tree tree);
-
-// free the structure
-Result tree_destroy(Tree tree);
+// Split the trees between the specified vertex and the parent of vertex
+void tree_split(VertexPointer vertex);
 
 #endif
+

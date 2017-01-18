@@ -4,26 +4,26 @@
 
 char *utest_collection_remove()
 {
-    TreeVertexPointer t1 = treevertex_p_make_label(1);
-    TreeVertexPointer t2 = treevertex_p_make_label(2);
-    TreeVertexPointer t3 = treevertex_p_make_label(3);
+    VertexPointer t1 = vertex_p_make(1);
+    VertexPointer t2 = vertex_p_make(2);
+    VertexPointer t3 = vertex_p_make(3);
     CollectionPointer collection = collection_p_init(ARRAY_MIN_SIZE);
     collection_push(collection, t1);
     collection_push(collection, t2);
     collection_push(collection, t3);
 
-    mu_assert("should be 1", ((TreeVertexPointer) collection_get(collection, 0))->content->label == 1);
-    mu_assert("should be 2", ((TreeVertexPointer) collection_get(collection, 1))->content->label == 2);
-    mu_assert("should be 3", ((TreeVertexPointer) collection_get(collection, 2))->content->label == 3);
+    mu_assert("should be 1", ((VertexPointer) collection_get(collection, 0))->label == 1);
+    mu_assert("should be 2", ((VertexPointer) collection_get(collection, 1))->label == 2);
+    mu_assert("should be 3", ((VertexPointer) collection_get(collection, 2))->label == 3);
 
     collection_remove(collection, t2);
 
-    mu_assert("should be 1", ((TreeVertexPointer) collection_get(collection, 0))->content->label == 1);
-    mu_assert("should be 3", ((TreeVertexPointer) collection_get(collection, 1))->content->label == 3);
+    mu_assert("should be 1", ((VertexPointer) collection_get(collection, 0))->label == 1);
+    mu_assert("should be 3", ((VertexPointer) collection_get(collection, 1))->label == 3);
 
     collection_remove(collection, t1);
 
-    mu_assert("should be 3", ((TreeVertexPointer) collection_get(collection, 0))->content->label == 3);
+    mu_assert("should be 3", ((VertexPointer) collection_get(collection, 0))->label == 3);
 
 
     return NULL;
