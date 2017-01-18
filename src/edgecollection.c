@@ -48,10 +48,21 @@ EdgePointer edgecollection_get(const EdgeCollection edges, const unsigned int po
     return collection_get(edges.members, position);
 }
 
-int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge)
+EdgePointer edgecollection_get_reference(const EdgeCollection edges, const Edge edge)
 {
-    if (map_exists(edges.indices, edge_p_hash(edge))) {
-        return map_get(edges.indices, edge_p_hash(edge));
+    int index = edgecollection_index_of(edges, edge);
+    if (index < 0) {
+        runtime_error("edgecollection_get_reference: no reference for the edge exists");
+        return NULL;
+    } else {
+        return edgecollection_get(edges, index);
+    }
+}
+
+int edgecollection_index_of(const EdgeCollection edges, const Edge edge)
+{
+    if (map_exists(edges.indices, edge_hash(edge))) {
+        return map_get(edges.indices, edge_hash(edge));
     } else {
         return -1;
     }

@@ -3,18 +3,22 @@
 
 #include "graph.h"
 
-// Find the root of the vertex that v belongs to
+// Find the branch of the tree that the vertex belongs to ie. the subtree with
+// parent root.
+VertexPointer tree_find_branch(const VertexPointer vertex);
+
+// Find the root of the tree that vertex belongs to
 VertexPointer tree_find_root(const VertexPointer vertex);
 
 // Find the minimum key on the path from v to the root if its vertex
-VertexPointer tree_find_min(VertexPointer vertex);
+VertexPointer tree_find_min(const VertexPointer vertex);
 
 // The path from the vertex to the root, as a reference to a collection
-CollectionPointer tree_path_to_root(const VertexPointer vertex);
+VertexCollection tree_path_to_root(const VertexPointer vertex);
 
 // Add the value delta to the keys of all nodes on the path from v to the root
 // of its vertex
-void tree_add_cost(VertexPointer vertex, unsigned int delta);
+void tree_add_cost(const VertexPointer vertex, const unsigned int delta);
 
 // invert the vertex so that the vertex belongs to so it is rooted at vertex instead of
 // tree_find_root(vertex)
@@ -22,10 +26,10 @@ void tree_invert(VertexPointer vertex);
 
 // Link a vertex rooted at u with node v of another vertex so that tree_a becomes the
 // parent of tree_b
-void tree_merge(VertexPointer vertex_a, VertexPointer vertex_b);
+void tree_merge(const VertexPointer vertex_a, VertexPointer vertex_b);
 
 // Split the trees between the specified vertex and the parent of vertex
-void tree_split(VertexPointer vertex);
+void tree_split(const VertexPointer vertex);
 
 #endif
 

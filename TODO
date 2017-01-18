@@ -1,6 +1,16 @@
 
 MISC:
 
+Now I need to get the path 
+[r_s, ..s, w, r_w, r] and push delta units
+along it. Ie. given a tree, I need to get 
+the edgepath described by a path. I can use
+tree_path_to_root to get a vertexpath. Then
+I can explicitly build an edgepath from this
+using edgecollection_get_reference. 
+More efficient way? * store the edge (v, p(v))
+in each vertex
+
 May not need a pointer to 
 the children. May just need to maintain 
 parent pointers.                                [done]
@@ -8,7 +18,7 @@ parent pointers.                                [done]
 Also, might be necessary to store make
 stree work with normal vertices instead of
 a special structure. Keep parent pointers
-in struct vertex.                               []
+in struct vertex.                               [done]
 
 Why Can't I implement vertexcollection as 
 a cpp map etc?

@@ -84,6 +84,26 @@ char *utest_tree_invert()
     return NULL;
 }
 
+char *utest_tree_find_branch()
+{
+    VertexPointer tree1 = vertex_p_make(1);
+    VertexPointer tree2 = vertex_p_make(2);
+    VertexPointer tree3 = vertex_p_make(3);
+    tree_merge(tree1, tree2);
+    tree_merge(tree1, tree3);
+    VertexPointer tree4 = vertex_p_make(4);
+    VertexPointer tree5 = vertex_p_make(5);
+    VertexPointer tree6 = vertex_p_make(6);
+    tree_merge(tree4, tree5);
+    tree_merge(tree4, tree6);
+    tree_merge(tree2, tree4);
+    mu_assert("6: should be 2", tree_find_branch(tree6)->label == 2);
+    mu_assert("5: should be 5", tree_find_branch(tree5)->label == 2);
+    mu_assert("4: should be 5", tree_find_branch(tree4)->label == 2);
+    mu_assert("3: should be 3", tree_find_branch(tree3)->label == 3);
+    return NULL;
+}
+
 char *test_tree()
 {
     mu_message(UNIT, "tree_singleton\n");
@@ -92,6 +112,8 @@ char *test_tree()
     mu_run_utest(utest_tree_merge);
     mu_message(UNIT, "tree_find_root\n");
     mu_run_utest(utest_tree_find_root);
+    mu_message(UNIT, "tree_find_branch\n");
+    mu_run_utest(utest_tree_find_branch);
     mu_message(UNIT, "tree_invert\n");
     mu_run_utest(utest_tree_invert);
     return NULL;

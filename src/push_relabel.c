@@ -8,7 +8,7 @@ static void push_relabel_initialize(NetworkPointer network)
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         edge = edgecollection_get(network->graph.edges, i);
-        if (vertex_equals(edge->first, network->source)) {
+        if (vertex_equals(edge->first, *network->source)) {
             capacity = networkedge_capacity(network, edge);
             networkedge_augment(network, edge, capacity);
         } else {
@@ -17,7 +17,7 @@ static void push_relabel_initialize(NetworkPointer network)
         }
     }
     size_t n_vertices = vertexcollection_length(network->graph.vertices);
-    networkvertex_set_distance_label(network, network->source, n_vertices);
+    networkvertex_set_distance_label(network, *network->source, n_vertices);
 }
 
 static Label find_min(const NetworkPointer network, const Vertex vertex)

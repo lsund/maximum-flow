@@ -11,8 +11,7 @@ typedef struct network {
     Graph                   graph;
     EdgeCollection          reverse_edges;
     EdgeCollectionPointer   residual_edges;
-    Vertex                  source;
-    Vertex                  sink;
+    VertexPointer           source, sink;
     unsigned int            *capacities, *inflows, *outflows;
     int                     *flows;
     Map                     is_reverse;

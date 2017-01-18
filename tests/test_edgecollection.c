@@ -124,7 +124,7 @@ char *utest_edgecollection_push()
     EdgePointer b = edge_p_make_label(2, 4);
     mu_assert("should not contain vertex 2", !edgecollection_contains_vertex(edgecollection, vertex_p_make(2)));
     mu_assert("1 should succeed", edgecollection_push(edgecollection, a) == SUCCESS);
-    mu_assert("should get 0 as index", edgecollection_index_of(edgecollection, a) == 0);
+    mu_assert("should get 0 as index", edgecollection_index_of(edgecollection, *a) == 0);
     mu_assert("should be 2", edgecollection_get(edgecollection, 0)->first.label == 2);
     mu_assert("should contain vertex 2", edgecollection_contains_vertex(edgecollection, vertex_p_make(2)));
     mu_assert("should contain vertex 3", edgecollection_contains_vertex(edgecollection, vertex_p_make(3)));
@@ -134,7 +134,7 @@ char *utest_edgecollection_push()
     mu_assert("capacity still 4", edgecollection.members->capacity == 4);
     mu_assert("length 1", edgecollection.members->length == 1);
     mu_assert("1 should succeed", edgecollection_push(edgecollection, b) == SUCCESS);
-    mu_assert("b should get 1 as index", edgecollection_index_of(edgecollection, b) == 1);
+    mu_assert("b should get 1 as index", edgecollection_index_of(edgecollection, *b) == 1);
     return NULL;
 }
 

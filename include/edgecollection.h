@@ -28,9 +28,11 @@ void edgecollection_reset(EdgeCollection edges);
 size_t edgecollection_length(const EdgeCollection edges);
 
 // Get the edge at the specified position
-EdgePointer edgecollection_get(const EdgeCollection edges , const unsigned int position);
+EdgePointer edgecollection_get(const EdgeCollection edges, const unsigned int position);
 
-int edgecollection_index_of(const EdgeCollection edges, const EdgePointer edge);
+EdgePointer edgecollection_get_reference(const EdgeCollection edges, const Edge edge);
+
+int edgecollection_index_of(const EdgeCollection edges, const Edge edge);
 
 size_t edgecollection_vertex_count(const EdgeCollection edges);
 

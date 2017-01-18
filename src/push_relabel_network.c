@@ -29,13 +29,13 @@ void activate_vertices(
     VertexCollection vertices= network->graph.vertices;
     VertexPointer vertex;
     if (first_exflow_before == 0 && first_exflow > 0) {
-        if (edge->first.label != network->source.label) {
+        if (edge->first.label != network->source->label) {
             vertex = vertexcollection_get_reference(vertices, edge->first);
             vertexcollection_push(network->active_vertices, vertex);
         }
     }
     if (second_exflow_before == 0 && second_exflow > 0) {
-        if (edge->second.label != network->sink.label) {
+        if (edge->second.label != network->sink->label) {
             vertex = vertexcollection_get_reference(vertices, edge->second);
             vertexcollection_push(network->active_vertices, vertex);
         }

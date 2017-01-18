@@ -6,8 +6,8 @@ NetworkPointer network_init(NetworkType type)
     NetworkPointer ret   = malloc(sizeof(Network));
     ret->graph           = graph_init();
     ret->reverse_edges   = edgecollection_empty();
-    ret->source          = vertex_empty();
-    ret->sink            = vertex_empty();
+    ret->source          = NULL;
+    ret->sink            = NULL;
     ret->capacities      = NULL;
     ret->flows           = NULL;
     ret->inflows         = NULL;
@@ -28,7 +28,7 @@ NetworkPointer network_init(NetworkType type)
 
 unsigned int network_flow(const NetworkPointer network)
 {
-    return networkvertex_inflow(network, network->sink);
+    return networkvertex_inflow(network, *network->sink);
 }
 
 void network_destroy(NetworkPointer network)

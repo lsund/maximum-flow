@@ -41,9 +41,9 @@ static void update_source_sink(const NetworkPointer network, const char *first_t
 {
     Label label  = (unsigned int) strtol(first_token, NULL, 10);
     if (strcmp(second_token, "s") == 0) {
-        network->source = *vertexcollection_get_with_label(network->graph.vertices, label);
+        network->source = vertexcollection_get_with_label(network->graph.vertices, label);
     } else {
-        network->sink = *vertexcollection_get_with_label(network->graph.vertices, label);
+        network->sink = vertexcollection_get_with_label(network->graph.vertices, label);
     }
 }
 
