@@ -3,11 +3,27 @@
 
 typedef enum vertextype { STRONG, WEAK } VertexType; 
 
+static void split(
+        const NetworkPointer network,
+        const EdgePointer edge,
+        const unsigned int diff
+    ) 
+{
+    // take the first vertex of edge.
+    // set its parent to root.
+    VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->first);
+    vertex->parent = network->source;
+    // excess(a) = f_ar = diff
+    *(network->excesses + edge->first.label) = diff;
+    // remove (a, b) from the residual edges and add (b, a)
+    // maybe this happens automatically?
+}
+
 static void initialize_vertex(
-        NetworkPointer network, 
-        EdgePointer edge, 
-        size_t i,
-        VertexType type
+        const NetworkPointer network, 
+        const EdgePointer edge, 
+        const size_t i,
+        const VertexType type
     )
 {
     unsigned int capacity;
@@ -32,7 +48,7 @@ static void initialize_vertex(
     tree_merge(network->sink, vertex);
 }
 
-void pseudoflow_initialize(NetworkPointer network)
+void pseudoflow_initialize(const NetworkPointer network)
 {
     EdgePointer edge;
     VertexPointer vertex;
@@ -86,13 +102,24 @@ void pseudoflow(NetworkPointer network)
         tree_invert(strong_vertex);
         // Connect it to the weak vertex
         tree_merge(weak_vertex, strong_vertex);
-        
-        unsigned int delta = *(network->excesses + strong_vertex->label);
-        EdgeCollection spath = tree_edgepath_from_branch(strong_vertex, network->graph.edges);
-        EdgeCollection wpath = tree_edgepath_to_branch(weak_vertex, network->graph.edges);
-        edgecollection_link(spath, wpath);
-        /* edgecollection_push(path, root); */
 
+        EdgeCollection weak_path, path;
+        path = tree_edgepath_from_branch(strong_vertex, network->graph.edges);
+        weak_path = tree_edgepath_to_root(weak_vertex, network->graph.edges);
+        edgecollection_link(path, weak_path);
+
+        unsigned int delta = *(network->excesses + strong_vertex->label);
+        size_t i;
+        for (i = 0; i < edgecollection_length(path); i++) {
+            EdgePointer edge = edgecollection_get(path, i);
+            unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
+            if (residual_capacity >= delta) {
+                networkedge_augment(network, edge, delta);
+            } else {
+                split(network, edge, delta - residual_capacity);
+                // reset delta
+            }
+        }
         merger = merger_edge(network);
     }
     // blah

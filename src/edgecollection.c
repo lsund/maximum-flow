@@ -52,7 +52,6 @@ EdgePointer edgecollection_get_reference(const EdgeCollection edges, const Edge 
 {
     int index = edgecollection_index_of(edges, edge);
     if (index < 0) {
-        runtime_error("edgecollection_get_reference: no reference for the edge exists");
         return NULL;
     } else {
         return edgecollection_get(edges, index);
