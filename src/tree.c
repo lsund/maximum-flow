@@ -4,15 +4,21 @@
 static EdgeCollection vertexcollection_to_edgecollection(const VertexCollection vertices, const EdgeCollection all_edges)
 {
     size_t i;
-    EdgeCollection ret = edgecollection_init(ARRAY_MIN_SIZE);
+    EdgeCollection epath_rev = edgecollection_init(ARRAY_MIN_SIZE);
     for (i = 0; i < vertexcollection_length(vertices) - 1; i++) {
         VertexPointer first = vertexcollection_get(vertices, i);
         VertexPointer second = vertexcollection_get(vertices, i + 1);
         Edge edge = edge_make_vertices(*first, *second);
-        EdgePointer edge_p = edgecollection_get_reference(all_edges, edge);
-        edgecollection_push(ret, edge_p);
+        EdgePointer edge_p = edgecollection_get_reference(all_edges, edge_swapped(edge));
+        edgecollection_push(epath_rev, edge_p);
     }
-    return ret;
+    EdgeCollection epath = edgecollection_init(ARRAY_MIN_SIZE);
+    // Temp code[
+    for (i = edgecollection_length(epath_rev); i > 0; i--) {
+        EdgePointer edge = edgecollection_get(epath_rev, i - 1);
+        edgecollection_push(epath, edge);
+    }
+    return epath;
 }
 
 void tree_merge(VertexPointer vertex_a, VertexPointer vertex_b)
@@ -58,7 +64,7 @@ VertexCollection tree_path_to_root(const VertexPointer vertex)
     return ret;
 }
 
-EdgeCollection tree_edgepath_to_root(const VertexPointer vertex, const EdgeCollection all_edges)
+EdgeCollection tree_edgepath_from_root(const VertexPointer vertex, const EdgeCollection all_edges)
 {
     VertexCollection path = tree_path_to_root(vertex);
     return vertexcollection_to_edgecollection(path, all_edges);

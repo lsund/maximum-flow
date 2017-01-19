@@ -134,7 +134,7 @@ char *utest_tree_path_to_root()
     VertexCollection path = tree_path_to_root(tree6);
     Label labels[4] = { 11, 9, 5, 2 };
     mu_assert("should contain these vertices", contains_labels(path, labels, 4));
-    EdgeCollection epath = tree_edgepath_to_root(tree6, network->reverse_edges);
+    EdgeCollection epath = tree_edgepath_from_root(tree6, network->graph.edges);
     edgecollection_print(epath);
     return NULL;
 }

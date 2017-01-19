@@ -1,6 +1,9 @@
 
 MISC:
 
+Path now returns a path from vertex to root.
+I need a path from root -> vertex               []
+
 Now I need to get the path 
 [r_s, ..s, w, r_w, r] and push delta units
 along it. Ie. given a tree, I need to get 
