@@ -1,5 +1,16 @@
 #include "test.h"
 
+bool contains_labels(VertexCollection collection, Label *labels, size_t size)
+{
+    for (size_t i = 0; i < size; i++) {
+        VertexPointer vertex = vertexcollection_get(collection, i);
+        if (vertex->label != labels[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 char *utest_tree_singleton()
 {
     VertexPointer tree = vertex_p_make(3);
@@ -104,6 +115,30 @@ char *utest_tree_find_branch()
     return NULL;
 }
 
+char *utest_tree_path_to_root()
+{
+    NetworkPointer network = network_init(PS);
+    parse("/home/lsund/Data/graphs/data/networks/set/gen3x3.dmx", network);
+
+    VertexPointer tree1 = vertexcollection_get_reference(network->graph.vertices, vertex_make(2));
+    VertexPointer tree2 = vertexcollection_get_reference(network->graph.vertices, vertex_make(5));
+    VertexPointer tree3 = vertexcollection_get_reference(network->graph.vertices, vertex_make(4));
+    tree_merge(tree1, tree2);
+    tree_merge(tree1, tree3);
+    VertexPointer tree4 = vertexcollection_get_reference(network->graph.vertices, vertex_make(9));
+    VertexPointer tree5 = vertexcollection_get_reference(network->graph.vertices, vertex_make(6));
+    VertexPointer tree6 = vertexcollection_get_reference(network->graph.vertices, vertex_make(11));
+    tree_merge(tree4, tree5);
+    tree_merge(tree4, tree6);
+    tree_merge(tree2, tree4);
+    VertexCollection path = tree_path_to_root(tree6);
+    Label labels[4] = { 11, 9, 5, 2 };
+    mu_assert("should contain these vertices", contains_labels(path, labels, 4));
+    EdgeCollection epath = tree_edgepath_to_root(tree6, network->reverse_edges);
+    edgecollection_print(epath);
+    return NULL;
+}
+
 char *test_tree()
 {
     mu_message(UNIT, "tree_singleton\n");
@@ -116,6 +151,8 @@ char *test_tree()
     mu_run_utest(utest_tree_find_branch);
     mu_message(UNIT, "tree_invert\n");
     mu_run_utest(utest_tree_invert);
+    mu_message(UNIT, "tree_path_to_root\n");
+    mu_run_utest(utest_tree_path_to_root);
     return NULL;
 }
 

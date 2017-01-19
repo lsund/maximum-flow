@@ -16,6 +16,8 @@ VertexPointer tree_find_min(const VertexPointer vertex);
 // The path from the vertex to the root, as a reference to a collection
 VertexCollection tree_path_to_root(const VertexPointer vertex);
 
+EdgeCollection tree_edgepath_to_root(const VertexPointer vertex, const EdgeCollection all_edges);
+
 // Add the value delta to the keys of all nodes on the path from v to the root
 // of its vertex
 void tree_add_cost(const VertexPointer vertex, const unsigned int delta);
