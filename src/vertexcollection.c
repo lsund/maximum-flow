@@ -148,6 +148,17 @@ Result vertexcollection_replace(const VertexCollection vertices, const VertexPoi
     return SUCCESS;
 }
 
+Result vertexcollection_pop(const VertexCollection vertices)
+{
+    if (vertexcollection_length(vertices) == 0) {
+        return FAIL;
+    } else {
+        VertexPointer vertex = (VertexPointer) collection_pop(vertices.members);
+        map_remove(vertices.indices, vertex->label);
+        return SUCCESS;
+    }
+}
+
 Result vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex)
 {
     if (!vertexcollection_contains_label(vertices, vertex->label)) {

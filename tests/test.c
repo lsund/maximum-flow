@@ -88,12 +88,13 @@ static char *one_test(const char *module)
     if (strcmp(module, "edgecollection") == 0) {
         mu_run_test(test_edgecollection);
     } else if (strcmp(module, "tree") == 0) {
-        /* mu_run_test(test_tree); */
         mu_run_test(test_tree);
     } else if (strcmp(module, "pseudoflow") == 0) {
         mu_run_test(test_pseudoflow);
     } else if (strcmp(module, "collection") == 0) {
         mu_run_test(test_collection);
+    } else if (strcmp(module, "vertexcollection") == 0) {
+        mu_run_test(test_vertexcollection);
     }
     return 0;
 }
@@ -121,6 +122,8 @@ int main(int argc, char **argv) {
             result = one_test("pseudoflow");
         } else if (strcmp(argv[1], "collection") == 0) {
             result = one_test("collection");
+        } else if (strcmp(argv[1], "vertexcollection") == 0) {
+            result = one_test("vertexcollection");
         } else {
             result = NULL;
             runtime_error("invalid argument to test");

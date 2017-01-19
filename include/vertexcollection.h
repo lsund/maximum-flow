@@ -52,6 +52,8 @@ Result vertexcollection_replace(const VertexCollection vertices, const VertexPoi
 
 Result vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex);
 
+Result vertexcollection_pop(const VertexCollection vertices);
+
 void vertexcollection_remove(VertexCollectionPointer vertices, const Vertex vertex);
 
 // Find the relative complement of a vertexcollection and store it in ret

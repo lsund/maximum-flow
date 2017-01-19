@@ -7,6 +7,23 @@ char *utest_vertexcollection_init()
     return NULL;
 }
 
+char *utest_vertexcollection_pop()
+{
+    VertexCollection vertices = vertexcollection_init(4);
+    vertexcollection_push(vertices, vertex_p_make(1));
+    vertexcollection_push(vertices, vertex_p_make(2));
+    vertexcollection_push(vertices, vertex_p_make(3));
+    vertexcollection_push(vertices, vertex_p_make(4));
+    mu_assert("should have 4 elements", vertexcollection_length(vertices) == 4);
+    vertexcollection_pop(vertices);
+    mu_assert("should have 3 elements", vertexcollection_length(vertices) == 3);
+    mu_assert("should not contain 4", !vertexcollection_contains_label(vertices, 4));
+    mu_assert("should contain 3", vertexcollection_contains_label(vertices, 3));
+    mu_assert("should contain 2", vertexcollection_contains_label(vertices, 2));
+    mu_assert("should contain 1", vertexcollection_contains_label(vertices, 1));
+    return NULL;
+}
+
 char *utest_vertexcollection_push()
 {
     VertexCollection vertexcollection;
@@ -113,5 +130,7 @@ char *test_vertexcollection() {
     mu_run_utest(utest_vertexcollection_push);
     mu_message(UNIT, "vertexcollection_complement\n");
     mu_run_utest(utest_vertexcollection_complement);
+    mu_message(UNIT, "vertexcollection_pop\n");
+    mu_run_utest(utest_vertexcollection_pop);
     return NULL;
 }

@@ -2,7 +2,8 @@
 MISC:
 
 Path now returns a path from vertex to root.
-I need a path from root -> vertex               []
+I need a path from root -> vertex               [done]
+or do I?                                        []  
 
 Now I need to get the path 
 [r_s, ..s, w, r_w, r] and push delta units
