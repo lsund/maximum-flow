@@ -126,19 +126,19 @@ bool edgecollection_is_empty(const EdgeCollection edges)
     return collection_is_empty(edges.members);
 }
 
-bool edgecollection_equals(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b)
+bool edgecollection_equals(const EdgeCollection edges_a, const EdgeCollection edges_b)
 {
-    bool sets_equal = collection_equals(edgecollection_a.members, edgecollection_b.members);
+    bool sets_equal = collection_equals(edges_a.members, edges_b.members);
     if (!sets_equal) {
         return false;
     }
-    if (edgecollection_length(edgecollection_a) != edgecollection_length(edgecollection_b)) {
+    if (edgecollection_length(edges_a) != edgecollection_length(edges_b)) {
         return false;
     }
     size_t i;
-    for (i = 0; i < edgecollection_length(edgecollection_a); i++) {
-        EdgePointer edge_a = edgecollection_get(edgecollection_a, i);
-        EdgePointer edge_b = edgecollection_get(edgecollection_a, i);
+    for (i = 0; i < edgecollection_length(edges_a); i++) {
+        EdgePointer edge_a = edgecollection_get(edges_a, i);
+        EdgePointer edge_b = edgecollection_get(edges_a, i);
         if (!edge_equals(edge_a, edge_b)) {
             return false;
         }
@@ -225,30 +225,39 @@ Result edgecollection_covered_by(const EdgeCollection edges, const VertexPointer
     return FAIL;
 }
 
-Result edgecollection_complement(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b, EdgeCollectionPointer ret)
+void edgecollection_link(const EdgeCollection edges_a, const EdgeCollection edges_b)
+{
+    size_t i;
+    for (i = 0; i < edgecollection_length(edges_b); i++) {
+        EdgePointer edge = edgecollection_get(edges_b, i);
+        edgecollection_push(edges_a, edge);
+    }
+}
+
+Result edgecollection_complement(const EdgeCollection edges_a, const EdgeCollection edges_b, EdgeCollectionPointer ret)
 {
     EdgePointer edge_a;
     size_t i;
-    for (i = 0; i < edgecollection_length(edgecollection_a); i++) {
-        edge_a = edgecollection_get(edgecollection_a, i);
-        if (edge_a && !edgecollection_contains_edge(edgecollection_b, edge_a)) {
+    for (i = 0; i < edgecollection_length(edges_a); i++) {
+        edge_a = edgecollection_get(edges_a, i);
+        if (edge_a && !edgecollection_contains_edge(edges_b, edge_a)) {
                 edgecollection_push(*ret, edge_a);
         }
     }
     return SUCCESS;
 }
 
-EdgeCollection edgecollection_union(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b)
+EdgeCollection edgecollection_union(const EdgeCollection edges_a, const EdgeCollection edges_b)
 {
-    unsigned int larger_size = larger(edgecollection_length(edgecollection_a), edgecollection_length(edgecollection_b));
-    unsigned int summed_capacity = edgecollection_a.members->capacity + edgecollection_b.members->capacity;
+    unsigned int larger_size = larger(edgecollection_length(edges_a), edgecollection_length(edges_b));
+    unsigned int summed_capacity = edges_a.members->capacity + edges_b.members->capacity;
     EdgeCollection ret = edgecollection_init(summed_capacity);
     EdgePointer edge_a, edge_b;
     size_t i;
     for (i = 0; i < larger_size; i++) {
-        edge_a = edgecollection_get(edgecollection_a, i);
-        edge_b = edgecollection_get(edgecollection_b, i);
-        bool inboth = edgecollection_contains_edge(edgecollection_b, edge_a);
+        edge_a = edgecollection_get(edges_a, i);
+        edge_b = edgecollection_get(edges_b, i);
+        bool inboth = edgecollection_contains_edge(edges_b, edge_a);
         if (edge_a && edge_b) {
             if (inboth) {
                 edgecollection_push(ret, edge_a);
@@ -265,13 +274,13 @@ EdgeCollection edgecollection_union(const EdgeCollection edgecollection_a, const
     return ret;
 }
 
-Result edgecollection_symmetric_difference(const EdgeCollection edgecollection_a, const EdgeCollection edgecollection_b, EdgeCollectionPointer ret)
+Result edgecollection_symmetric_difference(const EdgeCollection edges_a, const EdgeCollection edges_b, EdgeCollectionPointer ret)
 {
     EdgeCollection compl_ab, compl_ba;
-    compl_ab = edgecollection_init(edgecollection_a.members->capacity);
-    compl_ba = edgecollection_init(edgecollection_b.members->capacity);
-    edgecollection_complement(edgecollection_a, edgecollection_b, &compl_ab);
-    edgecollection_complement(edgecollection_b, edgecollection_a, &compl_ba);
+    compl_ab = edgecollection_init(edges_a.members->capacity);
+    compl_ba = edgecollection_init(edges_b.members->capacity);
+    edgecollection_complement(edges_a, edges_b, &compl_ab);
+    edgecollection_complement(edges_b, edges_a, &compl_ba);
     *ret = edgecollection_union(compl_ab, compl_ba);
     edgecollection_destroy(compl_ab);
     edgecollection_destroy(compl_ba);

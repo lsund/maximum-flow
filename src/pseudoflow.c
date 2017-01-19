@@ -90,6 +90,8 @@ void pseudoflow(NetworkPointer network)
         unsigned int delta = *(network->excesses + strong_vertex->label);
         EdgeCollection spath = tree_edgepath_from_branch(strong_vertex, network->graph.edges);
         EdgeCollection wpath = tree_edgepath_to_branch(weak_vertex, network->graph.edges);
+        edgecollection_link(spath, wpath);
+        /* edgecollection_push(path, root); */
 
         merger = merger_edge(network);
     }

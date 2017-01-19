@@ -136,8 +136,14 @@ char *utest_tree_path_to_root()
     mu_assert("should contain these vertices", contains_labels(path, labels, 4));
     EdgeCollection epath = tree_edgepath_from_branch(tree6, network->graph.edges);
     EdgeCollection epath2 = tree_edgepath_to_branch(tree6, network->reverse_edges);
-    edgecollection_print(epath);
-    edgecollection_print(epath2);
+    Edge e1 = edge_make_label(5, 9);
+    Edge e2 = edge_make_label(9, 11);
+    Edge e3 = edge_make_label(11, 9);
+    Edge e4 = edge_make_label(9, 5);
+    mu_assert("should equal", edge_equals(edgecollection_get(epath, 0), &e1));
+    mu_assert("should equal", edge_equals(edgecollection_get(epath, 1), &e2));
+    mu_assert("should equal", edge_equals(edgecollection_get(epath2, 0), &e3));
+    mu_assert("should equal", edge_equals(edgecollection_get(epath2, 1), &e4));
     return NULL;
 }
 

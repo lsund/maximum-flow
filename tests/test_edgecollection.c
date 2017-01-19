@@ -327,6 +327,33 @@ char *utest_edgecollection_union()
     return NULL;
 }
 
+char *utest_edgecollection_link()
+{
+    Edge e1 = edge_make_label(0, 1);
+    Edge e2 = edge_make_label(0, 2);
+    Edge e3 = edge_make_label(0, 3);
+    Edge e4 = edge_make_label(0, 4);
+    Edge e5 = edge_make_label(0, 5);
+    Edge e6 = edge_make_label(0, 6);
+    EdgeCollection edges_a, edges_b;
+    edges_a = edgecollection_init(ARRAY_MIN_SIZE);
+    edges_b = edgecollection_init(ARRAY_MIN_SIZE);
+    edgecollection_push(edges_a, &e1);
+    edgecollection_push(edges_a, &e2);
+    edgecollection_push(edges_a, &e3);
+    edgecollection_push(edges_b, &e4);
+    edgecollection_push(edges_b, &e5);
+    edgecollection_push(edges_b, &e6);
+    edgecollection_link(edges_a, edges_b);
+    mu_assert("should equal", edge_equals(edgecollection_get(edges_a, 0), &e1));
+    mu_assert("should equal", edge_equals(edgecollection_get(edges_a, 1), &e2));
+    mu_assert("should equal", edge_equals(edgecollection_get(edges_a, 2), &e3));
+    mu_assert("should equal", edge_equals(edgecollection_get(edges_a, 3), &e4));
+    mu_assert("should equal", edge_equals(edgecollection_get(edges_a, 4), &e5));
+    mu_assert("should equal", edge_equals(edgecollection_get(edges_a, 5), &e6));
+    return NULL;
+}
+
 char *utest_edgecollection_contains_edge()
 {
     EdgeCollection edgecollection = edgecollection_init(3);
@@ -450,5 +477,7 @@ char *test_edgecollection() {
     mu_run_utest(utest_is_matching);
     mu_message(UNIT, "edgecollection_remove\n");
     mu_run_utest(utest_edgecollection_remove);
+    mu_message(UNIT, "edgecollection_link\n");
+    mu_run_utest(utest_edgecollection_link);
     return NULL;
 }

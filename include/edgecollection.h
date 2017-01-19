@@ -72,6 +72,8 @@ bool is_matching(const EdgeCollection edges);
 // and edge exists.
 Result edgecollection_covered_by(const EdgeCollection edges, const VertexPointer vertex, EdgePointer *edge);
 
+void edgecollection_link(const EdgeCollection edges_a, const EdgeCollection edges_b);
+
 // Attempts to compute the complement of two edgecollections. On success, the complement
 // of edgecollection_a and edgecollection_b is stored in Ret and SUCCESS is returned.
 // Otherwise, FAIL is returned.
