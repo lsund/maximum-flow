@@ -19,6 +19,9 @@ static EdgeCollection vertexcollection_to_edgecollection(
         } else {
             edge_p = edgecollection_get_reference(all_edges, edge);
         }
+        if (edge_p == NULL) {
+            runtime_error("vertexcollection_to_edgecollection: got null reference");
+        }
         edgecollection_push(epath, edge_p);
     }
     if (reverse) {

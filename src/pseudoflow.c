@@ -86,13 +86,12 @@ void pseudoflow(NetworkPointer network)
     EdgePointer merger = merger_edge(network);
     VertexPointer strong_vertex, weak_vertex;
     while (merger) {
-        edge_print(*merger_edge(network));
         strong_vertex = vertexcollection_get_reference(
                 network->strong_vertices,
                 merger->first
         );
         weak_vertex = vertexcollection_get_reference(
-                network->strong_vertices,
+                network->weak_vertices,
                 merger->second
         );
         VertexPointer strong_branch = tree_find_branch(strong_vertex);
@@ -104,7 +103,7 @@ void pseudoflow(NetworkPointer network)
         tree_merge(weak_vertex, strong_vertex);
 
         EdgeCollection weak_path, path;
-        path = tree_edgepath_from_branch(strong_vertex, network->graph.edges);
+        path = tree_edgepath_from_branch(strong_vertex, network->reverse_edges);
         weak_path = tree_edgepath_to_root(weak_vertex, network->graph.edges);
         edgecollection_link(path, weak_path);
 
@@ -118,6 +117,10 @@ void pseudoflow(NetworkPointer network)
             } else {
                 split(network, edge, delta - residual_capacity);
                 // reset delta
+                // delta gets the value of the residual capacity
+                delta = residual_capacity;
+                // flow of this edge gets the value of capacity
+                networkedge_set_flow(network, edge, networkedge_capacity(network, edge));
             }
         }
         merger = merger_edge(network);
