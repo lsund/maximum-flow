@@ -59,9 +59,9 @@ void pseudoflow_initialize(const NetworkPointer network)
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         edge = edgecollection_get(network->graph.edges, i);
         if (vertex_equals(edge->first, *network->source)) {
-            initialize_vertex(network, edge, i, STRONG);
+            initialize_vertex(network, edge, edge->second.label, STRONG);
         } else if (vertex_equals(edge->second, *network->sink)) {
-            initialize_vertex(network, edge, i, WEAK);
+            initialize_vertex(network, edge, edge->first.label, WEAK);
         }
     }
     for (i = 0; i < vertexcollection_length(network->graph.vertices); i++) {

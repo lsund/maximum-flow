@@ -90,15 +90,16 @@ void networkedge_add_flow(
         int added_flow
     )
 {
+    unsigned int index;
+    int flow;
+    index = edgecollection_index_of(network->graph.edges, *edge);
+    flow = networkedge_flow(network, edge);
     if (network->type == PR) {
-        unsigned int first_exflow, second_exflow, index;
+        unsigned int first_exflow, second_exflow;
         unsigned int first_exflow_before, second_exflow_before;
         first_exflow_before = networkvertex_exflow(network, edge->first);
         second_exflow_before = networkvertex_exflow(network, edge->second);
 
-        int flow;
-        index = edgecollection_index_of(network->graph.edges, *edge);
-        flow = networkedge_flow(network, edge);
         *(network->flows + index) = flow + added_flow;
         *(network->inflows + edge->second.label) += added_flow;
         *(network->outflows + edge->first.label) += added_flow;
@@ -113,6 +114,8 @@ void networkedge_add_flow(
                 first_exflow, 
                 second_exflow
             );
+    } else if (network->type == PS) {
+        *(network->flows + index) = flow + added_flow;
     }
 }
 
