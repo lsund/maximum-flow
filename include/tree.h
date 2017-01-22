@@ -18,9 +18,9 @@ VertexCollection tree_path_to_root(const VertexPointer vertex);
 
 EdgeCollection tree_edgepath_to_root(const VertexPointer vertex, const EdgeCollection all_edges);
 
-EdgeCollection tree_edgepath_to_branch(const VertexPointer vertex, const EdgeCollection all_edges);
+/* EdgeCollection tree_edgepath_to_branch(const VertexPointer vertex, const EdgeCollection all_edges); */
 
-EdgeCollection tree_edgepath_from_branch(const VertexPointer vertex, const EdgeCollection all_edges);
+/* EdgeCollection tree_edgepath_from_branch(const VertexPointer vertex, const EdgeCollection all_edges); */
 
 // Add the value delta to the keys of all nodes on the path from v to the root
 // of its vertex

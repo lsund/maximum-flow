@@ -102,16 +102,15 @@ void pseudoflow(NetworkPointer network)
         // Connect it to the weak vertex
         tree_merge(weak_vertex, strong_vertex);
 
-        EdgeCollection weak_path, path;
-        path = tree_edgepath_from_branch(strong_vertex, network->reverse_edges);
-        weak_path = tree_edgepath_to_root(weak_vertex, network->graph.edges);
-        edgecollection_link(path, weak_path);
+        EdgeCollection path;
+        path = tree_edgepath_to_root(strong_vertex, network->graph.edges);
 
         unsigned int delta = *(network->excesses + strong_vertex->label);
         size_t i;
         for (i = 0; i < edgecollection_length(path); i++) {
             EdgePointer edge = edgecollection_get(path, i);
             unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
+            // capacity - flow for forward arcs
             if (residual_capacity >= delta) {
                 networkedge_augment(network, edge, delta);
             } else {

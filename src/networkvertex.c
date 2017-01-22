@@ -2,7 +2,20 @@
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex)
 {
-    return *(network->inflows + vertex.label);
+    if (network->type == PS) {
+        EdgeCollection edges = network->graph.edges;
+        unsigned int sum;
+        size_t i;
+        for (i = 0, sum = 0; i < edgecollection_length(edges); i++) {
+            EdgePointer edge = edgecollection_get(edges, i);
+            if (vertex_equals(edge->second, vertex)) {
+                sum += networkedge_flow(network, edge);
+            }
+        }
+        return sum;
+    } else {
+        return *(network->inflows + vertex.label);
+    }
 }
 
 int networkvertex_exflow(const NetworkPointer network, const Vertex vertex)
@@ -17,17 +30,4 @@ bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex)
 {
     return networkvertex_exflow(network, vertex) > 0;
 }
-
-/* bool network_vertexset_is_strong( */
-/*         const NetworkPointer network, */ 
-/*         const VertexCollection vertices */
-/*     ) */
-/* { */
-/*     size_t i = 0; */
-/*     int sum = 0; */
-/*     for (i = 0; i < vertexcollection_length(vertices); i++) { */
-/*         sum += networkvertex_exflow(network, *vertexcollection_get(vertices, i)); */
-/*     } */
-/*     return sum > 0; */
-/* } */
 

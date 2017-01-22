@@ -1,9 +1,26 @@
 
 MISC:
 
+The problem arises because the algorithm 
+should consider network->source and
+network->sink the same node in the tree
+but the program doesnt do that. So I get
+(5, 1) which should be the same as (5, 6)
+but the program does not understand that        []
+
+also, the function 
+vertexcollection_to_edgecollection should 
+not be in tree.c. The reason is that it 
+needs things that are outside the scope
+of a tree.                                      []
+This function should probably also be 
+reworked.                                       []
+
+add inflow to the ps algorithm
+
 Path now returns a path from vertex to root.
 I need a path from root -> vertex               [done]
-or do I?                                        []  
+or do I? no                                     [done]  
 
 Now I need to get the path 
 [r_s, ..s, w, r_w, r] and push delta units

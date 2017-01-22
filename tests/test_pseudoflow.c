@@ -79,6 +79,14 @@ char *utest_pseudoflow() {
     mu_assert("excess of the strong branch should be 30", *(network->excesses + 2) == 30);
     mu_assert("excess of the weak branch should be -30", *(network->excesses + 3) == -30);
 
+    
+    network = create_test_network();
+    pseudoflow(network);
+    mu_assert("flow should be 10", network_flow(network) == 10);
+
+    network = network_init(PS);
+    parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network);
+    pseudoflow(network);
     return NULL;
 }
 

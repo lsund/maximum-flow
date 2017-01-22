@@ -19,7 +19,7 @@ static EdgeCollection vertexcollection_to_edgecollection(
         } else {
             edge_p = edgecollection_get_reference(all_edges, edge);
         }
-        if (edge_p == NULL) {
+        if (!edge_p) {
             runtime_error("vertexcollection_to_edgecollection: got null reference");
         }
         edgecollection_push(epath, edge_p);
@@ -85,19 +85,19 @@ EdgeCollection tree_edgepath_to_root(const VertexPointer vertex, const EdgeColle
     return vertexcollection_to_edgecollection(path, all_edges, false);
 }
 
-EdgeCollection tree_edgepath_to_branch(const VertexPointer vertex, const EdgeCollection all_edges)
-{
-    VertexCollection path = tree_path_to_root(vertex);
-    vertexcollection_pop(path);
-    return vertexcollection_to_edgecollection(path, all_edges, false);
-}
+/* EdgeCollection tree_edgepath_to_branch(const VertexPointer vertex, const EdgeCollection all_edges) */
+/* { */
+/*     VertexCollection path = tree_path_to_root(vertex); */
+/*     vertexcollection_pop(path); */
+/*     return vertexcollection_to_edgecollection(path, all_edges, false); */
+/* } */
 
-EdgeCollection tree_edgepath_from_branch(const VertexPointer vertex, const EdgeCollection all_edges)
-{
-    VertexCollection path = tree_path_to_root(vertex);
-    vertexcollection_pop(path);
-    return vertexcollection_to_edgecollection(path, all_edges, true);
-}
+/* EdgeCollection tree_edgepath_from_branch(const VertexPointer vertex, const EdgeCollection all_edges) */
+/* { */
+/*     VertexCollection path = tree_path_to_root(vertex); */
+/*     vertexcollection_pop(path); */
+/*     return vertexcollection_to_edgecollection(path, all_edges, true); */
+/* } */
 
 void tree_invert(VertexPointer vertex)
 {

@@ -28,7 +28,20 @@ NetworkPointer network_init(NetworkType type)
 
 unsigned int network_flow(const NetworkPointer network)
 {
-    return networkvertex_inflow(network, *network->sink);
+    if (network->type == PS) {
+        EdgeCollection edges = network->graph.edges;
+        unsigned int sum;
+        size_t i;
+        for (i = 0, sum = 0; i < edgecollection_length(edges); i++) {
+            EdgePointer edge = edgecollection_get(edges, i);
+            if (vertex_equals(edge->second, *network->sink)) {
+                sum += networkvertex_inflow(network, edge->first);
+            }
+        }
+        return sum;
+    } else {
+        return networkvertex_inflow(network, *network->sink);
+    }
 }
 
 void network_destroy(NetworkPointer network)
