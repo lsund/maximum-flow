@@ -32,6 +32,7 @@ char *test_network();
 char *test_main();
 char *test_tokentable();
 char *test_pseudoflow();
+char *test_interop();
 
 
 enum MessageOption { 

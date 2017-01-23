@@ -18,9 +18,6 @@ static EdgeCollection vertexcollection_to_edgecollection(
         EdgePointer edge_p;
         edge_p = edgecollection_get_reference(network->graph.edges, edge);
         if (!edge_p) {
-            edge_p = edgecollection_get_reference(network->reverse_edges, edge_swapped(edge));
-        }
-        if (!edge_p) {
             runtime_error("vertexcollection_to_edgecollection: got null reference");
         }
         edgecollection_push(epath, edge_p);

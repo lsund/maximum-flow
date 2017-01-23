@@ -49,6 +49,8 @@ static char *test()
     mu_run_test(test_main);
     mu_message(MODULE, "pseudoflow\n");
     mu_run_test(test_pseudoflow);
+    mu_message(MODULE, "interop\n");
+    mu_run_test(test_interop);
     return 0;
 }
 
@@ -95,6 +97,8 @@ static char *one_test(const char *module)
         mu_run_test(test_collection);
     } else if (strcmp(module, "vertexcollection") == 0) {
         mu_run_test(test_vertexcollection);
+    } else if (strcmp(module, "interop") == 0) {
+        mu_run_test(test_interop);
     }
     return 0;
 }
@@ -124,6 +128,8 @@ int main(int argc, char **argv) {
             result = one_test("collection");
         } else if (strcmp(argv[1], "vertexcollection") == 0) {
             result = one_test("vertexcollection");
+        } else if (strcmp(argv[1], "interop") == 0) {
+            result = one_test("interop");
         } else {
             result = NULL;
             runtime_error("invalid argument to test");

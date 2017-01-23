@@ -86,6 +86,7 @@ void pseudoflow(NetworkPointer network)
     EdgePointer merger = merger_edge(network);
     VertexPointer strong_vertex, weak_vertex;
     while (merger) {
+        edge_print(*merger);
         strong_vertex = vertexcollection_get_reference(
                 network->strong_vertices,
                 merger->first

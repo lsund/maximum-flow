@@ -1,18 +1,38 @@
 
 MISC:
 
+Have to check if I can replace network->source
+and network->sink with root.                    []
+In the algorithm itself it's nothing referring 
+to source or sink
+network->source / sink: 
+pseudoflow.c
+parser.c
+push_relabel_network.c
+network.c
+
+new bug: algorithm thinks (6, 11) is an edge
+in gen3x3.dmx but it's not. The algorithm 
+specifies all vertices to be a part of 
+the tree in the initialization, even though
+in the graph, they are not. 
+However, the arcs of a normalized tree is 
+a subset of the arcs of the graph in addition
+to a new set of arcs which goes from the root 
+to each vertex.                                 []
+
 The problem arises because the algorithm 
 should consider network->source and
 network->sink the same node in the tree
 but the program doesnt do that. So I get
 (5, 1) which should be the same as (5, 6)
-but the program does not understand that        []
+but the program does not understand that        [done]
 
 also, the function 
 vertexcollection_to_edgecollection should 
 not be in tree.c. The reason is that it 
 needs things that are outside the scope
-of a tree.                                      []
+of a tree.                                      [done]
 This function should probably also be 
 reworked.                                       []
 
