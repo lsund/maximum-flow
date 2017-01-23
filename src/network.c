@@ -11,8 +11,10 @@ static EdgeCollection vertexcollection_to_edgecollection(
     for (i = 0; i < vertexcollection_length(vertices) - 1; i++) {
         VertexPointer first = vertexcollection_get(vertices, i);
         VertexPointer second = vertexcollection_get(vertices, i + 1);
+        if (vertex_equals(*second, *network->source)) {
+            second = network->sink;
+        }
         Edge edge = edge_make_vertices(*first, *second);
-        edge_print(edge);
         EdgePointer edge_p;
         edge_p = edgecollection_get_reference(network->graph.edges, edge);
         if (!edge_p) {

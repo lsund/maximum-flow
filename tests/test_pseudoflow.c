@@ -84,9 +84,34 @@ char *utest_pseudoflow() {
     pseudoflow(network);
     mu_assert("flow should be 10", network_flow(network) == 10);
 
-    network = network_init(PS);
-    parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network);
-    pseudoflow(network);
+
+    return NULL;
+}
+
+char *test_interop_pr_ps()
+{
+    NetworkPointer pr_network, ps_network;
+
+    pr_network = network_init(PR);
+    ps_network = network_init(PS);
+    parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", pr_network);
+    parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", ps_network);
+    pseudoflow(ps_network);
+    push_relabel(pr_network);
+    mu_assert("flow should be equal", network_flow(pr_network) == network_flow(ps_network));
+    network_destroy(pr_network);
+    network_destroy(ps_network);
+
+    pr_network = network_init(PR);
+    ps_network = network_init(PS);
+    parse("/home/lsund/Data/graphs/data/networks/set/gen3x3.dmx", pr_network);
+    parse("/home/lsund/Data/graphs/data/networks/set/gen3x3.dmx", ps_network);
+    pseudoflow(ps_network);
+    push_relabel(pr_network);
+    mu_assert("flow should be equal", network_flow(pr_network) == network_flow(ps_network));
+    network_destroy(pr_network);
+    network_destroy(ps_network);
+
     return NULL;
 }
 
@@ -98,5 +123,7 @@ char *test_pseudoflow()
     mu_run_utest(utest_merger_edge);
     mu_message(UNIT, "pseudoflow\n");
     mu_run_utest(utest_pseudoflow);
+    mu_message(UNIT, "comparing PR and PS\n");
+    mu_run_utest(test_interop_pr_ps);
     return NULL;
 }
