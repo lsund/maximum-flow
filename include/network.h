@@ -23,6 +23,8 @@ typedef struct network {
     int                     *excesses;
 } Network, *NetworkPointer;
 
+EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex);
+
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);
 
 unsigned int networkedge_residual_capacity(const NetworkPointer network, const EdgePointer edge);

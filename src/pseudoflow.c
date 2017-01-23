@@ -103,7 +103,7 @@ void pseudoflow(NetworkPointer network)
         tree_merge(weak_vertex, strong_vertex);
 
         EdgeCollection path;
-        path = tree_edgepath_to_root(strong_vertex, network->graph.edges);
+        path = network_edgepath_to_treeroot(network, strong_vertex);
 
         unsigned int delta = *(network->excesses + strong_vertex->label);
         size_t i;
