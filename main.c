@@ -10,8 +10,8 @@
 
 int main(int argc, char *argv[]) 
 {
-    NetworkPointer network = network_init(PR);
-    /* NetworkPointer network = network_init(PS); */
+    /* NetworkPointer network = network_init(PR); */
+    NetworkPointer network = network_init(PS);
     if (argc == 2) {
         parse(argv[1], network);
     } else {
@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
         push_relabel(network);
     } else {
         pseudoflow(network);
-        return 0;
     }
     diff = clock() - start;
     int msec = diff * 1000 / CLOCKS_PER_SEC;

@@ -21,6 +21,8 @@ typedef struct network {
 
     VertexCollection        strong_vertices, weak_vertices; 
     int                     *excesses;
+    VertexPointer           root;
+    EdgeCollection          root_edges;   
 } Network, *NetworkPointer;
 
 EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex);

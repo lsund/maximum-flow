@@ -12,7 +12,7 @@ static void split(
     // take the first vertex of edge.
     // set its parent to root.
     VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->first);
-    vertex->parent = network->source;
+    vertex->parent = network->root;
     // excess(a) = f_ar = diff
     *(network->excesses + edge->first.label) = diff;
     // remove (a, b) from the residual edges and add (b, a)
@@ -45,7 +45,7 @@ static void initialize_vertex(
         vertex = vertexcollection_get_reference(vertices, edge->first);
         vertexcollection_push(weaks, vertex);
     }
-    tree_merge(network->sink, vertex);
+    tree_merge(network->root, vertex);
 }
 
 void pseudoflow_initialize(const NetworkPointer network)
@@ -75,7 +75,7 @@ void pseudoflow_initialize(const NetworkPointer network)
            ) {
             *(network->excesses + i) = 0;
             vertexcollection_push(weaks, vertex);
-            tree_merge(network->sink, vertex);
+            tree_merge(network->root, vertex);
         }
     }
 }
@@ -86,7 +86,6 @@ void pseudoflow(NetworkPointer network)
     EdgePointer merger = merger_edge(network);
     VertexPointer strong_vertex, weak_vertex;
     while (merger) {
-        edge_print(*merger);
         strong_vertex = vertexcollection_get_reference(
                 network->strong_vertices,
                 merger->first

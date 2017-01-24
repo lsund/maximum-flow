@@ -11,11 +11,12 @@ static EdgeCollection vertexcollection_to_edgecollection(
     for (i = 0; i < vertexcollection_length(vertices) - 1; i++) {
         VertexPointer first = vertexcollection_get(vertices, i);
         VertexPointer second = vertexcollection_get(vertices, i + 1);
-        if (vertex_equals(*second, *network->source)) {
-            second = network->sink;
-        }
         Edge edge = edge_make_vertices(*first, *second);
         EdgePointer edge_p;
+        if (vertex_equals(*network->root, edge.second)) {
+            printf("root now\n");
+            break;
+        }
         edge_p = edgecollection_get_reference(network->graph.edges, edge);
         if (!edge_p) {
             runtime_error("vertexcollection_to_edgecollection: got null reference");
@@ -52,10 +53,12 @@ NetworkPointer network_init(NetworkType type)
 
     ret->active_vertices = vertexcollection_empty();
     ret->distance_labels = NULL;
-
+    
+    ret->root            = NULL;
     ret->excesses        = NULL;
     ret->strong_vertices = vertexcollection_empty();
     ret->weak_vertices   = vertexcollection_empty();
+    ret->root_edges      = edgecollection_empty();
 
     return ret;
 }

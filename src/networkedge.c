@@ -17,6 +17,9 @@ unsigned int networkedge_residual_capacity(
     )
 {
     unsigned int index, capacity, flow;
+    /* if (network->type == PS && vertex_equals(edge->second, *network->root)) { */
+    /*     index = edgecollection_index_of(network->graph.edges, *edge); */
+    /* } */
     if (networkedge_is_reverse(network, edge)) {
         Edge reverse_edge = edge_swapped(*edge);
         index = edgecollection_index_of(network->graph.edges, reverse_edge);

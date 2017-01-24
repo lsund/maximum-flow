@@ -1,8 +1,19 @@
 
 MISC:
 
+program hangs. Maybe in 
+vertexcollection_to_edgecollection but not 
+sure                                            []
+
+might want to store all edges together          []
+(root + reverse + normal)
+places where simplicity would be improved:
+networkedge_residual_capacity
+vertexcollection_to_edgecollection
+
+
 Have to check if I can replace network->source
-and network->sink with root.                    []
+and network->sink with root.                    [done]
 In the algorithm itself it's nothing referring 
 to source or sink
 network->source / sink: 
@@ -10,6 +21,11 @@ pseudoflow.c
 parser.c
 push_relabel_network.c
 network.c
+have to keep sorce/sink - since the algorithm 
+initially partitions the set into strong/weak 
+vertices depending on which are adjacent to
+the source or sink. Can however add a new 
+root vertex and treat it as sink/source
 
 new bug: algorithm thinks (6, 11) is an edge
 in gen3x3.dmx but it's not. The algorithm 
