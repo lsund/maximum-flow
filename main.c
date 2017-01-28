@@ -10,12 +10,13 @@
 
 int main(int argc, char *argv[]) 
 {
-    /* NetworkPointer network = network_init(PR); */
+   /* NetworkPointer network = network_init(PR); */
     NetworkPointer network = network_init(PS);
     if (argc == 2) {
         parse(argv[1], network);
     } else {
-        // 20x20 3.5s
+        // 20x20 3.5s pr
+        // 20x20 0.9s ps
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen3x3.dmx", network); */
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen5x5.dmx", network); */

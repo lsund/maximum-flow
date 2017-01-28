@@ -83,16 +83,6 @@ static void add_reverse_edges(const NetworkPointer network) {
     }
 }
 
-static void add_root_edges(const NetworkPointer network) {
-    size_t i;
-    VertexCollection vertices = network->graph.vertices;
-    for (i = 0; i < vertexcollection_length(vertices); i++) {
-        Label label = vertexcollection_get(vertices, i)->label;
-        EdgePointer root_edge = edge_p_make_label(label, network->root->label);
-        edgecollection_push(network->root_edges, root_edge);
-    }
-}
-
 Result parse(const char *filename, const NetworkPointer network)
 {
     if (!filename || !network) {
@@ -117,7 +107,6 @@ Result parse(const char *filename, const NetworkPointer network)
         network->weak_vertices   = vertexcollection_init(ARRAY_MIN_SIZE);
         network->excesses        = calloc(n_vertices, sizeof(int));
         network->root            = vertex_p_make(n_vertices + 1);
-        network->root_edges      = edgecollection_init(ARRAY_MIN_SIZE);
     }
 
     network->reverse_edges  = edgecollection_init(ARRAY_MIN_SIZE);
@@ -164,9 +153,6 @@ Result parse(const char *filename, const NetworkPointer network)
     }
     tokentable_destroy(table);
     add_reverse_edges(network);
-    if (network->type == PS) {
-        add_root_edges(network);
-    }
 
     return SUCCESS;
 }

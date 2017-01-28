@@ -65,7 +65,9 @@ NetworkPointer network_init(NetworkType type)
 EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex)
 {
     VertexCollection path = tree_path_to_root(vertex);
-    return vertexcollection_to_edgecollection(network, path);
+    EdgeCollection ret = vertexcollection_to_edgecollection(network, path);
+    vertexcollection_destroy(path);
+    return ret;
 }
 
 unsigned int network_flow(const NetworkPointer network)
@@ -91,6 +93,11 @@ void network_destroy(NetworkPointer network)
     if (network->type == PR) {
         free(network->distance_labels);
         vertexcollection_destroy(network->active_vertices);
+    } else {
+        free(network->excesses);
+        vertexcollection_destroy(network->strong_vertices);
+        vertexcollection_destroy(network->weak_vertices);
+        free(network->root);
     }
     free(network->flows);
     free(network->capacities);
@@ -113,41 +120,8 @@ void network_destroy(NetworkPointer network)
     free(network->residual_edges);
     edgecollection_destroy(network->reverse_edges);
     graph_destroy(network->graph);
+    map_destroy(network->is_reverse);
     free(network);
 }
 
 
-/* static EdgeCollection vertexcollection_to_edgecollection( */
-/*         const NetworkPointer network, */
-/*         const VertexCollection vertices, */ 
-/*         bool reverse */
-/*     ) */
-/* { */
-/*     size_t i; */
-/*     EdgeCollection epath = edgecollection_init(ARRAY_MIN_SIZE); */
-/*     for (i = 0; i < vertexcollection_length(vertices) - 1; i++) { */
-/*         VertexPointer first = vertexcollection_get(vertices, i); */
-/*         VertexPointer second = vertexcollection_get(vertices, i + 1); */
-/*         Edge edge = edge_make_vertices(*first, *second); */
-/*         EdgePointer edge_p; */
-/*         if (reverse) { */
-/*             edge_p = edgecollection_get_reference(network->reverse_edges, edge_swapped(edge)); */
-/*         } else { */
-/*             edge_p = edgecollection_get_reference(network->graph.edges, edge); */
-/*         } */
-/*         if (!edge_p) { */
-/*             runtime_error("vertexcollection_to_edgecollection: got null reference"); */
-/*         } */
-/*         edgecollection_push(epath, edge_p); */
-/*     } */
-/*     if (reverse) { */
-/*         EdgeCollection epath_rev = edgecollection_init(ARRAY_MIN_SIZE); */
-/*         for (i = edgecollection_length(epath); i > 0; i--) { */
-/*             EdgePointer edge = edgecollection_get(epath, i - 1); */
-/*             edgecollection_push(epath_rev, edge); */
-/*         } */
-/*         return epath_rev; */
-/*     } else { */
-/*         return epath; */
-/*     } */
-/* } */

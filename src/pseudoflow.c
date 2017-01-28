@@ -144,6 +144,7 @@ void pseudoflow(NetworkPointer network)
                 }
             }
         }
+        edgecollection_destroy(path);
         merger = merger_edge(network);
     }
     return;
