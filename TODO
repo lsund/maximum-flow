@@ -1,6 +1,10 @@
 
 MISC:
 
+new bug: the flow never gets pushed past the 
+first layer solution: (seemingly) have to maintain the 
+strong/weak vertex sets. Forgot to do that before
+
 The difference with (4, 5) is that we call
 networkedge_augment instead of split
 

@@ -10,8 +10,8 @@
 
 int main(int argc, char *argv[]) 
 {
-    /* NetworkPointer network = network_init(PR); */
-    NetworkPointer network = network_init(PS);
+    NetworkPointer network = network_init(PR);
+    /* NetworkPointer network = network_init(PS); */
     if (argc == 2) {
         parse(argv[1], network);
     } else {
