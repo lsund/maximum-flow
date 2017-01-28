@@ -39,6 +39,11 @@ VertexCollection tree_path_to_root(const VertexPointer vertex)
     }
     VertexPointer current = vertex;
     while (current->parent) {
+        if (current == current->parent->parent) {
+            vertex_print(*current);
+            vertex_print(*current->parent);
+            runtime_error("tree_path_to_root: both are eachothers parents");
+        }
         current = current->parent;
         vertexcollection_push(ret, current);
     }

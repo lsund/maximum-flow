@@ -73,7 +73,7 @@ void pseudoflow_initialize(const NetworkPointer network)
                 !vertex_equals(*vertex, *network->source) &&
                 !vertex_equals(*vertex, *network->sink)
            ) {
-            *(network->excesses + i) = 0;
+            *(network->excesses + label) = 0;
             vertexcollection_push(weaks, vertex);
             tree_merge(network->root, vertex);
         }
@@ -95,6 +95,7 @@ void pseudoflow(NetworkPointer network)
                 merger->second
         );
         VertexPointer strong_branch = tree_find_branch(strong_vertex);
+        unsigned int delta = *(network->excesses + strong_branch->label);
         // Disconnect the strong branch
         strong_branch->parent = NULL;
         // make s the root of the tree
@@ -103,9 +104,11 @@ void pseudoflow(NetworkPointer network)
         tree_merge(weak_vertex, strong_vertex);
 
         EdgeCollection path;
-        path = network_edgepath_to_treeroot(network, strong_vertex);
-
-        unsigned int delta = *(network->excesses + strong_vertex->label);
+        path = network_edgepath_to_treeroot(network, strong_branch);
+        printf("merger: ");
+        edge_print(*merger);
+        printf("path: ");
+        edgecollection_print(path);
         size_t i;
         for (i = 0; i < edgecollection_length(path); i++) {
             EdgePointer edge = edgecollection_get(path, i);
@@ -114,14 +117,22 @@ void pseudoflow(NetworkPointer network)
             if (residual_capacity >= delta) {
                 networkedge_augment(network, edge, delta);
             } else {
+                /* printf("splitting\n"); */
                 split(network, edge, delta - residual_capacity);
                 // reset delta
                 // delta gets the value of the residual capacity
                 delta = residual_capacity;
                 // flow of this edge gets the value of capacity
                 networkedge_set_flow(network, edge, networkedge_capacity(network, edge));
+                /* printf("flow of 2, 6 after split: "); */
+                /* printf("%d\n", networkedge_flow(network, edge)); */
+                /* printf("parent of 6 after split: "); */
+                /* vertex_print(*vertexcollection_get_reference(network->graph.vertices, edge->second)->parent); */
+                /* printf("parent of 2 after split: "); */
+                /* vertex_print(*vertexcollection_get_reference(network->graph.vertices, edge->first)->parent); */
             }
         }
+        /* break; */
         merger = merger_edge(network);
     }
     // blah

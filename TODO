@@ -1,9 +1,29 @@
 
 MISC:
 
+The difference with (4, 5) is that we call
+networkedge_augment instead of split
+
 program hangs. Maybe in 
 vertexcollection_to_edgecollection but not 
 sure                                            []
+problem lies in tree_get_path_to_root
+p(4) == 5 and p(5) == 4
+
+The edge (4, 5) gets selected twice. 
+Seems like the only time networkedge_augment
+gets called, the algorithm fucks up.
+This also does not get called in the 2x2
+instance
+Ok, the flow does not get augmented, because 
+added_flow = delta = 0 = the excess of the
+strong branch. Has no excess because it never
+gets set to anything else after initialization
+to 0
+
+Looks like excess and flows of root->branch 
+edges should be updated somewhere else. I get
+an augmentation of delta=0
 
 might want to store all edges together          []
 (root + reverse + normal)
@@ -11,6 +31,9 @@ places where simplicity would be improved:
 networkedge_residual_capacity
 vertexcollection_to_edgecollection
 
+May not need root edges, if the semantics 
+of the algorithm is as i think:
+until [v_i, v_i+1]->second == root              []
 
 Have to check if I can replace network->source
 and network->sink with root.                    [done]

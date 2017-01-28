@@ -14,7 +14,6 @@ static EdgeCollection vertexcollection_to_edgecollection(
         Edge edge = edge_make_vertices(*first, *second);
         EdgePointer edge_p;
         if (vertex_equals(*network->root, edge.second)) {
-            printf("root now\n");
             break;
         }
         edge_p = edgecollection_get_reference(network->graph.edges, edge);
