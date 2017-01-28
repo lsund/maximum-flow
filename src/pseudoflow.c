@@ -105,7 +105,6 @@ void pseudoflow(NetworkPointer network)
 
         EdgeCollection path;
         path = network_edgepath_to_treeroot(network, strong_branch);
-        edgecollection_print(path);
         size_t i;
         for (i = 0; i < edgecollection_length(path); i++) {
             EdgePointer edge = edgecollection_get(path, i);
@@ -147,11 +146,5 @@ void pseudoflow(NetworkPointer network)
         }
         merger = merger_edge(network);
     }
-    /* for (size_t i = 0; i < edgecollection_length(network->graph.edges); i++) { */
-    /*     EdgePointer edge = edgecollection_get(network->graph.edges, i); */
-    /*     edge_print(*edge); */
-    /*     printf("%d\n", networkedge_flow(network, edge)); */
-    /* } */
-    // blah
     return;
 }
