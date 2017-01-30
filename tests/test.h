@@ -29,10 +29,10 @@ char *test_edge();
 char *test_matching();
 char *test_disjointset();
 char *test_network();
-char *test_main();
+char *test_pr();
+char *test_ps();
 char *test_tokentable();
 char *test_pseudoflow();
-char *test_interop();
 
 
 enum MessageOption { 

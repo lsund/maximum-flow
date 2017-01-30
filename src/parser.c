@@ -110,8 +110,8 @@ Result parse(const char *filename, const NetworkPointer network)
     }
 
     network->reverse_edges  = edgecollection_init(ARRAY_MIN_SIZE);
-    network->capacities     = calloc(n_edges, sizeof(unsigned int));
-    network->flows          = calloc(2 * n_edges, sizeof(int));
+    network->capacities     = calloc(n_edges + n_vertices, sizeof(unsigned int));
+    network->flows          = calloc(n_edges + n_vertices, sizeof(int));
     network->inflows        = calloc(n_vertices + 1, sizeof(unsigned int));
     network->outflows       = calloc(n_vertices + 1, sizeof(unsigned int));
     network->residual_edges = malloc((n_vertices + 1) * sizeof(EdgeCollection));

@@ -7,6 +7,9 @@ unsigned int networkedge_capacity(
 {
     unsigned int index, capacity;
     index = edgecollection_index_of(network->graph.edges, *edge);
+    if (index > edgecollection_length(network->graph.edges) + 2) {
+        runtime_error("networkedge_capacity: index out of bounds");
+    }
     capacity = *(network->capacities + index);
     return capacity;
 }
@@ -17,9 +20,6 @@ unsigned int networkedge_residual_capacity(
     )
 {
     unsigned int index, capacity, flow;
-    /* if (network->type == PS && vertex_equals(edge->second, *network->root)) { */
-    /*     index = edgecollection_index_of(network->graph.edges, *edge); */
-    /* } */
     if (networkedge_is_reverse(network, edge)) {
         Edge reverse_edge = edge_swapped(*edge);
         index = edgecollection_index_of(network->graph.edges, reverse_edge);
@@ -84,6 +84,9 @@ void networkedge_set_flow(
 {
     unsigned int index;
     index = edgecollection_index_of(network->graph.edges, *edge);
+    if (index > edgecollection_length(network->graph.edges) + 2) {
+        runtime_error("networkedge_set_flow: index out of bounds");
+    }
     *(network->flows + index) = flow;
 }
 
@@ -130,6 +133,9 @@ void networkedge_set_capacity(
 {
     unsigned int index;
     index = edgecollection_index_of(network->graph.edges, *edge);
+    if (index > edgecollection_length(network->graph.edges) + 2) {
+        runtime_error("networkedge_set_capacity: index out of bounds");
+    }
     *(network->capacities + index) = capacity;
 }
 

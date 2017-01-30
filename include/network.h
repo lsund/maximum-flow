@@ -29,6 +29,8 @@ EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const 
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);
 
+unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
+
 unsigned int networkedge_residual_capacity(const NetworkPointer network, const EdgePointer edge);
 
 NetworkPointer network_init(NetworkType type);

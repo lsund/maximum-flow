@@ -18,21 +18,14 @@ static EdgeCollection vertexcollection_to_edgecollection(
         }
         edge_p = edgecollection_get_reference(network->graph.edges, edge);
         if (!edge_p) {
+            edge_p = edgecollection_get_reference(network->reverse_edges, edge);
+        }
+        if (!edge_p) {
             runtime_error("vertexcollection_to_edgecollection: got null reference");
         }
         edgecollection_push(epath, edge_p);
     }
     return epath;
-    /* if (reverse) { */
-    /*     EdgeCollection epath_rev = edgecollection_init(ARRAY_MIN_SIZE); */
-    /*     for (i = edgecollection_length(epath); i > 0; i--) { */
-    /*         EdgePointer edge = edgecollection_get(epath, i - 1); */
-    /*         edgecollection_push(epath_rev, edge); */
-    /*     } */
-    /*     return epath_rev; */
-    /* } else { */
-    /*     return epath; */
-    /* } */
 }
 
 NetworkPointer network_init(NetworkType type)

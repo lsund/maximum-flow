@@ -20,7 +20,9 @@ int main(int argc, char *argv[])
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen3x3.dmx", network); */
         /* parse("/home/lsund/Data/graphs/data/networks/set/gen5x5.dmx", network); */
-        parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network);
+        parse("/home/lsund/Data/graphs/data/networks/bigsets/2x4s/10004.dmx", network);
+        /* parse("/home/lsund/Data/graphs/data/networks/bigsets/2x4s/10000.dmx", network); */
+        /* parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network); */
     }
     clock_t start = clock(), diff;
     if (network->type == PR) {

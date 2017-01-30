@@ -12,4 +12,7 @@ void networkvertex_set_flow(const NetworkPointer network, const Vertex vertex);
 
 bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex);
 
+int networkvertex_excess(const NetworkPointer network, const Vertex vertex);
+
+int networkvertex_is_strong(const NetworkPointer network, const Vertex vertex);
 #endif

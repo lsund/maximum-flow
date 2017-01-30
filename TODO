@@ -1,16 +1,46 @@
 
+SPEEDING UP THE ALGORITHM: 0.9s
+
+1. do not explicitly need to maintain 
+strong and weak vertexsets. The strong 
+vertices are the ones that have positive
+excess.                                         []
+2. Checking for the resulting flow              
+(storing the neighbours of sink)                []
+
 MISC:
 
+fails on 5x5.dmx                                []
+excess not correct                              []
+
+the node is in the strong branch, it should
+not be chosen, it should not be weak.
+The maintenence of the strong and weak
+nodes are wrong.
+The only Nodes that are strong at 
+initialization are A(s). Then nodes become 
+strong after the split operation                []
+
+algorithm is trying to push along a residual
+edge that does not exist
+
+should have excesses as a function              [done]
+
+maybe pseudoflow is not considering backward
+edges                                           [done]
+
+
 new bug: the flow never gets pushed past the 
-first layer solution: (seemingly) have to maintain the 
-strong/weak vertex sets. Forgot to do that before
+first layer solution: (seemingly) have 
+to maintain the strong/weak vertex sets. 
+Forgot to do that before                        [done]
 
 The difference with (4, 5) is that we call
-networkedge_augment instead of split
+networkedge_augment instead of split            [done]
 
 program hangs. Maybe in 
 vertexcollection_to_edgecollection but not 
-sure                                            []
+sure                                            [done]
 problem lies in tree_get_path_to_root
 p(4) == 5 and p(5) == 4
 

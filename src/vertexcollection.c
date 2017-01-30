@@ -64,6 +64,9 @@ VertexPointer vertexcollection_get_reference(
     )
 {
     unsigned int index = vertexcollection_index_of(vertices, vertex);
+    if (index > vertexcollection_length(vertices) + 1) {
+        runtime_error("vertexcollection_get_reference: index out of bounds");
+    }
     VertexPointer ret = vertexcollection_get(vertices, index);
     return ret;
 }
