@@ -87,25 +87,29 @@ void pseudoflow(NetworkPointer network)
                 merger->second
         );
         VertexPointer strong_branch = tree_find_branch(strong_vertex);
+        VertexPointer weak_branch = tree_find_branch(weak_vertex);
         unsigned int delta = networkvertex_excess(network, *strong_branch);
+        /* printf("delta: %d\n", delta); */
         // Disconnect the strong branch
         strong_branch->parent = NULL;
         // make s the root of the tree
         tree_invert(strong_vertex);
         // Connect it to the weak vertex
         tree_merge(weak_vertex, strong_vertex);
-        /* printf("strong branch %d weak branch %d\n", strong_branch->label, weak_branch->label); */
-        /* printf("%d <- %d, weak <- strong\n", weak_vertex->label, strong_vertex->label); */
-        /* printf("weak excess: %d strong excess: %d\n", networkvertex_excess(network, *weak_vertex), networkvertex_excess(network, *strong_vertex)); */
 
         EdgeCollection path;
         path = network_edgepath_to_treeroot(network, strong_branch);
-        edgecollection_print(path);
+        /* edge_print(*merger); */
+        /* edgecollection_print(path); */
+        /* printf("strong branch %d weak branch %d\n", strong_branch->label, weak_branch->label); */
+        /* printf("strong vertex %d weak vertex %d\n", strong_vertex->label, weak_vertex->label); */
+        /* printf("%d <- %d, weak <- strong\n", weak_vertex->label, strong_vertex->label); */
+        /* printf("strong excess: %d weak excess: %d\n", networkvertex_excess(network, *strong_branch), networkvertex_excess(network, *weak_branch)); */
+        /* printf("strong parent %d\n", strong_vertex->parent->label); */
         size_t i;
         for (i = 0; i < edgecollection_length(path); i++) {
             EdgePointer edge = edgecollection_get(path, i);
             unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
-            printf("delta: %d, res cap: %d\n", delta, residual_capacity);
             /* if (residual_capacity == 0) { */
             /*     size_t i; */
             /*     for (i = 0; i < edgecollection_length(network->graph.edges); i++) { */
@@ -117,15 +121,30 @@ void pseudoflow(NetworkPointer network)
             if (residual_capacity >= delta) {
                 networkedge_augment(network, edge, delta);
             } else {
+                /* printf("splitting at\n"); */
+                /* edge_print(*edge); */
                 split(network, edge);
                 // reset delta
                 // delta gets the value of the residual capacity
                 delta = residual_capacity;
-                // flow of this edge gets the value of capacity
-                // TODO should not be possible that edge is residual
-                networkedge_set_flow(network, edge, networkedge_capacity(network, edge));
+                /* printf("delta: %d, res cap: %d\n", delta, residual_capacity); */
+                if (networkedge_is_reverse(network, edge)) {
+                    Edge reverse_edge = edge_swapped(*edge);
+                    unsigned int index = edgecollection_index_of(network->graph.edges, reverse_edge);
+                    EdgePointer reverse_edge_p = edgecollection_get_reference(network->graph.edges, reverse_edge);
+                    int flow = *(network->flows + index);
+                    networkedge_set_flow(network, reverse_edge_p, flow - residual_capacity);
+                } else {
+                    // flow of this edge gets the value of capacity
+                    // TODO should not be possible that edge is residual
+                    unsigned int capacity = networkedge_capacity(network, edge);
+                    /* printf("filled up capacity: %d\n", capacity); */
+                    networkedge_set_flow(network, edge, capacity);
+                }
             }
+            /* printf("--\n"); */
         }
+        /* printf("------------\n"); */
         edgecollection_destroy(path);
         merger = merger_edge(network);
     }

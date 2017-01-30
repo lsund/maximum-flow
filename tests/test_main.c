@@ -26,7 +26,7 @@ char *test_pr()
 char *test_ps()
 {
     TokenTablePointer table = tokentable_init();
-    tokenize("third_party/optima2-4", table);
+    tokenize("third_party/optima5", table);
     size_t i;
     for (i = 1; i < table->populated_rows; i++) {
         char *file = tokentable_get(table, i, 0);
