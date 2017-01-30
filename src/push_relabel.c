@@ -66,10 +66,5 @@ void push_relabel(NetworkPointer network)
         }
         has_active = networkvertex_active(network, &active);
     }
-    size_t i;
-    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer edge = edgecollection_get(network->graph.edges, i);
-        printf("%d %d, %d\n", edge->first.label, edge->second.label, networkedge_flow(network, edge));
-    }
 }
 
