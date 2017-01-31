@@ -48,9 +48,9 @@ static char *test()
     mu_message(MODULE, "pseudoflow\n");
     mu_run_test(test_pseudoflow);
 	mu_message(MODULE,"push_relabel algorithm\n");
-    mu_run_test(test_pr);
+    mu_run_test(test_push_relabel_algorithm);
 	mu_message(MODULE,"pseudoflow algorithm\n");
-    mu_run_test(test_ps);
+    mu_run_test(test_pseudoflow_algorithm);
     return 0;
 }
 
@@ -98,7 +98,11 @@ static char *one_test(const char *module)
     } else if (strcmp(module, "vertexcollection") == 0) {
         mu_run_test(test_vertexcollection);
     } else if (strcmp(module, "extensive") == 0) {
-        mu_run_test(test_ps);
+        mu_run_test(test_extensive);
+    } else if (strcmp(module, "interop") == 0) {
+        mu_run_test(test_interop);
+    } else if (strcmp(module, "ps_alg") == 0) {
+        mu_run_test(test_pseudoflow_algorithm);
     }
     return 0;
 }
@@ -130,6 +134,10 @@ int main(int argc, char **argv) {
             result = one_test("vertexcollection");
         } else if (strcmp(argv[1], "extensive") == 0) {
             result = one_test("extensive");
+        } else if (strcmp(argv[1], "ps_alg") == 0) {
+            result = one_test("ps_alg");
+        } else if (strcmp(argv[1], "interop") == 0) {
+            result = one_test("interop");
         } else {
             result = NULL;
             runtime_error("invalid argument to test");

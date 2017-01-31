@@ -1,17 +1,19 @@
 
-SPEEDING UP THE ALGORITHM: 0.9s
+SPEEDING UP THE ALGORITHM:
+
+24 -> xx                                        []
+2. Checking for the resulting flow              
+(storing the neighbours of sink)                []
 
 1. do not explicitly need to maintain 
 strong and weak vertexsets. The strong 
 vertices are the ones that have positive
-excess.                                         []
-2. Checking for the resulting flow              
-(storing the neighbours of sink)                []
+excess.                                         [done]
 
 MISC:
 
-fails on 5x5.dmx                                []
-excess not correct                              []
+fails on 5x5.dmx                                [done]
+excess not correct                              [done]
 
 the node is in the strong branch, it should
 not be chosen, it should not be weak.
@@ -19,7 +21,7 @@ The maintenence of the strong and weak
 nodes are wrong.
 The only Nodes that are strong at 
 initialization are A(s). Then nodes become 
-strong after the split operation                []
+strong after the split operation                [done]
 
 algorithm is trying to push along a residual
 edge that does not exist
