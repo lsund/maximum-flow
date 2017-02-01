@@ -4,7 +4,7 @@
 char *test_push_relabel_algorithm()
 {
     TokenTablePointer table = tokentable_init();
-    tokenize("third_party/optima", table);
+    tokenize("third_party/optima/optima-setx1", table);
     size_t i;
     for (i = 1; i < table->populated_rows; i++) {
         char *file = tokentable_get(table, i, 0);
@@ -66,6 +66,13 @@ char *test_extensive()
         mu_message(DATA, "passed\n");
         network_destroy(network);
     }
+    return NULL;
+}
+
+char *test_main()
+{
+    mu_run_test(test_push_relabel_algorithm);
+    mu_run_test(test_pseudoflow_algorithm);
     return NULL;
 }
 

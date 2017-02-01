@@ -47,10 +47,6 @@ static char *test()
     mu_run_test(test_util);
     mu_message(MODULE, "pseudoflow\n");
     mu_run_test(test_pseudoflow);
-	mu_message(MODULE,"push_relabel algorithm\n");
-    mu_run_test(test_push_relabel_algorithm);
-	mu_message(MODULE,"pseudoflow algorithm\n");
-    mu_run_test(test_pseudoflow_algorithm);
     return 0;
 }
 

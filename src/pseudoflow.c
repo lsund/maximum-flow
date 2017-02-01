@@ -5,11 +5,13 @@ typedef enum vertextype { STRONG, WEAK } VertexType;
 
 static void split(
         const NetworkPointer network,
-        const EdgePointer edge
+        const EdgePointer edge,
+        const unsigned int diff
     ) 
 {
     VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->first);
     tree_merge(network->root, vertex);
+    *(network->excesses + edge->first.label) = diff;
 }
 
 static void initialize_vertex(
@@ -28,12 +30,14 @@ static void initialize_vertex(
         networkedge_augment(network, edge, capacity);
         vertex = vertexcollection_get_reference(vertices, edge->second);
         vertexcollection_push(strongs, vertex);
+        *(network->excesses + vertex->label) = capacity;
     } else {
         weaks = network->weak_vertices;
         capacity = networkedge_capacity(network, edge);
         networkedge_augment(network, edge, capacity);
         vertex = vertexcollection_get_reference(vertices, edge->first);
         vertexcollection_push(weaks, vertex);
+        *(network->excesses + vertex->label) = -capacity;
     }
     tree_merge(network->root, vertex);
 }
@@ -65,6 +69,7 @@ void pseudoflow_initialize(const NetworkPointer network)
            ) {
             vertexcollection_push(weaks, vertex);
             tree_merge(network->root, vertex);
+            *(network->excesses + vertex->label) = 0;
         }
     }
 }
@@ -96,6 +101,7 @@ void pseudoflow(NetworkPointer network)
         );
         VertexPointer strong_branch = tree_find_branch(strong_vertex);
         unsigned int delta = networkvertex_excess(network, *strong_branch);
+        /* unsigned int delta = *(network->excesses + strong_branch->label); */
         
         merge(strong_branch, strong_vertex, weak_vertex);
 
@@ -109,7 +115,7 @@ void pseudoflow(NetworkPointer network)
             if (residual_capacity >= delta) {
                 networkedge_augment(network, edge, delta);
             } else {
-                split(network, edge);
+                split(network, edge, delta - residual_capacity);
                 delta = residual_capacity;
                 if (networkedge_is_reverse(network, edge)) {
                     Edge reverse_edge = edge_swapped(*edge);

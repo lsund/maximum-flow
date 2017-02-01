@@ -1,28 +1,29 @@
 
-#include <stdio.h>
-#include <stddef.h>
 #include <time.h>
 
 #include "parser.h"
 #include "push_relabel.h"
 #include "pseudoflow.h"
-#include "map.h"
+
+// The type of network that will be used
+// Change this to PR if you want to use the push_relabel
+// algorithm instead of the pseudoflow algorithm
+#define NETWORK_TYPE PS 
+// The file that will be used as input given that no argement
+// is given the program
+#define FILE_NAME "sample_data/10x10.dmx"
 
 int main(int argc, char *argv[]) 
 {
-   /* NetworkPointer network = network_init(PR); */
-    NetworkPointer network = network_init(PS);
+    NetworkPointer network = network_init(NETWORK_TYPE);
+    char *filename;
     if (argc == 2) {
-        parse(argv[1], network);
+        filename = argv[1];
     } else {
-        // 20x20 3.5s pr
-        // 20x20 1801s ps
-        /* parse("/home/lsund/Data/graphs/data/networks/set/gen2x2.dmx", network); */
-        /* parse("/home/lsund/Data/graphs/data/networks/set/gen3x3.dmx", network); */
-        parse("/home/lsund/Data/graphs/data/networks/set/gen5x5.dmx", network);
-        /* parse("/home/lsund/Data/graphs/data/networks/bigsets/8x8s/249.dmx", network); */
-        /* parse("/home/lsund/Data/graphs/data/networks/set/gen20x20.dmx", network); */
+        filename = FILE_NAME;
     }
+    printf("Computing flow of the network in file %s\n", filename);
+    parse(filename, network);
     clock_t start = clock(), diff;
     if (network->type == PR) {
         push_relabel(network);

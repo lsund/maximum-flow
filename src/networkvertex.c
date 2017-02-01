@@ -46,7 +46,14 @@ int networkvertex_excess(const NetworkPointer network, const Vertex vertex)
 int networkvertex_is_strong(const NetworkPointer network, const Vertex vertex)
 {
     VertexPointer vertex_p = vertexcollection_get_reference(network->graph.vertices, vertex);
-    return networkvertex_excess(network, *tree_find_branch(vertex_p)) > 0;
+    VertexPointer branch = tree_find_branch(vertex_p);
+    int excess = networkvertex_excess(network, *branch);
+    /* int excess2 = *(network->excesses + branch->label); */
+    /* if (excess != excess2) { */
+        /* printf("not equal\n"); */
+        /* printf("%d %d %d\n", vertex.label, excess, excess2); */
+    /* } */
+    return excess > 0;
 }
 
 

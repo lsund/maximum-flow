@@ -14,7 +14,7 @@
 #include "pseudoflow.h"
 #include "pseudoflow_network.h"
 
-#define TEST_GRAPH "/home/lsund/Data/graphs/data/networks/small.dmx"
+#define TEST_GRAPH "/home/lsund/Data/graphs/data/networks/bigsets/3x3s/249.dmx"
 
 char *test_parser();
 char *test_tokenizer();

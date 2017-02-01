@@ -1,9 +1,12 @@
 
 SPEEDING UP THE ALGORITHM:
+// 20x20 3.5s pr
+// 16x16 6s ps
 
-24 -> xx                                        []
 2. Checking for the resulting flow              
 (storing the neighbours of sink)                []
+excess storage
+
 
 1. do not explicitly need to maintain 
 strong and weak vertexsets. The strong 

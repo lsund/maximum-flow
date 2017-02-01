@@ -15,7 +15,7 @@ char *utest_networkedge_is_reverse()
     mu_assert("should be the reversed version", edge_equals_reverse(edge2, edge2r));
     NetworkPointer network = network_init(PR);
     parse(TEST_GRAPH, network);
-    mu_assert("should have 7 edge", edgecollection_length(network->graph.edges) == 7);
+    mu_assert("should have 24 edges", edgecollection_length(network->graph.edges) == 24);
     mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, edge2)); 
     networkvertex_set_distance_label(network, vertex_make(1), 1);
     networkvertex_set_distance_label(network, vertex_make(2), 0);

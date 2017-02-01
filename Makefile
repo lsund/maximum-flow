@@ -42,3 +42,5 @@ gprof: dirs
 dirs:
 	mkdir -p bin prof lib
 
+clean:
+	rm prof/gmon.out && rm prof/gprof.info
