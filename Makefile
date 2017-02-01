@@ -12,11 +12,8 @@ TEST_SRCS := $(shell find $(TEST_DIR)/* -maxdepth 0 -name '*.c')
 all: dirs lib
 	$(CC) $(CFLAGS) $(SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
 
-push-relabel: dirs lib
-	$(CC) $(CFLAGS) $(SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
-
-pseudoflow: dirs lib
-	$(CC) $(CFLAGS) $(SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
+optimized: dirs lib
+	$(CC) -O2 $(CFLAGS) $(SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
 
 run: all
 	./bin/main
