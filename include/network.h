@@ -20,9 +20,10 @@ typedef struct network {
     Label                   *distance_labels;
 
     VertexCollection        strong_vertices, weak_vertices; 
+    VertexCollection        source_neighbours, sink_neighbours;
+    EdgeCollection          source_edges, sink_edges;
     int                     *excesses;
     VertexPointer           root;
-    EdgeCollection          root_edges;   
 } Network, *NetworkPointer;
 
 EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex);

@@ -4,8 +4,8 @@
 Vertex vertex_empty()
 {
     Vertex ret;
-    ret.label = 0; // TODO
-    ret.parent = NULL;
+    ret.label      = -1;
+    ret.parent     = NULL;
     return ret;
 }
 

@@ -48,14 +48,24 @@ static void update_source_sink(const NetworkPointer network, const char *first_t
 }
 
 static EdgePointer update_edge(
-        const VertexCollection vertexcollection, 
-        const EdgeCollection edgecollection, 
+        const NetworkPointer network,
         const char *first_token, 
         const char *second_token
     )
 {
-    EdgePointer edge = parse_edge(vertexcollection, first_token, second_token);
-    edgecollection_push(edgecollection, edge);
+    EdgePointer edge = parse_edge(network->graph.vertices, first_token, second_token);
+    edgecollection_push(network->graph.edges, edge);
+    if (network->type == PS) {
+        if (vertex_equals(edge->first, *network->source)) {
+            VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->second);
+            vertexcollection_push(network->source_neighbours, vertex);
+            edgecollection_push(network->source_edges, edge);
+        } else if (vertex_equals(edge->second, *network->sink)) {
+            VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->first);
+            vertexcollection_push(network->sink_neighbours, vertex);
+            edgecollection_push(network->sink_edges, edge);
+        }
+    }
     return edge;
 }
 
@@ -99,23 +109,27 @@ Result parse(const char *filename, const NetworkPointer network)
 
     parse_vertices(network->graph.vertices, n_vertices);
 
+    size_t i;
     if (network->type == PR) {
         network->distance_labels = calloc(n_vertices, sizeof(Label));
         network->active_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
     } else {
-        network->strong_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
-        network->weak_vertices   = vertexcollection_init(ARRAY_MIN_SIZE);
-        network->excesses        = calloc(n_vertices, sizeof(int));
-        network->root            = vertex_p_make(n_vertices + 1);
+        network->strong_vertices   = vertexcollection_init(ARRAY_MIN_SIZE);
+        network->weak_vertices     = vertexcollection_init(ARRAY_MIN_SIZE);
+        network->excesses          = calloc(n_vertices, sizeof(int));
+        network->root              = vertex_p_make(n_vertices + 1);
+        network->source_neighbours = vertexcollection_init(ARRAY_MIN_SIZE);
+        network->sink_neighbours   = vertexcollection_init(ARRAY_MIN_SIZE);
+        network->source_edges      = edgecollection_init(ARRAY_MIN_SIZE);
+        network->sink_edges        = edgecollection_init(ARRAY_MIN_SIZE);
     }
 
     network->reverse_edges  = edgecollection_init(ARRAY_MIN_SIZE);
-    network->capacities     = calloc(n_edges + n_vertices, sizeof(unsigned int));
-    network->flows          = calloc(n_edges + n_vertices, sizeof(int));
+    network->capacities     = calloc(n_edges, sizeof(unsigned int));
+    network->flows          = calloc(n_edges, sizeof(int));
     network->inflows        = calloc(n_vertices + 1, sizeof(unsigned int));
     network->outflows       = calloc(n_vertices + 1, sizeof(unsigned int));
     network->residual_edges = malloc((n_vertices + 1) * sizeof(EdgeCollection));
-    size_t i;
     for (i = 1; i <= n_vertices; i++) {
         *(network->residual_edges + i) = edgecollection_init(n_edges);
     }
@@ -140,8 +154,7 @@ Result parse(const char *filename, const NetworkPointer network)
                 update_source_sink(network, second_token, third_token);
             } else {
                 EdgePointer edge = update_edge(
-                        network->graph.vertices, 
-                        network->graph.edges, 
+                        network,
                         second_token, 
                         third_token
                     );

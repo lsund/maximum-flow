@@ -1,6 +1,8 @@
 #include "networkvertex.h"
 
-unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex)
+unsigned int networkvertex_inflow(
+        const NetworkPointer network,
+        const Vertex vertex)
 {
     if (network->type == PS) {
         EdgeCollection edges = network->graph.edges;
@@ -45,8 +47,12 @@ int networkvertex_excess(const NetworkPointer network, const Vertex vertex)
 
 int networkvertex_is_strong(const NetworkPointer network, const Vertex vertex)
 {
-    VertexPointer vertex_p = vertexcollection_get_reference(network->graph.vertices, vertex);
-    VertexPointer branch = tree_find_branch(vertex_p);
+    VertexPointer vertex_p, branch;
+    vertex_p   = vertexcollection_get_reference(
+                    network->graph.vertices,
+                    vertex
+                );
+    branch     = tree_find_branch(vertex_p);
     int excess = *(network->excesses + branch->label);
     return excess > 0;
 }

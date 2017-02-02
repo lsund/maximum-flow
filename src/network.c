@@ -48,9 +48,6 @@ NetworkPointer network_init(NetworkType type)
     
     ret->root            = NULL;
     ret->excesses        = NULL;
-    ret->strong_vertices = vertexcollection_empty();
-    ret->weak_vertices   = vertexcollection_empty();
-    ret->root_edges      = edgecollection_empty();
 
     return ret;
 }

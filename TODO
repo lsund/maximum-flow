@@ -1,7 +1,7 @@
 
 SPEEDING UP THE ALGORITHM:
-// 20x20 3.5s pr
-// 16x16 6s ps
+// 
+// 25x25 3.6s ps
 
 do not explicitly need to maintain 
 strong and weak vertexsets. The strong 

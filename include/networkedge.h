@@ -4,6 +4,16 @@
 #include "network.h"
 #include "push_relabel_network.h"
 
+EdgePointer networkedge_get_sink_edge(
+        const NetworkPointer network,
+        const VertexPointer vertex
+    );
+
+EdgePointer networkedge_get_source_edge(
+        const NetworkPointer network,
+        const VertexPointer vertex
+    );
+
 Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex);
 int networkvertex_exflow(const NetworkPointer network, const Vertex vertex);
 

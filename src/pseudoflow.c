@@ -3,6 +3,71 @@
 
 typedef enum vertextype { STRONG, WEAK } VertexType; 
 
+static void initialize_source_sink_vertex(
+        const NetworkPointer network, 
+        const VertexPointer vertex,
+        const EdgePointer edge,
+        const VertexType type
+    )
+{
+    unsigned int capacity;
+    capacity = networkedge_capacity(network, edge);
+    networkedge_augment(network, edge, capacity);
+    if (type == STRONG) {
+        *(network->excesses + vertex->label) = capacity;
+    } else {
+        *(network->excesses + vertex->label) = -capacity;
+    }
+}
+
+static void initialize_vertex(
+        const NetworkPointer network, 
+        const VertexPointer vertex,
+        const EdgePointer edge,
+        const VertexType type
+    )
+{
+    VertexCollection vertices;
+    vertices = network->graph.vertices;
+    if (edge) {
+        initialize_source_sink_vertex(network, vertex, edge, type);
+    } else {
+        *(network->excesses + vertex->label) = 0;
+    }
+    tree_merge(network->root, vertex);
+}
+
+void pseudoflow_initialize(const NetworkPointer network)
+{
+    VertexPointer vertex;
+    size_t i;
+    for (i = 0; i < vertexcollection_length(network->graph.vertices); i++) {
+        vertex = vertexcollection_get(network->graph.vertices, i);
+        bool is_source = vertex_equals(*vertex, *network->source);
+        bool is_sink = vertex_equals(*vertex, *network->sink);
+        if (!is_source && !is_sink) {
+            bool is_source_vertex = vertexcollection_contains_label(
+                                            network->source_neighbours, 
+                                            vertex->label
+                                        );
+            bool is_sink_vertex   = vertexcollection_contains_label(
+                                            network->sink_neighbours,
+                                            vertex->label
+                                        );
+            EdgePointer edge;
+            if (is_source_vertex) {
+                edge = networkedge_get_source_edge(network, vertex);
+                initialize_vertex(network, vertex, edge, STRONG);
+            } else if (is_sink_vertex) {
+                edge = networkedge_get_sink_edge(network, vertex);
+                initialize_vertex(network, vertex, edge, WEAK);
+            } else {
+                initialize_vertex(network, vertex, NULL, WEAK);
+            }
+        }
+    }
+}
+
 static void split(
         const NetworkPointer network,
         const EdgePointer edge
@@ -10,66 +75,6 @@ static void split(
 {
     VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->first);
     tree_merge(network->root, vertex);
-}
-
-static void initialize_vertex(
-        const NetworkPointer network, 
-        const EdgePointer edge,
-        const VertexType type
-    )
-{
-    unsigned int capacity;
-    VertexPointer vertex;
-    VertexCollection vertices, strongs, weaks;
-    vertices = network->graph.vertices;
-    if (type == STRONG) {
-        strongs = network->strong_vertices;
-        capacity = networkedge_capacity(network, edge);
-        networkedge_augment(network, edge, capacity);
-        vertex = vertexcollection_get_reference(vertices, edge->second);
-        vertexcollection_push(strongs, vertex);
-        *(network->excesses + vertex->label) = capacity;
-    } else {
-        weaks = network->weak_vertices;
-        capacity = networkedge_capacity(network, edge);
-        networkedge_augment(network, edge, capacity);
-        vertex = vertexcollection_get_reference(vertices, edge->first);
-        vertexcollection_push(weaks, vertex);
-        *(network->excesses + vertex->label) = -capacity;
-    }
-    tree_merge(network->root, vertex);
-}
-
-void pseudoflow_initialize(const NetworkPointer network)
-{
-    EdgePointer edge;
-    VertexPointer vertex;
-    VertexCollection strongs, weaks;
-    size_t i;
-    strongs = network->strong_vertices;
-    weaks = network->weak_vertices;
-    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        edge = edgecollection_get(network->graph.edges, i);
-        if (vertex_equals(edge->first, *network->source)) {
-            initialize_vertex(network, edge, STRONG);
-        } else if (vertex_equals(edge->second, *network->sink)) {
-            initialize_vertex(network, edge, WEAK);
-        }
-    }
-    for (i = 0; i < vertexcollection_length(network->graph.vertices); i++) {
-        vertex = vertexcollection_get(network->graph.vertices, i);
-        Label label = vertex->label;
-        if (
-                !vertexcollection_contains_label(strongs, label) &&
-                !vertexcollection_contains_label(weaks, label) &&
-                !vertex_equals(*vertex, *network->source) &&
-                !vertex_equals(*vertex, *network->sink)
-           ) {
-            vertexcollection_push(weaks, vertex);
-            tree_merge(network->root, vertex);
-            *(network->excesses + vertex->label) = 0;
-        }
-    }
 }
 
 static void merge(
@@ -89,6 +94,7 @@ void pseudoflow(NetworkPointer network)
     EdgePointer merger = merger_edge(network);
     VertexPointer strong_vertex, weak_vertex;
     while (merger) {
+
         strong_vertex = vertexcollection_get_reference(
                 network->graph.vertices,
                 merger->first
@@ -97,18 +103,18 @@ void pseudoflow(NetworkPointer network)
                 network->graph.vertices,
                 merger->second
         );
+
         VertexPointer strong_branch = tree_find_branch(strong_vertex);
         unsigned int delta = *(network->excesses + strong_branch->label);
-        
         merge(strong_branch, strong_vertex, weak_vertex);
-
         EdgeCollection path;
         path = network_edgepath_to_treeroot(network, strong_branch);
 
+        unsigned int residual_capacity;
         size_t i;
         for (i = 0; i < edgecollection_length(path); i++) {
             EdgePointer edge = edgecollection_get(path, i);
-            unsigned int residual_capacity = networkedge_residual_capacity(network, edge);
+            residual_capacity = networkedge_residual_capacity(network, edge);
             int increased_flow;
             if (residual_capacity >= delta) {
                 networkedge_augment(network, edge, delta);
@@ -147,3 +153,5 @@ void pseudoflow(NetworkPointer network)
     }
     return;
 }
+
+
