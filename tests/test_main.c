@@ -26,7 +26,7 @@ char *test_push_relabel_algorithm()
 char *test_pseudoflow_algorithm()
 {
     TokenTablePointer table = tokentable_init();
-    tokenize("third_party/optima/optima-setx1", table);
+    tokenize("third_party/optima/optima-setx10", table);
     size_t i;
     for (i = 1; i < table->populated_rows; i++) {
         char *file = tokentable_get(table, i, 0);

@@ -73,7 +73,11 @@ static void split(
         const EdgePointer edge
     ) 
 {
-    VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->first);
+    VertexPointer vertex;
+    vertex = vertexcollection_get_reference(
+                    network->graph.vertices,
+                    edge->first
+                );
     tree_merge(network->root, vertex);
 }
 
@@ -88,13 +92,78 @@ static void merge(
         tree_merge(weak_vertex, strong_vertex);
 }
 
+unsigned int push_flow(
+        const NetworkPointer network,
+        const EdgePointer edge,
+        const unsigned int amount
+    )
+{
+    unsigned int new_delta;
+    unsigned int residual_capacity;
+    residual_capacity = networkedge_residual_capacity(network, edge);
+    int increased_flow;
+    if (residual_capacity >= amount) {
+        networkedge_augment(network, edge, amount);
+        if (networkedge_is_reverse(network, edge)) {
+            increased_flow = amount;
+        } else {
+            increased_flow = amount;
+        }
+        *(network->excesses + edge->first.label) -= increased_flow;
+        *(network->excesses + edge->second.label) += increased_flow;
+        new_delta = amount;
+    } else {
+        split(network, edge);
+        new_delta = residual_capacity;
+        unsigned int index;
+        if (networkedge_is_reverse(network, edge)) {
+            Edge reverse_edge;
+            EdgePointer reverse_edge_p;
+            reverse_edge = edge_swapped(*edge);
+            index        = edgecollection_index_of(
+                                    network->graph.edges,
+                                    reverse_edge
+                                );
+            reverse_edge_p = edgecollection_get_reference(
+                                    network->graph.edges, 
+                                    reverse_edge
+                                );
+            int flow = *(network->flows + index);
+            networkedge_set_flow(network, reverse_edge_p, flow - new_delta);
+            increased_flow = new_delta;
+            *(network->excesses + reverse_edge_p->first.label) += increased_flow;
+            *(network->excesses + reverse_edge_p->second.label) -= increased_flow;
+        } else {
+            unsigned int flow, capacity;
+            index = edgecollection_index_of(network->graph.edges, *edge);
+            flow = *(network->flows + index);
+            capacity = networkedge_capacity(network, edge);
+            increased_flow = capacity - flow;
+            networkedge_set_flow(network, edge, capacity);
+            *(network->excesses + edge->first.label) -= increased_flow;
+            *(network->excesses + edge->second.label) += increased_flow;
+        }
+    }
+    return new_delta;
+}
+
+static VertexPointer update_tree(
+        const VertexPointer strong_vertex,
+        const VertexPointer weak_vertex
+    )
+{
+    VertexPointer strong_branch = tree_find_branch(strong_vertex);
+    merge(strong_branch, strong_vertex, weak_vertex);
+    return strong_branch;
+}
+
 void pseudoflow(NetworkPointer network)
 {
     pseudoflow_initialize(network);
     EdgePointer merger = merger_edge(network);
-    VertexPointer strong_vertex, weak_vertex;
     while (merger) {
 
+        VertexPointer strong_vertex, weak_vertex;
         strong_vertex = vertexcollection_get_reference(
                 network->graph.vertices,
                 merger->first
@@ -104,50 +173,21 @@ void pseudoflow(NetworkPointer network)
                 merger->second
         );
 
-        VertexPointer strong_branch = tree_find_branch(strong_vertex);
-        unsigned int delta = *(network->excesses + strong_branch->label);
-        merge(strong_branch, strong_vertex, weak_vertex);
+        VertexPointer strong_branch;
+        strong_branch = update_tree(strong_vertex, weak_vertex);
+        
+        unsigned int delta;
+        delta = *(network->excesses + strong_branch->label);
+
         EdgeCollection path;
         path = network_edgepath_to_treeroot(network, strong_branch);
 
-        unsigned int residual_capacity;
         size_t i;
         for (i = 0; i < edgecollection_length(path); i++) {
             EdgePointer edge = edgecollection_get(path, i);
-            residual_capacity = networkedge_residual_capacity(network, edge);
-            int increased_flow;
-            if (residual_capacity >= delta) {
-                networkedge_augment(network, edge, delta);
-                if (networkedge_is_reverse(network, edge)) {
-                    increased_flow = delta;
-                } else {
-                    increased_flow = delta;
-                }
-                *(network->excesses + edge->first.label) -= increased_flow;
-                *(network->excesses + edge->second.label) += increased_flow;
-            } else {
-                split(network, edge);
-                delta = residual_capacity;
-                if (networkedge_is_reverse(network, edge)) {
-                    Edge reverse_edge = edge_swapped(*edge);
-                    unsigned int index = edgecollection_index_of(network->graph.edges, reverse_edge);
-                    EdgePointer reverse_edge_p = edgecollection_get_reference(network->graph.edges, reverse_edge);
-                    int flow = *(network->flows + index);
-                    networkedge_set_flow(network, reverse_edge_p, flow - delta);
-                    increased_flow = delta;
-                    *(network->excesses + reverse_edge_p->first.label) += increased_flow;
-                    *(network->excesses + reverse_edge_p->second.label) -= increased_flow;
-                } else {
-                    unsigned int index = edgecollection_index_of(network->graph.edges, *edge);
-                    int flow = *(network->flows + index);
-                    unsigned int capacity = networkedge_capacity(network, edge);
-                    increased_flow = capacity - flow;
-                    networkedge_set_flow(network, edge, capacity);
-                    *(network->excesses + edge->first.label) -= increased_flow;
-                    *(network->excesses + edge->second.label) += increased_flow;
-                }
-            }
+            delta = push_flow(network, edge, delta);
         }
+
         edgecollection_destroy(path);
         merger = merger_edge(network);
     }
