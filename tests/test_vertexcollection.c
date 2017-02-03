@@ -28,13 +28,13 @@ char *utest_vertexcollection_push()
 {
     VertexCollection vertexcollection;
     vertexcollection = vertexcollection_init(4);
-    mu_assert("1 should succeed", vertexcollection_push(vertexcollection, vertex_p_make(4)));
+    vertexcollection_push(vertexcollection, vertex_p_make(4));
     mu_assert("length should have increased", vertexcollection.members->length == 1);
     mu_assert("should stay the same", vertexcollection.members->length == 1);
-    mu_assert("2 should succeed", vertexcollection_push(vertexcollection , vertex_p_make(3)) == SUCCESS);
+    vertexcollection_push(vertexcollection , vertex_p_make(3));
     mu_assert("should increase ", vertexcollection.members->length == 2);
-    mu_assert("4 should succeed", vertexcollection_push(vertexcollection, vertex_p_make(2)) == SUCCESS);
-    mu_assert("5 should succeed", vertexcollection_push(vertexcollection, vertex_p_make(1)) == SUCCESS);
+    vertexcollection_push(vertexcollection, vertex_p_make(2));
+    vertexcollection_push(vertexcollection, vertex_p_make(1));
     mu_assert("should now have 4 elements", vertexcollection.members->length == 4); 
     mu_assert("should be 4", vertexcollection_get(vertexcollection, 0)->label == 4);
     mu_assert("should be 4", vertexcollection_get(vertexcollection, 1)->label == 3);
@@ -91,7 +91,7 @@ char *utest_vertexcollection_get()
 {
     VertexCollection vertexcollection;
     vertexcollection = vertexcollection_init(7);
-    mu_assert("2 should succeed", vertexcollection_push(vertexcollection, vertex_p_make(6)) == SUCCESS);
+    vertexcollection_push(vertexcollection, vertex_p_make(6));
     vertexcollection_destroy(vertexcollection);
     return NULL;
 }

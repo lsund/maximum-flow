@@ -3,8 +3,39 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 25x25 3.6s ps
 
+have to go through each module and check
+* are there functions that exist that does 
+  not make sense?
+* are there too long lines?
+* Is there missing/outdated documentation?
+
+collection.c                            []
+cpp                                     []
+edge.c                                  []
+edgecollection.c                        []
+graph.c                                 []
+network.c                               []
+networkedge.c                           []
+networkvertex.c                         []
+parser.c                                []
+pseudoflow.c                            []
+pseudoflow_network.c                    []
+push_relabel.c                          []
+push_relabel_network.                   []
+spit.c                                  []
+tokenizer.c                             []
+tokentable.c                            []
+tree.c                                  []
+treevertex.c                            []
+util.c                                  []
+vertex.c                                []
+vertexcollection.c                      []
+
+parser should not initialize the network,
+it should be done in network.c                  []
+
 merger_edge scans all edges each iteration.
-Faster way to do this?
+Faster way to do this?                          []
 
 do not explicitly need to maintain 
 strong and weak vertexsets. The strong 

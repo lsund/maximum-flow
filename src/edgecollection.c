@@ -97,7 +97,8 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
     if (!edgecollection_contains_edge(edges, edge)) {
         map_put(edges.indices, edge_p_hash(edge), edgecollection_length(edges));
-        return collection_push(edges.members, edge);
+        collection_push(edges.members, edge);
+        return SUCCESS;
     } else {
         return FAIL;
     }

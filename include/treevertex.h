@@ -43,7 +43,7 @@ size_t treevertex_size(TreeVertexPointer root);
 // Attempts to return the vertices of the tree rooted in root. Returns SUCCESS
 // when successful with the vertices stored as a vertexcollection in the return
 // parameter. Returns FAIL otherwise.
-Result treevertex_vertices(TreeVertexPointer root, VertexCollection ret_vertexcollection);
+void treevertex_vertices(TreeVertexPointer root, VertexCollection ret_vertexcollection);
 
 // Stores references to all vertices that have even / odd distance to the root
 // of the tree the two respective sets 

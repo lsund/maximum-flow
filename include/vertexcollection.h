@@ -50,7 +50,7 @@ bool vertexcollection_equals(const VertexCollection vertexcollection_a, const Ve
 // Add a vertex to the set
 Result vertexcollection_replace(const VertexCollection vertices, const VertexPointer vertex, const unsigned int position);
 
-Result vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex);
+void vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex);
 
 Result vertexcollection_pop(const VertexCollection vertices);
 

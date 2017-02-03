@@ -107,17 +107,13 @@ TreeVertexPointer treevertex_get_root_child(TreeVertexPointer of)
     }
 }
 
-Result treevertex_vertices(TreeVertexPointer root, VertexCollection acc)
+void treevertex_vertices(TreeVertexPointer root, VertexCollection acc)
 {
-    if (vertexcollection_push(acc, root->content)) {
-        size_t i;
-        for (i = 0; i < root->children->length; i++) {
-            treevertex_vertices(collection_get(root->children, i), acc);
-        }
-    } else {
-        return FAIL;
+    vertexcollection_push(acc, root->content);
+    size_t i;
+    for (i = 0; i < root->children->length; i++) {
+        treevertex_vertices(collection_get(root->children, i), acc);
     }
-    return SUCCESS;
 }
 
 void treevertex_print(TreeVertexPointer root)

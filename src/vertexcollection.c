@@ -151,20 +151,20 @@ bool vertexcollection_equals(
     return true;
 }
 
-Result vertexcollection_replace(const VertexCollection vertices, const VertexPointer vertex, const unsigned int position) 
+Result vertexcollection_set(const VertexCollection vertices, const VertexPointer vertex, const unsigned int position) 
 {
     if (!vertexcollection_get(vertices, position)) {
-        runtime_error("vertexcollection_replace: can only overwrite existing element");
+        runtime_error("vertexcollection_set: can only overwrite existing element");
     }
     if (vertex->label >= vertices.members->capacity) {
-        runtime_error("vertexcollection_replace: label too large");
+        runtime_error("vertexcollection_set: label too large");
         return FAIL;
     }
     if (vertexcollection_contains_label(vertices, vertex->label)) {
-        runtime_error("vertexcollection_replace: set already contains this vertex");
+        runtime_error("vertexcollection_set: set already contains this vertex");
         return FAIL;
     } else {
-        collection_replace(vertices.members, vertex, position);
+        collection_set(vertices.members, vertex, position);
     }
     return SUCCESS;
 }
@@ -180,13 +180,11 @@ Result vertexcollection_pop(const VertexCollection vertices)
     }
 }
 
-Result vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex)
+void vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex)
 {
     if (!vertexcollection_contains_label(vertices, vertex->label)) {
         map_put(vertices.indices, vertex->label, vertexcollection_length(vertices));
-        return collection_push(vertices.members, vertex);
-    } else {
-        return FAIL;
+        collection_push(vertices.members, vertex);
     }
 }
 

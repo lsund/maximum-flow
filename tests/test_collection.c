@@ -92,7 +92,7 @@ char *utest_collection_get()
     return NULL;
 }
 
-char *utest_collection_replace()
+char *utest_collection_set()
 {
     int x = 3;
     int y = 2;
@@ -101,9 +101,9 @@ char *utest_collection_replace()
     collection_push(collection_a, &x);
     collection_push(collection_a, &y);
     collection_push(collection_a, &z);
-    collection_replace(collection_a, &x, 0);
-    collection_replace(collection_a, &x, 1);
-    collection_replace(collection_a, &x, 2);
+    collection_set(collection_a, &x, 0);
+    collection_set(collection_a, &x, 1);
+    collection_set(collection_a, &x, 2);
     mu_assert("should be 3", *((int *) collection_get(collection_a, 0)) == 3);
     mu_assert("should be 2", *((int *) collection_get(collection_a, 1)) == 3);
     mu_assert("should be 1", *((int *) collection_get(collection_a, 2)) == 3);
@@ -122,9 +122,9 @@ char *utest_collection_push()
     *b = 2;
     *c = 3;
     *collection = collection_init(2);
-    mu_assert("1.should work", collection_push(collection, a) == SUCCESS);
-    mu_assert("2.should work", collection_push(collection, b) == SUCCESS);
-    mu_assert("3.should work", collection_push(collection, c) == SUCCESS);
+    collection_push(collection, a);
+    collection_push(collection, b);
+    collection_push(collection, c);
     mu_assert("size should have doubled", collection->capacity == 4); 
     mu_assert("elements should have increased ", collection->length == 3); 
     mu_assert("should have the correct elements ", *((int *) collection_get(collection, 0)) == 1); 
@@ -132,7 +132,7 @@ char *utest_collection_push()
     mu_assert("should have the correct elements ", *((int *) collection_get(collection, 2)) == 3); 
     free(collection);
     collection =  collection_p_init(0);
-    mu_assert("4. should work", collection_push(collection, a) == SUCCESS);
+    collection_push(collection, a);
     mu_assert("size should have been initialized", collection->capacity == 4); 
     free(a);
     free(b);
@@ -201,8 +201,8 @@ char *test_collection() {
     mu_run_utest(utest_collection_is_empty);
     mu_message(UNIT, "collection_equals\n");
     mu_run_utest(utest_collection_equals);
-    mu_message(UNIT, "collection_replace\n");
-    mu_run_utest(utest_collection_replace);
+    mu_message(UNIT, "collection_set\n");
+    mu_run_utest(utest_collection_set);
     mu_message(UNIT, "collection_remove\n");
     mu_run_utest(utest_collection_remove);
     return NULL;

@@ -36,24 +36,16 @@ size_t collection_length(const CollectionPointer collection)
     return collection->length;
 }
 
-void *collection_get(const CollectionPointer collection, const unsigned int position)
+void *collection_get(
+        const CollectionPointer collection,
+        const unsigned int position
+    )
 {
     return *(collection->head + position);
 }
 
-void collection_replace(const CollectionPointer collection, void *element, const unsigned int position)
+void collection_push(const CollectionPointer collection, void *element)
 {
-    if (!collection) {
-        runtime_error("collection_get: argument is NULL");
-    }
-    *(collection->head + position) = element;
-}
-
-Result collection_push(const CollectionPointer collection, void *element)
-{
-    if (!collection) {
-        runtime_error("collection_push: invalid argument");
-    } 
     if (collection->length == collection->capacity) {
         Collection expandedcollection;
         if (collection->length == 0) {
@@ -63,18 +55,17 @@ Result collection_push(const CollectionPointer collection, void *element)
         }
         size_t i;
         for (i = 0; i < collection->capacity; i++) {
-            collection_push(&expandedcollection, collection_get(collection, i)); 
+            collection_push(&expandedcollection, collection_get(collection, i));
         }
-        *(expandedcollection.head + expandedcollection.length) = element;
+        collection_set(&expandedcollection, element, expandedcollection.length);
         expandedcollection.length++;
         Collection temp = *collection;
         *collection = expandedcollection;
         free(temp.head);
     } else {
-        *(collection->head + collection->length) = element;
+        collection_set(collection, element, collection->length);
         collection->length++;
     }
-    return SUCCESS;
 }
 
 void *collection_pop(const CollectionPointer collection)
@@ -87,12 +78,16 @@ void *collection_pop(const CollectionPointer collection)
     return temp;
 }
 
-void collection_set(CollectionPointer collection, void *element, unsigned int pos)
+void collection_set(
+        const CollectionPointer collection,
+        void *element,
+        const unsigned int position
+    )
 {
-    *(collection->head + pos) = element;    
+    *(collection->head + position) = element;    
 }
 
-void collection_remove(CollectionPointer collection, void *element)
+void collection_remove(const CollectionPointer collection, const void *element)
 {
     size_t i, n_elements = collection_length(collection);
     bool found = false;
@@ -115,18 +110,14 @@ bool collection_is_empty(const CollectionPointer collection)
     return !collection || !collection->head || collection->length == 0;
 }
 
-bool collection_equals(const CollectionPointer collection_a, const CollectionPointer collection_b)
+bool collection_equals(
+        const CollectionPointer collection_a,
+        const CollectionPointer collection_b
+    )
 {
-    if (!collection_a || !collection_b) {
-        runtime_error("collection_equals: argument is NULL");
-        return false;
-    } else if (collection_a->length != collection_b->length) {
-        return false;
-    } else if (collection_a->capacity != collection_b->capacity) {
-        return false;
-    } else {
-        return true;
-    }
+    bool equal_length = collection_a->length == collection_b->length;
+    bool equal_capacity = collection_a->capacity == collection_b->capacity;
+    return equal_length && equal_capacity;
 }
 
 Result collection_destroy(CollectionPointer collection)
