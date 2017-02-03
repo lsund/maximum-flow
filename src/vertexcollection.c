@@ -45,7 +45,10 @@ size_t vertexcollection_length(const VertexCollection vertices)
     return collection_length(vertices.members);
 }
 
-VertexPointer vertexcollection_get(const VertexCollection vertices, const unsigned int position)
+VertexPointer vertexcollection_get(
+        const VertexCollection vertices, 
+        const unsigned int position
+    )
 {
     if (position >= vertices.members->capacity) {
         runtime_error("vertexcollection_get: index out of bounds");
@@ -88,7 +91,10 @@ VertexPointer vertexcollection_get_with_label(
     return NULL;
 }
 
-unsigned int vertexcollection_index_of(const VertexCollection vertices, const Vertex vertex)
+int vertexcollection_index_of(
+        const VertexCollection vertices,
+        const Vertex vertex
+    )
 {
     if (map_exists(vertices.indices, vertex.label)) {
         return map_get(vertices.indices, vertex.label);
@@ -97,12 +103,18 @@ unsigned int vertexcollection_index_of(const VertexCollection vertices, const Ve
     }
 }
 
-bool vertexcollection_contains_label(const VertexCollection vertices, const Label label)
+bool vertexcollection_contains_label(
+        const VertexCollection vertices,
+        const Label label
+    )
 {
     return map_exists(vertices.indices, label);
 }
 
-bool vertexcollection_is_super(const VertexCollection super, const VertexCollection sub)
+bool vertexcollection_is_super(
+        const VertexCollection super,
+        const VertexCollection sub
+    )
 {
     if (vertexcollection_length(super) != vertexcollection_length(sub)) {
         return false;
@@ -117,9 +129,15 @@ bool vertexcollection_is_super(const VertexCollection super, const VertexCollect
     return true;
 }
 
-bool vertexcollection_equals(const VertexCollection vertexcollection_a, const VertexCollection vertexcollection_b)
+bool vertexcollection_equals(
+        const VertexCollection vertexcollection_a,
+        const VertexCollection vertexcollection_b
+    )
 {
-    if (!collection_equals(vertexcollection_a.members, vertexcollection_b.members)) {
+    CollectionPointer collection_a, collection_b;
+    collection_a = vertexcollection_a.members;
+    collection_b = vertexcollection_b.members;
+    if (!collection_equals(collection_a, collection_b)) {
         return false;
     }
     size_t i;

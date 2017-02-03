@@ -19,7 +19,7 @@ VertexCollection vertexcollection_init(const size_t init_length);
 
 void vertexcollection_reset(VertexCollection vertices);
 
-// Return true if the vertexcollection has no intialized elements, false otherwise
+// Return true if the vertexcollection has no elements, false otherwise
 bool vertexcollection_is_empty(const VertexCollection vertices);
 
 // Return the number of elements currently in this set
@@ -37,7 +37,7 @@ VertexPointer vertexcollection_get_first(const VertexCollection vertices);
 
 VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label);
 
-unsigned int vertexcollection_index_of(const VertexCollection vertices, const Vertex vertex);
+int vertexcollection_index_of(const VertexCollection vertices, const Vertex vertex);
 
 // Does the set contain the specified vertex?
 bool vertexcollection_contains_label(const VertexCollection vertices, const Label label);

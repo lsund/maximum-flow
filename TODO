@@ -3,10 +3,13 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 25x25 3.6s ps
 
+merger_edge scans all edges each iteration.
+Faster way to do this?
+
 do not explicitly need to maintain 
 strong and weak vertexsets. The strong 
 vertices are the ones that have positive
-excess.                                         []
+excess.                                         [done]
 
 Checking for the resulting flow              
 (storing the neighbours of sink)                []
