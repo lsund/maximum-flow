@@ -4,6 +4,8 @@
 #include "network.h"
 #include "push_relabel_network.h"
 
+typedef enum EdgeType { FORWARD, REVERSE } EdgeType;
+
 EdgePointer networkedge_get_sink_edge(
         const NetworkPointer network,
         const VertexPointer vertex
@@ -35,10 +37,17 @@ void networkedge_set_capacity(
         const unsigned int capacity
     );
 
+void networkedge_fill_flow(
+        const NetworkPointer network,
+        const EdgePointer edge,
+        const unsigned int capacity,
+        const EdgeType type
+    );
+
 void networkedge_set_flow(
         const NetworkPointer network, 
         const EdgePointer edge, 
-        const int flow
+        int flow
     );
 
 void networkedge_add_flow(

@@ -22,39 +22,25 @@ unsigned int networkvertex_inflow(
 
 int networkvertex_exflow(const NetworkPointer network, const Vertex vertex)
 {
-    unsigned int inflow, outflow;
-    inflow = *(network->inflows + vertex.label);
-    outflow = *(network->outflows + vertex.label);
-    return inflow - outflow;
-}
-
-int networkvertex_excess(const NetworkPointer network, const Vertex vertex)
-{
-    int inflows, outflows;
-    size_t i;
-    inflows = 0;
-    outflows = 0;
-    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer edge = edgecollection_get(network->graph.edges, i);
-        if (vertex_equals(edge->first, vertex)) {
-            outflows += networkedge_flow(network, edge);
-        } else if (vertex_equals(edge->second, vertex)) {
-            inflows += networkedge_flow(network, edge);
-        }
+    if (network->type == PR) {
+        unsigned int inflow, outflow;
+        inflow = *(network->inflows + vertex.label);
+        outflow = *(network->outflows + vertex.label);
+        return inflow - outflow;
+    } else {
+        VertexPointer vertex_p, branch;
+        vertex_p   = vertexcollection_get_reference(
+                        network->graph.vertices,
+                        vertex
+                    );
+        branch     = tree_find_branch(vertex_p);
+        return *(network->excesses + branch->label);
     }
-    return inflows - outflows;
 }
 
 int networkvertex_is_strong(const NetworkPointer network, const Vertex vertex)
 {
-    VertexPointer vertex_p, branch;
-    vertex_p   = vertexcollection_get_reference(
-                    network->graph.vertices,
-                    vertex
-                );
-    branch     = tree_find_branch(vertex_p);
-    int excess = *(network->excesses + branch->label);
-    return excess > 0;
+    return networkvertex_exflow(network, vertex) > 0;
 }
 
 

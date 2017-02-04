@@ -110,6 +110,43 @@ void networkedge_augment(const NetworkPointer network, const EdgePointer edge, c
     }
 }
 
+void networkedge_fill_flow(
+        const NetworkPointer network,
+        const EdgePointer edge,
+        const unsigned int capacity,
+        const EdgeType type
+    )
+{
+    int index, flow, increased_flow;
+    if (type == FORWARD)
+    {
+        index = edgecollection_index_of(network->graph.edges, *edge);
+        flow = *(network->flows + index);
+        increased_flow = capacity - flow;
+        networkedge_set_flow(network, edge, capacity);
+        *(network->excesses + edge->first.label) -= increased_flow;
+        *(network->excesses + edge->second.label) += increased_flow;
+    } else {
+        Edge reverse_edge;
+        EdgePointer reverse_edge_p;
+        reverse_edge = edge_swapped(*edge);
+        index        = edgecollection_index_of(
+                                network->graph.edges,
+                                reverse_edge
+                            );
+        reverse_edge_p = edgecollection_get_reference(
+                                network->graph.edges, 
+                                reverse_edge
+                            );
+        int flow = *(network->flows + index);
+        networkedge_set_flow(network, reverse_edge_p, flow - capacity);
+        increased_flow = capacity;
+        *(network->excesses + reverse_edge_p->first.label) += increased_flow;
+        *(network->excesses + reverse_edge_p->second.label) -= increased_flow;
+    }
+}
+
+
 void networkedge_set_flow(
         const NetworkPointer network, 
         const EdgePointer edge, 

@@ -9,7 +9,7 @@ have to go through each module and check
 * are there too long lines?
 * Is there missing/outdated documentation?
 
-collection.c                            []
+collection.c                            [done]
 cpp                                     []
 edge.c                                  []
 edgecollection.c                        []
@@ -36,15 +36,22 @@ it should be done in network.c                  []
 
 merger_edge scans all edges each iteration.
 Faster way to do this?                          []
+* at initialization, we know all merger edges
+* an edge can then become a merger edge by 
+  changing the flow of the edge.
+* we are changing the flow of the edge only
+  in push_flow. and this function takes as 
+  argument only one edge.
+
+
+Checking for the resulting flow              
+(storing the neighbours of sink)                []
+excess storage
 
 do not explicitly need to maintain 
 strong and weak vertexsets. The strong 
 vertices are the ones that have positive
 excess.                                         [done]
-
-Checking for the resulting flow              
-(storing the neighbours of sink)                []
-excess storage
 
 maintain the excesses for constant time lookup
 right now the most timeconsuming function has to 
