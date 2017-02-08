@@ -9,7 +9,10 @@ Graph graph_init()
     return ret;
 }
 
-Graph graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection)
+Graph graph_make(
+        const VertexCollection vertexcollection,
+        const EdgeCollection edgecollection
+    )
 {
     Graph ret;
     ret.vertices = vertexcollection;

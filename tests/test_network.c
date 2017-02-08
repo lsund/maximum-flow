@@ -13,8 +13,8 @@ char *utest_networkedge_is_reverse()
     EdgePointer edge2r = edge_p_make_label(3, 1);
     mu_assert("should be the reversed version", edge_equals_reverse(edge, edger));
     mu_assert("should be the reversed version", edge_equals_reverse(edge2, edge2r));
-    NetworkPointer network = network_init(PR);
-    parse(TEST_GRAPH, network);
+    NetworkPointer network;
+    network = parse(TEST_GRAPH, PR);
     mu_assert("should have 24 edges", edgecollection_length(network->graph.edges) == 24);
     mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, edge2)); 
     networkvertex_set_distance_label(network, vertex_make(1), 1);
@@ -57,80 +57,8 @@ char *utest_networkvertex_exflow()
 }
 
 
-char *utest_networkvertex_set_distance_label()
-{
-    NetworkPointer network = network_init(PR);
-    VertexCollection vertices = vertexcollection_init(8);
-    EdgeCollection edges = edgecollection_init(8);
-    vertexcollection_push(vertices, vertex_p_make(0));
-    network->graph = graph_make(vertices, edges);
-    network->distance_labels = calloc(8, sizeof(Label));
-    mu_assert("should be 0", *network->distance_labels == 0);
-    networkvertex_set_distance_label(network, *vertexcollection_get(network->graph.vertices, 0), 77);
-    mu_assert("should be 77", *network->distance_labels == 77);
-    return NULL;
-}
-
-char *utest_networkvertex_distance_label()
-{
-    NetworkPointer network = network_init(PR);
-    VertexCollection vertices = vertexcollection_init(8);
-    EdgeCollection edges = edgecollection_init(8);
-    vertexcollection_push(vertices, vertex_p_make(0));
-    network->graph = graph_make(vertices, edges);
-    network->distance_labels = calloc(8, sizeof(Label));
-    networkvertex_set_distance_label(network, *vertexcollection_get(network->graph.vertices, 0), 77);
-    mu_assert("should be 77", networkvertex_distance_label(network, *vertexcollection_get(network->graph.vertices, 0)) == 77);
-    return NULL;
-}
-
-char *utest_networkedge_set_flow()
-{
-    NetworkPointer network = network_init(PR);
-    VertexCollection vertices = vertexcollection_init(8);
-    vertexcollection_push(vertices, vertex_p_make(0));
-    vertexcollection_push(vertices, vertex_p_make(1));
-    EdgeCollection edges = edgecollection_init(8);
-    EdgePointer edge = edge_p_make_label(0, 1);
-    edgecollection_push(edges, edge);
-    network->graph = graph_make(vertices, edges);
-    network->flows = calloc(20, sizeof(unsigned int));
-    network->inflows = calloc(10, sizeof(unsigned int));
-    network->outflows = calloc(10, sizeof(unsigned int));
-    networkedge_set_flow(network, edge, 10);
-    mu_assert("should be 10", networkedge_flow(network, edge) == 10);
-    return NULL;
-    return NULL;
-}
-
-char *utest_networkedge_set_capacity()
-{
-    NetworkPointer network = network_init(PR);
-    VertexCollection vertices = vertexcollection_init(8);
-    vertexcollection_push(vertices, vertex_p_make(0));
-    vertexcollection_push(vertices, vertex_p_make(1));
-    EdgeCollection edges = edgecollection_init(8);
-    EdgePointer edge = edge_p_make_label(0, 1);
-    edgecollection_push(edges, edge);
-    network->graph = graph_make(vertices, edges);
-    network->capacities = calloc(8, sizeof(unsigned int));
-    networkedge_set_capacity(network, edge, 10);
-    mu_assert("should be 10", networkedge_capacity(network, edge) == 10);
-    return NULL;
-}
-
 char *test_network()
 {
-    mu_message(UNIT, "network_set_distance_label\n");
-    mu_run_utest(utest_networkvertex_set_distance_label);
-    mu_message(UNIT, "networkvertex_distance_labe\n");
-    mu_run_utest(utest_networkvertex_distance_label);
-    mu_message(UNIT, "networkedge_set_capacity\n");
-    mu_run_utest(utest_networkedge_set_capacity);
-    mu_message(UNIT, "networkedge_is_reverse\n");
-    mu_run_utest(utest_networkedge_is_reverse);
-    mu_message(UNIT, "networkedge_set_flow\n");
-    mu_run_utest(utest_networkedge_set_flow);
     mu_message(UNIT, "networkvertex_is_active\n");
     mu_run_utest(utest_networkvertex_is_active);
     mu_message(UNIT, "networkvertex_exflow\n");

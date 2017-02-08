@@ -11,11 +11,11 @@ char *test_interop()
         char *file = tokentable_get(table, i, 0);
         char *s_opt = tokentable_get(table, i, 1);
         long opt = strtol(s_opt, NULL, 10);
-        NetworkPointer pr_network = network_init(PR);
-        NetworkPointer ps_network = network_init(PS);
-        parse(file, pr_network);
+        NetworkPointer pr_network;
+        NetworkPointer ps_network;
+        pr_network = parse(file, PR);
         push_relabel(pr_network);
-        parse(file, ps_network);
+        ps_network = parse(file, PS);
         pseudoflow(ps_network);
         long pr_res = (long) network_flow(pr_network);
         long ps_res = (long) network_flow(ps_network);

@@ -15,7 +15,6 @@
 
 int main(int argc, char *argv[]) 
 {
-    NetworkPointer network = network_init(NETWORK_TYPE);
     char *filename;
     if (argc == 2) {
         filename = argv[1];
@@ -23,7 +22,7 @@ int main(int argc, char *argv[])
         filename = FILE_NAME;
     }
     printf("Computing flow of the network in file %s\n", filename);
-    parse(filename, network);
+    NetworkPointer network = parse(filename, NETWORK_TYPE);
     clock_t start = clock(), diff;
     if (network->type == PR) {
         push_relabel(network);

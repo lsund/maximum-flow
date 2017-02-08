@@ -7,6 +7,6 @@
 
 // Convert the tokens in the tokentable into graph structs, and load them into
 // the specified graph 
-Result parse(const char *filename, const NetworkPointer network);
+NetworkPointer parse(const char *filename, const NetworkType type);
 
 #endif

@@ -117,8 +117,8 @@ char *utest_tree_find_branch()
 
 char *utest_tree_path_to_root()
 {
-    NetworkPointer network = network_init(PS);
-    parse("/home/lsund/Data/graphs/data/networks/bigsets/3x3s/133.dmx", network);
+    NetworkPointer network;
+    network = parse("/home/lsund/Data/graphs/data/networks/bigsets/3x3s/133.dmx", PS);
 
     VertexPointer tree1 = vertexcollection_get_reference(network->graph.vertices, vertex_make(2));
     VertexPointer tree2 = vertexcollection_get_reference(network->graph.vertices, vertex_make(5));

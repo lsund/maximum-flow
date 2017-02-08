@@ -22,6 +22,11 @@ VertexCollection vertexcollection_init(const size_t init_length)
     return ret;
 }
 
+VertexCollection vertexcollection_init_min()
+{
+    return vertexcollection_init(COLL_MIN_SIZE);
+}
+
 VertexCollectionPointer init_p_vertexcollection(const size_t init_length)
 {
     VertexCollectionPointer ret = malloc(sizeof(VertexCollection));

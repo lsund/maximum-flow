@@ -28,28 +28,34 @@ static EdgeCollection vertexcollection_to_edgecollection(
     return epath;
 }
 
-NetworkPointer network_init(NetworkType type)
+void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices, const unsigned int n_edges)
 {
-    NetworkPointer ret   = malloc(sizeof(Network));
-    ret->graph           = graph_init();
-    ret->reverse_edges   = edgecollection_empty();
-    ret->source          = NULL;
-    ret->sink            = NULL;
-    ret->capacities      = NULL;
-    ret->flows           = NULL;
-    ret->inflows         = NULL;
-    ret->outflows        = NULL;
-    ret->residual_edges  = NULL;
-    ret->is_reverse      = map_create();
-    ret->type            = type;
+    network->type                  = type;
+    network->graph                 = graph_init();
+    network->reverse_edges         = edgecollection_init_min();
+    network->is_reverse            = map_create();
+    network->source                = NULL;
+    network->sink                  = NULL;
+    network->capacities            = NULL;
+    network->flows                 = NULL;
+    network->residual_edges        = NULL;
 
-    ret->active_vertices = vertexcollection_empty();
-    ret->distance_labels = NULL;
+    if (type == PR) {
+        network->active_vertices   = vertexcollection_empty();
+        network->distance_labels   = NULL;
+        network->inflows           = NULL;
+        network->outflows          = NULL;
+    } else {
+        network->root              = NULL;
+        network->excesses          = NULL;
+        network->strong_vertices   = vertexcollection_init_min();
+        network->weak_vertices     = vertexcollection_init_min();
+        network->source_neighbours = vertexcollection_init_min();
+        network->sink_neighbours   = vertexcollection_init_min();
+        network->source_edges      = edgecollection_init_min();
+        network->sink_edges        = edgecollection_init_min();
+    }
     
-    ret->root            = NULL;
-    ret->excesses        = NULL;
-
-    return ret;
 }
 
 EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex)

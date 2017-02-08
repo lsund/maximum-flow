@@ -17,6 +17,8 @@ VertexCollection vertexcollection_empty();
 // Initializes a vertexcollection of size init_length. 
 VertexCollection vertexcollection_init(const size_t init_length);
 
+VertexCollection vertexcollection_init_min();
+
 void vertexcollection_reset(VertexCollection vertices);
 
 // Return true if the vertexcollection has no elements, false otherwise

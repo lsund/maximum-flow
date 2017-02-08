@@ -93,10 +93,10 @@ static void add_reverse_edges(const NetworkPointer network) {
     }
 }
 
-Result parse(const char *filename, const NetworkPointer network)
+NetworkPointer parse(const char *filename, const NetworkType type)
 {
-    if (!filename || !network) {
-        return FAIL;
+    if (!filename) {
+        return NULL;
     }
     Point dimension;
     TokenTablePointer table = tokentable_init();
@@ -105,7 +105,10 @@ Result parse(const char *filename, const NetworkPointer network)
 
     unsigned int n_vertices, n_edges;
     n_vertices = dimension.x;
-    n_edges = dimension.y;
+    n_edges    = dimension.y;
+
+    NetworkPointer network = malloc(sizeof(Network));
+    network_init(network, type, n_vertices, n_edges);
 
     parse_vertices(network->graph.vertices, n_vertices);
 
@@ -114,17 +117,10 @@ Result parse(const char *filename, const NetworkPointer network)
         network->distance_labels = calloc(n_vertices, sizeof(Label));
         network->active_vertices = vertexcollection_init(COLL_MIN_SIZE);
     } else {
-        network->strong_vertices   = vertexcollection_init(COLL_MIN_SIZE);
-        network->weak_vertices     = vertexcollection_init(COLL_MIN_SIZE);
         network->excesses          = calloc(n_vertices, sizeof(int));
         network->root              = vertex_p_make(n_vertices + 1);
-        network->source_neighbours = vertexcollection_init(COLL_MIN_SIZE);
-        network->sink_neighbours   = vertexcollection_init(COLL_MIN_SIZE);
-        network->source_edges      = edgecollection_init_min();
-        network->sink_edges        = edgecollection_init_min();
     }
 
-    network->reverse_edges  = edgecollection_init_min();
     network->capacities     = calloc(n_edges, sizeof(unsigned int));
     network->flows          = calloc(n_edges, sizeof(int));
     network->inflows        = calloc(n_vertices + 1, sizeof(unsigned int));
@@ -148,7 +144,7 @@ Result parse(const char *filename, const NetworkPointer network)
             second_token = tokentable_get(table, row, 1);
             third_token  = tokentable_get(table, row, 2);
             if (!second_token || !first_token) {
-                return FAIL;
+                return NULL;
             }
             if (is_n) {
                 update_source_sink(network, second_token, third_token);
@@ -167,6 +163,6 @@ Result parse(const char *filename, const NetworkPointer network)
     tokentable_destroy(table);
     add_reverse_edges(network);
 
-    return SUCCESS;
+    return network;
 }
 
