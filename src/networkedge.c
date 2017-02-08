@@ -124,8 +124,18 @@ void networkedge_fill_flow(
         flow = *(network->flows + index);
         increased_flow = capacity - flow;
         networkedge_set_flow(network, edge, capacity);
+        unsigned int first_exflow_before = *(network->excesses + edge->first.label);
         *(network->excesses + edge->first.label) -= increased_flow;
+        unsigned int first_exflow = *(network->excesses + edge->first.label);
+        unsigned int second_exflow_before = *(network->excesses + edge->second.label);
         *(network->excesses + edge->second.label) += increased_flow;
+        unsigned int second_exflow = *(network->excesses + edge->second.label);
+        if (second_exflow_before == 0 && second_exflow > 0) {
+            /* printf("got strong: %d\n", edge->second.label); */
+        }
+        if (first_exflow_before > 0 && first_exflow == 0) {
+            /* printf("got weak: %d\n", edge->first.label); */
+        }
     } else {
         Edge reverse_edge;
         EdgePointer reverse_edge_p;
@@ -172,7 +182,6 @@ void networkedge_add_flow(
     index = edgecollection_index_of(network->graph.edges, *edge);
     flow = networkedge_flow(network, edge);
     if (network->type == PR) {
-        unsigned int first_exflow, second_exflow;
         unsigned int first_exflow_before, second_exflow_before;
         first_exflow_before = networkvertex_exflow(network, edge->first);
         second_exflow_before = networkvertex_exflow(network, edge->second);
@@ -181,6 +190,7 @@ void networkedge_add_flow(
         *(network->inflows + edge->second.label) += added_flow;
         *(network->outflows + edge->first.label) += added_flow;
 
+        unsigned int first_exflow, second_exflow;
         first_exflow = networkvertex_exflow(network, edge->first);
         second_exflow = networkvertex_exflow(network, edge->second);
         activate_vertices(

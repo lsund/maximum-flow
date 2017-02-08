@@ -2,7 +2,6 @@
 #include <map>
 
 typedef std::map<unsigned int, int> Map;
-typedef std::map<unsigned int, void *>::iterator it_type;
 
 extern "C" {
 
@@ -21,18 +20,6 @@ extern "C" {
     {
         Map *m = reinterpret_cast<Map *> (map);
         m->erase(k); 
-    }
-
-    void map_update(void *map, unsigned int k, int v)
-    {
-        Map *m = reinterpret_cast<Map *> (map);
-        (*m)[k] = v;
-    }
-
-    size_t map_size(void *map) 
-    {
-        Map *m = reinterpret_cast<Map *> (map);
-        return m->size();
     }
 
     int map_get(void *map, unsigned int k)

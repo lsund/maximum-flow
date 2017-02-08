@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-std=c99 -Wall -g -D_POSIX_SOURCE -D_GNU_SOURCE -I'include' -I'include/third_party'
+INCLUDE=-I'include' -I'include/third_party'
+CFLAGS=-std=c99 -Wall -g -D_POSIX_SOURCE -D_GNU_SOURCE $(INCLUDE)
 SRC_DIR=src
 TEST_DIR=tests
 SRCS := $(shell find $(SRC_DIR)/* -maxdepth 0 -name '*.c')
