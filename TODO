@@ -11,8 +11,8 @@ have to go through each module and check
 
 collection.c                            [done]
 cpp                                     [done]
-edge.c                                  []
-edgecollection.c                        []
+edge.c                                  [done]
+edgecollection.c                        [done]
 graph.c                                 []
 network.c                               []
 networkedge.c                           []

@@ -88,7 +88,7 @@ static void add_reverse_edges(const NetworkPointer network) {
         Edge reverse_edge_val = edge_swapped(*p_edge);
         EdgePointer reverse_edge = edge_p_make_edge(reverse_edge_val);
         edgecollection_push(network->reverse_edges, reverse_edge);
-        unsigned int key = edge_p_hash(reverse_edge); 
+        unsigned int key = edge_hash(*reverse_edge); 
         map_put(network->is_reverse, key, 1);
     }
 }
@@ -112,19 +112,19 @@ Result parse(const char *filename, const NetworkPointer network)
     size_t i;
     if (network->type == PR) {
         network->distance_labels = calloc(n_vertices, sizeof(Label));
-        network->active_vertices = vertexcollection_init(ARRAY_MIN_SIZE);
+        network->active_vertices = vertexcollection_init(COLL_MIN_SIZE);
     } else {
-        network->strong_vertices   = vertexcollection_init(ARRAY_MIN_SIZE);
-        network->weak_vertices     = vertexcollection_init(ARRAY_MIN_SIZE);
+        network->strong_vertices   = vertexcollection_init(COLL_MIN_SIZE);
+        network->weak_vertices     = vertexcollection_init(COLL_MIN_SIZE);
         network->excesses          = calloc(n_vertices, sizeof(int));
         network->root              = vertex_p_make(n_vertices + 1);
-        network->source_neighbours = vertexcollection_init(ARRAY_MIN_SIZE);
-        network->sink_neighbours   = vertexcollection_init(ARRAY_MIN_SIZE);
-        network->source_edges      = edgecollection_init(ARRAY_MIN_SIZE);
-        network->sink_edges        = edgecollection_init(ARRAY_MIN_SIZE);
+        network->source_neighbours = vertexcollection_init(COLL_MIN_SIZE);
+        network->sink_neighbours   = vertexcollection_init(COLL_MIN_SIZE);
+        network->source_edges      = edgecollection_init_min();
+        network->sink_edges        = edgecollection_init_min();
     }
 
-    network->reverse_edges  = edgecollection_init(ARRAY_MIN_SIZE);
+    network->reverse_edges  = edgecollection_init_min();
     network->capacities     = calloc(n_edges, sizeof(unsigned int));
     network->flows          = calloc(n_edges, sizeof(int));
     network->inflows        = calloc(n_vertices + 1, sizeof(unsigned int));
@@ -159,7 +159,7 @@ Result parse(const char *filename, const NetworkPointer network)
                         third_token
                     );
                 update_capacity(network, table, edge, row);
-                unsigned int key = edge_p_hash(edge); 
+                unsigned int key = edge_hash(*edge); 
                 map_put(network->is_reverse, key, 0);
             }
         }

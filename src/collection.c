@@ -49,7 +49,7 @@ void collection_push(const CollectionPointer collection, void *element)
     if (collection->length == collection->capacity) {
         Collection expandedcollection;
         if (collection->length == 0) {
-            expandedcollection = collection_init(ARRAY_MIN_SIZE);
+            expandedcollection = collection_init(COLL_MIN_SIZE);
         } else {
             expandedcollection = collection_init(collection->capacity * 2);
         }

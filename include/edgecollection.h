@@ -3,40 +3,48 @@
 #define EDGE_COLLECTION_H
 
 #include "edge.h"
-#include "util.h"
 #include "vertexcollection.h"
 #include "map.h"
 
+// An edgecollection is a collection of edges, allowing duplicates.
+// Field members:   The underlying collection
+// Field indices:   a int -> int function. Maps an edge's unique hash-value to
+//                  the index of the edge in the collection.
 typedef struct edgecollection {
     CollectionPointer members;
     Map indices;
 } EdgeCollection, *EdgeCollectionPointer;
 
-// Returns a dummy edgecollection with it's collection set to NULL
+// Returns an empty edgecollection, no allocations.
 EdgeCollection edgecollection_empty();
 
-// Returns the edgecollection with its collection initialized, with an initial capacity of
-// size.
+// Returns the edgecollection with its internal fields initialized, and with the
+// specified starting length.
 EdgeCollection edgecollection_init(const size_t size);
 
-// Initializes an edgecollection using edgecollection_init and returns a pointer to it
-EdgeCollectionPointer edgecollection_p_init(const unsigned int nvertices);
-
-void edgecollection_reset(EdgeCollection edges);
+// Returns the edgecollection with its internal fields initialized, and with a
+// minimum starting length.
+EdgeCollection edgecollection_init_min();
 
 // Return the number of elements currently in this collection
 size_t edgecollection_length(const EdgeCollection edges);
 
 // Get the edge at the specified position
-EdgePointer edgecollection_get(const EdgeCollection edges, const unsigned int position);
+EdgePointer edgecollection_get(
+        const EdgeCollection edges,
+        const unsigned int position
+    );
 
 // Returns a reference to the edge in edges that has the same content as edge,
 // NULL otherwise
-EdgePointer edgecollection_get_reference(const EdgeCollection edges, const Edge edge);
+EdgePointer edgecollection_get_reference(
+        const EdgeCollection edges,
+        const Edge edge
+    );
 
+// The index of the edge in the edgecollection that equals the specified edge.
+// If no such edge exists, then -1.
 int edgecollection_index_of(const EdgeCollection edges, const Edge edge);
-
-size_t edgecollection_vertex_count(const EdgeCollection edges);
 
 // The vertices of this edgecollection
 VertexCollection edgecollection_vertices(const EdgeCollection edges);
@@ -49,26 +57,6 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge);
 /* void edgecollection_remove(EdgeCollection edges, const EdgePointer edge); */
 void edgecollection_remove(EdgeCollectionPointer edges, const EdgePointer edge);
 
-// Returns true if the edgecollection has no initialized elements, false otherwise.
-bool edgecollection_is_empty(const EdgeCollection edges);
-
-bool edgecollection_equals(
-        const EdgeCollection edges_a,
-        const EdgeCollection edges_b
-    );
-
-// Returns true if the edgecollection contains the specified edge, false otherwise
-bool edgecollection_is_super(
-        const EdgeCollection super,
-        const EdgeCollection sub
-    );
-
-// Returns true if all edges in sub are also in super
-bool edgecollection_is_sub(
-        const EdgeCollection sub,
-        const EdgeCollection super
-    );
-
 // Returns true if the edgecollection contains every edge in the list of edges
 // specified by edges, false otherwise
 bool edgecollection_contains_edge(
@@ -76,59 +64,10 @@ bool edgecollection_contains_edge(
         const EdgePointer edge
     );
 
-// Returns true if the edgecollection contains the specified vertex, false otherwise
-bool edgecollection_contains_vertex(
-        const EdgeCollection edges,
-        const VertexPointer vertex
-    );
-
-// Is this edgecollection a matching?
-bool is_matching(const EdgeCollection edges);
-
-// Return a pointer to an edge in edgecollection that covers the given vertex, if such 
-// and edge exists.
-Result edgecollection_covered_by(
-        const EdgeCollection edges,
-        const VertexPointer vertex,
-        EdgePointer *edge
-    );
-
-// Push all elements of edges_b into edges_a
-void edgecollection_link(
-        const EdgeCollection edges_a,
-        const EdgeCollection edges_b
-    );
-
-// Attempts to compute the complement of two edgecollections. On success, the complement
-// of edges_a and edges_b is stored in Ret and SUCCESS is returned.
-// Otherwise, FAIL is returned.
-Result edgecollection_complement(
-        const EdgeCollection edges_a,
-        const EdgeCollection edges_b,
-        EdgeCollectionPointer ret
-    );
-
-// Attempts to compute the union of two edgecollections. On success, the union
-// of edges_a and edges_b is stored in Ret and SUCCESS is returned.
-// Otherwise, FAIL is returned.
-EdgeCollection edgecollection_union(
-        const EdgeCollection edges_a,
-        const EdgeCollection edges_b
-    );
-
-// Attempts to compute the symmetric difference of two edgecollections. On success, the symmetric difference
-// of edges_a and edges_b is stored in Ret and SUCCESS is returned.
-// Otherwise, FAIL is returned.
-Result edgecollection_symmetric_difference(
-        const EdgeCollection edges_a,
-        const EdgeCollection edges_b,
-        EdgeCollectionPointer ret
-    );
-
-// Print the collection tos stdout
+// Print the collection to stdout
 void edgecollection_print(const EdgeCollection edges);
 
 // Free the structure
-Result edgecollection_destroy(EdgeCollection edges);
+void edgecollection_destroy(EdgeCollection edges);
 
 #endif

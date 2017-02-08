@@ -19,13 +19,6 @@ Graph graph_init();
 // a pointer to this structure
 Graph graph_make(const VertexCollection vertexcollection, const EdgeCollection edgecollection);
 
-void graph_reset(Graph graph);
-
-void graph_out_edges_from(
-        const Graph graph, 
-        const Vertex vertex,
-        EdgeCollectionPointer ret);
-
 // Frees the structure
 Result graph_destroy(Graph graph);
 

@@ -4,7 +4,7 @@
 #include "util.h"
 #include "map.h"
 
-#define ARRAY_MIN_SIZE 4
+#define COLL_MIN_SIZE 4
 
 // A collection of generic pointers, allows duplicates
 // Field head:      The actual references to the element

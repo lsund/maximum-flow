@@ -76,7 +76,7 @@ unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer ed
 
 bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge)
 {
-    unsigned int key = edge_p_hash(edge);
+    unsigned int key = edge_hash(*edge);
     return map_get(network->is_reverse, key) == 1;
 }
 

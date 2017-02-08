@@ -7,7 +7,7 @@ char *utest_collection_remove()
     VertexPointer t1 = vertex_p_make(1);
     VertexPointer t2 = vertex_p_make(2);
     VertexPointer t3 = vertex_p_make(3);
-    CollectionPointer collection = collection_p_init(ARRAY_MIN_SIZE);
+    CollectionPointer collection = collection_p_init(COLL_MIN_SIZE);
     collection_push(collection, t1);
     collection_push(collection, t2);
     collection_push(collection, t3);

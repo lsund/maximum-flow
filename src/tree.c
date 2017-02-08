@@ -32,7 +32,7 @@ VertexPointer tree_find_root(const VertexPointer vertex)
 
 VertexCollection tree_path_to_root(const VertexPointer vertex)
 {
-    VertexCollection ret = vertexcollection_init(ARRAY_MIN_SIZE);
+    VertexCollection ret = vertexcollection_init(COLL_MIN_SIZE);
     vertexcollection_push(ret, vertex);
     if (!vertex->parent) {
         return ret;

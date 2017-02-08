@@ -7,7 +7,7 @@ static EdgeCollection vertexcollection_to_edgecollection(
     )
 {
     size_t i;
-    EdgeCollection epath = edgecollection_init(ARRAY_MIN_SIZE);
+    EdgeCollection epath = edgecollection_init_min();
     for (i = 0; i < vertexcollection_length(vertices) - 1; i++) {
         VertexPointer first = vertexcollection_get(vertices, i);
         VertexPointer second = vertexcollection_get(vertices, i + 1);
