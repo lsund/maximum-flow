@@ -40,7 +40,7 @@ static Label find_min(const NetworkPointer network, const Vertex vertex)
 
 static void push(const NetworkPointer network, const EdgePointer edge, const Vertex vertex)
 {
-    unsigned int exflow = networkvertex_exflow(network, vertex);
+    unsigned int exflow = networkvertex_exflow_pr(network, vertex);
     unsigned int capacity = networkedge_residual_capacity(network, edge);
     unsigned int gamma = smaller(exflow, capacity);
     networkedge_augment(network, edge, gamma);

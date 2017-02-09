@@ -20,32 +20,32 @@ unsigned int networkvertex_inflow(
     }
 }
 
-int networkvertex_exflow(const NetworkPointer network, const Vertex vertex)
+int networkvertex_exflow_pr(const NetworkPointer network, const Vertex vertex)
 {
-    if (network->type == PR) {
-        unsigned int inflow, outflow;
-        inflow = *(network->inflows + vertex.label);
-        outflow = *(network->outflows + vertex.label);
-        return inflow - outflow;
-    } else {
-        VertexPointer vertex_p, branch;
-        vertex_p   = vertexcollection_get_reference(
-                        network->graph.vertices,
-                        vertex
-                    );
-        branch     = tree_find_branch(vertex_p);
-        return *(network->excesses + branch->label);
-    }
+    unsigned int inflow, outflow;
+    inflow = *(network->inflows + vertex.label);
+    outflow = *(network->outflows + vertex.label);
+    return inflow - outflow;
 }
 
-int networkvertex_is_strong(const NetworkPointer network, const Vertex vertex)
+int networkvertex_exflow_ps(const NetworkPointer network, const VertexPointer vertex)
 {
-    return networkvertex_exflow(network, vertex) > 0;
+    VertexPointer branch = tree_find_branch(vertex);
+    return *(network->excesses + branch->label);
+}
+
+int networkvertex_is_strong(const NetworkPointer network, const Vertex vertex, const VertexPointer vertex_p)
+{
+    if (network->type == PR) {
+        return networkvertex_exflow_pr(network, vertex) > 0;
+    } else {
+        return networkvertex_exflow_ps(network, vertex_p) > 0;
+    }
 }
 
 
 bool networkvertex_is_active(const NetworkPointer network, const Vertex vertex)
 {
-    return networkvertex_exflow(network, vertex) > 0;
+    return networkvertex_exflow_pr(network, vertex) > 0;
 }
 

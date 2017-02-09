@@ -16,6 +16,7 @@
 typedef struct edge {
     Vertex first;
     Vertex second;
+    VertexPointer first_ref, second_ref;
 } Edge, *EdgePointer;
 
 // Constructs an edge from two vertices
@@ -23,6 +24,7 @@ Edge edge_make_vertices(const Vertex first, const Vertex second);
 
 // Same as edge_make_vertices, but returns a pointer to an edge
 EdgePointer edge_p_make_vertices(const Vertex first, const Vertex second);
+EdgePointer edge_p_make_p_vertices(const VertexPointer first, const VertexPointer second);
 
 // Constructs an edge from two vertex labels
 Edge edge_make_label(const Label first_label, const Label second_label); 

@@ -37,6 +37,14 @@ EdgePointer edge_p_make_vertices(const Vertex first, const Vertex second)
     return ret;
 }
 
+EdgePointer edge_p_make_p_vertices(const VertexPointer first, const VertexPointer second)
+{
+    EdgePointer ret = edge_p_make_vertices(*first, *second);
+    ret->first_ref = first;
+    ret->second_ref = second;
+    return ret;
+}
+
 Edge edge_swapped(const Edge edge)
 {
     return edge_make_vertices(edge.second, edge.first);

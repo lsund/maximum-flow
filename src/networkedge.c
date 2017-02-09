@@ -183,16 +183,16 @@ void networkedge_add_flow(
     flow = networkedge_flow(network, edge);
     if (network->type == PR) {
         unsigned int first_exflow_before, second_exflow_before;
-        first_exflow_before = networkvertex_exflow(network, edge->first);
-        second_exflow_before = networkvertex_exflow(network, edge->second);
+        first_exflow_before = networkvertex_exflow_pr(network, edge->first);
+        second_exflow_before = networkvertex_exflow_pr(network, edge->second);
 
         *(network->flows + index) = flow + added_flow;
         *(network->inflows + edge->second.label) += added_flow;
         *(network->outflows + edge->first.label) += added_flow;
 
         unsigned int first_exflow, second_exflow;
-        first_exflow = networkvertex_exflow(network, edge->first);
-        second_exflow = networkvertex_exflow(network, edge->second);
+        first_exflow = networkvertex_exflow_pr(network, edge->first);
+        second_exflow = networkvertex_exflow_pr(network, edge->second);
         activate_vertices(
                 network,
                 edge,

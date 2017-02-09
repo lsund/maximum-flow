@@ -28,34 +28,42 @@ static EdgeCollection vertexcollection_to_edgecollection(
     return epath;
 }
 
-void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices, const unsigned int n_edges)
+void network_init(
+        NetworkPointer network,
+        NetworkType type,
+        const unsigned int n_vertices,
+        const unsigned int n_edges
+    )
 {
-    network->type                  = type;
-    network->graph                 = graph_init();
-    network->reverse_edges         = edgecollection_init_min();
-    network->is_reverse            = map_create();
-    network->source                = NULL;
-    network->sink                  = NULL;
-    network->capacities            = NULL;
-    network->flows                 = NULL;
-    network->residual_edges        = NULL;
+    network->type                      = type;
+    network->graph                     = graph_init();
+    network->reverse_edges             = edgecollection_init_min();
+    network->is_reverse                = map_create();
+    network->capacities                = calloc(n_edges, sizeof(unsigned int));
+    network->source                    = NULL;
+    network->sink                      = NULL;
+    network->flows                     = calloc(n_edges, sizeof(int));
+    network->residual_edges            = malloc((n_vertices + 1) * sizeof(EdgeCollection));
+    size_t i;
+    for (i = 1; i <= n_vertices; i++) {
+        *(network->residual_edges + i) = edgecollection_init(n_edges);
+    }
 
     if (type == PR) {
-        network->active_vertices   = vertexcollection_empty();
-        network->distance_labels   = NULL;
-        network->inflows           = NULL;
-        network->outflows          = NULL;
+        network->distance_labels       = calloc(n_vertices, sizeof(Label));
+        network->active_vertices       = vertexcollection_init(COLL_MIN_SIZE);
+        network->inflows               = calloc(n_vertices + 1, sizeof(unsigned int));
+        network->outflows              = calloc(n_vertices + 1, sizeof(unsigned int));
     } else {
-        network->root              = NULL;
-        network->excesses          = NULL;
-        network->strong_vertices   = vertexcollection_init_min();
-        network->weak_vertices     = vertexcollection_init_min();
-        network->source_neighbours = vertexcollection_init_min();
-        network->sink_neighbours   = vertexcollection_init_min();
-        network->source_edges      = edgecollection_init_min();
-        network->sink_edges        = edgecollection_init_min();
+        network->excesses              = calloc(n_vertices, sizeof(int));
+        network->root                  = vertex_p_make(n_vertices + 1);
+        network->strong_vertices       = vertexcollection_init_min();
+        network->weak_vertices         = vertexcollection_init_min();
+        network->source_neighbours     = vertexcollection_init_min();
+        network->sink_neighbours       = vertexcollection_init_min();
+        network->source_edges          = edgecollection_init_min();
+        network->sink_edges            = edgecollection_init_min();
     }
-    
 }
 
 EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex)

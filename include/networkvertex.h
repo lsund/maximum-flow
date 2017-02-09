@@ -19,9 +19,14 @@ unsigned int networkvertex_inflow(
         const Vertex vertex
     );
 
-int networkvertex_exflow(
+int networkvertex_exflow_pr(
         const NetworkPointer network, 
         const Vertex vertex
+    );
+
+int networkvertex_exflow_ps(
+        const NetworkPointer network, 
+        const VertexPointer vertex
     );
 
 void networkvertex_set_flow(
@@ -41,7 +46,8 @@ int networkvertex_excess(
 
 int networkvertex_is_strong(
         const NetworkPointer network, 
-        const Vertex vertex
+        const Vertex vertex,
+        const VertexPointer vertex_p
     );
 
 #endif

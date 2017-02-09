@@ -29,7 +29,7 @@ static EdgePointer parse_edge(
             label_second
         );
     if (first_vertex && second_vertex) {
-        ret = edge_p_make_vertices(*first_vertex, *second_vertex);
+        ret = edge_p_make_p_vertices(first_vertex, second_vertex);
     } else {
         ret = NULL;
         runtime_error("Parse edges: vertex null pointer");
@@ -85,8 +85,9 @@ static void add_reverse_edges(const NetworkPointer network) {
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer p_edge = edgecollection_get(network->graph.edges, i);
-        Edge reverse_edge_val = edge_swapped(*p_edge);
-        EdgePointer reverse_edge = edge_p_make_edge(reverse_edge_val);
+        VertexPointer rev_first = p_edge->second_ref;
+        VertexPointer rev_second = p_edge->first_ref;
+        EdgePointer reverse_edge = edge_p_make_p_vertices(rev_first, rev_second);
         edgecollection_push(network->reverse_edges, reverse_edge);
         unsigned int key = edge_hash(*reverse_edge); 
         map_put(network->is_reverse, key, 1);
@@ -111,24 +112,6 @@ NetworkPointer parse(const char *filename, const NetworkType type)
     network_init(network, type, n_vertices, n_edges);
 
     parse_vertices(network->graph.vertices, n_vertices);
-
-    size_t i;
-    if (network->type == PR) {
-        network->distance_labels = calloc(n_vertices, sizeof(Label));
-        network->active_vertices = vertexcollection_init(COLL_MIN_SIZE);
-    } else {
-        network->excesses          = calloc(n_vertices, sizeof(int));
-        network->root              = vertex_p_make(n_vertices + 1);
-    }
-
-    network->capacities     = calloc(n_edges, sizeof(unsigned int));
-    network->flows          = calloc(n_edges, sizeof(int));
-    network->inflows        = calloc(n_vertices + 1, sizeof(unsigned int));
-    network->outflows       = calloc(n_vertices + 1, sizeof(unsigned int));
-    network->residual_edges = malloc((n_vertices + 1) * sizeof(EdgeCollection));
-    for (i = 1; i <= n_vertices; i++) {
-        *(network->residual_edges + i) = edgecollection_init(n_edges);
-    }
 
     unsigned int row;
     for (row = 0; row < table->populated_rows; row++) {
