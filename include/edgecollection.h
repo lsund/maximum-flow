@@ -55,13 +55,13 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge);
 
 // Removes the element from the edgecollection
 /* void edgecollection_remove(EdgeCollection edges, const EdgePointer edge); */
-void edgecollection_remove(EdgeCollectionPointer edges, const EdgePointer edge);
+void edgecollection_remove(EdgeCollectionPointer edges, const Edge edge);
 
 // Returns true if the edgecollection contains every edge in the list of edges
 // specified by edges, false otherwise
 bool edgecollection_contains_edge(
         const EdgeCollection edges,
-        const EdgePointer edge
+        const Edge edge
     );
 
 // Print the collection to stdout

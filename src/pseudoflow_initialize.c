@@ -4,14 +4,14 @@
 static void initialize_source_sink_vertex(
         const NetworkPointer network, 
         const VertexPointer vertex,
-        const EdgePointer edge,
+        const Edge edge,
         const VertexType type
     )
 {
     unsigned int capacity;
     capacity = networkedge_capacity(network, edge);
     networkedge_augment(network, edge, capacity);
-    if (type == STRONG) {
+    if (type == SOURCE) {
         *(network->excesses + vertex->label) = capacity;
     } else {
         *(network->excesses + vertex->label) = -capacity;
@@ -21,11 +21,11 @@ static void initialize_source_sink_vertex(
 static void initialize_vertex(
         const NetworkPointer network, 
         const VertexPointer vertex,
-        const EdgePointer edge,
+        const Edge edge,
         const VertexType type
     )
 {
-    if (edge) {
+    if (type == SOURCE || type == SINK) {
         initialize_source_sink_vertex(network, vertex, edge, type);
     } else {
         *(network->excesses + vertex->label) = 0;
@@ -53,12 +53,12 @@ void pseudoflow_initialize(const NetworkPointer network)
             EdgePointer edge;
             if (is_source_vertex) {
                 edge = networkedge_get_source_edge(network, vertex);
-                initialize_vertex(network, vertex, edge, STRONG);
+                initialize_vertex(network, vertex, *edge, SOURCE);
             } else if (is_sink_vertex) {
                 edge = networkedge_get_sink_edge(network, vertex);
-                initialize_vertex(network, vertex, edge, WEAK);
+                initialize_vertex(network, vertex, *edge, SINK);
             } else {
-                initialize_vertex(network, vertex, NULL, WEAK);
+                initialize_vertex(network, vertex, edge_make_label(-1, -1), NONE);
             }
         }
     }

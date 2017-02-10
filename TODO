@@ -1,42 +1,14 @@
 
 SPEEDING UP THE ALGORITHM:
 // 
-// 25x25 3.6s ps
+// 25x25 2.4s ps
 
-if the edge held references to its vertices,
-then the algorithm would speed up               []
+eliminate uneccesary pointers
+to edges for example
+edges                                           [done]
 
-have to go through each module and check
-* are there functions that exist that does 
-  not make sense?
-* are there too long lines?
-* Is there missing/outdated documentation?
-
-collection.c                                    [done]
-cpp                                             [done]
-edge.c                                          [done]
-edgecollection.c                                [done]
-graph.c                                         [done]
-network.c                                       []
-networkedge.c                                   []
-networkvertex.c                                 []
-parser.c                                        []
-pseudoflow.c                                    []
-pseudoflow_network.c                            []
-push_relabel.c                                  []
-push_relabel_network.                           []
-spit.c                                          []
-tokenizer.c                                     []
-tokentable.c                                    []
-tree.c                                          []
-treevertex.c                                    []
-util.c                                          []
-vertex.c                                        []
-vertexcollection.c                              []
-Makefile                                        []
-
-parser should not initialize the network,
-it should be done in network.c                  [done]
+analyze if the edges need pointers to 
+vertices / values / both                        []
 
 merger_edge scans all edges each iteration.
 Faster way to do this?                          []
@@ -45,6 +17,41 @@ the nodes are selected
 Checking for the resulting flow              
 (storing the neighbours of sink)                []
 excess storage
+
+have to go through each module and check
+* are there functions that exist that does 
+  not make sense?
+* are there too long lines?
+* Is there missing/outdated documentation?
+
+vertex.c                                        []
+util.c                                          []
+parser.c                                        []
+network.c                                       []
+networkedge.c                                   []
+networkvertex.c                                 []
+pseudoflow.c                                    []
+pseudoflow_network.c                            []
+push_relabel.c                                  []
+push_relabel_network.                           []
+tokenizer.c                                     []
+tokentable.c                                    []
+tree.c                                          []
+treevertex.c                                    []
+vertexcollection.c                              []
+Makefile                                        []
+spit.c                                          []
+collection.c                                    [done]
+cpp                                             [done]
+edge.c                                          [done]
+edgecollection.c                                [done]
+graph.c                                         [done]
+
+parser should not initialize the network,
+it should be done in network.c                  [done]
+
+if the edge held references to its vertices,
+then the algorithm would speed up               [done]
 
 do not explicitly need to maintain 
 strong and weak vertexsets. The strong 

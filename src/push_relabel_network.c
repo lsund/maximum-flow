@@ -14,29 +14,29 @@ Result networkvertex_active(const NetworkPointer network, VertexPointer vertex)
 
 void activate_vertices(
         const NetworkPointer network, 
-        const EdgePointer edge, 
+        const Edge edge, 
         const unsigned int first_exflow_before,
         const unsigned int second_exflow_before,
         const unsigned int first_exflow,
         const unsigned int second_exflow)
 {
     if (first_exflow_before > 0 && first_exflow == 0) {
-        vertexcollection_remove(&network->active_vertices, edge->first);
+        vertexcollection_remove(&network->active_vertices, edge.first);
     }
     if (second_exflow_before > 0 && second_exflow == 0) {
-        vertexcollection_remove(&network->active_vertices, edge->second);
+        vertexcollection_remove(&network->active_vertices, edge.second);
     }
     VertexCollection vertices= network->graph.vertices;
     VertexPointer vertex;
     if (first_exflow_before == 0 && first_exflow > 0) {
-        if (edge->first.label != network->source->label) {
-            vertex = vertexcollection_get_reference(vertices, edge->first);
+        if (edge.first.label != network->source->label) {
+            vertex = vertexcollection_get_reference(vertices, edge.first);
             vertexcollection_push(network->active_vertices, vertex);
         }
     }
     if (second_exflow_before == 0 && second_exflow > 0) {
-        if (edge->second.label != network->sink->label) {
-            vertex = vertexcollection_get_reference(vertices, edge->second);
+        if (edge.second.label != network->sink->label) {
+            vertex = vertexcollection_get_reference(vertices, edge.second);
             vertexcollection_push(network->active_vertices, vertex);
         }
     }

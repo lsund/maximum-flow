@@ -42,13 +42,13 @@ EdgePointer edge_p_make_edge(const Edge edge);
 Edge edge_swapped(const Edge edge);
 
 // Returns true if the edge contains the given vertex, false otherwise
-bool edge_incident_with(const EdgePointer edge, const Vertex vertex);
+bool edge_incident_with(const Edge edge, const Vertex vertex);
 
 // Returns true if the two edges are considered equal, false otherwise
-bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b);
+bool edge_equals(const Edge edge_a, const Edge edge_b);
 
 // Returns true if edge_b equals the reverse edge of b
-bool edge_equals_reverse(const EdgePointer edge_a, const EdgePointer edge_b);
+bool edge_equals_reverse(const Edge edge_a, const Edge edge_b);
 
 // Ruterns an unique integer for each unique edge
 unsigned int edge_hash(const Edge edge);

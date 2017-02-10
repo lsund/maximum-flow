@@ -11,8 +11,9 @@ void networkvertex_add_neighbour(
 
 unsigned int networkedge_flow(
         const NetworkPointer network, 
-        const EdgePointer edge
+        const Edge edge
     );
+\
 
 unsigned int networkvertex_inflow(
         const NetworkPointer network, 

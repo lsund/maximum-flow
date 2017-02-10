@@ -57,10 +57,10 @@ char *utest_edge_equals()
     Edge e = edge_make_label(8, 7);
     Edge e2 = edge_make_label(8, 7);
     Edge e3 = edge_swapped(e2);
-    mu_assert("should equal", edge_equals(&e, &e2));;
-    mu_assert("should not equal", !edge_equals(&e, &e3));;
+    mu_assert("should equal", edge_equals(e, e2));;
+    mu_assert("should not equal", !edge_equals(e, e3));;
     e.first = vertex_make(1234);
-    mu_assert("should not equal", !edge_equals(&e, &e2));;
+    mu_assert("should not equal", !edge_equals(e, e2));;
     return NULL;
 }
 
@@ -70,9 +70,9 @@ char *utest_edge_incident_with()
     Vertex y = vertex_make(7);
     Vertex z = vertex_make(6);
     EdgePointer e = edge_p_make_label(8, 7);
-    mu_assert("should be", edge_incident_with(e, x));
-    mu_assert("should be", edge_incident_with(e, y));
-    mu_assert("should not be", !edge_incident_with(e, z));
+    mu_assert("should be", edge_incident_with(*e, x));
+    mu_assert("should be", edge_incident_with(*e, y));
+    mu_assert("should not be", !edge_incident_with(*e, z));
     return NULL;
 }
 

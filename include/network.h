@@ -30,9 +30,9 @@ EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const 
 
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);
 
-unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
+unsigned int networkedge_flow(const NetworkPointer network, const Edge edge);
 
-unsigned int networkedge_residual_capacity(const NetworkPointer network, const EdgePointer edge);
+unsigned int networkedge_residual_capacity(const NetworkPointer network, const Edge edge);
 
 void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices, const unsigned int n_edges);
 

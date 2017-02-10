@@ -9,10 +9,10 @@ static void push_relabel_initialize(NetworkPointer network)
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         edge = edgecollection_get(network->graph.edges, i);
         if (vertex_equals(edge->first, *network->source)) {
-            capacity = networkedge_capacity(network, edge);
-            networkedge_augment(network, edge, capacity);
+            capacity = networkedge_capacity(network, *edge);
+            networkedge_augment(network, *edge, capacity);
         } else {
-            networkedge_set_flow(network, edge, 0);
+            networkedge_set_flow(network, *edge, 0);
             edgecollection_push(*(network->residual_edges + edge->first.label), edge); 
         }
     }
@@ -38,7 +38,7 @@ static Label find_min(const NetworkPointer network, const Vertex vertex)
     return min;
 }
 
-static void push(const NetworkPointer network, const EdgePointer edge, const Vertex vertex)
+static void push(const NetworkPointer network, const Edge edge, const Vertex vertex)
 {
     unsigned int exflow = networkvertex_exflow_pr(network, vertex);
     unsigned int capacity = networkedge_residual_capacity(network, edge);
@@ -62,7 +62,7 @@ void push_relabel(NetworkPointer network)
         if (!admissable) {
             relabel(network, active);
         } else {
-            push(network, admissable, active);
+            push(network, *admissable, active);
         }
         has_active = networkvertex_active(network, &active);
     }

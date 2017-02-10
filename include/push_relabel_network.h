@@ -9,7 +9,7 @@ Result networkvertex_active(
 
 void activate_vertices(
         const NetworkPointer network, 
-        const EdgePointer edge, 
+        const Edge edge, 
         const unsigned int first_exflow_before,
         const unsigned int second_exflow_before,
         const unsigned int first_exflow,

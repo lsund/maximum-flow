@@ -50,26 +50,23 @@ Edge edge_swapped(const Edge edge)
     return edge_make_vertices(edge.second, edge.first);
 }
 
-bool edge_equals(const EdgePointer edge_a, const EdgePointer edge_b)
+bool edge_equals(const Edge edge_a, const Edge edge_b)
 {
-    if (!edge_a || !edge_b) {
-        return edge_a == edge_b;
-    }
-    bool first_equals  = vertex_equals(edge_a->first, edge_b->first);
-    bool second_equals = vertex_equals(edge_a->second, edge_b->second);
+    bool first_equals  = vertex_equals(edge_a.first, edge_b.first);
+    bool second_equals = vertex_equals(edge_a.second, edge_b.second);
     return first_equals && second_equals;
 }
 
-bool edge_equals_reverse(const EdgePointer edge_a, const EdgePointer edge_b)
+bool edge_equals_reverse(const Edge edge_a, const Edge edge_b)
 {
-    Edge reverse_b = edge_swapped(*edge_b);
-    return edge_equals(edge_a, &reverse_b); 
+    Edge reverse_b = edge_swapped(edge_b);
+    return edge_equals(edge_a, reverse_b); 
 }
 
-bool edge_incident_with(const EdgePointer edge, const Vertex vertex)
+bool edge_incident_with(const Edge edge, const Vertex vertex)
 {
-    bool with_first  = vertex_equals(edge->first, vertex);
-    bool with_second = vertex_equals(edge->second, vertex); 
+    bool with_first  = vertex_equals(edge.first, vertex);
+    bool with_second = vertex_equals(edge.second, vertex); 
     return with_first || with_second;
 }
 

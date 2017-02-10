@@ -24,26 +24,26 @@ char *utest_edgecollection_remove()
     edgecollection_push(edgecollection, a);
     edgecollection_push(edgecollection, b);
     edgecollection_push(edgecollection, c);
-    edgecollection_remove(&edgecollection, b);
+    edgecollection_remove(&edgecollection, *b);
 
-    mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
-    mu_assert("should not have b", !edgecollection_contains_edge(edgecollection, b));
-    mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
-    edgecollection_remove(&edgecollection, c);
-    mu_assert("should not have c", !edgecollection_contains_edge(edgecollection, c));
-    mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
-    edgecollection_remove(&edgecollection, a);
-    mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, a));
+    mu_assert("should have a", edgecollection_contains_edge(edgecollection, *a));
+    mu_assert("should not have b", !edgecollection_contains_edge(edgecollection, *b));
+    mu_assert("should have c", edgecollection_contains_edge(edgecollection, *c));
+    edgecollection_remove(&edgecollection, *c);
+    mu_assert("should not have c", !edgecollection_contains_edge(edgecollection, *c));
+    mu_assert("should have a", edgecollection_contains_edge(edgecollection, *a));
+    edgecollection_remove(&edgecollection, *a);
+    mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, *a));
     edgecollection_push(edgecollection, a);
     edgecollection_push(edgecollection, b);
     edgecollection_push(edgecollection, c);
-    mu_assert("should have a", edgecollection_contains_edge(edgecollection, a));
-    mu_assert("should have b", edgecollection_contains_edge(edgecollection, b));
-    mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
-    edgecollection_remove(&edgecollection, a);
-    mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, a));
-    mu_assert("should have b", edgecollection_contains_edge(edgecollection, b));
-    mu_assert("should have c", edgecollection_contains_edge(edgecollection, c));
+    mu_assert("should have a", edgecollection_contains_edge(edgecollection, *a));
+    mu_assert("should have b", edgecollection_contains_edge(edgecollection, *b));
+    mu_assert("should have c", edgecollection_contains_edge(edgecollection, *c));
+    edgecollection_remove(&edgecollection, *a);
+    mu_assert("should not have a", !edgecollection_contains_edge(edgecollection, *a));
+    mu_assert("should have b", edgecollection_contains_edge(edgecollection, *b));
+    mu_assert("should have c", edgecollection_contains_edge(edgecollection, *c));
 
     return NULL;
 }
@@ -120,12 +120,12 @@ char *utest_edgecollection_contains_edge()
     edgecollection_push(edgecollection, a);
     edgecollection_push(edgecollection, b);
     edgecollection_push(edgecollection, c);
-    mu_assert("1 should have this edge", edgecollection_contains_edge(edgecollection, a));
-    mu_assert("2 should have this edge", edgecollection_contains_edge(edgecollection, b));
-    mu_assert("3 should have this edge", edgecollection_contains_edge(edgecollection, c));
+    mu_assert("1 should have this edge", edgecollection_contains_edge(edgecollection, *a));
+    mu_assert("2 should have this edge", edgecollection_contains_edge(edgecollection, *b));
+    mu_assert("3 should have this edge", edgecollection_contains_edge(edgecollection, *c));
     mu_assert("4 should not be able to add this edge", edgecollection_push(edgecollection, d) == SUCCESS);
-    mu_assert("3 should have this edge", !edgecollection_contains_edge(edgecollection, edge_p_make_label(0, 5)));
-    mu_assert("3 should have this edge", edgecollection_contains_edge(edgecollection, edge_p_make_label(0, 3)));
+    mu_assert("3 should have this edge", !edgecollection_contains_edge(edgecollection, edge_make_label(0, 5)));
+    mu_assert("3 should have this edge", edgecollection_contains_edge(edgecollection, edge_make_label(0, 3)));
     edgecollection_destroy(edgecollection);
     return NULL;
 }

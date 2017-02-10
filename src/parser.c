@@ -78,7 +78,7 @@ static void update_capacity(
 {
     char *fourth_token = tokentable_get(table, row, 3);
     unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10);
-    networkedge_set_capacity(network, edge, capacity);
+    networkedge_set_capacity(network, *edge, capacity);
 }
 
 static void add_reverse_edges(const NetworkPointer network) {
