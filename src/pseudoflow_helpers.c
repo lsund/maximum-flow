@@ -3,13 +3,13 @@
 
 static void split(
         const NetworkPointer network,
-        const Edge edge
+        const EdgePointer edge
     ) 
 {
     VertexPointer vertex;
     vertex = vertexcollection_get_reference(
                     network->graph.vertices,
-                    edge.first
+                    edge->first
                 );
     tree_merge(network->root, vertex);
 }
@@ -27,7 +27,7 @@ static void merge(
 
 static unsigned int augment(
         const NetworkPointer network,
-        const Edge edge,
+        const EdgePointer edge,
         const unsigned int amount
     )
 {
@@ -38,14 +38,14 @@ static unsigned int augment(
     } else {
         increased_flow = amount;
     }
-    *(network->excesses + edge.first.label) -= increased_flow;
-    *(network->excesses + edge.second.label) += increased_flow;
+    *(network->excesses + edge->first.label) -= increased_flow;
+    *(network->excesses + edge->second.label) += increased_flow;
     return amount;
 }
 
 static unsigned int push_and_split(
         const NetworkPointer network,
-        const Edge edge,
+        const EdgePointer edge,
         const unsigned int residual_capacity
     )
 {
@@ -74,7 +74,7 @@ VertexPointer update_tree(
 
 unsigned int push_flow(
         const NetworkPointer network,
-        const Edge edge,
+        const EdgePointer edge,
         const unsigned int amount
     )
 {

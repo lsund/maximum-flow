@@ -9,6 +9,6 @@ VertexPointer update_tree(
 
 unsigned int push_flow(
         const NetworkPointer network,
-        const Edge edge,
+        const EdgePointer edge,
         const unsigned int amount
     );

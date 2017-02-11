@@ -16,13 +16,13 @@ char *utest_networkedge_is_reverse()
     NetworkPointer network;
     network = parse(TEST_GRAPH, PR);
     mu_assert("should have 24 edges", edgecollection_length(network->graph.edges) == 24);
-    mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, *edge2)); 
+    mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, edge2)); 
     networkvertex_set_distance_label(network, vertex_make(1), 1);
     networkvertex_set_distance_label(network, vertex_make(2), 0);
-    mu_assert("should be reverse", networkedge_is_reverse(network, *edger));
-    mu_assert("should be reverse", networkedge_is_reverse(network, *edge2r));
-    mu_assert("edge should not be reverse", !networkedge_is_reverse(network, *edge));
-    mu_assert("edge2 should not be reverse", !networkedge_is_reverse(network, *edge2));
+    mu_assert("should be reverse", networkedge_is_reverse(network, edger));
+    mu_assert("should be reverse", networkedge_is_reverse(network, edge2r));
+    mu_assert("edge should not be reverse", !networkedge_is_reverse(network, edge));
+    mu_assert("edge2 should not be reverse", !networkedge_is_reverse(network, edge2));
     return NULL;
 }
 

@@ -11,7 +11,7 @@ unsigned int networkvertex_inflow(
         for (i = 0, sum = 0; i < edgecollection_length(edges); i++) {
             EdgePointer edge = edgecollection_get(edges, i);
             if (vertex_equals(edge->second, vertex)) {
-                sum += networkedge_flow(network, *edge);
+                sum += networkedge_flow(network, edge);
             }
         }
         return sum;

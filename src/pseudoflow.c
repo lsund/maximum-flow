@@ -29,7 +29,7 @@ void pseudoflow(const NetworkPointer network)
         size_t i;
         for (i = 0; i < edgecollection_length(path); i++) {
             EdgePointer edge = edgecollection_get(path, i);
-            delta = push_flow(network, *edge, delta);
+            delta = push_flow(network, edge, delta);
         }
 
         edgecollection_destroy(path);

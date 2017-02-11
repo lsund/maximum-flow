@@ -24,42 +24,42 @@ int networkvertex_exflow_ps(const NetworkPointer network, const VertexPointer ve
 
 unsigned int networkedge_capacity(
         const NetworkPointer network, 
-        const Edge edge
+        const EdgePointer edge
     );
 
 unsigned int networkedge_residual_capacity(
         const NetworkPointer network, 
-        const Edge edge
+        const EdgePointer edge
     );
 
-unsigned int networkedge_flow(const NetworkPointer network, const Edge edge);
+unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
 
-bool networkedge_is_reverse(const NetworkPointer network, const Edge edge);
+bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge);
 
-void networkedge_augment(const NetworkPointer network, const Edge edge, const unsigned int added_flow);
+void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow);
 
 void networkedge_set_capacity(
         const NetworkPointer network, 
-        const Edge edge, 
+        const EdgePointer edge, 
         unsigned int capacity
     );
 
 void networkedge_fill_flow(
         const NetworkPointer network,
-        const Edge edge,
+        const EdgePointer edge,
         const unsigned int capacity,
         const EdgeType type
     );
 
 void networkedge_set_flow(
         const NetworkPointer network, 
-        const Edge edge, 
+        const EdgePointer edge, 
         int flow
     );
 
 void networkedge_add_flow(
         const NetworkPointer network,
-        const Edge edge, 
+        const EdgePointer edge, 
         int added_flow
     );
 

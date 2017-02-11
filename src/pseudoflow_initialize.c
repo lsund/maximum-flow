@@ -4,7 +4,7 @@
 static void initialize_source_sink_vertex(
         const NetworkPointer network, 
         const VertexPointer vertex,
-        const Edge edge,
+        const EdgePointer edge,
         const VertexType type
     )
 {
@@ -21,7 +21,7 @@ static void initialize_source_sink_vertex(
 static void initialize_vertex(
         const NetworkPointer network, 
         const VertexPointer vertex,
-        const Edge edge,
+        const EdgePointer edge,
         const VertexType type
     )
 {
@@ -53,12 +53,12 @@ void pseudoflow_initialize(const NetworkPointer network)
             EdgePointer edge;
             if (is_source_vertex) {
                 edge = networkedge_get_source_edge(network, vertex);
-                initialize_vertex(network, vertex, *edge, SOURCE);
+                initialize_vertex(network, vertex, edge, SOURCE);
             } else if (is_sink_vertex) {
                 edge = networkedge_get_sink_edge(network, vertex);
-                initialize_vertex(network, vertex, *edge, SINK);
+                initialize_vertex(network, vertex, edge, SINK);
             } else {
-                initialize_vertex(network, vertex, edge_make_label(-1, -1), NONE);
+                initialize_vertex(network, vertex, NULL, NONE);
             }
         }
     }

@@ -82,7 +82,7 @@ VertexCollection edgecollection_vertices(const EdgeCollection edges)
 
 Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
-    if (!edgecollection_contains_edge(edges, *edge)) {
+    if (!edgecollection_contains_edge(edges, edge)) {
         map_put(edges.indices, edge_hash(*edge), edgecollection_length(edges));
         collection_push(edges.members, edge);
         return SUCCESS;
@@ -91,14 +91,14 @@ Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
     }
 }
 
-void edgecollection_remove(const EdgeCollectionPointer edges, const Edge edge)
+void edgecollection_remove(const EdgeCollectionPointer edges, const EdgePointer edge)
 {
     size_t i, n_edges = edgecollection_length(*edges);
     EdgeCollection edges_val = *edges;
     EdgeCollection temp = edgecollection_init(n_edges);
     for (i = 0; i < n_edges; i++) {
         EdgePointer current = edgecollection_get(edges_val, i);
-        if (!edge_equals(edge, *current)) {
+        if (!edge_equals(*edge, *current)) {
             edgecollection_push(temp, current);  
         }
     }
@@ -108,10 +108,10 @@ void edgecollection_remove(const EdgeCollectionPointer edges, const Edge edge)
 
 bool edgecollection_contains_edge(
         const EdgeCollection edges,
-        const Edge edge
+        const EdgePointer edge
     )
 {
-    unsigned int key = edge_hash(edge);
+    unsigned int key = edge_hash(*edge);
     return map_exists(edges.indices, key);
 }
 
