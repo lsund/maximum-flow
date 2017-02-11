@@ -30,11 +30,6 @@ size_t vertexcollection_length(const VertexCollection vertices);
 // Get the vertex at the specified position in the set 
 VertexPointer vertexcollection_get(const VertexCollection vertices, const unsigned int position);
 
-VertexPointer vertexcollection_get_reference(
-        const VertexCollection vertices,
-        const Vertex vertex
-    );
-
 VertexPointer vertexcollection_get_first(const VertexCollection vertices);
 
 VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label);

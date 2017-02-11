@@ -26,17 +26,16 @@ void activate_vertices(
     if (second_exflow_before > 0 && second_exflow == 0) {
         vertexcollection_remove(&network->active_vertices, edge.second);
     }
-    VertexCollection vertices= network->graph.vertices;
     VertexPointer vertex;
     if (first_exflow_before == 0 && first_exflow > 0) {
         if (edge.first.label != network->source->label) {
-            vertex = vertexcollection_get_reference(vertices, edge.first);
+            vertex = edge.first_ref;
             vertexcollection_push(network->active_vertices, vertex);
         }
     }
     if (second_exflow_before == 0 && second_exflow > 0) {
         if (edge.second.label != network->sink->label) {
-            vertex = vertexcollection_get_reference(vertices, edge.second);
+            vertex = edge.second_ref;
             vertexcollection_push(network->active_vertices, vertex);
         }
     }
@@ -66,8 +65,8 @@ EdgePointer networkedge_admissable(
         const Vertex active
     )
 {
-    EdgeCollection edges = *(network->residual_edges + active.label);
     size_t i;
+    EdgeCollection edges = *(network->residual_edges + active.label);
     unsigned int label_first, label_second;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);

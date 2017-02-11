@@ -8,14 +8,8 @@ void pseudoflow(const NetworkPointer network)
     while (merger) {
 
         VertexPointer strong_vertex, weak_vertex;
-        strong_vertex = vertexcollection_get_reference(
-                network->graph.vertices,
-                merger->first
-        );
-        weak_vertex = vertexcollection_get_reference(
-                network->graph.vertices,
-                merger->second
-        );
+        strong_vertex = merger->first_ref;
+        weak_vertex = merger->second_ref;
 
         VertexPointer strong_branch;
         strong_branch = update_tree(strong_vertex, weak_vertex);

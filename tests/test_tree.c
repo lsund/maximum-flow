@@ -117,33 +117,7 @@ char *utest_tree_find_branch()
 
 char *utest_tree_path_to_root()
 {
-    NetworkPointer network;
-    network = parse("/home/lsund/Data/graphs/data/networks/bigsets/3x3s/133.dmx", PS);
 
-    VertexPointer tree1 = vertexcollection_get_reference(network->graph.vertices, vertex_make(2));
-    VertexPointer tree2 = vertexcollection_get_reference(network->graph.vertices, vertex_make(5));
-    VertexPointer tree3 = vertexcollection_get_reference(network->graph.vertices, vertex_make(4));
-    tree_merge(tree1, tree2);
-    tree_merge(tree1, tree3);
-    VertexPointer tree4 = vertexcollection_get_reference(network->graph.vertices, vertex_make(9));
-    VertexPointer tree5 = vertexcollection_get_reference(network->graph.vertices, vertex_make(6));
-    VertexPointer tree6 = vertexcollection_get_reference(network->graph.vertices, vertex_make(11));
-    tree_merge(tree4, tree5);
-    tree_merge(tree4, tree6);
-    tree_merge(tree2, tree4);
-    VertexCollection path = tree_path_to_root(tree6);
-    Label labels[4] = { 11, 9, 5, 2 };
-    mu_assert("should contain these vertices", contains_labels(path, labels, 4));
-    /* EdgeCollection epath = tree_edgepath_from_branch(tree6, network->graph.edges); */
-    /* EdgeCollection epath2 = tree_edgepath_to_branch(tree6, network->reverse_edges); */
-    /* Edge e1 = edge_make_label(5, 9); */
-    /* Edge e2 = edge_make_label(9, 11); */
-    /* Edge e3 = edge_make_label(11, 9); */
-    /* Edge e4 = edge_make_label(9, 5); */
-    /* mu_assert("should equal", edge_equals(edgecollection_get(epath, 0), &e1)); */
-    /* mu_assert("should equal", edge_equals(edgecollection_get(epath, 1), &e2)); */
-    /* mu_assert("should equal", edge_equals(edgecollection_get(epath2, 0), &e3)); */
-    /* mu_assert("should equal", edge_equals(edgecollection_get(epath2, 1), &e4)); */
     return NULL;
 }
 

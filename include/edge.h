@@ -68,6 +68,8 @@ unsigned int edge_flow(const EdgePointer edge);
 
 void edge_set_flow(const EdgePointer edge, int flow);
 
+bool edge_is_residual(const EdgePointer edge);
+
 // Print an edge as "(v, w)" to stdout
 void edge_print(const Edge edge);
 

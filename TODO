@@ -1,7 +1,8 @@
 
 SPEEDING UP THE ALGORITHM:
 // 
-// 30x30 4.574 ms
+// 40x40 1.8 s
+
 
 get rid of either first or first_ref
 from edges                                      []
@@ -23,16 +24,6 @@ implications:
     * one may level of indirection 
     * remove all network arguments from 
       networkedge and networkvertex
-steps to realize:
-1. wrap vertex in struct networkvertex          []
-2. get to compile                               []
-3. gradually add fields to networkvertex        []
-   could start with capacity since it doesn't
-   change during the algorithm. Also add
-   flow and is_reverse (what else?)
-4. make sure the fields are updated             []
-   properly in PS and PR
-5. profit                                       []
 
 option 2: store the network information in the
 old structures.

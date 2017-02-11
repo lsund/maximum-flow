@@ -66,20 +66,6 @@ VertexPointer vertexcollection_get_first(const VertexCollection vertices)
     return vertexcollection_get(vertices, 0);
 }
 
-VertexPointer vertexcollection_get_reference(
-        const VertexCollection vertices,
-        const Vertex vertex
-    )
-{
-    unsigned int index = vertexcollection_index_of(vertices, vertex);
-    if (index > vertexcollection_length(vertices) + 1) {
-        runtime_error("vertexcollection_get_reference: index out of bounds");
-    }
-    VertexPointer ret = vertexcollection_get(vertices, index);
-    return ret;
-}
-
-
 VertexPointer vertexcollection_get_with_label(
         const VertexCollection vertices, 
         const Label label

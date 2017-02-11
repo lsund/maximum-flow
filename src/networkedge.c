@@ -34,12 +34,6 @@ EdgePointer networkedge_get_sink_edge(
     return NULL;
 }
 
-bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge)
-{
-    unsigned int key = edge_hash(*edge);
-    return map_get(network->is_reverse, key) == 1;
-}
-
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow)
 {
     EdgePointer reverse_edge;
@@ -54,10 +48,10 @@ void networkedge_augment(const NetworkPointer network, const EdgePointer edge, c
     if (residual_back_capacity == 0) {
         edgecollection_push(*(network->residual_edges + edge->second.label), reverse_edge); 
     }
-    if (!edge->is_reverse) {
-        networkedge_add_flow(network, edge, added_flow);
-    } else {
+    if (edge->is_reverse) {
         networkedge_add_flow(network, reverse_edge, -added_flow);
+    } else {
+        networkedge_add_flow(network, edge, added_flow);
     }
 }
 

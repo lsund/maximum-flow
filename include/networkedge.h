@@ -22,8 +22,6 @@ int networkvertex_exflow_pr(const NetworkPointer network, const Vertex vertex);
 
 int networkvertex_exflow_ps(const NetworkPointer network, const VertexPointer vertex);
 
-bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge);
-
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow);
 
 void networkedge_fill_flow(

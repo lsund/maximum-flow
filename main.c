@@ -16,13 +16,26 @@
 int main(int argc, char *argv[]) 
 {
     char *filename;
-    if (argc == 2) {
+    NetworkType type;
+    if (argc == 3) {
         filename = argv[1];
+        if (strcmp(argv[2], "pr") == 0) {
+            type = PR; 
+        } else if (strcmp(argv[2], "ps") == 0) {
+            type = PS;
+        } else {
+            type = NETWORK_TYPE;
+        }
+    } else if (argc == 2) {
+        filename = argv[1];
+        type = NETWORK_TYPE;
     } else {
         filename = FILE_NAME;
+        type = NETWORK_TYPE;
     }
-    printf("Computing flow of the network in file %s\n", filename);
-    NetworkPointer network = parse(filename, NETWORK_TYPE);
+    printf("type 0 = push relabel network\ntype 1 = pseudoflow network\n");
+    printf("Computing flow of the network in file %s using network type %d\n", filename, type);
+    NetworkPointer network = parse(filename, type);
     clock_t start = clock(), diff;
     if (network->type == PR) {
         push_relabel(network);

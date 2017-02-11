@@ -1,11 +1,6 @@
 
 #include "pseudoflow_network.h"
 
-bool is_residual(const EdgePointer edge)
-{
-    return edge_residual_capacity(edge) > 0;
-}
-
 bool is_merger_edge(const NetworkPointer network, const Edge edge)
 {
     bool is_source_edge = edge_incident_with(edge, *network->source);
@@ -24,13 +19,13 @@ EdgePointer merger_edge(const NetworkPointer network)
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer edge = edgecollection_get(network->graph.edges, i);
-        if (is_residual(edge) && is_merger_edge(network, *edge)) {
+        if (edge_is_residual(edge) && is_merger_edge(network, *edge)) {
             return edge;
         }
     }
     for (i = 0; i < edgecollection_length(network->reverse_edges); i++) {
         EdgePointer edge = edgecollection_get(network->reverse_edges, i);
-        if (is_residual(edge) && is_merger_edge(network, *edge)) {
+        if (edge_is_residual(edge) && is_merger_edge(network, *edge)) {
             return edge;
         }
     }

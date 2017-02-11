@@ -7,10 +7,7 @@ static void split(
     ) 
 {
     VertexPointer vertex;
-    vertex = vertexcollection_get_reference(
-                    network->graph.vertices,
-                    edge->first
-                );
+    vertex = edge->first_ref;
     tree_merge(network->root, vertex);
 }
 
@@ -33,7 +30,7 @@ static unsigned int augment(
 {
     int increased_flow;
     networkedge_augment(network, edge, amount);
-    if (networkedge_is_reverse(network, edge)) {
+    if (edge->is_reverse) {
         increased_flow = amount;
     } else {
         increased_flow = amount;
@@ -52,7 +49,7 @@ static unsigned int push_and_split(
     int new_delta;
     split(network, edge);
     new_delta = residual_capacity;
-    if (networkedge_is_reverse(network, edge)) {
+    if (edge->is_reverse) {
         networkedge_fill_flow(network, edge, residual_capacity, REVERSE);
     } else {
         unsigned int capacity;

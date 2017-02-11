@@ -57,11 +57,11 @@ static EdgePointer update_edge(
     edgecollection_push(network->graph.edges, edge);
     if (network->type == PS) {
         if (vertex_equals(edge->first, *network->source)) {
-            VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->second);
+            VertexPointer vertex = edge->second_ref;
             vertexcollection_push(network->source_neighbours, vertex);
             edgecollection_push(network->source_edges, edge);
         } else if (vertex_equals(edge->second, *network->sink)) {
-            VertexPointer vertex = vertexcollection_get_reference(network->graph.vertices, edge->first);
+            VertexPointer vertex = edge->first_ref;
             vertexcollection_push(network->sink_neighbours, vertex);
             edgecollection_push(network->sink_edges, edge);
         }

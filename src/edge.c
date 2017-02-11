@@ -113,6 +113,11 @@ unsigned int edge_hash(const Edge edge)
     return a >= b ? a * a + a + b : a + b * b; 
 }
 
+bool edge_is_residual(const EdgePointer edge)
+{
+    return edge_residual_capacity(edge) > 0;
+}
+
 void edge_print(const Edge edge)
 {
     printf("(%u, %u)\n", edge.first.label, edge.second.label);

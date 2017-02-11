@@ -5,27 +5,6 @@ char *utest_network_active_vertex()
     return NULL;
 }
 
-char *utest_networkedge_is_reverse()
-{
-    EdgePointer edge = edge_p_make_label(1, 2);
-    EdgePointer edger = edge_p_make_label(2, 1);
-    EdgePointer edge2 = edge_p_make_label(1, 3);
-    EdgePointer edge2r = edge_p_make_label(3, 1);
-    mu_assert("should be the reversed version", edge_equals_reverse(*edge, *edger));
-    mu_assert("should be the reversed version", edge_equals_reverse(*edge2, *edge2r));
-    NetworkPointer network;
-    network = parse(TEST_GRAPH, PR);
-    mu_assert("should have 24 edges", edgecollection_length(network->graph.edges) == 24);
-    mu_assert("should contain", edgecollection_contains_edge(network->graph.edges, edge2)); 
-    networkvertex_set_distance_label(network, vertex_make(1), 1);
-    networkvertex_set_distance_label(network, vertex_make(2), 0);
-    mu_assert("should be reverse", networkedge_is_reverse(network, edger));
-    mu_assert("should be reverse", networkedge_is_reverse(network, edge2r));
-    mu_assert("edge should not be reverse", !networkedge_is_reverse(network, edge));
-    mu_assert("edge2 should not be reverse", !networkedge_is_reverse(network, edge2));
-    return NULL;
-}
-
 char *utest_networkvertex_is_active()
 {
     /* NetworkPointer network = network_init(); */
