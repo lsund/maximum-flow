@@ -16,7 +16,7 @@ EdgePointer networkedge_get_source_edge(
         const VertexPointer vertex
     );
 
-Label networkvertex_distance_label(const NetworkPointer network, const Vertex vertex);
+Label networkvertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
 
 int networkvertex_exflow_pr(const NetworkPointer network, const Vertex vertex);
 

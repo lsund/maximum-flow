@@ -3,9 +3,7 @@
 
 #include "network.h"
 
-Result networkvertex_active(
-        const NetworkPointer network,
-        VertexPointer vertex);
+VertexPointer networkvertex_active(const NetworkPointer network);
 
 void activate_vertices(
         const NetworkPointer network, 
@@ -14,17 +12,6 @@ void activate_vertices(
         const unsigned int second_exflow_before,
         const unsigned int first_exflow,
         const unsigned int second_exflow
-    );
-
-Label networkvertex_distance_label(
-        const NetworkPointer network, 
-        const Vertex vertex
-    );
-
-void networkvertex_set_distance_label(
-        const NetworkPointer network,
-        const Vertex vertex, 
-        const unsigned int label
     );
 
 EdgePointer networkedge_admissable(

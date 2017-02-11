@@ -12,6 +12,7 @@ typedef struct vertex Vertex, *VertexPointer;
 struct vertex {
     Label label;
     VertexPointer parent;
+    Label distance_label;
 };
 
 Vertex vertex_empty();
@@ -24,6 +25,13 @@ VertexPointer vertex_p_make(const Label label);
 
 // Return true if the vertices are considered the same, false otherwise
 bool vertex_equals(const Vertex vertex_a, const Vertex vertex_b);
+
+Label vertex_distance_label(const VertexPointer vertex);
+
+void vertex_set_distance_label(
+        const VertexPointer vertex, 
+        const unsigned int label
+    );
 
 // Print the label of a vertex to stdout
 void vertex_print(const Vertex vertex);

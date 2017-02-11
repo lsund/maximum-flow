@@ -16,7 +16,7 @@ static void push_relabel_initialize(NetworkPointer network)
         }
     }
     size_t n_vertices = vertexcollection_length(network->graph.vertices);
-    networkvertex_set_distance_label(network, *network->source, n_vertices);
+    vertex_set_distance_label(network->source, n_vertices);
 }
 
 static Label find_min(const NetworkPointer network, const Vertex vertex)
@@ -26,7 +26,7 @@ static Label find_min(const NetworkPointer network, const Vertex vertex)
     EdgeCollection edges = *(network->residual_edges + vertex.label);
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        Label label = networkvertex_distance_label(network, edge->second) + 1;
+        Label label = vertex_distance_label(edge->second_ref) + 1;
         if (label < min) {
             min = label;
         }
@@ -45,25 +45,24 @@ static void push(const NetworkPointer network, const EdgePointer edge, const Ver
     networkedge_augment(network, edge, gamma);
 }
 
-static void relabel(const NetworkPointer network, const Vertex vertex)
+static void relabel(const NetworkPointer network, const VertexPointer vertex)
 {
-    Label min_label = find_min(network, vertex);
-    networkvertex_set_distance_label(network, vertex, min_label);
+    Label min_label = find_min(network, *vertex);
+    vertex_set_distance_label(vertex, min_label);
 }
 
 void push_relabel(NetworkPointer network)
 {
     push_relabel_initialize(network);
-    Vertex active;
-    Result has_active = networkvertex_active(network, &active);
-    while (has_active == SUCCESS) {
-        EdgePointer admissable = networkedge_admissable(network, active);
+    VertexPointer active = networkvertex_active(network);
+    while (active) {
+        EdgePointer admissable = networkedge_admissable(network, *active);
         if (!admissable) {
             relabel(network, active);
         } else {
-            push(network, admissable, active);
+            push(network, admissable, *active);
         }
-        has_active = networkvertex_active(network, &active);
+        active = networkvertex_active(network);
     }
 }
 
