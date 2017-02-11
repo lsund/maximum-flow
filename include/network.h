@@ -32,8 +32,6 @@ unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex ver
 
 unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
 
-unsigned int networkedge_residual_capacity(const NetworkPointer network, const EdgePointer edge);
-
 void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices, const unsigned int n_edges);
 
 unsigned int network_flow(const NetworkPointer network);

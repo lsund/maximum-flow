@@ -80,7 +80,7 @@ unsigned int push_flow(
 {
     unsigned int new_delta;
     unsigned int residual_capacity;
-    residual_capacity = networkedge_residual_capacity(network, edge);
+    residual_capacity = edge_residual_capacity(edge);
     if (residual_capacity >= amount) {
         new_delta = augment(network, edge, amount);
     } else {

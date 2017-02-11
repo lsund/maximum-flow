@@ -83,11 +83,15 @@ static void update_capacity(
 static void add_reverse_edges(const NetworkPointer network) {
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer p_edge = edgecollection_get(network->graph.edges, i);
-        VertexPointer rev_first = p_edge->second_ref;
-        VertexPointer rev_second = p_edge->first_ref;
+        EdgePointer edge = edgecollection_get(network->graph.edges, i);
+        VertexPointer rev_first = edge->second_ref;
+        VertexPointer rev_second = edge->first_ref;
         EdgePointer reverse_edge = edge_p_make_p_vertices(rev_first, rev_second);
         edgecollection_push(network->reverse_edges, reverse_edge);
+        edge->reverse = reverse_edge;
+        reverse_edge->reverse = edge;
+        edge->is_reverse = false;
+        reverse_edge->is_reverse = true;
         unsigned int key = edge_hash(*reverse_edge); 
         map_put(network->is_reverse, key, 1);
     }

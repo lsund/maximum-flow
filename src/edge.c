@@ -77,6 +77,20 @@ unsigned int edge_capacity(const EdgePointer edge)
     return edge->capacity;
 }
 
+unsigned int edge_residual_capacity(const EdgePointer edge)
+{
+    unsigned int capacity, flow;
+    if (edge->is_reverse) {
+        EdgePointer reverse_edge_p = edge->reverse;
+        flow = edge_flow(reverse_edge_p);
+        return flow;
+    } else {
+        capacity = edge->capacity;
+        flow = edge_flow(edge);
+        return capacity - flow;
+    }
+}
+
 void edge_set_capacity(const EdgePointer edge, const unsigned int capacity)
 {
     edge->capacity = capacity;

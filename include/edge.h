@@ -13,12 +13,16 @@
 //
 // Field first:     The first vertex
 // Field second:    The second vertex
-typedef struct edge {
+typedef struct edge Edge, *EdgePointer;
+
+struct edge {
     Vertex first;
     Vertex second;
     VertexPointer first_ref, second_ref;
     unsigned int capacity, flow;
-} Edge, *EdgePointer;
+    EdgePointer reverse;
+    bool is_reverse;
+};
 
 // Constructs an edge from two vertices
 Edge edge_make_vertices(const Vertex first, const Vertex second);
@@ -57,6 +61,8 @@ unsigned int edge_hash(const Edge edge);
 unsigned int edge_capacity(const EdgePointer edge);
 
 void edge_set_capacity(const EdgePointer edge, const unsigned int capacity);
+
+unsigned int edge_residual_capacity(const EdgePointer edge);
 
 unsigned int edge_flow(const EdgePointer edge);
 

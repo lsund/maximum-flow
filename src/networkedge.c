@@ -34,24 +34,6 @@ EdgePointer networkedge_get_sink_edge(
     return NULL;
 }
 
-unsigned int networkedge_residual_capacity(
-        const NetworkPointer network, 
-        const EdgePointer edge
-    )
-{
-    unsigned int capacity, flow;
-    if (networkedge_is_reverse(network, edge)) {
-        Edge reverse_edge = edge_swapped(*edge);
-        EdgePointer reverse_edge_p = edgecollection_get_reference(network->graph.edges, reverse_edge);
-        flow = edge_flow(reverse_edge_p);
-        return flow;
-    } else {
-        capacity = edge->capacity;
-        flow = edge_flow(edge);
-        return capacity - flow;
-    }
-}
-
 bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge)
 {
     unsigned int key = edge_hash(*edge);
@@ -60,31 +42,22 @@ bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge
 
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow)
 {
-    EdgePointer back_edge;
-    Edge back_edge_val = edge_swapped(*edge);
-    int index;
-    index = edgecollection_index_of(network->reverse_edges, back_edge_val);
-    if (index == -1) {
-        index = edgecollection_index_of(network->graph.edges, back_edge_val);
-        back_edge = edgecollection_get(network->graph.edges, index);
-    } else {
-        back_edge = edgecollection_get(network->reverse_edges, index);
-    }
+    EdgePointer reverse_edge;
+    reverse_edge = edge->reverse;
     
     unsigned int residual_capacity, residual_back_capacity;
-    residual_capacity = networkedge_residual_capacity(network, edge);
-    residual_back_capacity = networkedge_residual_capacity(network, back_edge);
+    residual_capacity = edge_residual_capacity(edge);
+    residual_back_capacity = edge_residual_capacity(reverse_edge);
     if (residual_capacity - added_flow == 0) {
         edgecollection_remove((network->residual_edges + edge->first.label), edge); 
     }
     if (residual_back_capacity == 0) {
-        edgecollection_push(*(network->residual_edges + edge->second.label), back_edge); 
+        edgecollection_push(*(network->residual_edges + edge->second.label), reverse_edge); 
     }
-    bool is_reverse = edgecollection_contains_edge(network->reverse_edges, edge);
-    if (!is_reverse) {
+    if (!edge->is_reverse) {
         networkedge_add_flow(network, edge, added_flow);
     } else {
-        networkedge_add_flow(network, back_edge, -added_flow);
+        networkedge_add_flow(network, reverse_edge, -added_flow);
     }
 }
 
@@ -104,13 +77,8 @@ void networkedge_fill_flow(
         *(network->excesses + edge->first.label) -= increased_flow;
         *(network->excesses + edge->second.label) += increased_flow;
     } else {
-        Edge reverse_edge;
         EdgePointer reverse_edge_p;
-        reverse_edge = edge_swapped(*edge);
-        reverse_edge_p = edgecollection_get_reference(
-                                network->graph.edges, 
-                                reverse_edge
-                            );
+        reverse_edge_p = edge->reverse;
         int flow = edge_flow(reverse_edge_p);
         edge_set_flow(reverse_edge_p, flow - capacity);
         increased_flow = capacity;

@@ -42,10 +42,6 @@ EdgePointer edgecollection_get_reference(
         const Edge edge
     );
 
-// The index of the edge in the edgecollection that equals the specified edge.
-// If no such edge exists, then -1.
-int edgecollection_index_of(const EdgeCollection edges, const Edge edge);
-
 // The vertices of this edgecollection
 VertexCollection edgecollection_vertices(const EdgeCollection edges);
 
@@ -70,4 +66,5 @@ void edgecollection_print(const EdgeCollection edges);
 // Free the structure
 void edgecollection_destroy(EdgeCollection edges);
 
+int edgecollection_index_of(const EdgeCollection edges, const Edge edge);
 #endif

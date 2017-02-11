@@ -1,7 +1,48 @@
 
 SPEEDING UP THE ALGORITHM:
 // 
-// 25x25 2.4s ps
+// 30x30 4.574 ms
+
+get rid of either first or first_ref
+from edges                                      []
+
+I think the biggest part is redundant 
+calculations of the index for edges and
+vertices. If vertices and edges held 
+additional information then all these 
+redundant computations could be avoided.        []
+
+option 1: create a new structure called eg
+networkvertex containing a vertex and the 
+extra information
+implications:   
+    * have to change vertex and 
+      edgecollection. In fact, have to change
+      edge to networkedge and vertex to 
+      networkvertex in entire program
+    * one may level of indirection 
+    * remove all network arguments from 
+      networkedge and networkvertex
+steps to realize:
+1. wrap vertex in struct networkvertex          []
+2. get to compile                               []
+3. gradually add fields to networkvertex        []
+   could start with capacity since it doesn't
+   change during the algorithm. Also add
+   flow and is_reverse (what else?)
+4. make sure the fields are updated             []
+   properly in PS and PR
+5. profit                                       []
+
+option 2: store the network information in the
+old structures.
+[chosen procedure]
+implications:
+    * do not have to change vertex and 
+      edgecollection
+    * less modular code and wierder
+    * remove all network arguments from 
+      networkedge and networkvertex
 
 eliminate uneccesary pointers
 to edges for example
@@ -83,7 +124,6 @@ should have excesses as a function              [done]
 
 maybe pseudoflow is not considering backward
 edges                                           [done]
-
 
 new bug: the flow never gets pushed past the 
 first layer solution: (seemingly) have 
