@@ -11,7 +11,7 @@
 #define NETWORK_TYPE PS
 // The file that will be used as input given that no argement
 // is given the program
-#define FILE_NAME "sample_data/25x25.dmx"
+#define FILE_NAME "sample_data/40x40.dmx"
 
 int main(int argc, char *argv[]) 
 {

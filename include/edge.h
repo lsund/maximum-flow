@@ -17,6 +17,7 @@ typedef struct edge {
     Vertex first;
     Vertex second;
     VertexPointer first_ref, second_ref;
+    unsigned int capacity, flow;
 } Edge, *EdgePointer;
 
 // Constructs an edge from two vertices
@@ -52,6 +53,14 @@ bool edge_equals_reverse(const Edge edge_a, const Edge edge_b);
 
 // Ruterns an unique integer for each unique edge
 unsigned int edge_hash(const Edge edge);
+
+unsigned int edge_capacity(const EdgePointer edge);
+
+void edge_set_capacity(const EdgePointer edge, const unsigned int capacity);
+
+unsigned int edge_flow(const EdgePointer edge);
+
+void edge_set_flow(const EdgePointer edge, int flow);
 
 // Print an edge as "(v, w)" to stdout
 void edge_print(const Edge edge);

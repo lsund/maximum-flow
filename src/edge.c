@@ -6,6 +6,8 @@ Edge edge_make_vertices(const Vertex first, const Vertex second)
     Edge ret;
     ret.first    = first;
     ret.second   = second;
+    ret.capacity = 0;
+    ret.flow     = 0;
     return ret;
 }
 
@@ -68,6 +70,26 @@ bool edge_incident_with(const Edge edge, const Vertex vertex)
     bool with_first  = vertex_equals(edge.first, vertex);
     bool with_second = vertex_equals(edge.second, vertex); 
     return with_first || with_second;
+}
+
+unsigned int edge_capacity(const EdgePointer edge)
+{
+    return edge->capacity;
+}
+
+void edge_set_capacity(const EdgePointer edge, const unsigned int capacity)
+{
+    edge->capacity = capacity;
+}
+
+unsigned int edge_flow(const EdgePointer edge)
+{
+    return edge->flow;
+}
+
+void edge_set_flow(const EdgePointer edge, int flow)
+{
+    edge->flow = flow;
 }
 
 unsigned int edge_hash(const Edge edge)

@@ -9,10 +9,9 @@ static void push_relabel_initialize(NetworkPointer network)
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         edge = edgecollection_get(network->graph.edges, i);
         if (vertex_equals(edge->first, *network->source)) {
-            capacity = networkedge_capacity(network, edge);
+            capacity = edge_capacity(edge);
             networkedge_augment(network, edge, capacity);
         } else {
-            networkedge_set_flow(network, edge, 0);
             edgecollection_push(*(network->residual_edges + edge->first.label), edge); 
         }
     }

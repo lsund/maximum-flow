@@ -70,7 +70,6 @@ static EdgePointer update_edge(
 }
 
 static void update_capacity(
-        const NetworkPointer network,
         const TokenTablePointer table,
         const EdgePointer edge,
         const unsigned int row
@@ -78,7 +77,7 @@ static void update_capacity(
 {
     char *fourth_token = tokentable_get(table, row, 3);
     unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10);
-    networkedge_set_capacity(network, edge, capacity);
+    edge_set_capacity(edge, capacity);
 }
 
 static void add_reverse_edges(const NetworkPointer network) {
@@ -137,7 +136,7 @@ NetworkPointer parse(const char *filename, const NetworkType type)
                         second_token, 
                         third_token
                     );
-                update_capacity(network, table, edge, row);
+                update_capacity(table, edge, row);
                 unsigned int key = edge_hash(*edge); 
                 map_put(network->is_reverse, key, 0);
             }

@@ -34,44 +34,22 @@ EdgePointer networkedge_get_sink_edge(
     return NULL;
 }
 
-unsigned int networkedge_capacity(
-        const NetworkPointer network, 
-        const EdgePointer edge
-    )
-{
-    unsigned int index, capacity;
-    index = edgecollection_index_of(network->graph.edges, *edge);
-    if (index > edgecollection_length(network->graph.edges) + 2) {
-        runtime_error("networkedge_capacity: index out of bounds");
-    }
-    capacity = *(network->capacities + index);
-    return capacity;
-}
-
 unsigned int networkedge_residual_capacity(
         const NetworkPointer network, 
         const EdgePointer edge
     )
 {
-    unsigned int index, capacity, flow;
+    unsigned int capacity, flow;
     if (networkedge_is_reverse(network, edge)) {
         Edge reverse_edge = edge_swapped(*edge);
-        index = edgecollection_index_of(network->graph.edges, reverse_edge);
-        flow = *(network->flows + index);
+        EdgePointer reverse_edge_p = edgecollection_get_reference(network->graph.edges, reverse_edge);
+        flow = edge_flow(reverse_edge_p);
         return flow;
     } else {
-        index = edgecollection_index_of(network->graph.edges, *edge);
-        capacity = *(network->capacities + index);
-        flow = *(network->flows + index);
+        capacity = edge->capacity;
+        flow = edge_flow(edge);
         return capacity - flow;
     }
-}
-
-unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge)
-{
-    unsigned int index;
-    index = edgecollection_index_of(network->graph.edges, *edge);
-    return *(network->flows + index);
 }
 
 bool networkedge_is_reverse(const NetworkPointer network, const EdgePointer edge)
@@ -117,47 +95,28 @@ void networkedge_fill_flow(
         const EdgeType type
     )
 {
-    int index, flow, increased_flow;
+    int flow, increased_flow;
     if (type == FORWARD)
     {
-        index = edgecollection_index_of(network->graph.edges, *edge);
-        flow = *(network->flows + index);
+        flow = edge_flow(edge);
         increased_flow = capacity - flow;
-        networkedge_set_flow(network, edge, capacity);
+        edge_set_flow(edge, capacity);
         *(network->excesses + edge->first.label) -= increased_flow;
         *(network->excesses + edge->second.label) += increased_flow;
     } else {
         Edge reverse_edge;
         EdgePointer reverse_edge_p;
         reverse_edge = edge_swapped(*edge);
-        index        = edgecollection_index_of(
-                                network->graph.edges,
-                                reverse_edge
-                            );
         reverse_edge_p = edgecollection_get_reference(
                                 network->graph.edges, 
                                 reverse_edge
                             );
-        int flow = *(network->flows + index);
-        networkedge_set_flow(network, reverse_edge_p, flow - capacity);
+        int flow = edge_flow(reverse_edge_p);
+        edge_set_flow(reverse_edge_p, flow - capacity);
         increased_flow = capacity;
         *(network->excesses + reverse_edge_p->first.label) += increased_flow;
         *(network->excesses + reverse_edge_p->second.label) -= increased_flow;
     }
-}
-
-void networkedge_set_flow(
-        const NetworkPointer network, 
-        const EdgePointer edge, 
-        int flow
-    )
-{
-    unsigned int index;
-    index = edgecollection_index_of(network->graph.edges, *edge);
-    if (index > edgecollection_length(network->graph.edges) + 2) {
-        runtime_error("networkedge_set_flow: index out of bounds");
-    }
-    *(network->flows + index) = flow;
 }
 
 void networkedge_add_flow(
@@ -166,16 +125,13 @@ void networkedge_add_flow(
         int added_flow
     )
 {
-    unsigned int index;
     int flow;
-    index = edgecollection_index_of(network->graph.edges, *edge);
-    flow = networkedge_flow(network, edge);
+    flow = edge_flow(edge);
     if (network->type == PR) {
         unsigned int first_exflow_before, second_exflow_before;
         first_exflow_before = networkvertex_exflow_pr(network, edge->first);
         second_exflow_before = networkvertex_exflow_pr(network, edge->second);
-
-        *(network->flows + index) = flow + added_flow;
+        edge_set_flow(edge, flow + added_flow);
         *(network->inflows + edge->second.label) += added_flow;
         *(network->outflows + edge->first.label) += added_flow;
 
@@ -191,21 +147,7 @@ void networkedge_add_flow(
                 second_exflow
             );
     } else if (network->type == PS) {
-        *(network->flows + index) = flow + added_flow;
+        edge_set_flow(edge, flow + added_flow);
     }
-}
-
-void networkedge_set_capacity(
-        const NetworkPointer network, 
-        const EdgePointer edge, 
-        unsigned int capacity
-    )
-{
-    unsigned int index;
-    index = edgecollection_index_of(network->graph.edges, *edge);
-    if (index > edgecollection_length(network->graph.edges) + 2) {
-        runtime_error("networkedge_set_capacity: index out of bounds");
-    }
-    *(network->capacities + index) = capacity;
 }
 

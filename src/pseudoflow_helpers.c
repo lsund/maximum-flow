@@ -56,7 +56,7 @@ static unsigned int push_and_split(
         networkedge_fill_flow(network, edge, residual_capacity, REVERSE);
     } else {
         unsigned int capacity;
-        capacity = networkedge_capacity(network, edge);
+        capacity = edge_capacity(edge);
         networkedge_fill_flow(network, edge, capacity, FORWARD);
     }
     return new_delta;
