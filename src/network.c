@@ -97,16 +97,20 @@ void network_destroy(NetworkPointer network)
     if (network->type == PR) {
         free(network->distance_labels);
         vertexcollection_destroy(network->active_vertices);
+        free(network->inflows);
+        free(network->outflows);
     } else {
         free(network->excesses);
         vertexcollection_destroy(network->strong_vertices);
         vertexcollection_destroy(network->weak_vertices);
+        vertexcollection_destroy(network->source_neighbours);
+        vertexcollection_destroy(network->sink_neighbours);
+        edgecollection_destroy(network->source_edges);
+        edgecollection_destroy(network->sink_edges);
         free(network->root);
     }
     free(network->flows);
     free(network->capacities);
-    free(network->inflows);
-    free(network->outflows);
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer edge = edgecollection_get(network->graph.edges, i);
