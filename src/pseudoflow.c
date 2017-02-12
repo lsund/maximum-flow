@@ -12,10 +12,10 @@ void pseudoflow(const NetworkPointer network)
         weak_vertex = merger->second_ref;
 
         VertexPointer strong_branch;
-        strong_branch = update_tree(strong_vertex, weak_vertex);
+        strong_branch = merge(strong_vertex, weak_vertex);
         
         unsigned int delta;
-        delta = *(network->excesses + strong_branch->label);
+        delta = strong_branch->excess;
 
         EdgeCollection path;
         path = network_edgepath_to_treeroot(network, strong_branch);

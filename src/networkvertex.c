@@ -31,7 +31,8 @@ int networkvertex_exflow_pr(const NetworkPointer network, const Vertex vertex)
 int networkvertex_exflow_ps(const NetworkPointer network, const VertexPointer vertex)
 {
     VertexPointer branch = tree_find_branch(vertex);
-    return *(network->excesses + branch->label);
+    return branch->excess;
+    /* return *(network->excesses + branch->label); */
 }
 
 int networkvertex_is_strong(const NetworkPointer network, const Vertex vertex, const VertexPointer vertex_p)

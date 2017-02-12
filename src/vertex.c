@@ -4,18 +4,20 @@
 Vertex vertex_empty()
 {
     Vertex ret;
-    ret.label      = -1;
+    ret.label          = -1;
     ret.distance_label = 0;
-    ret.parent     = NULL;
+    ret.excess         = 0;
+    ret.parent         = NULL;
     return ret;
 }
 
 Vertex vertex_make(const Label label)
 {
     Vertex ret;
-    ret.label = label;
+    ret.label          = label;
     ret.distance_label = 0;
-    ret.parent = NULL;
+    ret.excess         = 0;
+    ret.parent         = NULL;
     return ret;
 }
 

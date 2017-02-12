@@ -13,6 +13,7 @@ struct vertex {
     Label label;
     VertexPointer parent;
     Label distance_label;
+    unsigned int excess;
 };
 
 Vertex vertex_empty();

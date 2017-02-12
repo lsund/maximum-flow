@@ -82,18 +82,6 @@ VertexPointer vertexcollection_get_with_label(
     return NULL;
 }
 
-int vertexcollection_index_of(
-        const VertexCollection vertices,
-        const Vertex vertex
-    )
-{
-    if (map_exists(vertices.indices, vertex.label)) {
-        return map_get(vertices.indices, vertex.label);
-    } else {
-        return -1;
-    }
-}
-
 bool vertexcollection_contains_label(
         const VertexCollection vertices,
         const Label label

@@ -11,17 +11,6 @@ static void split(
     tree_merge(network->root, vertex);
 }
 
-static void merge(
-        const VertexPointer strong_branch, 
-        const VertexPointer strong_vertex, 
-        const VertexPointer weak_vertex
-    )
-{
-        strong_branch->parent = NULL;
-        tree_invert(strong_vertex);
-        tree_merge(weak_vertex, strong_vertex);
-}
-
 static unsigned int augment(
         const NetworkPointer network,
         const EdgePointer edge,
@@ -35,8 +24,8 @@ static unsigned int augment(
     } else {
         increased_flow = amount;
     }
-    *(network->excesses + edge->first.label) -= increased_flow;
-    *(network->excesses + edge->second.label) += increased_flow;
+    edge->first_ref->excess -= increased_flow;
+    edge->second_ref->excess += increased_flow;
     return amount;
 }
 
@@ -50,22 +39,24 @@ static unsigned int push_and_split(
     split(network, edge);
     new_delta = residual_capacity;
     if (edge->is_reverse) {
-        networkedge_fill_flow(network, edge, residual_capacity, REVERSE);
+        edge_fill_flow(edge, residual_capacity, REVERSE);
     } else {
         unsigned int capacity;
         capacity = edge_capacity(edge);
-        networkedge_fill_flow(network, edge, capacity, FORWARD);
+        edge_fill_flow(edge, capacity, FORWARD);
     }
     return new_delta;
 }
 
-VertexPointer update_tree(
+VertexPointer merge(
         const VertexPointer strong_vertex,
         const VertexPointer weak_vertex
     )
 {
     VertexPointer strong_branch = tree_find_branch(strong_vertex);
-    merge(strong_branch, strong_vertex, weak_vertex);
+    strong_branch->parent = NULL;
+    tree_invert(strong_vertex);
+    tree_merge(weak_vertex, strong_vertex);
     return strong_branch;
 }
 

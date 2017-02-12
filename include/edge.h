@@ -15,6 +15,8 @@
 // Field second:    The second vertex
 typedef struct edge Edge, *EdgePointer;
 
+typedef enum EdgeType { FORWARD, REVERSE } EdgeType;
+
 struct edge {
     Vertex first;
     Vertex second;
@@ -67,6 +69,12 @@ unsigned int edge_residual_capacity(const EdgePointer edge);
 unsigned int edge_flow(const EdgePointer edge);
 
 void edge_set_flow(const EdgePointer edge, int flow);
+
+void edge_fill_flow(
+        const EdgePointer edge,
+        const unsigned int capacity,
+        const EdgeType type
+    );
 
 bool edge_is_residual(const EdgePointer edge);
 

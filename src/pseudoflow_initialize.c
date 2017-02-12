@@ -12,9 +12,9 @@ static void initialize_source_sink_vertex(
     capacity = edge_capacity(edge);
     networkedge_augment(network, edge, capacity);
     if (type == SOURCE) {
-        *(network->excesses + vertex->label) = capacity;
+        vertex->excess = capacity;
     } else {
-        *(network->excesses + vertex->label) = -capacity;
+        vertex->excess = -capacity;
     }
 }
 
@@ -28,7 +28,6 @@ static void initialize_vertex(
     if (type == SOURCE || type == SINK) {
         initialize_source_sink_vertex(network, vertex, edge, type);
     } else {
-        *(network->excesses + vertex->label) = 0;
     }
     tree_merge(network->root, vertex);
 }

@@ -2,7 +2,7 @@
 #include "network_functions.h"
 #include "pseudoflow_network.h"
 
-VertexPointer update_tree(
+VertexPointer merge(
         const VertexPointer strong_vertex,
         const VertexPointer weak_vertex
     );
