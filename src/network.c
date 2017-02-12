@@ -52,8 +52,6 @@ void network_init(
     if (type == PR) {
         network->distance_labels       = calloc(n_vertices, sizeof(Label));
         network->active_vertices       = vertexcollection_init(COLL_MIN_SIZE);
-        network->inflows               = calloc(n_vertices + 1, sizeof(unsigned int));
-        network->outflows              = calloc(n_vertices + 1, sizeof(unsigned int));
     } else {
         network->excesses              = calloc(n_vertices, sizeof(int));
         network->root                  = vertex_p_make(n_vertices + 1);
@@ -88,7 +86,7 @@ unsigned int network_flow(const NetworkPointer network)
         }
         return sum;
     } else {
-        return networkvertex_exflow_pr(network, network->sink);
+        return vertex_exflow(network->sink);
     }
 }
 
@@ -97,8 +95,6 @@ void network_destroy(NetworkPointer network)
     if (network->type == PR) {
         free(network->distance_labels);
         vertexcollection_destroy(network->active_vertices);
-        free(network->inflows);
-        free(network->outflows);
     } else {
         free(network->excesses);
         vertexcollection_destroy(network->strong_vertices);

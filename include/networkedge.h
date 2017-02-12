@@ -16,8 +16,6 @@ EdgePointer networkedge_get_source_edge(
 
 Label networkvertex_distance_label(const NetworkPointer network, const VertexPointer vertex);
 
-int networkvertex_exflow_ps(const NetworkPointer network, const VertexPointer vertex);
-
 void networkedge_augment(const NetworkPointer network, const EdgePointer edge, const unsigned int added_flow);
 
 void networkedge_add_flow(

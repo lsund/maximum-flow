@@ -12,7 +12,7 @@ typedef struct network {
     EdgeCollection          reverse_edges;
     EdgeCollectionPointer   residual_edges;
     VertexPointer           source, sink;
-    unsigned int            *capacities, *inflows, *outflows;
+    unsigned int            *capacities;
     int                     *flows;
     Map                     is_reverse;
 

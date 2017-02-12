@@ -1,6 +1,5 @@
 
 #include "network_functions.h"
-#include "pseudoflow_network.h"
 
 VertexPointer merge(
         const VertexPointer strong_vertex,
@@ -12,3 +11,6 @@ unsigned int push_flow(
         const EdgePointer edge,
         const unsigned int amount
     );
+
+EdgePointer merger_edge(const NetworkPointer network);
+

@@ -16,16 +16,9 @@ unsigned int networkvertex_inflow(
         }
         return sum;
     } else {
-        return *(network->inflows + vertex.label);
+        runtime_error("not supported for pr");
+        return 0;
     }
-}
-
-int networkvertex_exflow_pr(const NetworkPointer network, const VertexPointer vertex)
-{
-    unsigned int inflow, outflow;
-    inflow = *(network->inflows + vertex->label);
-    outflow = *(network->outflows + vertex->label);
-    return inflow - outflow;
 }
 
 int networkvertex_is_strong(
@@ -34,9 +27,9 @@ int networkvertex_is_strong(
     )
 {
     if (network->type == PR) {
-        return networkvertex_exflow_pr(network, vertex_p) > 0;
+        return vertex_exflow(vertex_p) > 0;
     } else {
-        return vertex_exflow_ps(vertex_p) > 0;
+        return vertex_excess(vertex_p) > 0;
     }
 }
 
