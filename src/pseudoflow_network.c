@@ -9,8 +9,8 @@ bool is_merger_edge(const NetworkPointer network, const Edge edge)
     if (!is_valid_edge) {
         return false;
     }
-    bool first_is_strong = networkvertex_is_strong(network, edge.first, edge.first_ref);
-    bool second_is_weak = !networkvertex_is_strong(network, edge.second, edge.second_ref);
+    bool first_is_strong = networkvertex_is_strong(network, edge.first_ref);
+    bool second_is_weak = !networkvertex_is_strong(network, edge.second_ref);
     return first_is_strong && second_is_weak;
 }
 

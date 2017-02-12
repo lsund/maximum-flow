@@ -3,6 +3,8 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 40x40 1.8 s
 
+recover the flow in a more efficient way
+
 could maybe store is_strong as a local 
 field of vertex. At least for PS since
 vertices can only become strong, not weak. 
@@ -16,7 +18,7 @@ I think the biggest part is redundant
 calculations of the index for edges and
 vertices. If vertices and edges held 
 additional information then all these 
-redundant computations could be avoided.        []
+redundant computations could be avoided.        [done]
 
 option 1: create a new structure called eg
 networkvertex containing a vertex and the 

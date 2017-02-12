@@ -46,6 +46,12 @@ void vertex_set_distance_label(
     vertex->distance_label = label;
 }
 
+int vertex_exflow_ps(const VertexPointer vertex)
+{
+    VertexPointer branch = tree_find_branch(vertex);
+    return branch->excess;
+}
+
 void vertex_print(const Vertex vertex)
 {
     printf("%u\n", vertex.label);

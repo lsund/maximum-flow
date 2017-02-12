@@ -78,7 +78,7 @@ unsigned int network_flow(const NetworkPointer network)
 {
     if (network->type == PS) {
         EdgeCollection edges = network->graph.edges;
-        unsigned int sum;
+        int sum;
         size_t i;
         for (i = 0, sum = 0; i < edgecollection_length(edges); i++) {
             EdgePointer edge = edgecollection_get(edges, i);
@@ -88,7 +88,7 @@ unsigned int network_flow(const NetworkPointer network)
         }
         return sum;
     } else {
-        return networkvertex_inflow(network, *network->sink);
+        return networkvertex_exflow_pr(network, network->sink);
     }
 }
 

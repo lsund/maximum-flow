@@ -28,6 +28,12 @@ typedef struct network {
 
 EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex);
 
+int networkvertex_exflow_ps(
+        const NetworkPointer network, 
+        const VertexPointer vertex
+    );
+int networkvertex_exflow_pr(const NetworkPointer network, const VertexPointer vertex);
+
 unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);
 
 unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);

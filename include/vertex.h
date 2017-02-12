@@ -34,7 +34,11 @@ void vertex_set_distance_label(
         const unsigned int label
     );
 
+int vertex_exflow_ps(const VertexPointer vertex);
+
 // Print the label of a vertex to stdout
 void vertex_print(const Vertex vertex);
+
+VertexPointer tree_find_branch(const VertexPointer vertex);
 
 #endif
