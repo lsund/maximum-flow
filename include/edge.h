@@ -70,11 +70,15 @@ unsigned int edge_flow(const EdgePointer edge);
 
 void edge_set_flow(const EdgePointer edge, int flow);
 
+void edge_add_flow(const EdgePointer edge, const int added_flow);
+
 void edge_fill_flow(
         const EdgePointer edge,
         const unsigned int capacity,
         const EdgeType type
     );
+
+void edge_augment(const EdgePointer edge, const unsigned int added_flow);
 
 bool edge_is_residual(const EdgePointer edge);
 

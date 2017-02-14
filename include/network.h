@@ -44,4 +44,14 @@ unsigned int network_flow(const NetworkPointer network);
 
 void network_destroy(NetworkPointer network);
 
+EdgePointer networkedge_get_sink_edge(
+        const NetworkPointer network,
+        const VertexPointer vertex
+    );
+
+EdgePointer networkedge_get_source_edge(
+        const NetworkPointer network,
+        const VertexPointer vertex
+    );
+
 #endif

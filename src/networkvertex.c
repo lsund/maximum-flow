@@ -21,15 +21,3 @@ unsigned int networkvertex_inflow(
     }
 }
 
-int networkvertex_is_strong(
-        const NetworkPointer network,
-        const VertexPointer vertex_p
-    )
-{
-    if (network->type == PR) {
-        return vertex_exflow(vertex_p) > 0;
-    } else {
-        return vertex_excess(vertex_p) > 0;
-    }
-}
-

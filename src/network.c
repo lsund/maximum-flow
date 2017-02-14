@@ -128,4 +128,38 @@ void network_destroy(NetworkPointer network)
     free(network);
 }
 
+EdgePointer networkedge_get_source_edge(
+        const NetworkPointer network,
+        const VertexPointer vertex
+    )
+{
+    EdgeCollection edges = network->source_edges;
+    size_t i;
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
+        if (vertex_equals(edge->second, *vertex)) {
+            return edge;
+        }
+    }
+    runtime_error("networkedge_get_source_edge: vertex not adjacent to source");
+    return NULL;
+}
+
+EdgePointer networkedge_get_sink_edge(
+        const NetworkPointer network,
+        const VertexPointer vertex
+    )
+{
+    EdgeCollection edges = network->sink_edges;
+    size_t i;
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
+        if (vertex_equals(edge->first, *vertex)) {
+            return edge;
+        }
+    }
+    runtime_error("networkedge_get_sink_edge: vertex not adjacent to sink");
+    return NULL;
+}
+
 

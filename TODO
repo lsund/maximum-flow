@@ -3,6 +3,8 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 40x40 1.8 s
 
+do I really need to store residual_edges?       []
+
 recover the flow in a more efficient way
 
 could maybe store is_strong as a local 

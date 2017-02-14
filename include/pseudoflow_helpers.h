@@ -1,5 +1,5 @@
 
-#include "network_functions.h"
+#include "network.h"
 
 VertexPointer merge(
         const VertexPointer strong_vertex,

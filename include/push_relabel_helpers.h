@@ -1,5 +1,5 @@
-#ifndef PUSH_RELABEL_NETWORK
-#define PUSH_RELABEL_NETWORK
+#ifndef PUSH_RELABEL_HELPERS
+#define PUSH_RELABEL_HELPERS
 
 #include "network.h"
 

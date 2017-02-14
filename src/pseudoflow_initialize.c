@@ -10,7 +10,7 @@ static void initialize_source_sink_vertex(
 {
     unsigned int capacity;
     capacity = edge_capacity(edge);
-    networkedge_augment(network, edge, capacity);
+    edge_augment(edge, capacity);
     if (type == SOURCE) {
         vertex->excess = capacity;
     } else {

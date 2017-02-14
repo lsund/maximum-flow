@@ -106,31 +106,37 @@ void edge_set_flow(const EdgePointer edge, int flow)
     edge->flow = flow;
 }
 
+void edge_add_flow(const EdgePointer edge, const int added_flow)
+{
+    int flow;
+    flow = edge_flow(edge);
+    edge_set_flow(edge, flow + added_flow);
+    edge->second_ref->excess += added_flow;
+    edge->first_ref->excess -= added_flow;
+}
+
 void edge_fill_flow(
         const EdgePointer edge,
         const unsigned int capacity,
         const EdgeType type
     )
 {
-    int flow, increased_flow;
     if (type == FORWARD)
     {
-        flow = edge_flow(edge);
-        increased_flow = capacity - flow;
-        edge_set_flow(edge, capacity);
-        edge->first_ref->excess -= increased_flow;
-        edge->second_ref->excess += increased_flow;
+        edge_add_flow(edge, capacity - edge_flow(edge));
     } else {
-        EdgePointer reverse_edge_p;
-        reverse_edge_p = edge->reverse;
-        int flow = edge_flow(reverse_edge_p);
-        edge_set_flow(reverse_edge_p, flow - capacity);
-        increased_flow = capacity;
-        reverse_edge_p->first_ref->excess += increased_flow;
-        reverse_edge_p->second_ref->excess -= increased_flow;
+        edge_add_flow(edge->reverse, -capacity);
     }
 }
 
+void edge_augment(const EdgePointer edge, const unsigned int added_flow)
+{
+    if (edge->is_reverse) {
+        edge_add_flow(edge->reverse, -added_flow);
+    } else {
+        edge_add_flow(edge, added_flow);
+    }
+}
 
 unsigned int edge_hash(const Edge edge)
 {

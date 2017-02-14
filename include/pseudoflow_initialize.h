@@ -1,5 +1,5 @@
 
-#include "network_functions.h"
+#include "network.h"
 #include "pseudoflow_helpers.h"
 
 typedef enum vertextype { SOURCE, SINK, NONE } VertexType; 

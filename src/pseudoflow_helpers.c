@@ -11,24 +11,6 @@ static void split(
     tree_merge(network->root, vertex);
 }
 
-static unsigned int augment(
-        const NetworkPointer network,
-        const EdgePointer edge,
-        const unsigned int amount
-    )
-{
-    int increased_flow;
-    networkedge_augment(network, edge, amount);
-    if (edge->is_reverse) {
-        increased_flow = amount;
-    } else {
-        increased_flow = amount;
-    }
-    edge->first_ref->excess -= increased_flow;
-    edge->second_ref->excess += increased_flow;
-    return amount;
-}
-
 static unsigned int push_and_split(
         const NetworkPointer network,
         const EdgePointer edge,
@@ -70,7 +52,8 @@ unsigned int push_flow(
     unsigned int residual_capacity;
     residual_capacity = edge_residual_capacity(edge);
     if (residual_capacity >= amount) {
-        new_delta = augment(network, edge, amount);
+        edge_augment(edge, amount);
+        new_delta = amount;
     } else {
         new_delta = push_and_split(network, edge, residual_capacity);
     }
@@ -85,8 +68,8 @@ static bool is_merger_edge(const NetworkPointer network, const Edge edge)
     if (!is_valid_edge) {
         return false;
     }
-    bool first_is_strong = networkvertex_is_strong(network, edge.first_ref);
-    bool second_is_weak = !networkvertex_is_strong(network, edge.second_ref);
+    bool first_is_strong = vertex_excess(edge.first_ref) > 0;
+    bool second_is_weak = vertex_excess(edge.second_ref) <= 0;
     return first_is_strong && second_is_weak;
 }
 
