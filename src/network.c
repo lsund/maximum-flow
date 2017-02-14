@@ -43,11 +43,6 @@ void network_init(
     network->source                    = NULL;
     network->sink                      = NULL;
     network->flows                     = calloc(n_edges, sizeof(int));
-    network->residual_edges            = malloc((n_vertices + 1) * sizeof(EdgeCollection));
-    size_t i;
-    for (i = 1; i <= n_vertices; i++) {
-        *(network->residual_edges + i) = edgecollection_init(n_edges);
-    }
 
     if (type == PR) {
         network->distance_labels       = calloc(n_vertices, sizeof(Label));
@@ -118,10 +113,6 @@ void network_destroy(NetworkPointer network)
         VertexPointer vertex = vertexcollection_get(network->graph.vertices, i);
         free(vertex);
     }
-    for (i = 1; i <= vertexcollection_length(network->graph.vertices); i++) {
-        edgecollection_destroy(*(network->residual_edges + i));
-    }
-    free(network->residual_edges);
     edgecollection_destroy(network->reverse_edges);
     graph_destroy(network->graph);
     map_destroy(network->is_reverse);

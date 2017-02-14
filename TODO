@@ -3,7 +3,9 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 40x40 1.8 s
 
-do I really need to store residual_edges?       []
+do I really need to store residual_edges?       [done]
+more efficient way to get admissable edge,
+active vertex
 
 recover the flow in a more efficient way
 
