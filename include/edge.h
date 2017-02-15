@@ -24,6 +24,7 @@ struct edge {
     unsigned int capacity, flow;
     EdgePointer reverse;
     bool is_reverse;
+    bool *incident_with;
 };
 
 // Constructs an edge from two vertices

@@ -8,10 +8,10 @@
 // The type of network that will be used
 // Change this to PR if you want to use the push_relabel
 // algorithm instead of the pseudoflow algorithm
-#define NETWORK_TYPE PR
+#define NETWORK_TYPE PS
 // The file that will be used as input given that no argement
 // is given the program
-#define FILE_NAME "sample_data/16x16.dmx"
+#define FILE_NAME "sample_data/40x40.dmx"
 
 int main(int argc, char *argv[]) 
 {

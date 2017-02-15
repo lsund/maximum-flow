@@ -1,10 +1,25 @@
 
 #include "pseudoflow_helpers.h"
 
-static void split(
-        const NetworkPointer network,
-        const EdgePointer edge
-    ) 
+static bool is_strong_weak_edge(const NetworkPointer network, const Edge edge)
+{
+    bool is_source_edge = edge_incident_with(edge, *network->source);
+    bool is_sink_edge = edge_incident_with(edge, *network->sink);
+    bool is_valid_edge = !(is_source_edge || is_sink_edge);
+    if (!is_valid_edge) {
+        return false;
+    }
+    bool first_is_strong = vertex_excess(edge.first_ref) > 0;
+    bool second_is_weak = vertex_excess(edge.second_ref) <= 0;
+    return first_is_strong && second_is_weak;
+}
+
+static bool is_merger_edge(const NetworkPointer network, const EdgePointer edge)
+{
+    return edge_is_residual(edge) && is_strong_weak_edge(network, *edge);
+}
+
+static void split(const NetworkPointer network, const EdgePointer edge) 
 {
     VertexPointer vertex;
     vertex = edge->first_ref;
@@ -60,32 +75,16 @@ unsigned int push_flow(
     return new_delta;
 }
 
-static bool is_merger_edge(const NetworkPointer network, const Edge edge)
-{
-    bool is_source_edge = edge_incident_with(edge, *network->source);
-    bool is_sink_edge = edge_incident_with(edge, *network->sink);
-    bool is_valid_edge = !(is_source_edge || is_sink_edge);
-    if (!is_valid_edge) {
-        return false;
-    }
-    bool first_is_strong = vertex_excess(edge.first_ref) > 0;
-    bool second_is_weak = vertex_excess(edge.second_ref) <= 0;
-    return first_is_strong && second_is_weak;
-}
-
 EdgePointer merger_edge(const NetworkPointer network)
 {
+    EdgeCollection edges = network->graph.edges;
     size_t i;
-    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer edge = edgecollection_get(network->graph.edges, i);
-        if (edge_is_residual(edge) && is_merger_edge(network, *edge)) {
+    for (i = 0; i < edgecollection_length(edges); i++) {
+        EdgePointer edge = edgecollection_get(edges, i);
+        if (is_merger_edge(network, edge)) {
             return edge;
-        }
-    }
-    for (i = 0; i < edgecollection_length(network->reverse_edges); i++) {
-        EdgePointer edge = edgecollection_get(network->reverse_edges, i);
-        if (edge_is_residual(edge) && is_merger_edge(network, *edge)) {
-            return edge;
+        } else if (is_merger_edge(network, edge->reverse)) {
+            return edge->reverse;
         }
     }
     return NULL;

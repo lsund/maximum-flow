@@ -31,21 +31,16 @@ static EdgeCollection vertexcollection_to_edgecollection(
 void network_init(
         NetworkPointer network,
         NetworkType type,
-        const unsigned int n_vertices,
-        const unsigned int n_edges
+        const unsigned int n_vertices
     )
 {
     network->type                      = type;
     network->graph                     = graph_init();
     network->reverse_edges             = edgecollection_init_min();
-    network->is_reverse                = map_create();
-    network->capacities                = calloc(n_edges, sizeof(unsigned int));
     network->source                    = NULL;
     network->sink                      = NULL;
-    network->flows                     = calloc(n_edges, sizeof(int));
 
     if (type == PR) {
-        network->distance_labels       = calloc(n_vertices, sizeof(Label));
         network->active_vertices       = vertexcollection_init(COLL_MIN_SIZE);
     } else {
         network->excesses              = calloc(n_vertices, sizeof(int));
@@ -88,7 +83,6 @@ unsigned int network_flow(const NetworkPointer network)
 void network_destroy(NetworkPointer network)
 {
     if (network->type == PR) {
-        free(network->distance_labels);
         vertexcollection_destroy(network->active_vertices);
     } else {
         free(network->excesses);
@@ -100,8 +94,6 @@ void network_destroy(NetworkPointer network)
         edgecollection_destroy(network->sink_edges);
         free(network->root);
     }
-    free(network->flows);
-    free(network->capacities);
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer edge = edgecollection_get(network->graph.edges, i);
@@ -115,7 +107,6 @@ void network_destroy(NetworkPointer network)
     }
     edgecollection_destroy(network->reverse_edges);
     graph_destroy(network->graph);
-    map_destroy(network->is_reverse);
     free(network);
 }
 

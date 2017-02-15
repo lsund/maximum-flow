@@ -5,13 +5,13 @@
 
 void relabel(const NetworkPointer network, const VertexPointer vertex);
 
-void push(const NetworkPointer network, const EdgePointer edge, const VertexPointer vertex);
+void push(const EdgePointer edge, const VertexPointer vertex);
 
 Label find_min(const NetworkPointer network, const Vertex vertex);
 
 VertexPointer networkvertex_active(const NetworkPointer network);
 
-EdgePointer networkedge_admissable(
+EdgePointer admissable_edge(
         const NetworkPointer network, 
         const Vertex active
     );

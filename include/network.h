@@ -10,14 +10,9 @@ typedef struct network {
     NetworkType             type;
     Graph                   graph;
     EdgeCollection          reverse_edges;
-    EdgeCollectionPointer   residual_edges;
     VertexPointer           source, sink;
-    unsigned int            *capacities;
-    int                     *flows;
-    Map                     is_reverse;
 
     VertexCollection        active_vertices;
-    Label                   *distance_labels;
 
     VertexCollection        strong_vertices, weak_vertices; 
     VertexCollection        source_neighbours, sink_neighbours;
@@ -38,7 +33,7 @@ unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex ver
 
 unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
 
-void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices, const unsigned int n_edges);
+void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices);
 
 unsigned int network_flow(const NetworkPointer network);
 

@@ -38,18 +38,14 @@ Label vertex_distance_label(const VertexPointer vertex)
     return vertex->distance_label;
 }
 
-void vertex_set_distance_label(
-        const VertexPointer vertex, 
-        const unsigned int label
-    )
+void vertex_set_distance_label(const VertexPointer vertex, const Label label)
 {
     vertex->distance_label = label;
 }
 
 int vertex_excess(const VertexPointer vertex)
 {
-    VertexPointer branch = tree_find_branch(vertex);
-    return branch->excess;
+    return tree_find_branch(vertex)->excess;
 }
 
 int vertex_exflow(const VertexPointer vertex)

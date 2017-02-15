@@ -92,8 +92,6 @@ static void add_reverse_edges(const NetworkPointer network) {
         reverse_edge->reverse = edge;
         edge->is_reverse = false;
         reverse_edge->is_reverse = true;
-        unsigned int key = edge_hash(*reverse_edge); 
-        map_put(network->is_reverse, key, 1);
     }
 }
 
@@ -107,12 +105,11 @@ NetworkPointer parse(const char *filename, const NetworkType type)
     tokenize_dimacs(filename, table);
     dimension = tokentable_graph_dimension(table);
 
-    unsigned int n_vertices, n_edges;
+    unsigned int n_vertices;
     n_vertices = dimension.x;
-    n_edges    = dimension.y;
 
     NetworkPointer network = malloc(sizeof(Network));
-    network_init(network, type, n_vertices, n_edges);
+    network_init(network, type, n_vertices);
 
     parse_vertices(network->graph.vertices, n_vertices);
 
@@ -141,8 +138,6 @@ NetworkPointer parse(const char *filename, const NetworkType type)
                         third_token
                     );
                 update_capacity(table, edge, row);
-                unsigned int key = edge_hash(*edge); 
-                map_put(network->is_reverse, key, 0);
             }
         }
     }

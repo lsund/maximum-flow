@@ -3,6 +3,9 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 40x40 1.8 s
 
+store adjacent vertices like the goldberg-
+tarjan specification                            []
+
 do I really need to store residual_edges?       [done]
 more efficient way to get admissable edge,
 active vertex
