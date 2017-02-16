@@ -13,8 +13,6 @@ typedef struct network {
 
     EdgeCollection          *neighbors;
 
-    VertexCollection        active_vertices;
-
     VertexCollection        strong_vertices, weak_vertices; 
     VertexCollection        source_neighbours, sink_neighbours;
     EdgeCollection          source_edges, sink_edges;

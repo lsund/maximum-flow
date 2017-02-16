@@ -48,20 +48,6 @@ VertexCollection tree_path_to_root(const VertexPointer vertex)
     return ret;
 }
 
-/* EdgeCollection tree_edgepath_to_branch(const VertexPointer vertex, const EdgeCollection all_edges) */
-/* { */
-/*     VertexCollection path = tree_path_to_root(vertex); */
-/*     vertexcollection_pop(path); */
-/*     return vertexcollection_to_edgecollection(path, all_edges, false); */
-/* } */
-
-/* EdgeCollection tree_edgepath_from_branch(const VertexPointer vertex, const EdgeCollection all_edges) */
-/* { */
-/*     VertexCollection path = tree_path_to_root(vertex); */
-/*     vertexcollection_pop(path); */
-/*     return vertexcollection_to_edgecollection(path, all_edges, true); */
-/* } */
-
 void tree_invert(VertexPointer vertex)
 {
     VertexCollection path = tree_path_to_root(vertex);

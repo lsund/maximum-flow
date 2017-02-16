@@ -50,35 +50,6 @@ VertexPointer networkvertex_active(const NetworkPointer network)
     return NULL;
 }
 
-void activate_vertices(
-        const NetworkPointer network, 
-        const Edge edge, 
-        const unsigned int first_exflow_before,
-        const unsigned int second_exflow_before,
-        const unsigned int first_exflow,
-        const unsigned int second_exflow)
-{
-    if (first_exflow_before > 0 && first_exflow == 0) {
-        vertexcollection_remove(&network->active_vertices, edge.first);
-    }
-    if (second_exflow_before > 0 && second_exflow == 0) {
-        vertexcollection_remove(&network->active_vertices, edge.second);
-    }
-    VertexPointer vertex;
-    if (first_exflow_before == 0 && first_exflow > 0) {
-        if (edge.first.label != network->source->label) {
-            vertex = edge.first_ref;
-            vertexcollection_push(network->active_vertices, vertex);
-        }
-    }
-    if (second_exflow_before == 0 && second_exflow > 0) {
-        if (edge.second.label != network->sink->label) {
-            vertex = edge.second_ref;
-            vertexcollection_push(network->active_vertices, vertex);
-        }
-    }
-}
-
 EdgePointer admissable_edge(
         const NetworkPointer network, 
         const Vertex active

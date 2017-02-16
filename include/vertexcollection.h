@@ -20,40 +20,25 @@ VertexCollection vertexcollection_init(const size_t init_length);
 
 VertexCollection vertexcollection_init_min();
 
-void vertexcollection_reset(VertexCollection vertices);
-
-// Return true if the vertexcollection has no elements, false otherwise
-bool vertexcollection_is_empty(const VertexCollection vertices);
-
 // Return the number of elements currently in this set
 size_t vertexcollection_length(const VertexCollection vertices);
 
 // Get the vertex at the specified position in the set 
-VertexPointer vertexcollection_get(const VertexCollection vertices, const unsigned int position);
-
-VertexPointer vertexcollection_get_first(const VertexCollection vertices);
-
-VertexPointer vertexcollection_get_with_label(const VertexCollection vertices, const Label label);
+VertexPointer vertexcollection_get(
+        const VertexCollection vertices,
+        const unsigned int position
+    );
 
 // Does the set contain the specified vertex?
-bool vertexcollection_contains_label(const VertexCollection vertices, const Label label);
+bool vertexcollection_contains_label(
+        const VertexCollection vertices,
+        const Label label
+    );
 
-// is the vertexcollection a superset of the subset?
-bool vertexcollection_is_super(const VertexCollection super, const VertexCollection sub);
-
-bool vertexcollection_equals(const VertexCollection vertexcollection_a, const VertexCollection vertexcollection_b);
-
-// Add a vertex to the set
-Result vertexcollection_replace(const VertexCollection vertices, const VertexPointer vertex, const unsigned int position);
-
-void vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex);
-
-Result vertexcollection_pop(const VertexCollection vertices);
-
-void vertexcollection_remove(VertexCollectionPointer vertices, const Vertex vertex);
-
-// Find the relative complement of a vertexcollection and store it in ret
-Result vertexcollection_complement(const VertexCollection vertexcollection_a, const VertexCollection vertexcollection_b, VertexCollectionPointer ret);
+void vertexcollection_push(
+        const VertexCollection vertices,
+        const VertexPointer vertex
+    );
 
 // Print the set to stout
 void vertexcollection_print(const VertexCollection vertices);

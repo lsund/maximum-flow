@@ -34,17 +34,6 @@ VertexCollectionPointer init_p_vertexcollection(const size_t init_length)
     return ret;
 }
 
-void vertexcollection_reset(VertexCollection vertices)
-{
-    collection_reset(vertices.members);
-    map_reset(vertices.indices);
-}
-
-bool vertexcollection_is_empty(const VertexCollection vertices)
-{
-    return vertexcollection_length(vertices) == 0;
-}
-
 size_t vertexcollection_length(const VertexCollection vertices)
 {
     return collection_length(vertices.members);
@@ -61,27 +50,6 @@ VertexPointer vertexcollection_get(
     return (VertexPointer) collection_get(vertices.members, position);
 }
 
-VertexPointer vertexcollection_get_first(const VertexCollection vertices)
-{
-    return vertexcollection_get(vertices, 0);
-}
-
-VertexPointer vertexcollection_get_with_label(
-        const VertexCollection vertices, 
-        const Label label
-    )
-{
-    size_t i;
-    for (i = 0; i < vertices.members->capacity; i++) {
-        VertexPointer vertex = vertexcollection_get(vertices, i);
-        if (vertex->label == label) {
-            return vertex;
-        }
-    }
-    runtime_error("vertexcollection_get_with_label: no vertex with that label");
-    return NULL;
-}
-
 bool vertexcollection_contains_label(
         const VertexCollection vertices,
         const Label label
@@ -90,116 +58,12 @@ bool vertexcollection_contains_label(
     return map_exists(vertices.indices, label);
 }
 
-bool vertexcollection_is_super(
-        const VertexCollection super,
-        const VertexCollection sub
-    )
-{
-    if (vertexcollection_length(super) != vertexcollection_length(sub)) {
-        return false;
-    }
-    size_t i;
-    for (i = 0; i < vertexcollection_length(sub); i++) {
-        VertexPointer vertex = vertexcollection_get(sub, i);
-        if (!vertexcollection_contains_label(super, vertex->label)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool vertexcollection_equals(
-        const VertexCollection vertexcollection_a,
-        const VertexCollection vertexcollection_b
-    )
-{
-    CollectionPointer collection_a, collection_b;
-    collection_a = vertexcollection_a.members;
-    collection_b = vertexcollection_b.members;
-    if (!collection_equals(collection_a, collection_b)) {
-        return false;
-    }
-    size_t i;
-    for (i = 0; i < vertexcollection_length(vertexcollection_a); i++) {
-        Vertex vertex_a = *vertexcollection_get(vertexcollection_a, i);
-        Vertex vertex_b = *vertexcollection_get(vertexcollection_b, i);
-        if (vertex_equals(vertex_a, vertex_b)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-Result vertexcollection_set(const VertexCollection vertices, const VertexPointer vertex, const unsigned int position) 
-{
-    if (!vertexcollection_get(vertices, position)) {
-        runtime_error("vertexcollection_set: can only overwrite existing element");
-    }
-    if (vertex->label >= vertices.members->capacity) {
-        runtime_error("vertexcollection_set: label too large");
-        return FAIL;
-    }
-    if (vertexcollection_contains_label(vertices, vertex->label)) {
-        runtime_error("vertexcollection_set: set already contains this vertex");
-        return FAIL;
-    } else {
-        collection_set(vertices.members, vertex, position);
-    }
-    return SUCCESS;
-}
-
-Result vertexcollection_pop(const VertexCollection vertices)
-{
-    if (vertexcollection_length(vertices) == 0) {
-        return FAIL;
-    } else {
-        VertexPointer vertex = (VertexPointer) collection_pop(vertices.members);
-        map_remove(vertices.indices, vertex->label);
-        return SUCCESS;
-    }
-}
-
 void vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex)
 {
     if (!vertexcollection_contains_label(vertices, vertex->label)) {
         map_put(vertices.indices, vertex->label, vertexcollection_length(vertices));
         collection_push(vertices.members, vertex);
     }
-}
-
-void vertexcollection_remove(VertexCollectionPointer vertices, const Vertex vertex)
-{
-    size_t i, n_vertices = vertexcollection_length(*vertices);
-    VertexCollection vertices_val = *vertices;
-    VertexCollection temp = vertexcollection_init(n_vertices);
-    for (i = 0; i < n_vertices; i++) {
-        VertexPointer current = vertexcollection_get(vertices_val, i);
-        if (!vertex_equals(vertex, *current)) {
-            vertexcollection_push(temp, current);  
-        }
-    }
-    vertexcollection_destroy(vertices_val);
-    *vertices = temp;
-}
-
-Result vertexcollection_complement(const VertexCollection vertexcollection_a, const VertexCollection vertexcollection_b, VertexCollectionPointer ret)
-{
-    size_t length_a = vertexcollection_length(vertexcollection_a);
-    size_t length_b = vertexcollection_length(vertexcollection_b);
-    unsigned int larger_size = larger(length_a, length_b);
-    VertexPointer vertex_a;
-    size_t i;
-    for (i = 0; i < larger_size; i++) {
-        if (i < vertexcollection_length(vertexcollection_a)) {
-            vertex_a = vertexcollection_get(vertexcollection_a, i);
-            if (vertex_a && !vertexcollection_contains_label(vertexcollection_b, vertex_a->label)) {
-                vertexcollection_push(*ret, vertex_a);
-            } 
-        } else {
-            break;
-        }
-    }
-    return SUCCESS;
 }
 
 

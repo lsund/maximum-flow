@@ -11,7 +11,7 @@
 #define NETWORK_TYPE PR
 // The file that will be used as input given that no argement
 // is given the program
-#define FILE_NAME "sample_data/10x10.dmx"
+#define FILE_NAME "sample_data/25x25.dmx"
 
 int main(int argc, char *argv[]) 
 {

@@ -20,14 +20,8 @@ static EdgePointer parse_edge(
     EdgePointer ret;
     Label label_first  = (unsigned int) strtol(first_token, NULL, 10);
     Label label_second = (unsigned int) strtol(second_token, NULL, 10);
-    VertexPointer first_vertex = vertexcollection_get_with_label(
-            vertexcollection, 
-            label_first
-        );
-    VertexPointer second_vertex = vertexcollection_get_with_label(
-            vertexcollection, 
-            label_second
-        );
+    VertexPointer first_vertex = vertexcollection_get(vertexcollection, label_first - 1);
+    VertexPointer second_vertex = vertexcollection_get(vertexcollection, label_second - 1);
     if (first_vertex && second_vertex) {
         ret = edge_p_make(first_vertex, second_vertex);
     } else {
@@ -41,9 +35,9 @@ static void update_source_sink(const NetworkPointer network, const char *first_t
 {
     Label label  = (unsigned int) strtol(first_token, NULL, 10);
     if (strcmp(second_token, "s") == 0) {
-        network->source = vertexcollection_get_with_label(network->graph.vertices, label);
+        network->source = vertexcollection_get(network->graph.vertices, label - 1);
     } else {
-        network->sink = vertexcollection_get_with_label(network->graph.vertices, label);
+        network->sink = vertexcollection_get(network->graph.vertices, label - 1);
     }
 }
 

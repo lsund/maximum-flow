@@ -49,7 +49,6 @@ void network_init(
         *(network->neighbors + i) = edgecollection_init_min();
     }
     if (type == PR) {
-        network->active_vertices   = vertexcollection_init(COLL_MIN_SIZE);
     } else {
         network->excesses          = calloc(nv, sizeof(int));
         network->root              = vertex_p_make(nv + 1);
@@ -109,7 +108,6 @@ unsigned int network_flow(const NetworkPointer network)
 void network_destroy(NetworkPointer network)
 {
     if (network->type == PR) {
-        vertexcollection_destroy(network->active_vertices);
     } else {
         free(network->excesses);
         vertexcollection_destroy(network->strong_vertices);
