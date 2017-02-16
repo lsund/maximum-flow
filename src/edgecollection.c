@@ -5,6 +5,7 @@ EdgeCollection edgecollection_empty()
 {
     EdgeCollection ret;
     ret.members = NULL;
+    ret.curr    = NULL;
     return ret;
 }
 
@@ -16,6 +17,7 @@ EdgeCollection edgecollection_init(const size_t size)
     } else {
         EdgeCollection ret;
         ret.members = collection_p_init(size);
+        ret.curr = calloc(1, sizeof(unsigned int));
         return ret;
     }
 }
@@ -78,5 +80,6 @@ void edgecollection_print(const EdgeCollection edges)
 void edgecollection_destroy(EdgeCollection edges)
 {
     collection_destroy(edges.members);
+    free(edges.curr);
 }
 

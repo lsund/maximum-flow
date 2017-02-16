@@ -1,21 +1,6 @@
 
 #include "push_relabel.h"
 
-void discharge()
-{
-    // let e be the edge to which curr points
-    // if e is admissable then 
-    //      push(e) 
-    // else
-    //      if e is the last list of out_edges(v) then
-    //          relabel(v)
-    //          let curr(v) point to the first element of out_edges(v)
-    //          return
-    //      else
-    //          let curr(v) point to the next edge in out_edges(v)
-    // if exflow(v) > 0 go to start
-}
-
 void push_relabel(NetworkPointer network)
 {
     push_relabel_initialize(network);

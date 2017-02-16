@@ -10,6 +10,7 @@
 // Field members:   The underlying collection
 typedef struct edgecollection {
     CollectionPointer members;
+    unsigned int *curr;
 } EdgeCollection, *EdgeCollectionPointer;
 
 // Returns an empty edgecollection, no allocations.

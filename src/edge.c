@@ -133,6 +133,14 @@ bool edge_is_residual(const EdgePointer edge)
     return edge_residual_capacity(edge) > 0;
 }
 
+bool edge_is_admissable(const EdgePointer edge)
+{
+    Label first_label, second_label;
+    first_label = vertex_distance_label(edge->first_ref);
+    second_label = vertex_distance_label(edge->second_ref);
+    return first_label == second_label + 1 && edge_is_residual(edge);
+}
+
 void edge_print(const Edge edge)
 {
     printf("(%u, %u)\n", edge.first.label, edge.second.label);

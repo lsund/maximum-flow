@@ -3,6 +3,8 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 40x40 1.8 s
 
+implement the GBT algorithm                     []
+
 recover the flow in a more efficient way        []
 
 analyze if the edges need pointers to 

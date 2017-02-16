@@ -15,6 +15,36 @@ void relabel(const NetworkPointer network, const VertexPointer vertex)
     vertex_set_distance_label(vertex, min_label);
 }
 
+static void discharge(const NetworkPointer network, const VertexPointer vertex)
+{
+    do {
+        EdgeCollection out_edges = network_get_out_edges(network, *vertex);
+        // let e be the edge to which curr points
+        EdgePointer edge = edgecollection_get(out_edges, *out_edges.curr);
+        // if e is admissable then 
+        if (edge_is_admissable(edge)) {
+        //      push(e) 
+            push(edge, vertex);
+        }
+        // else
+        else {
+        //      if e is the last list of out_edges(v) then
+            if (*out_edges.curr == edgecollection_length(out_edges) - 1) {
+        //          relabel(v)
+                relabel(network, vertex);
+        //          let curr(v) point to the first element of out_edges(v)
+                *out_edges.curr = 0;
+                return;
+            } 
+        //      else
+            else {
+        //          let curr(v) point to the next edge in out_edges(v)
+                *out_edges.curr = *out_edges.curr + 1;
+            }
+        }
+    // if exflow(v) > 0 go to start
+    } while (vertex_excess(vertex) > 0);
+}
 
 Label find_min(const NetworkPointer network, const Vertex vertex)
 {
@@ -57,21 +87,15 @@ EdgePointer admissable_edge(
 {
     size_t i;
     EdgeCollection edges = network_get_out_edges(network, active);
-    unsigned int label_first, label_second;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        label_first = vertex_distance_label(edge->first_ref);
-        label_second = vertex_distance_label(edge->second_ref);
         if (vertex_equals(edge->first, active)) {
-            if (label_first == label_second + 1 && edge_is_residual(edge)) {
+            if (edge_is_admissable(edge)) {
                 return edge;
             }
-        }  else {
-            bool is_residual = edge_is_residual(edge->reverse);
-            bool from_active = vertex_equals(edge->second, active);
-            bool label_successor = label_second == label_first + 1;
-            if (is_residual && from_active && label_successor) {
-                    return edge->reverse;
+        } else if (vertex_equals(edge->second, active)) {
+            if (edge_is_admissable(edge->reverse)) {
+                return edge->reverse;
             }
         }
     }

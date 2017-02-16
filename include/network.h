@@ -28,8 +28,6 @@ int networkvertex_exflow_ps(
     );
 int networkvertex_exflow_pr(const NetworkPointer network, const VertexPointer vertex);
 
-unsigned int networkvertex_inflow(const NetworkPointer network, const Vertex vertex);
-
 unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer edge);
 
 void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices);

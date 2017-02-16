@@ -70,6 +70,8 @@ void edge_augment(const EdgePointer edge, const unsigned int added_flow);
 
 bool edge_is_residual(const EdgePointer edge);
 
+bool edge_is_admissable(const EdgePointer edge);
+
 // Print an edge as "(v, w)" to stdout
 void edge_print(const Edge edge);
 
