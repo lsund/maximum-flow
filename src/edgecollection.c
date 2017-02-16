@@ -5,7 +5,6 @@ EdgeCollection edgecollection_empty()
 {
     EdgeCollection ret;
     ret.members = NULL;
-    ret.indices = NULL;
     return ret;
 }
 
@@ -17,7 +16,6 @@ EdgeCollection edgecollection_init(const size_t size)
     } else {
         EdgeCollection ret;
         ret.members = collection_p_init(size);
-        ret.indices = map_create();
         return ret;
     }
 }
@@ -44,24 +42,6 @@ EdgePointer edgecollection_get(
     return collection_get(edges.members, position);
 }
 
-EdgePointer edgecollection_get_reference(
-        const EdgeCollection edges,
-        const Edge edge
-    )
-{
-    int index = edgecollection_index_of(edges, edge);
-    return index == -1 ? NULL : edgecollection_get(edges, index);
-}
-
-int edgecollection_index_of(const EdgeCollection edges, const Edge edge)
-{
-    if (map_exists(edges.indices, edge_hash(edge))) {
-        return map_get(edges.indices, edge_hash(edge));
-    } else {
-        return -1;
-    }
-}
-
 VertexCollection edgecollection_vertices(const EdgeCollection edges)
 {
     VertexCollection vertices = vertexcollection_init(COLL_MIN_SIZE);
@@ -80,39 +60,9 @@ VertexCollection edgecollection_vertices(const EdgeCollection edges)
     return vertices;
 }
 
-Result edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
+void edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
-    if (!edgecollection_contains_edge(edges, edge)) {
-        map_put(edges.indices, edge_hash(*edge), edgecollection_length(edges));
-        collection_push(edges.members, edge);
-        return SUCCESS;
-    } else {
-        return FAIL;
-    }
-}
-
-void edgecollection_remove(const EdgeCollectionPointer edges, const EdgePointer edge)
-{
-    size_t i, n_edges = edgecollection_length(*edges);
-    EdgeCollection edges_val = *edges;
-    EdgeCollection temp = edgecollection_init(n_edges);
-    for (i = 0; i < n_edges; i++) {
-        EdgePointer current = edgecollection_get(edges_val, i);
-        if (!edge_equals(*edge, *current)) {
-            edgecollection_push(temp, current);  
-        }
-    }
-    edgecollection_destroy(edges_val);
-    *edges = temp;
-}
-
-bool edgecollection_contains_edge(
-        const EdgeCollection edges,
-        const EdgePointer edge
-    )
-{
-    unsigned int key = edge_hash(*edge);
-    return map_exists(edges.indices, key);
+    collection_push(edges.members, edge);
 }
 
 void edgecollection_print(const EdgeCollection edges)
@@ -128,6 +78,5 @@ void edgecollection_print(const EdgeCollection edges)
 void edgecollection_destroy(EdgeCollection edges)
 {
     collection_destroy(edges.members);
-    map_destroy(edges.indices);
 }
 

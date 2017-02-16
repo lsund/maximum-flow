@@ -3,18 +3,17 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 40x40 1.8 s
 
-improve the speed of 
-vertexcollection_to_edgecollection              []
+recover the flow in a more efficient way        []
 
-store adjacent edges to vertices like 
-the goldberg- tarjan specification              []
+analyze if the edges need pointers to 
+vertices / values / both                        []
 
-do I really need to store residual_edges?       [done]
-more efficient way to get admissable edge,
-active vertex
+merger_edge scans all edges each iteration.
+Faster way to do this?                          []
 
-recover the flow in a more efficient way
-
+Checking for the resulting flow              
+(storing the neighbours of sink)                []
+excess storage
 could maybe store is_strong as a local 
 field of vertex. At least for PS since
 vertices can only become strong, not weak. 
@@ -56,16 +55,15 @@ eliminate uneccesary pointers
 to edges for example
 edges                                           [done]
 
-analyze if the edges need pointers to 
-vertices / values / both                        []
+improve the speed of 
+vertexcollection_to_edgecollection              [done]
 
-merger_edge scans all edges each iteration.
-Faster way to do this?                          []
-the nodes are selected 
+store adjacent edges to vertices like 
+the goldberg- tarjan specification              [done]
 
-Checking for the resulting flow              
-(storing the neighbours of sink)                []
-excess storage
+do I really need to store residual_edges?       [done]
+more efficient way to get admissable edge,
+active vertex
 
 have to go through each module and check
 * are there functions that exist that does 
