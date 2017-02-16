@@ -20,7 +20,7 @@ Label find_min(const NetworkPointer network, const Vertex vertex)
 {
     Label min = INT_MAX;
     size_t i;
-    EdgeCollection edges = network->graph.edges;
+    EdgeCollection edges = network_get_out_edges(network, vertex);
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
         Label label      = vertex_distance_label(edge->second_ref) + 1;
@@ -85,7 +85,7 @@ EdgePointer admissable_edge(
     )
 {
     size_t i;
-    EdgeCollection edges = network->graph.edges;
+    EdgeCollection edges = network_get_out_edges(network, active);
     unsigned int label_first, label_second;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);

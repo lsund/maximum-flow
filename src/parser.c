@@ -55,6 +55,8 @@ static EdgePointer update_edge(
 {
     EdgePointer edge = parse_edge(network->graph.vertices, first_token, second_token);
     edgecollection_push(network->graph.edges, edge);
+    network_add_out_edge(network, edge->first, edge);
+    network_add_out_edge(network, edge->second, edge->reverse);
     if (network->type == PS) {
         if (vertex_equals(edge->first, *network->source)) {
             VertexPointer vertex = edge->second_ref;
@@ -66,7 +68,6 @@ static EdgePointer update_edge(
             edgecollection_push(network->sink_edges, edge);
         }
     } else {
-        network_add_out_edge(network, edge->first, edge);
     }
     return edge;
 }

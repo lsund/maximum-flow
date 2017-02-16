@@ -11,8 +11,9 @@ static EdgeCollection vertexcollection_to_edgecollection(
     for (i = 0; i < vertexcollection_length(vertices) - 1; i++) {
         VertexPointer first = vertexcollection_get(vertices, i);
         VertexPointer second = vertexcollection_get(vertices, i + 1);
-        for (j = 0; j < edgecollection_length(network->graph.edges); j++) {
-            EdgePointer edge = edgecollection_get(network->graph.edges, j);
+        EdgeCollection out_edges = network_get_out_edges(network, *first);
+        for (j = 0; j < edgecollection_length(out_edges); j++) {
+            EdgePointer edge = edgecollection_get(out_edges, j);
             if (vertex_equals(edge->second, *network->root)) {
                 break;
             }
@@ -28,24 +29,6 @@ static EdgeCollection vertexcollection_to_edgecollection(
             }
         }
     }
-
-    /* for (i = 0; i < vertexcollection_length(vertices) - 1; i++) { */
-    /*     VertexPointer first = vertexcollection_get(vertices, i); */
-    /*     VertexPointer second = vertexcollection_get(vertices, i + 1); */
-    /*     Edge edge = edge_make(*first, *second); */
-    /*     EdgePointer edge_p; */
-    /*     if (vertex_equals(*network->root, edge.second)) { */
-    /*         break; */
-    /*     } */
-    /*     edge_p = edgecollection_get_reference(network->graph.edges, edge); */
-    /*     if (!edge_p) { */
-    /*         edge_p = edgecollection_get_reference(network->reverse_edges, edge); */
-    /*     } */
-    /*     if (!edge_p) { */
-    /*         runtime_error("vertexcollection_to_edgecollection: got null reference"); */
-    /*     } */
-    /*     edgecollection_push(epath, edge_p); */
-    /* } */
     return epath;
 }
 
@@ -60,13 +43,13 @@ void network_init(
     network->source                = NULL;
     network->sink                  = NULL;
 
+    network->neighbors             = malloc(sizeof(EdgeCollection) * (nv + 2));
+    size_t i;
+    for (i = 0; i < nv + 2; i++) {
+        *(network->neighbors + i) = edgecollection_init_min();
+    }
     if (type == PR) {
         network->active_vertices   = vertexcollection_init(COLL_MIN_SIZE);
-        network->neighbors         = malloc(sizeof(EdgeCollection) * nv);
-        size_t i;
-        for (i = 0; i < nv; i++) {
-            *(network->neighbors + i) = edgecollection_init_min();
-        }
     } else {
         network->excesses          = calloc(nv, sizeof(int));
         network->root              = vertex_p_make(nv + 1);
@@ -140,13 +123,17 @@ void network_destroy(NetworkPointer network)
     size_t i;
     for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
         EdgePointer edge = edgecollection_get(network->graph.edges, i);
-        free(edge);
         free(edge->reverse);
+        free(edge);
     }
     for (i = 0; i < vertexcollection_length(network->graph.vertices); i++) {
         VertexPointer vertex = vertexcollection_get(network->graph.vertices, i);
         free(vertex);
     }
+    for (i = 0; i < vertexcollection_length(network->graph.vertices) + 2; i++) {
+        edgecollection_destroy(*(network->neighbors + i));
+    }
+    free(network->neighbors);
     graph_destroy(network->graph);
     free(network);
 }
