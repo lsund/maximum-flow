@@ -29,7 +29,7 @@ static EdgePointer parse_edge(
             label_second
         );
     if (first_vertex && second_vertex) {
-        ret = edge_p_make_p_vertices(first_vertex, second_vertex);
+        ret = edge_p_make(first_vertex, second_vertex);
     } else {
         ret = NULL;
         runtime_error("Parse edges: vertex null pointer");
@@ -65,6 +65,8 @@ static EdgePointer update_edge(
             vertexcollection_push(network->sink_neighbours, vertex);
             edgecollection_push(network->sink_edges, edge);
         }
+    } else {
+        network_add_out_edge(network, edge->first, edge);
     }
     return edge;
 }
@@ -78,21 +80,6 @@ static void update_capacity(
     char *fourth_token = tokentable_get(table, row, 3);
     unsigned int capacity = (unsigned int) strtol(fourth_token, NULL, 10);
     edge_set_capacity(edge, capacity);
-}
-
-static void add_reverse_edges(const NetworkPointer network) {
-    size_t i;
-    for (i = 0; i < edgecollection_length(network->graph.edges); i++) {
-        EdgePointer edge = edgecollection_get(network->graph.edges, i);
-        VertexPointer rev_first = edge->second_ref;
-        VertexPointer rev_second = edge->first_ref;
-        EdgePointer reverse_edge = edge_p_make_p_vertices(rev_first, rev_second);
-        edgecollection_push(network->reverse_edges, reverse_edge);
-        edge->reverse = reverse_edge;
-        reverse_edge->reverse = edge;
-        edge->is_reverse = false;
-        reverse_edge->is_reverse = true;
-    }
 }
 
 NetworkPointer parse(const char *filename, const NetworkType type)
@@ -142,7 +129,6 @@ NetworkPointer parse(const char *filename, const NetworkType type)
         }
     }
     tokentable_destroy(table);
-    add_reverse_edges(network);
 
     return network;
 }

@@ -9,8 +9,9 @@ typedef enum networktype { PR, PS } NetworkType;
 typedef struct network {
     NetworkType             type;
     Graph                   graph;
-    EdgeCollection          reverse_edges;
     VertexPointer           source, sink;
+
+    EdgeCollection          *neighbors;
 
     VertexCollection        active_vertices;
 
@@ -36,6 +37,18 @@ unsigned int networkedge_flow(const NetworkPointer network, const EdgePointer ed
 void network_init(NetworkPointer network, NetworkType type, const unsigned int n_vertices);
 
 unsigned int network_flow(const NetworkPointer network);
+
+void network_add_out_edge(
+        const NetworkPointer network,
+        const Vertex vertex,
+        const EdgePointer edge
+    );
+
+
+EdgeCollection network_get_out_edges(
+        const NetworkPointer network,
+        const Vertex vertex
+    );
 
 void network_destroy(NetworkPointer network);
 

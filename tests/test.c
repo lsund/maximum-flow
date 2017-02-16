@@ -25,12 +25,8 @@ static char *test()
     mu_run_test(test_collection);
 	mu_message(MODULE,"vertex\n");
     mu_run_test(test_vertex);
-	mu_message(MODULE,"edge\n");
-    mu_run_test(test_edge);
 	mu_message(MODULE,"vertexcollection\n");
     mu_run_test(test_vertexcollection);
-	mu_message(MODULE,"edgecollection\n");
-    mu_run_test(test_edgecollection);
 	mu_message(MODULE,"tree\n");
     mu_run_test(test_tree);
 	mu_message(MODULE,"tokentable\n");
@@ -39,8 +35,6 @@ static char *test()
     mu_run_test(test_tokenizer);
 	mu_message(MODULE,"parser\n");
     mu_run_test(test_parser);
-	mu_message(MODULE,"graph\n");
-    mu_run_test(test_graph);
 	mu_message(MODULE,"network\n");
     mu_run_test(test_network);
 	mu_message(MODULE,"util\n");
@@ -87,9 +81,7 @@ void mu_message(enum MessageOption option, const char *s)
 
 static char *one_test(const char *module)
 {
-    if (strcmp(module, "edgecollection") == 0) {
-        mu_run_test(test_edgecollection);
-    } else if (strcmp(module, "tree") == 0) {
+    if (strcmp(module, "tree") == 0) {
         mu_run_test(test_tree);
     } else if (strcmp(module, "pseudoflow") == 0) {
         mu_run_test(test_pseudoflow);

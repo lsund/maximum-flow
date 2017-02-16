@@ -1,7 +1,7 @@
 
 #include "edge.h"
 
-Edge edge_make_vertices(const Vertex first, const Vertex second)
+Edge edge_make(const Vertex first, const Vertex second)
 {
     Edge ret;
     ret.first    = first;
@@ -11,45 +11,28 @@ Edge edge_make_vertices(const Vertex first, const Vertex second)
     return ret;
 }
 
-Edge edge_make_label(const Label first_label, const Label second_label)
+EdgePointer edge_p_make(const VertexPointer first, const VertexPointer second)
 {
-    Vertex first, second;
-    first  = vertex_make(first_label);
-    second = vertex_make(second_label);
-    return edge_make_vertices(first, second);
-}
+    EdgePointer ret          = malloc(sizeof(Edge));
+    *ret                     = edge_make(*first, *second);
+    ret->reverse             = malloc(sizeof(Edge));
+    *ret->reverse            = edge_make(*second, *first);
 
-EdgePointer edge_p_make_edge(const Edge edge)
-{
-    EdgePointer ret = malloc(sizeof(Edge));
-    *ret = edge_make_vertices(edge.first, edge.second);
-    return ret;
-}
+    ret->first_ref           = first;
+    ret->second_ref          = second;
+    ret->is_reverse          = false;
 
-EdgePointer edge_p_make_label(const Label first_label, const Label second_label)
-{
-    return edge_p_make_edge(edge_make_label(first_label, second_label));    
-}
+    ret->reverse->first_ref  = second;
+    ret->reverse->second_ref = first;
+    ret->reverse->is_reverse = true;
+    ret->reverse->reverse    = ret;
 
-
-EdgePointer edge_p_make_vertices(const Vertex first, const Vertex second)
-{
-    EdgePointer ret = malloc(sizeof(Edge));
-    *ret = edge_make_vertices(first, second);
-    return ret;
-}
-
-EdgePointer edge_p_make_p_vertices(const VertexPointer first, const VertexPointer second)
-{
-    EdgePointer ret = edge_p_make_vertices(*first, *second);
-    ret->first_ref = first;
-    ret->second_ref = second;
     return ret;
 }
 
 Edge edge_swapped(const Edge edge)
 {
-    return edge_make_vertices(edge.second, edge.first);
+    return edge_make(edge.second, edge.first);
 }
 
 bool edge_equals(const Edge edge_a, const Edge edge_b)
