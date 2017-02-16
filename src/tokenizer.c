@@ -58,8 +58,9 @@ Result tokenize(const char *fname, TokenTablePointer table)
     return SUCCESS;
 }
 
-Result tokenize_dimacs(const char *fname, TokenTablePointer table)
+TokenTablePointer tokenize_dimacs(const char *fname)
 {
+    TokenTablePointer table = tokentable_init();
     tokenize(fname, table);
     size_t i;
     int edge_index = 0;
@@ -70,8 +71,8 @@ Result tokenize_dimacs(const char *fname, TokenTablePointer table)
     }
     if (tokentable_graph_dimension(table).y != edge_index) {
         runtime_error("tokenize: data malformed (number of edges unmatched)");
-        return FAIL;
+        return NULL;
     }
-    return SUCCESS;
+    return table;
 }
 

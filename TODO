@@ -3,7 +3,13 @@ SPEEDING UP THE ALGORITHM:
 // 
 // 40x40 1.8 s
 
+
+source_edges, source_neighbours and relevant
+crap. get rid of.                               []
+
 implement the GBT algorithm                     []
+discharge                                       [done]
+push_relabel                                    []
 
 recover the flow in a more efficient way        []
 

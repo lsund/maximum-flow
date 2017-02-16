@@ -17,8 +17,7 @@ char *utest_tokentable_init() {
 
 char *utest_tokentable_get() {
     TokenTablePointer table;
-    table = tokentable_init();
-    tokenize_dimacs("/home/lsund/Data/graphs/data/matchings/graphs/myciel7.mwis.dmx", table);
+    table = tokenize_dimacs("/home/lsund/Data/graphs/data/matchings/graphs/myciel7.mwis.dmx");
     mu_assert("r0c0 should be c", strcmp(tokentable_get(table, 0, 0), "c") == 0);
     mu_assert("r4c2 should be 2", strcmp(tokentable_get(table, 4, 2) , "2") == 0);
     mu_assert("r2c8 should be defines", strcmp(tokentable_get(table, 2, 8) , "defines") == 0);
@@ -39,8 +38,7 @@ char *utest_tokentable_destroy() {
 
 char *utest_tokentable_graph_dimension() {
     TokenTablePointer table;
-    table = tokentable_init();
-    tokenize_dimacs("/home/lsund/Data/graphs/data/matchings/graphs/myciel7.mwis.dmx", table);
+    table = tokenize_dimacs("/home/lsund/Data/graphs/data/matchings/graphs/myciel7.mwis.dmx");
     mu_assert("nedges should be 2360", tokentable_graph_dimension(table).y == 2360);
     tokentable_destroy(table);
     return NULL;

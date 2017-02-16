@@ -1,27 +1,32 @@
 #include "parser.h"
 
 static void parse_vertices(
-        const VertexCollection vertexcollection, 
+        const VertexCollection vertices, 
         const unsigned int n_vertices
     )
 {
     size_t i;
     for (i = 1; i <= n_vertices; i++) {
         VertexPointer vertex = vertex_p_make(i);
-        vertexcollection_push(vertexcollection, vertex);
+        vertexcollection_push(vertices, vertex);
     }
 }
 
 static EdgePointer parse_edge(
-        const VertexCollection vertexcollection, 
-        const char *first_token, const char*second_token
+        const VertexCollection vertices, 
+        const char *first_token,
+        const char *second_token
     )
 {
+    Label first_label, second_label;
+    first_label = (unsigned int) strtol(first_token, NULL, 10);
+    second_label = (unsigned int) strtol(second_token, NULL, 10);
+
+    VertexPointer first_vertex, second_vertex;
+    first_vertex = vertexcollection_get(vertices, first_label - 1);
+    second_vertex = vertexcollection_get(vertices, second_label- 1);
+
     EdgePointer ret;
-    Label label_first  = (unsigned int) strtol(first_token, NULL, 10);
-    Label label_second = (unsigned int) strtol(second_token, NULL, 10);
-    VertexPointer first_vertex = vertexcollection_get(vertexcollection, label_first - 1);
-    VertexPointer second_vertex = vertexcollection_get(vertexcollection, label_second - 1);
     if (first_vertex && second_vertex) {
         ret = edge_p_make(first_vertex, second_vertex);
     } else {
@@ -31,13 +36,18 @@ static EdgePointer parse_edge(
     return ret;
 }
 
-static void update_source_sink(const NetworkPointer network, const char *first_token, const char *second_token)
+static void update_source_sink(
+        const NetworkPointer network,
+        const char *first_token,
+        const char *second_token
+    )
 {
+    VertexCollection vertices = network->graph.vertices;
     Label label  = (unsigned int) strtol(first_token, NULL, 10);
     if (strcmp(second_token, "s") == 0) {
-        network->source = vertexcollection_get(network->graph.vertices, label - 1);
+        network->source = vertexcollection_get(vertices, label - 1);
     } else {
-        network->sink = vertexcollection_get(network->graph.vertices, label - 1);
+        network->sink = vertexcollection_get(vertices, label - 1);
     }
 }
 
@@ -83,8 +93,7 @@ NetworkPointer parse(const char *filename, const NetworkType type)
         return NULL;
     }
     Point dimension;
-    TokenTablePointer table = tokentable_init();
-    tokenize_dimacs(filename, table);
+    TokenTablePointer table = tokenize_dimacs(filename);
     dimension = tokentable_graph_dimension(table);
 
     unsigned int n_vertices;
