@@ -4,10 +4,6 @@ CFLAGS=-std=c99 -Wall -g -D_POSIX_SOURCE -D_GNU_SOURCE $(INCLUDE)
 SRC_DIR=src
 TEST_DIR=tests
 SRCS := $(shell find $(SRC_DIR)/* -maxdepth 0 -name '*.c')
-PR_SRCS := $(shell find $(SRC_DIR)/* -maxdepth 0 -name '*.c')
-PF_SRCS := $(shell find $(SRC_DIR)/* -maxdepth 0 -name '*.c' \
-	! -name 'push_relabel_network.c' \
-	! -name 'push_relabel.c')
 TEST_SRCS := $(shell find $(TEST_DIR)/* -maxdepth 0 -name '*.c')
 
 all: dirs lib

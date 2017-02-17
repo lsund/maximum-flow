@@ -1,12 +1,9 @@
 
-SPEEDING UP THE ALGORITHM:
-// 
-// 40x40 1.8 s
+fix memory leaks                                []
 
 get rid of cpp module                           []
-
-source_edges, source_neighbours and relevant
-crap. get rid of.                               []
+for this, need to get rid of
+vertexcollection_contains
 
 recover the flow in a more efficient way        []
 
@@ -27,6 +24,9 @@ place                                           []
 
 get rid of either first or first_ref
 from edges                                      []
+
+source_edges, source_neighbours and relevant
+crap. get rid of.                               [done]
 
 now when I have out_edges for all vertices,
 I can get an edgecollection directly as a path,
