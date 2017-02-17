@@ -1,5 +1,5 @@
 
-#include "push_relabel_initialize.h"
+#include "goldberg_tarjan_initialize.h"
 
 void push_relabel_initialize(NetworkPointer network)
 {

@@ -2,7 +2,7 @@
 #include <time.h>
 
 #include "parser.h"
-#include "push_relabel.h"
+#include "goldberg_tarjan.h"
 #include "pseudoflow.h"
 
 // The type of network that will be used

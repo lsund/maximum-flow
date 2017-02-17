@@ -7,9 +7,9 @@ SPEEDING UP THE ALGORITHM:
 source_edges, source_neighbours and relevant
 crap. get rid of.                               []
 
-implement the GBT algorithm                     []
+implement the GBT algorithm                     [done]
 discharge                                       [done]
-push_relabel                                    []
+push_relabel                                    [done]
 
 
 recover the flow in a more efficient way        []

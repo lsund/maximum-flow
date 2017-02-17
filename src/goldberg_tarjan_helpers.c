@@ -1,7 +1,7 @@
 
-#include "push_relabel_helpers.h"
+#include "goldberg_tarjan_helpers.h"
 
-Label find_min(const NetworkPointer network, const Vertex vertex)
+static Label find_min(const NetworkPointer network, const Vertex vertex)
 {
     Label min = INT_MAX;
     size_t i;
@@ -22,7 +22,7 @@ Label find_min(const NetworkPointer network, const Vertex vertex)
     return min;
 }
 
-void push(const EdgePointer edge, const VertexPointer vertex)
+static void push(const EdgePointer edge, const VertexPointer vertex)
 {
     unsigned int exflow = vertex_exflow(vertex);
     unsigned int capacity = edge_residual_capacity(edge);
@@ -30,7 +30,7 @@ void push(const EdgePointer edge, const VertexPointer vertex)
     edge_augment(edge, gamma);
 }
 
-void relabel(const NetworkPointer network, const VertexPointer vertex)
+static void relabel(const NetworkPointer network, const VertexPointer vertex)
 {
     Label min_label = find_min(network, *vertex);
     vertex_set_distance_label(vertex, min_label);
@@ -61,64 +61,19 @@ void discharge(const NetworkPointer network, const VertexPointer vertex)
 {
     do {
         EdgeCollection out_edges = network_get_out_edges(network, *vertex);
-        // let e be the edge to which curr points
         EdgePointer edge = edgecollection_get(out_edges, *out_edges.curr);
-        // if e is admissable then 
         if (edge_is_admissable(edge)) {
-        //      push(e) 
             push(edge, vertex);
         }
-        // else
         else {
-        //      if e is the last list of out_edges(v) then
             if (*out_edges.curr == edgecollection_length(out_edges) - 1) {
-        //          relabel(v)
                 relabel(network, vertex);
-        //          let curr(v) point to the first element of out_edges(v)
                 *out_edges.curr = 0;
                 return;
-            } 
-        //      else
-            else {
-        //          let curr(v) point to the next edge in out_edges(v)
+            } else {
                 *out_edges.curr = *out_edges.curr + 1;
             }
         }
-    // if exflow(v) > 0 go to start
     } while (vertex_exflow(vertex) > 0);
-}
-
-VertexPointer networkvertex_active(const NetworkPointer network)
-{
-    size_t i;
-    for (i = 0; i < vertexcollection_length(network->graph.vertices); i++) {
-        VertexPointer vertex = vertexcollection_get(network->graph.vertices, i);
-        if (is_active(network, vertex)) {
-            return vertex;
-        }
-    }
-    return NULL;
-}
-
-EdgePointer admissable_edge(
-        const NetworkPointer network, 
-        const Vertex active
-    )
-{
-    size_t i;
-    EdgeCollection edges = network_get_out_edges(network, active);
-    for (i = 0; i < edgecollection_length(edges); i++) {
-        EdgePointer edge = edgecollection_get(edges, i);
-        if (vertex_equals(edge->first, active)) {
-            if (edge_is_admissable(edge)) {
-                return edge;
-            }
-        } else if (vertex_equals(edge->second, active)) {
-            if (edge_is_admissable(edge->reverse)) {
-                return edge->reverse;
-            }
-        }
-    }
-    return NULL;
 }
 
