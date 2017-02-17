@@ -1,7 +1,7 @@
 
 #include "test.h"
 
-char *test_push_relabel_algorithm()
+char *test_goldberg_tarjan_algorithm()
 {
     TokenTablePointer table = tokentable_init();
     tokenize("third_party/optima/optima-setx1", table);
@@ -12,7 +12,7 @@ char *test_push_relabel_algorithm()
         long opt = strtol(s_opt, NULL, 10);
         NetworkPointer network;
         network = parse(file, PR);
-        push_relabel(network);
+        goldberg_tarjan(network);
         long res = (long) network_flow(network);
         mu_message(DATA, "testing file\n");
         printf("\t\%s with opt: %lu\n", file, opt);
@@ -71,7 +71,7 @@ char *test_extensive()
 
 char *test_main()
 {
-    mu_run_test(test_push_relabel_algorithm);
+    mu_run_test(test_goldberg_tarjan_algorithm);
     mu_run_test(test_pseudoflow_algorithm);
     return NULL;
 }

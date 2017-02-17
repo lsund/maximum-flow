@@ -11,7 +11,9 @@ crap. get rid of.                               []
 now when I have out_edges for all vertices,
 I can get an edgecollection directly as a path,
 not a vertexcollection that I later need to 
-convert.                                        []
+convert.                                        [done]
+for this, we need a 
+get_out_edge(network, first, second)
 
 implement the GBT algorithm                     [done]
 discharge                                       [done]

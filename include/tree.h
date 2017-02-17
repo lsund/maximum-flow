@@ -13,13 +13,6 @@ VertexPointer tree_find_root(const VertexPointer vertex);
 // Find the minimum key on the path from v to the root if its vertex
 VertexPointer tree_find_min(const VertexPointer vertex);
 
-// The path from the vertex to the root, as a reference to a collection
-VertexCollection tree_path_to_root(const VertexPointer vertex);
-
-// Add the value delta to the keys of all nodes on the path from v to the root
-// of its vertex
-void tree_add_cost(const VertexPointer vertex, const unsigned int delta);
-
 // invert the vertex so that the vertex belongs to so it is rooted at vertex instead of
 // tree_find_root(vertex)
 void tree_invert(VertexPointer vertex);

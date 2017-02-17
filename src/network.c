@@ -1,6 +1,52 @@
 
 #include "network.h"
 
+static EdgePointer network_get_out_edge(
+        const NetworkPointer network,
+        const Vertex first, 
+        const Vertex second
+    )
+{
+    EdgeCollection out_edges = network_get_out_edges(network, first);
+    size_t i;
+    for (i = 0; i < edgecollection_length(out_edges); i++) {
+        EdgePointer edge = edgecollection_get(out_edges, i);
+        if (vertex_equals(edge->second, second)) {
+            return edge;
+        }
+    }
+    return NULL;
+}
+
+EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex)
+{
+    EdgeCollection ret = edgecollection_init_min();
+    if (!vertex->parent) {
+        return ret;
+    }
+    VertexPointer previous = vertex;
+    VertexPointer current = vertex->parent;
+    EdgePointer edge = network_get_out_edge(network, *previous, *current);
+    edgecollection_push(ret, edge);
+    while (current->parent) {
+        if (current == current->parent->parent) {
+            runtime_error("tree_path_to_root: both are eachothers parents");
+        }
+        previous = current;
+        current = current->parent;
+        if (current == network->root) {
+            break;
+        }
+        EdgePointer edge = network_get_out_edge(network, *previous, *current);
+        if (!edge) {
+            runtime_error("tree_path_to_root: got null pointer to edge");
+        } else {
+            edgecollection_push(ret, edge);
+        }
+    }
+    return ret;
+}
+
 static unsigned int networkvertex_inflow(
         const NetworkPointer network,
         const Vertex vertex)
@@ -20,37 +66,6 @@ static unsigned int networkvertex_inflow(
         runtime_error("not supported for pr");
         return 0;
     }
-}
-
-static EdgeCollection vertexcollection_to_edgecollection(
-        const NetworkPointer network,
-        const VertexCollection vertices
-    )
-{
-    size_t i, j;
-    EdgeCollection epath = edgecollection_init_min();
-    for (i = 0; i < vertexcollection_length(vertices) - 1; i++) {
-        VertexPointer first = vertexcollection_get(vertices, i);
-        VertexPointer second = vertexcollection_get(vertices, i + 1);
-        EdgeCollection out_edges = network_get_out_edges(network, *first);
-        for (j = 0; j < edgecollection_length(out_edges); j++) {
-            EdgePointer edge = edgecollection_get(out_edges, j);
-            if (vertex_equals(edge->second, *network->root)) {
-                break;
-            }
-            if (vertex_equals(edge->first, *first)) {
-                if (vertex_equals(edge->second, *second)) {
-                    edgecollection_push(epath, edge);
-                }
-            }
-            if (vertex_equals(edge->reverse->first, *first)) {
-                if (vertex_equals(edge->reverse->second, *second)) {
-                    edgecollection_push(epath, edge->reverse);
-                }
-            }
-        }
-    }
-    return epath;
 }
 
 void network_init(
@@ -99,14 +114,6 @@ EdgeCollection network_get_out_edges(
     return *(network->neighbors + vertex.label);
 }
 
-
-EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex)
-{
-    VertexCollection path = tree_path_to_root(vertex);
-    EdgeCollection ret = vertexcollection_to_edgecollection(network, path);
-    vertexcollection_destroy(path);
-    return ret;
-}
 
 unsigned int network_flow(const NetworkPointer network)
 {

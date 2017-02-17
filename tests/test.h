@@ -10,7 +10,7 @@
 #include "vertexcollection.h"
 #include "tree.h"
 #include "network.h"
-#include "push_relabel.h"
+#include "goldberg_tarjan.h"
 #include "pseudoflow.h"
 
 #define TEST_GRAPH "/home/lsund/Data/graphs/data/networks/bigsets/3x3s/249.dmx"
@@ -29,7 +29,7 @@ char *test_matching();
 char *test_disjointset();
 char *test_network();
 char *test_pseudoflow_algorithm();
-char *test_push_relabel_algorithm();
+char *test_goldberg_tarjan_algorithm();
 char *test_tokentable();
 char *test_pseudoflow();
 char *test_extensive();

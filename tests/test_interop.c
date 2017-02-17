@@ -14,7 +14,7 @@ char *test_interop()
         NetworkPointer pr_network;
         NetworkPointer ps_network;
         pr_network = parse(file, PR);
-        push_relabel(pr_network);
+        goldberg_tarjan(pr_network);
         ps_network = parse(file, PS);
         pseudoflow(ps_network);
         long pr_res = (long) network_flow(pr_network);

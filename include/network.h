@@ -21,6 +21,7 @@ typedef struct network {
 } Network, *NetworkPointer;
 
 EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network, const VertexPointer vertex);
+EdgeCollection network_edgepath_to_treeroot2(const NetworkPointer network, const VertexPointer vertex);
 
 int networkvertex_exflow_ps(
         const NetworkPointer network, 
