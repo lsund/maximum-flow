@@ -87,7 +87,7 @@ void network_init(
     if (type == PR) {
     } else {
         network->excesses          = calloc(nv, sizeof(int));
-        network->root              = vertex_p_make(nv + 1);
+        network->root              = vertex_make(nv + 1);
         network->strong_vertices   = vertexcollection_init_min();
         network->weak_vertices     = vertexcollection_init_min();
         network->source_neighbours = vertexcollection_init_min();

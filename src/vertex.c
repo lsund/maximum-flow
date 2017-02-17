@@ -11,20 +11,19 @@ Vertex vertex_empty()
     return ret;
 }
 
-Vertex vertex_make(const Label label)
+void vertex_build(VertexPointer vertex, const Label label)
 {
-    Vertex ret;
-    ret.label          = label;
-    ret.distance_label = 0;
-    ret.excess         = 0;
-    ret.parent         = NULL;
-    return ret;
+    vertex->label = label;
+    vertex->distance_label = 0;
+    vertex->excess = 0;
+    vertex->parent = NULL;
 }
 
-VertexPointer vertex_p_make(const Label label)
+VertexPointer vertex_make(const Label label)
 {
     VertexPointer ret = malloc(sizeof(Vertex));
-    *ret = vertex_make(label);
+    vertex_build(ret, label);
+
     return ret;
 }
 

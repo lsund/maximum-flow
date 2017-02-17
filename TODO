@@ -8,17 +8,6 @@ get rid of cpp module                           []
 source_edges, source_neighbours and relevant
 crap. get rid of.                               []
 
-now when I have out_edges for all vertices,
-I can get an edgecollection directly as a path,
-not a vertexcollection that I later need to 
-convert.                                        [done]
-for this, we need a 
-get_out_edge(network, first, second)
-
-implement the GBT algorithm                     [done]
-discharge                                       [done]
-push_relabel                                    [done]
-
 recover the flow in a more efficient way        []
 
 analyze if the edges need pointers to 
@@ -38,6 +27,17 @@ place                                           []
 
 get rid of either first or first_ref
 from edges                                      []
+
+now when I have out_edges for all vertices,
+I can get an edgecollection directly as a path,
+not a vertexcollection that I later need to 
+convert.                                        [done]
+for this, we need a 
+get_out_edge(network, first, second)
+
+implement the GBT algorithm                     [done]
+discharge                                       [done]
+push_relabel                                    [done]
 
 I think the biggest part is redundant 
 calculations of the index for edges and

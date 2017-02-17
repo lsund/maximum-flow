@@ -53,10 +53,10 @@ VertexCollection edgecollection_vertices(const EdgeCollection edges)
         Vertex first = edge->first;
         Vertex second = edge->second;
         if (!vertexcollection_contains_label(vertices, first.label)) {
-            vertexcollection_push(vertices, vertex_p_make(first.label));
+            vertexcollection_push(vertices, vertex_make(first.label));
         }
         if (!vertexcollection_contains_label(vertices, second.label)) {
-            vertexcollection_push(vertices, vertex_p_make(second.label));
+            vertexcollection_push(vertices, vertex_make(second.label));
         }
     }
     return vertices;

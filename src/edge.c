@@ -1,38 +1,30 @@
 
 #include "edge.h"
 
-Edge edge_make(const Vertex first, const Vertex second)
+void build_edge(EdgePointer edge, const VertexPointer first, const VertexPointer second, const bool is_reverse)
 {
-    Edge ret;
-    ret.first    = first;
-    ret.second   = second;
-    ret.capacity = 0;
-    ret.flow     = 0;
-    return ret;
+    edge->first      = *first;
+    edge->second     = *second;
+    edge->first_ref  = first;
+    edge->second_ref = second;
+    edge->capacity   = 0;
+    edge->flow       = 0;
+    edge->first_ref           = first;
+    edge->second_ref          = second;
+    edge->is_reverse          = is_reverse;
 }
 
-EdgePointer edge_p_make(const VertexPointer first, const VertexPointer second)
+EdgePointer edge_make(const VertexPointer first, const VertexPointer second)
 {
     EdgePointer ret          = malloc(sizeof(Edge));
-    *ret                     = edge_make(*first, *second);
+    build_edge(ret, first, second, false);
+
     ret->reverse             = malloc(sizeof(Edge));
-    *ret->reverse            = edge_make(*second, *first);
+    build_edge(ret->reverse, second, first, true);
 
-    ret->first_ref           = first;
-    ret->second_ref          = second;
-    ret->is_reverse          = false;
-
-    ret->reverse->first_ref  = second;
-    ret->reverse->second_ref = first;
-    ret->reverse->is_reverse = true;
     ret->reverse->reverse    = ret;
 
     return ret;
-}
-
-Edge edge_swapped(const Edge edge)
-{
-    return edge_make(edge.second, edge.first);
 }
 
 bool edge_equals(const Edge edge_a, const Edge edge_b)
@@ -40,12 +32,6 @@ bool edge_equals(const Edge edge_a, const Edge edge_b)
     bool first_equals  = vertex_equals(edge_a.first, edge_b.first);
     bool second_equals = vertex_equals(edge_a.second, edge_b.second);
     return first_equals && second_equals;
-}
-
-bool edge_equals_reverse(const Edge edge_a, const Edge edge_b)
-{
-    Edge reverse_b = edge_swapped(edge_b);
-    return edge_equals(edge_a, reverse_b); 
 }
 
 bool edge_incident_with(const Edge edge, const Vertex vertex)

@@ -7,7 +7,7 @@ static void parse_vertices(
 {
     size_t i;
     for (i = 1; i <= n_vertices; i++) {
-        VertexPointer vertex = vertex_p_make(i);
+        VertexPointer vertex = vertex_make(i);
         vertexcollection_push(vertices, vertex);
     }
 }
@@ -28,7 +28,7 @@ static EdgePointer parse_edge(
 
     EdgePointer ret;
     if (first_vertex && second_vertex) {
-        ret = edge_p_make(first_vertex, second_vertex);
+        ret = edge_make(first_vertex, second_vertex);
     } else {
         ret = NULL;
         runtime_error("Parse edges: vertex null pointer");

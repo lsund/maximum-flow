@@ -1,7 +1,7 @@
 
 #include "treevertex.h"
 
-TreeVertexPointer treevertex_p_make(VertexPointer vertex) {
+TreeVertexPointer treevertex_make(VertexPointer vertex) {
     TreeVertexPointer ret = malloc(sizeof(TreeVertex));
     ret->content          = vertex;
     ret->parent           = NULL;
@@ -11,8 +11,8 @@ TreeVertexPointer treevertex_p_make(VertexPointer vertex) {
     return ret;
 }
 
-TreeVertexPointer treevertex_p_make_label(const Label label) {
-    return treevertex_p_make(vertex_p_make(label));
+TreeVertexPointer treevertex_make_label(const Label label) {
+    return treevertex_make(vertex_make(label));
 }
 
 Result treevertex_insert(

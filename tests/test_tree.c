@@ -13,7 +13,7 @@ bool contains_labels(VertexCollection collection, Label *labels, size_t size)
 
 char *utest_tree_singleton()
 {
-    VertexPointer tree = vertex_p_make(3);
+    VertexPointer tree = vertex_make(3);
     mu_assert("label should be 3", tree->label == 3);
     mu_assert("should have no parent", tree->parent == NULL);
     return NULL;
@@ -21,15 +21,15 @@ char *utest_tree_singleton()
 
 char *utest_tree_merge()
 {
-    VertexPointer tree1 = vertex_p_make(1);
-    VertexPointer tree2 = vertex_p_make(2);
-    VertexPointer tree3 = vertex_p_make(3);
+    VertexPointer tree1 = vertex_make(1);
+    VertexPointer tree2 = vertex_make(2);
+    VertexPointer tree3 = vertex_make(3);
     tree_merge(tree1, tree2);
     tree_merge(tree1, tree3);
 
-    VertexPointer tree4 = vertex_p_make(4);
-    VertexPointer tree5 = vertex_p_make(5);
-    VertexPointer tree6 = vertex_p_make(6);
+    VertexPointer tree4 = vertex_make(4);
+    VertexPointer tree5 = vertex_make(5);
+    VertexPointer tree6 = vertex_make(6);
     tree_merge(tree4, tree5);
     tree_merge(tree4, tree6);
 
@@ -45,14 +45,14 @@ char *utest_tree_merge()
 
 char *utest_tree_find_root()
 {
-    VertexPointer tree1 = vertex_p_make(1);
-    VertexPointer tree2 = vertex_p_make(2);
-    VertexPointer tree3 = vertex_p_make(3);
+    VertexPointer tree1 = vertex_make(1);
+    VertexPointer tree2 = vertex_make(2);
+    VertexPointer tree3 = vertex_make(3);
     tree_merge(tree1, tree2);
     tree_merge(tree1, tree3);
-    VertexPointer tree4 = vertex_p_make(4);
-    VertexPointer tree5 = vertex_p_make(5);
-    VertexPointer tree6 = vertex_p_make(6);
+    VertexPointer tree4 = vertex_make(4);
+    VertexPointer tree5 = vertex_make(5);
+    VertexPointer tree6 = vertex_make(6);
     tree_merge(tree4, tree5);
     tree_merge(tree4, tree6);
     tree_merge(tree2, tree4);
@@ -65,14 +65,14 @@ char *utest_tree_find_root()
 
 char *utest_tree_invert()
 {
-    VertexPointer tree1 = vertex_p_make(1);
-    VertexPointer tree2 = vertex_p_make(2);
-    VertexPointer tree3 = vertex_p_make(3);
+    VertexPointer tree1 = vertex_make(1);
+    VertexPointer tree2 = vertex_make(2);
+    VertexPointer tree3 = vertex_make(3);
     tree_merge(tree1, tree2);
     tree_merge(tree1, tree3);
-    VertexPointer tree4 = vertex_p_make(4);
-    VertexPointer tree5 = vertex_p_make(5);
-    VertexPointer tree6 = vertex_p_make(6);
+    VertexPointer tree4 = vertex_make(4);
+    VertexPointer tree5 = vertex_make(5);
+    VertexPointer tree6 = vertex_make(6);
     tree_merge(tree4, tree5);
     tree_merge(tree4, tree6);
     tree_merge(tree2, tree4);
@@ -97,14 +97,14 @@ char *utest_tree_invert()
 
 char *utest_tree_find_branch()
 {
-    VertexPointer tree1 = vertex_p_make(1);
-    VertexPointer tree2 = vertex_p_make(2);
-    VertexPointer tree3 = vertex_p_make(3);
+    VertexPointer tree1 = vertex_make(1);
+    VertexPointer tree2 = vertex_make(2);
+    VertexPointer tree3 = vertex_make(3);
     tree_merge(tree1, tree2);
     tree_merge(tree1, tree3);
-    VertexPointer tree4 = vertex_p_make(4);
-    VertexPointer tree5 = vertex_p_make(5);
-    VertexPointer tree6 = vertex_p_make(6);
+    VertexPointer tree4 = vertex_make(4);
+    VertexPointer tree5 = vertex_make(5);
+    VertexPointer tree6 = vertex_make(6);
     tree_merge(tree4, tree5);
     tree_merge(tree4, tree6);
     tree_merge(tree2, tree4);

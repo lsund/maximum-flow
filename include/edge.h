@@ -27,23 +27,14 @@ struct edge {
     bool *incident_with;
 };
 
-// Constructs an edge from two vertices
-Edge edge_make(const Vertex first, const Vertex second);
-
-// Same as edge_make, but returns a pointer to an edge
-EdgePointer edge_p_make(const VertexPointer first, const VertexPointer second);
-
-// Returns an edge, where the first and the second vertex are swapped
-Edge edge_swapped(const Edge edge);
+// Constructs an edge and returns a pointer to it
+EdgePointer edge_make(const VertexPointer first, const VertexPointer second);
 
 // Returns true if the edge contains the given vertex, false otherwise
 bool edge_incident_with(const Edge edge, const Vertex vertex);
 
 // Returns true if the two edges are considered equal, false otherwise
 bool edge_equals(const Edge edge_a, const Edge edge_b);
-
-// Returns true if edge_b equals the reverse edge of b
-bool edge_equals_reverse(const Edge edge_a, const Edge edge_b);
 
 // Ruterns an unique integer for each unique edge
 unsigned int edge_hash(const Edge edge);
