@@ -3,11 +3,9 @@
 
 #include "network.h"
 
-void relabel(const NetworkPointer network, const VertexPointer vertex);
+VertexCollection active_vertices(const NetworkPointer network); 
 
-void push(const EdgePointer edge, const VertexPointer vertex);
-
-Label find_min(const NetworkPointer network, const Vertex vertex);
+void discharge(const NetworkPointer network, const VertexPointer vertex);
 
 VertexPointer networkvertex_active(const NetworkPointer network);
 

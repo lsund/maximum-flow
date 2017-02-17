@@ -9,6 +9,11 @@ VertexCollection vertexcollection_empty()
 
 }
 
+bool vertexcollection_is_empty(const VertexCollection vertices)
+{
+    return vertexcollection_length(vertices) == 0;
+}
+
 VertexCollection vertexcollection_init(const size_t init_length) 
 {
     VertexCollection ret;
