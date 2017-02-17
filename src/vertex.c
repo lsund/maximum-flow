@@ -1,17 +1,7 @@
 
 #include "vertex.h"
 
-Vertex vertex_empty()
-{
-    Vertex ret;
-    ret.label          = -1;
-    ret.distance_label = 0;
-    ret.excess         = 0;
-    ret.parent         = NULL;
-    return ret;
-}
-
-void vertex_build(VertexPointer vertex, const Label label)
+static void vertex_build(VertexPointer vertex, const Label label)
 {
     vertex->label = label;
     vertex->distance_label = 0;

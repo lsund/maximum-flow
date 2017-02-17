@@ -33,12 +33,6 @@ EdgePointer edge_make(const VertexPointer first, const VertexPointer second);
 // Returns true if the edge contains the given vertex, false otherwise
 bool edge_incident_with(const Edge edge, const Vertex vertex);
 
-// Returns true if the two edges are considered equal, false otherwise
-bool edge_equals(const Edge edge_a, const Edge edge_b);
-
-// Ruterns an unique integer for each unique edge
-unsigned int edge_hash(const Edge edge);
-
 unsigned int edge_capacity(const EdgePointer edge);
 
 void edge_set_capacity(const EdgePointer edge, const unsigned int capacity);

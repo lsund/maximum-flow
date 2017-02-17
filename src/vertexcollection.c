@@ -55,17 +55,21 @@ VertexPointer vertexcollection_get(
     return (VertexPointer) collection_get(vertices.members, position);
 }
 
-bool vertexcollection_contains_label(
+bool vertexcollection_contains(
         const VertexCollection vertices,
-        const Label label
+        const Vertex vertex
     )
 {
-    return map_exists(vertices.indices, label);
+    /* return vertexcollection_length(vertices) >= vertex.label - 1; */
+    return map_exists(vertices.indices, vertex.label);
 }
 
-void vertexcollection_push(const VertexCollection vertices, const VertexPointer vertex)
+void vertexcollection_push(
+        const VertexCollection vertices,
+        const VertexPointer vertex
+    )
 {
-    if (!vertexcollection_contains_label(vertices, vertex->label)) {
+    if (!vertexcollection_contains(vertices, *vertex)) {
         map_put(vertices.indices, vertex->label, vertexcollection_length(vertices));
         collection_push(vertices.members, vertex);
     }

@@ -3,8 +3,6 @@
 
 #include "util.h"
 
-// Type synonym
-typedef unsigned int Label; 
 typedef struct vertex Vertex, *VertexPointer;
 
 // A vertex is some data point
@@ -15,8 +13,6 @@ struct vertex {
     Label distance_label;
     unsigned int excess;
 };
-
-Vertex vertex_empty();
 
 // Construct a pointer to a vertex with a label
 VertexPointer vertex_make(const Label label);

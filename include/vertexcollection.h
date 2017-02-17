@@ -9,7 +9,6 @@
 // Field contains:  bitmap for keeping track of which elements are in the set
 typedef struct vertexcollection {
     CollectionPointer members;
-    Label *contains;
     Map indices;
 } VertexCollection, *VertexCollectionPointer;
 
@@ -32,9 +31,9 @@ VertexPointer vertexcollection_get(
     );
 
 // Does the set contain the specified vertex?
-bool vertexcollection_contains_label(
+bool vertexcollection_contains(
         const VertexCollection vertices,
-        const Label label
+        const Vertex vertex
     );
 
 void vertexcollection_push(

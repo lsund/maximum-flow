@@ -1,37 +1,35 @@
 
 #include "edge.h"
 
-void build_edge(EdgePointer edge, const VertexPointer first, const VertexPointer second, const bool is_reverse)
+static void build_edge(
+        EdgePointer edge,
+        const VertexPointer first,
+        const VertexPointer second,
+        const bool is_reverse
+    )
 {
     edge->first      = *first;
     edge->second     = *second;
     edge->first_ref  = first;
     edge->second_ref = second;
+    edge->first_ref  = first;
+    edge->second_ref = second;
     edge->capacity   = 0;
     edge->flow       = 0;
-    edge->first_ref           = first;
-    edge->second_ref          = second;
-    edge->is_reverse          = is_reverse;
+    edge->is_reverse = is_reverse;
 }
 
 EdgePointer edge_make(const VertexPointer first, const VertexPointer second)
 {
-    EdgePointer ret          = malloc(sizeof(Edge));
+    EdgePointer ret = malloc(sizeof(Edge));
     build_edge(ret, first, second, false);
 
-    ret->reverse             = malloc(sizeof(Edge));
+    ret->reverse = malloc(sizeof(Edge));
     build_edge(ret->reverse, second, first, true);
 
-    ret->reverse->reverse    = ret;
+    ret->reverse->reverse = ret;
 
     return ret;
-}
-
-bool edge_equals(const Edge edge_a, const Edge edge_b)
-{
-    bool first_equals  = vertex_equals(edge_a.first, edge_b.first);
-    bool second_equals = vertex_equals(edge_a.second, edge_b.second);
-    return first_equals && second_equals;
 }
 
 bool edge_incident_with(const Edge edge, const Vertex vertex)
@@ -105,13 +103,6 @@ void edge_augment(const EdgePointer edge, const unsigned int added_flow)
     } else {
         edge_add_flow(edge, added_flow);
     }
-}
-
-unsigned int edge_hash(const Edge edge)
-{
-    unsigned int a = edge.first.label;
-    unsigned int b = edge.second.label;
-    return a >= b ? a * a + a + b : a + b * b; 
 }
 
 bool edge_is_residual(const EdgePointer edge)

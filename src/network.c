@@ -1,7 +1,30 @@
 
 #include "network.h"
 
-static EdgePointer network_get_out_edge(
+NetworkPointer network_make(
+        NetworkType type,
+        const unsigned int nv
+    )
+{
+    NetworkPointer ret = malloc(sizeof(Network));
+    ret->type                  = type;
+    ret->graph                 = graph_init();
+    ret->source                = NULL;
+    ret->sink                  = NULL;
+
+    ret->neighbors             = malloc(sizeof(EdgeCollection) * (nv + 2));
+    size_t i;
+    for (i = 0; i < nv + 2; i++) {
+        *(ret->neighbors + i) = edgecollection_init_min();
+    }
+    if (type == PR) {
+    } else {
+        ret->root              = vertex_make(nv + 1);
+    }
+    return ret;
+}
+
+EdgePointer network_get_out_edge(
         const NetworkPointer network,
         const Vertex first, 
         const Vertex second
@@ -68,35 +91,6 @@ static unsigned int networkvertex_inflow(
     }
 }
 
-void network_init(
-        NetworkPointer network,
-        NetworkType type,
-        const unsigned int nv
-    )
-{
-    network->type                  = type;
-    network->graph                 = graph_init();
-    network->source                = NULL;
-    network->sink                  = NULL;
-
-    network->neighbors             = malloc(sizeof(EdgeCollection) * (nv + 2));
-    size_t i;
-    for (i = 0; i < nv + 2; i++) {
-        *(network->neighbors + i) = edgecollection_init_min();
-    }
-    if (type == PR) {
-    } else {
-        network->excesses          = calloc(nv, sizeof(int));
-        network->root              = vertex_make(nv + 1);
-        network->strong_vertices   = vertexcollection_init_min();
-        network->weak_vertices     = vertexcollection_init_min();
-        network->source_neighbours = vertexcollection_init_min();
-        network->sink_neighbours   = vertexcollection_init_min();
-        network->source_edges      = edgecollection_init_min();
-        network->sink_edges        = edgecollection_init_min();
-    }
-}
-
 void network_add_out_edge(
         const NetworkPointer network,
         const Vertex vertex,
@@ -137,13 +131,6 @@ void network_destroy(NetworkPointer network)
 {
     if (network->type == PR) {
     } else {
-        free(network->excesses);
-        vertexcollection_destroy(network->strong_vertices);
-        vertexcollection_destroy(network->weak_vertices);
-        vertexcollection_destroy(network->source_neighbours);
-        vertexcollection_destroy(network->sink_neighbours);
-        edgecollection_destroy(network->source_edges);
-        edgecollection_destroy(network->sink_edges);
         free(network->root);
     }
     size_t i;
@@ -163,39 +150,4 @@ void network_destroy(NetworkPointer network)
     graph_destroy(network->graph);
     free(network);
 }
-
-EdgePointer networkedge_get_source_edge(
-        const NetworkPointer network,
-        const VertexPointer vertex
-    )
-{
-    EdgeCollection edges = network->source_edges;
-    size_t i;
-    for (i = 0; i < edgecollection_length(edges); i++) {
-        EdgePointer edge = edgecollection_get(edges, i);
-        if (vertex_equals(edge->second, *vertex)) {
-            return edge;
-        }
-    }
-    runtime_error("networkedge_get_source_edge: vertex not adjacent to source");
-    return NULL;
-}
-
-EdgePointer networkedge_get_sink_edge(
-        const NetworkPointer network,
-        const VertexPointer vertex
-    )
-{
-    EdgeCollection edges = network->sink_edges;
-    size_t i;
-    for (i = 0; i < edgecollection_length(edges); i++) {
-        EdgePointer edge = edgecollection_get(edges, i);
-        if (vertex_equals(edge->first, *vertex)) {
-            return edge;
-        }
-    }
-    runtime_error("networkedge_get_sink_edge: vertex not adjacent to sink");
-    return NULL;
-}
-
 

@@ -63,13 +63,7 @@ static EdgePointer update_edge(
     network_add_out_edge(network, edge->second, edge->reverse);
     if (network->type == PS) {
         if (vertex_equals(edge->first, *network->source)) {
-            VertexPointer vertex = edge->second_ref;
-            vertexcollection_push(network->source_neighbours, vertex);
-            edgecollection_push(network->source_edges, edge);
         } else if (vertex_equals(edge->second, *network->sink)) {
-            VertexPointer vertex = edge->first_ref;
-            vertexcollection_push(network->sink_neighbours, vertex);
-            edgecollection_push(network->sink_edges, edge);
         }
     } else {
     }
@@ -99,9 +93,7 @@ NetworkPointer parse(const char *filename, const NetworkType type)
     unsigned int n_vertices;
     n_vertices = dimension.x;
 
-    NetworkPointer network = malloc(sizeof(Network));
-    network_init(network, type, n_vertices);
-
+    NetworkPointer network = network_make(type, n_vertices);
     parse_vertices(network->graph.vertices, n_vertices);
 
     unsigned int row;

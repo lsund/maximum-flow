@@ -15,6 +15,8 @@
 // is given the program
 #define FILE_NAME "sample_data/25x25.dmx"
 
+// Type synonym
+typedef unsigned int Label; 
 
 #define MAX_VERTICES 10000
 #define MAX_EDGES 10000
@@ -32,3 +34,4 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_GREY    "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
+
