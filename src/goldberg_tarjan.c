@@ -1,9 +1,9 @@
 
 #include "goldberg_tarjan.h"
 
-void push_relabel(NetworkPointer network)
+void goldberg_tarjan(NetworkPointer network)
 {
-    push_relabel_initialize(network);
+    goldberg_tarjan_initialize(network);
     VertexCollection actives = active_vertices(network);
     while (!vertexcollection_is_empty(actives)) {
         size_t i;

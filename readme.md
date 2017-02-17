@@ -30,20 +30,21 @@ an error message.
 
 * Lines that start with `c` are comments and are ignored by the file parser
 
-* The first line which is not a comment should have the format 
-`p max <n_vertices> <n_edges>`
-where `n_vertices` and `n_edges` are substituted with the appropriate numbers
-for the number of vertices and edges in the graph. The vertices are assumed to
-be uniqely and increasingly numbered between 1 and `<n_vertices>`.  
+* The first line which is not a comment should have the format `p max
+  <n_vertices> <n_edges>` where `n_vertices` and `n_edges` are substituted with
+  the appropriate numbers for the number of vertices and edges in the graph. The
+  vertices are assumed to be uniqely and increasingly numbered between 1 and
+  `<n_vertices>`.  
 
 * Following are two lines of format `n <source_id> s` and `n <sink_id> t` where
-`source_id` and `sink_id` are the integers identifying the source and
-the sink in the graph.
+  `source_id` and `sink_id` are the integers identifying the source and the sink
+  in the graph.
 
-* The remaining lines describes the edges (arcs) and has the form `a A B U` where
-`A` is the integer of the first vertex of this edge, `B` is the integer of the
-second vertex of this edge and `U` is the capacity of this edge. Examples of
-these files are stored in `sample_data`
+* The remaining lines describes the edges (arcs) and has the form `a <first_id>
+  <second_id> <capacity>` where `first_id` is the integer of the first vertex of
+  this edge, `second_id` is the integer of the second vertex of this edge and
+  `capacity` is the capacity of this edge. Examples of these files are stored in
+  `sample_data`
 
 [1] Combinatorial Optimization Theory and Algorithms Second Edition, 
 Bernhard Korte, Jens Vygen, 2002, p 163-168.

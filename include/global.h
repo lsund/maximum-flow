@@ -7,6 +7,15 @@
 #include <string.h>
 #include <limits.h>
 
+// The type of network that will be used
+// Change this to PR if you want to use the push_relabel
+// algorithm instead of the pseudoflow algorithm
+#define NETWORK_TYPE PR
+// The file that will be used as input given that no argement
+// is given the program
+#define FILE_NAME "sample_data/25x25.dmx"
+
+
 #define MAX_VERTICES 10000
 #define MAX_EDGES 10000
 #define TKN_MAX_LEN 64

@@ -1,7 +1,7 @@
 
 #include "goldberg_tarjan_initialize.h"
 
-void push_relabel_initialize(NetworkPointer network)
+void goldberg_tarjan_initialize(NetworkPointer network)
 {
     EdgePointer edge;
     unsigned int capacity;

@@ -3,6 +3,6 @@
 
 #include "network.h"
 
-void push_relabel_initialize(NetworkPointer network);
+void goldberg_tarjan_initialize(NetworkPointer network);
 
 #endif

@@ -4,6 +4,6 @@
 #include "goldberg_tarjan_initialize.h"
 #include "goldberg_tarjan_helpers.h"
 
-void push_relabel(NetworkPointer network);
+void goldberg_tarjan(NetworkPointer network);
 
 #endif
