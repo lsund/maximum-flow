@@ -1,10 +1,6 @@
 
 fix memory leaks                                []
 
-get rid of cpp module                           []
-for this, need to get rid of
-vertexcollection_contains
-
 recover the flow in a more efficient way        []
 
 analyze if the edges need pointers to 
@@ -24,6 +20,10 @@ place                                           []
 
 get rid of either first or first_ref
 from edges                                      []
+
+get rid of cpp module                           [done]
+for this, need to get rid of
+vertexcollection_contains
 
 source_edges, source_neighbours and relevant
 crap. get rid of.                               [done]

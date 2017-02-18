@@ -10,14 +10,15 @@ static Label find_min(const NetworkPointer network, const Vertex vertex)
         EdgePointer edge = edgecollection_get(edges, i);
         Label label      = vertex_distance_label(edge->second_ref) + 1;
         Label rev_label  = vertex_distance_label(edge->reverse->second_ref) + 1;
-        if (vertex_equals(edge->first, vertex) && label < min && edge_is_residual(edge)) {
-            min = label;
-        } else if (vertex_equals(edge->first, vertex) && rev_label < min && edge_is_residual(edge->reverse)) {
-            min = rev_label;
+        if (vertex_equals(edge->first, vertex)) {
+            if (label < min && edge_is_residual(edge)) {
+                min = label;
+            }
+        } else if (vertex_equals(edge->first, vertex)) {
+            if (rev_label < min && edge_is_residual(edge->reverse)) {
+                min = rev_label;
+            }
         }
-    }
-    if (i == 0) {
-        runtime_error("find_min: vertex should have at least one outgoing edge");
     }
     return min;
 }
@@ -36,10 +37,31 @@ static void relabel(const NetworkPointer network, const VertexPointer vertex)
     vertex_set_distance_label(vertex, min_label);
 }
 
+void discharge(const NetworkPointer network, const VertexPointer vertex)
+{
+    do {
+        EdgeCollection out_edges = network_get_out_edges(network, *vertex);
+        EdgePointer edge = edgecollection_current(out_edges);
+        if (edge_is_admissable(edge)) {
+            push(edge, vertex);
+        } else {
+            if (edgecollection_current_is_last(out_edges)) {
+                relabel(network, vertex);
+                *out_edges.curr = 0;
+                return;
+            } else {
+                edgecollection_current_next(out_edges);
+            }
+        }
+    } while (vertex_exflow(vertex) > 0);
+}
+
 static bool is_active(const NetworkPointer network, const VertexPointer vertex)
 {
-    bool is_graph_vertex = !vertex_equals(*vertex, *network->source) && !vertex_equals(*vertex, *network->sink);
-    return (vertex_exflow(vertex) > 0 && is_graph_vertex);
+    bool pos_exflow = vertex_exflow(vertex) > 0;
+    bool not_sink   = !vertex_equals(*vertex, *network->sink);
+    bool not_source = !vertex_equals(*vertex, *network->source);
+    return pos_exflow && not_sink && not_source;
 }
 
 VertexCollection active_vertices(const NetworkPointer network)
@@ -55,25 +77,5 @@ VertexCollection active_vertices(const NetworkPointer network)
         }
     }
     return actives;
-}
-
-void discharge(const NetworkPointer network, const VertexPointer vertex)
-{
-    do {
-        EdgeCollection out_edges = network_get_out_edges(network, *vertex);
-        EdgePointer edge = edgecollection_get(out_edges, *out_edges.curr);
-        if (edge_is_admissable(edge)) {
-            push(edge, vertex);
-        }
-        else {
-            if (*out_edges.curr == edgecollection_length(out_edges) - 1) {
-                relabel(network, vertex);
-                *out_edges.curr = 0;
-                return;
-            } else {
-                *out_edges.curr = *out_edges.curr + 1;
-            }
-        }
-    } while (vertex_exflow(vertex) > 0);
 }
 

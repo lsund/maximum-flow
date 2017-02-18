@@ -22,7 +22,6 @@ VertexCollection vertexcollection_init(const size_t init_length)
         return vertexcollection_empty();
     } else {
         ret.members = collection_p_init(init_length);
-        ret.indices = map_create();
     }
     return ret;
 }
@@ -55,24 +54,12 @@ VertexPointer vertexcollection_get(
     return (VertexPointer) collection_get(vertices.members, position);
 }
 
-bool vertexcollection_contains(
-        const VertexCollection vertices,
-        const Vertex vertex
-    )
-{
-    /* return vertexcollection_length(vertices) >= vertex.label - 1; */
-    return map_exists(vertices.indices, vertex.label);
-}
-
 void vertexcollection_push(
         const VertexCollection vertices,
         const VertexPointer vertex
     )
 {
-    if (!vertexcollection_contains(vertices, *vertex)) {
-        map_put(vertices.indices, vertex->label, vertexcollection_length(vertices));
-        collection_push(vertices.members, vertex);
-    }
+    collection_push(vertices.members, vertex);
 }
 
 
@@ -88,7 +75,6 @@ void vertexcollection_print(const VertexCollection vertices)
 
 Result vertexcollection_destroy(VertexCollection vertices)
 {
-    map_destroy(vertices.indices);
     collection_destroy(vertices.members);
     return SUCCESS;
 }

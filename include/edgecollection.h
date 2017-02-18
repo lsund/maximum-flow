@@ -4,7 +4,6 @@
 
 #include "edge.h"
 #include "vertexcollection.h"
-#include "map.h"
 
 // An edgecollection is a collection of edges, allowing duplicates.
 // Field members:   The underlying collection
@@ -33,14 +32,17 @@ EdgePointer edgecollection_get(
         const unsigned int position
     );
 
-// The vertices of this edgecollection
-VertexCollection edgecollection_vertices(const EdgeCollection edges);
-
 // Sets the last element to the specified edge, and increments the number of
 // elements
 void edgecollection_push(const EdgeCollection edges, const EdgePointer edge);
 
-// Print the collection to stdout
+EdgePointer edgecollection_current(const EdgeCollection edges);
+
+void edgecollection_current_next(const EdgeCollection edges);
+
+bool edgecollection_current_is_last(const EdgeCollection edges);
+
+    // Print the collection to stdout
 void edgecollection_print(const EdgeCollection edges);
 
 // Free the structure

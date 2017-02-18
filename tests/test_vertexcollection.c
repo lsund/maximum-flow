@@ -23,11 +23,6 @@ char *utest_vertexcollection_push()
     return NULL;
 }
 
-char *utest_vertexcollection_contains()
-{
-    return NULL;
-}
-
 char *utest_vertexcollection_get()
 {
     VertexCollection vertexcollection;
@@ -45,8 +40,6 @@ char *utest_vertexcollection_destroy()
 char *test_vertexcollection() {
     mu_message(UNIT, "vertexcollection_init\n");
     mu_run_utest(utest_vertexcollection_init);
-    mu_message(UNIT, "vertexcollection_contains\n");
-    mu_run_utest(utest_vertexcollection_contains);
     mu_message(UNIT, "vertexcollection_get\n");
     mu_run_utest(utest_vertexcollection_get);
     mu_message(UNIT, "vertexcollection_push\n");

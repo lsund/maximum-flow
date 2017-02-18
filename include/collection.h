@@ -2,7 +2,6 @@
 #define ARRAY_H
 
 #include "util.h"
-#include "map.h"
 
 #define COLL_MIN_SIZE 4
 

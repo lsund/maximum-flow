@@ -6,20 +6,17 @@ TEST_DIR=tests
 SRCS := $(shell find $(SRC_DIR)/* -maxdepth 0 -name '*.c')
 TEST_SRCS := $(shell find $(TEST_DIR)/* -maxdepth 0 -name '*.c')
 
-all: dirs lib
-	$(CC) $(CFLAGS) $(SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
+all: dirs
+	$(CC) $(CFLAGS) $(SRCS) main.c -o bin/main -lm
 
-optimized: dirs lib
-	$(CC) -O2 $(CFLAGS) $(SRCS) main.c lib/map.a -o bin/main -lm -lstdc++
+optimized: dirs
+	$(CC) -O2 $(CFLAGS) $(SRCS) main.c -o bin/main -lm -lstdc++
 
 run: all
 	./bin/main
 
-lib: dirs
-	g++ -std=c++11 -c src/cpp/map.cpp && ar rvs lib/map.a map.o && rm map.o
-
-test: dirs lib
-	$(CC) $(CFLAGS) $(SRCS) $(TEST_SRCS) lib/map.a -o bin/test \
+test: dirs
+	$(CC) $(CFLAGS) $(SRCS) $(TEST_SRCS) -o bin/test \
 		-lm -lstdc++
 
 runtest: test
@@ -29,7 +26,7 @@ memcheck: all
 	valgrind --leak-check=full --show-leak-kinds=all ./bin/main
 
 gprof: dirs
-	$(CC) $(CFLAGS) $(SRCS) -pg main.c lib/map.a -o bin/main -lm -lstdc++ \
+	$(CC) $(CFLAGS) $(SRCS) -pg main.c -o bin/main -lm+ \
 		&& ./bin/main && gprof ./bin/main > prof/gprof.info \
 		&& mv gmon.out prof
 

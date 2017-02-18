@@ -6,10 +6,8 @@
 
 // A set of vertices
 // Field set:   the set holding the actual references to the vertices
-// Field contains:  bitmap for keeping track of which elements are in the set
 typedef struct vertexcollection {
     CollectionPointer members;
-    Map indices;
 } VertexCollection, *VertexCollectionPointer;
 
 VertexCollection vertexcollection_empty();
@@ -28,12 +26,6 @@ size_t vertexcollection_length(const VertexCollection vertices);
 VertexPointer vertexcollection_get(
         const VertexCollection vertices,
         const unsigned int position
-    );
-
-// Does the set contain the specified vertex?
-bool vertexcollection_contains(
-        const VertexCollection vertices,
-        const Vertex vertex
     );
 
 void vertexcollection_push(

@@ -44,27 +44,24 @@ EdgePointer edgecollection_get(
     return collection_get(edges.members, position);
 }
 
-VertexCollection edgecollection_vertices(const EdgeCollection edges)
-{
-    VertexCollection vertices = vertexcollection_init(COLL_MIN_SIZE);
-    size_t i;
-    for (i = 0; i < edgecollection_length(edges); i++) {
-        EdgePointer edge = edgecollection_get(edges, i);
-        Vertex first = edge->first;
-        Vertex second = edge->second;
-        if (!vertexcollection_contains(vertices, first)) {
-            vertexcollection_push(vertices, vertex_make(first.label));
-        }
-        if (!vertexcollection_contains(vertices, second)) {
-            vertexcollection_push(vertices, vertex_make(second.label));
-        }
-    }
-    return vertices;
-}
-
 void edgecollection_push(const EdgeCollection edges, const EdgePointer edge)
 {
     collection_push(edges.members, edge);
+}
+
+void edgecollection_current_next(const EdgeCollection edges)
+{
+    *edges.curr = *edges.curr + 1;
+}
+
+bool edgecollection_current_is_last(const EdgeCollection edges)
+{
+    return *edges.curr == edgecollection_length(edges) - 1;
+}
+
+EdgePointer edgecollection_current(const EdgeCollection edges)
+{
+    return edgecollection_get(edges, *edges.curr);
 }
 
 void edgecollection_print(const EdgeCollection edges)
