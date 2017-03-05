@@ -41,7 +41,7 @@ static bool is_neighbour_to(
     size_t i;
     for (i = 0; i < edgecollection_length(out_edges); i++) {
         EdgePointer edge = edgecollection_get(out_edges, i);
-        if (vertex_equals(edge->second, vertex_b)) {
+        if (vertex_equals(*edge->second, vertex_b)) {
             return true;
         }
     }

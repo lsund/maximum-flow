@@ -34,7 +34,7 @@ EdgePointer network_get_out_edge(
     size_t i;
     for (i = 0; i < edgecollection_length(out_edges); i++) {
         EdgePointer edge = edgecollection_get(out_edges, i);
-        if (vertex_equals(edge->second, second)) {
+        if (vertex_equals(*edge->second, second)) {
             return edge;
         }
     }
@@ -80,7 +80,7 @@ static unsigned int networkvertex_inflow(
         size_t i;
         for (i = 0, sum = 0; i < edgecollection_length(edges); i++) {
             EdgePointer edge = edgecollection_get(edges, i);
-            if (vertex_equals(edge->second, vertex)) {
+            if (vertex_equals(*edge->second, vertex)) {
                 sum += edge_flow(edge);
             }
         }
@@ -117,8 +117,8 @@ unsigned int recover_flow(const NetworkPointer network)
         size_t i;
         for (i = 0, sum = 0; i < edgecollection_length(edges); i++) {
             EdgePointer edge = edgecollection_get(edges, i);
-            if (vertex_equals(edge->second, *network->sink)) {
-                sum += networkvertex_inflow(network, edge->first);
+            if (vertex_equals(*edge->second, *network->sink)) {
+                sum += networkvertex_inflow(network, *edge->first);
             }
         }
         return sum;

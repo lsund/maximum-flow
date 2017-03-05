@@ -69,7 +69,7 @@ void edgecollection_print(const EdgeCollection edges)
     size_t i;
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        printf("(%d, %d), ", edge->first.label, edge->second.label);
+        printf("(%d, %d), ", edge->first->label, edge->second->label);
     }
     printf("\n");
 }

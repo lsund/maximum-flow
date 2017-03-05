@@ -8,13 +8,13 @@ static Label find_min(const NetworkPointer network, const Vertex vertex)
     EdgeCollection edges = network_get_out_edges(network, vertex);
     for (i = 0; i < edgecollection_length(edges); i++) {
         EdgePointer edge = edgecollection_get(edges, i);
-        Label label      = vertex_distance_label(edge->second_ref) + 1;
-        Label rev_label  = vertex_distance_label(edge->reverse->second_ref) + 1;
-        if (vertex_equals(edge->first, vertex)) {
+        Label label      = vertex_distance_label(edge->second) + 1;
+        Label rev_label  = vertex_distance_label(edge->reverse->second) + 1;
+        if (vertex_equals(*edge->first, vertex)) {
             if (label < min && edge_is_residual(edge)) {
                 min = label;
             }
-        } else if (vertex_equals(edge->first, vertex)) {
+        } else if (vertex_equals(*edge->first, vertex)) {
             if (rev_label < min && edge_is_residual(edge->reverse)) {
                 min = rev_label;
             }

@@ -59,11 +59,11 @@ static EdgePointer update_edge(
 {
     EdgePointer edge = parse_edge(network->graph.vertices, first_token, second_token);
     edgecollection_push(network->graph.edges, edge);
-    network_add_out_edge(network, edge->first, edge);
-    network_add_out_edge(network, edge->second, edge->reverse);
+    network_add_out_edge(network, *edge->first, edge);
+    network_add_out_edge(network, *edge->second, edge->reverse);
     if (network->type == PS) {
-        if (vertex_equals(edge->first, *network->source)) {
-        } else if (vertex_equals(edge->second, *network->sink)) {
+        if (vertex_equals(*edge->first, *network->source)) {
+        } else if (vertex_equals(*edge->second, *network->sink)) {
         }
     } else {
     }

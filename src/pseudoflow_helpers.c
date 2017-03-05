@@ -9,8 +9,8 @@ static bool is_strong_weak_edge(const NetworkPointer network, const Edge edge)
     if (!is_valid_edge) {
         return false;
     }
-    bool first_is_strong = vertex_excess(edge.first_ref) > 0;
-    bool second_is_weak = vertex_excess(edge.second_ref) <= 0;
+    bool first_is_strong = vertex_excess(edge.first) > 0;
+    bool second_is_weak = vertex_excess(edge.second) <= 0;
     return first_is_strong && second_is_weak;
 }
 
@@ -22,7 +22,7 @@ static bool is_merger_edge(const NetworkPointer network, const EdgePointer edge)
 static void split(const NetworkPointer network, const EdgePointer edge) 
 {
     VertexPointer vertex;
-    vertex = edge->first_ref;
+    vertex = edge->first;
     tree_merge(network->root, vertex);
 }
 

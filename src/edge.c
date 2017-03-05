@@ -8,12 +8,8 @@ static void build_edge(
         const bool is_reverse
     )
 {
-    edge->first      = *first;
-    edge->second     = *second;
-    edge->first_ref  = first;
-    edge->second_ref = second;
-    edge->first_ref  = first;
-    edge->second_ref = second;
+    edge->first      = first;
+    edge->second     = second;
     edge->capacity   = 0;
     edge->flow       = 0;
     edge->is_reverse = is_reverse;
@@ -34,8 +30,8 @@ EdgePointer edge_make(const VertexPointer first, const VertexPointer second)
 
 bool edge_incident_with(const Edge edge, const Vertex vertex)
 {
-    bool with_first  = vertex_equals(edge.first, vertex);
-    bool with_second = vertex_equals(edge.second, vertex); 
+    bool with_first  = vertex_equals(*edge.first, vertex);
+    bool with_second = vertex_equals(*edge.second, vertex); 
     return with_first || with_second;
 }
 
@@ -78,8 +74,8 @@ void edge_add_flow(const EdgePointer edge, const int added_flow)
     int flow;
     flow = edge_flow(edge);
     edge_set_flow(edge, flow + added_flow);
-    edge->second_ref->excess += added_flow;
-    edge->first_ref->excess -= added_flow;
+    edge->second->excess += added_flow;
+    edge->first->excess -= added_flow;
 }
 
 void edge_fill_flow(
@@ -113,13 +109,13 @@ bool edge_is_residual(const EdgePointer edge)
 bool edge_is_admissable(const EdgePointer edge)
 {
     Label first_label, second_label;
-    first_label = vertex_distance_label(edge->first_ref);
-    second_label = vertex_distance_label(edge->second_ref);
+    first_label = vertex_distance_label(edge->first);
+    second_label = vertex_distance_label(edge->second);
     return first_label == second_label + 1 && edge_is_residual(edge);
 }
 
 void edge_print(const Edge edge)
 {
-    printf("(%u, %u)\n", edge.first.label, edge.second.label);
+    printf("(%u, %u)\n", edge.first->label, edge.second->label);
 }
 

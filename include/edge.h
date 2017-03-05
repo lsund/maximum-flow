@@ -18,9 +18,7 @@ typedef struct edge Edge, *EdgePointer;
 typedef enum EdgeType { FORWARD, REVERSE } EdgeType;
 
 struct edge {
-    Vertex first;
-    Vertex second;
-    VertexPointer first_ref, second_ref;
+    VertexPointer first, second;
     unsigned int capacity, flow;
     EdgePointer reverse;
     bool is_reverse;
