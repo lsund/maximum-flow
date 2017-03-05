@@ -11,7 +11,9 @@ void goldberg_tarjan(NetworkPointer network)
             VertexPointer vertex = vertexcollection_get(actives, i);
             discharge(network, vertex);
         }
+        vertexcollection_destroy(actives);
         actives = active_vertices(network);
     }
+    vertexcollection_destroy(actives);
 }
 

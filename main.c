@@ -21,7 +21,7 @@ static void print_before(const char *filename, const NetworkType type)
 static void print_after(const NetworkPointer network, const int msec)
 {
     printf("Time taken %d seconds %d milliseconds\n", msec/1000, msec%1000);
-    printf("flow: %u\n", network_flow(network));
+    printf("flow: %u\n", recover_flow(network));
 }
 
 static void parse_arguments(int argc, char *argv[])
@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
     int msec = diff * 1000 / CLOCKS_PER_SEC;
     print_after(network, msec);
     network_destroy(network);
+
     return 0;
 }
 

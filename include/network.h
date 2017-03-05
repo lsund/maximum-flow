@@ -22,7 +22,7 @@ EdgeCollection network_edgepath_to_treeroot(const NetworkPointer network,
         const VertexPointer vertex
     );
 
-unsigned int network_flow(const NetworkPointer network);
+unsigned int recover_flow(const NetworkPointer network);
 
 void network_add_out_edge(
         const NetworkPointer network,

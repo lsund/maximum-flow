@@ -109,7 +109,7 @@ EdgeCollection network_get_out_edges(
 }
 
 
-unsigned int network_flow(const NetworkPointer network)
+unsigned int recover_flow(const NetworkPointer network)
 {
     if (network->type == PS) {
         EdgeCollection edges = network->graph.edges;

@@ -1,10 +1,10 @@
 
-fix memory leaks                                []
-
 recover the flow in a more efficient way        []
 
 analyze if the edges need pointers to 
 vertices / values / both                        []
+get rid of either first or first_ref
+from edges                                      []
 
 merger_edge scans all edges each iteration.
 Faster way to do this?                          []
@@ -18,8 +18,11 @@ vertices can only become strong, not weak.
 and they only become strong at a single
 place                                           []
 
-get rid of either first or first_ref
-from edges                                      []
+maybe reset vertexsets length, rather than 
+allocating/deallocating it once for each set
+of active vertices                              []
+
+fix memory leaks                                [done]
 
 get rid of cpp module                           [done]
 for this, need to get rid of

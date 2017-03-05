@@ -17,8 +17,8 @@ char *test_interop()
         goldberg_tarjan(pr_network);
         ps_network = parse(file, PS);
         pseudoflow(ps_network);
-        long pr_res = (long) network_flow(pr_network);
-        long ps_res = (long) network_flow(ps_network);
+        long pr_res = (long) recover_flow(pr_network);
+        long ps_res = (long) recover_flow(ps_network);
         mu_message(DATA, "testing file\n");
         printf("\t\%s with opt: %lu\n", file, opt);
         printf("\tpr found: %lu\n", pr_res);

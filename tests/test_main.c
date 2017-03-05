@@ -13,7 +13,7 @@ char *test_goldberg_tarjan_algorithm()
         NetworkPointer network;
         network = parse(file, PR);
         goldberg_tarjan(network);
-        long res = (long) network_flow(network);
+        long res = (long) recover_flow(network);
         mu_message(DATA, "testing file\n");
         printf("\t\%s with opt: %lu\n", file, opt);
         printf("\tfound: %lu\n", res);
@@ -37,7 +37,7 @@ char *test_pseudoflow_algorithm()
         mu_message(DATA, "testing file\n");
         printf("\t\%s with opt: %lu\n", file, opt);
         pseudoflow(network);
-        long res = (long) network_flow(network);
+        long res = (long) recover_flow(network);
         printf("\tfound: %lu\n", res);
         mu_assert("should give the same output as maxflow", res == opt);
         mu_message(DATA, "passed\n");
@@ -60,7 +60,7 @@ char *test_extensive()
         mu_message(DATA, "testing file\n");
         printf("\t\%s with opt: %lu\n", file, opt);
         pseudoflow(network);
-        long res = (long) network_flow(network);
+        long res = (long) recover_flow(network);
         printf("\tfound: %lu\n", res);
         mu_assert("should give the same output as maxflow", res == opt);
         mu_message(DATA, "passed\n");
