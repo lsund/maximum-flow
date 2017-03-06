@@ -7,8 +7,8 @@
 #include "goldberg_tarjan.h"
 #include "pseudoflow.h"
 
-char *file;
-char *outfile;
+char *file, *outfile;
+bool specified_outfile;
 int output;
 NetworkType type;
 
@@ -28,10 +28,24 @@ static void print_after(const NetworkPointer network, const int msec)
     printf("flow: %u\n", recover_flow(network));
 }
 
+static void print_file(
+        const NetworkPointer network,
+        const int msec,
+        const char *outfile
+    )
+{
+    int m, n;
+    m = edgecollection_length(network->graph.edges);
+    n = vertexcollection_length(network->graph.vertices);
+    FILE *handle = fopen(outfile, "w");
+    fprintf(handle, "%d %d\n", m, msec);
+    fclose(handle);
+}
+
 static void parse_arguments(int argc, char *argv[])
 {
-    bool file, specified_type, specified_outfile;
-    file              = false;
+    bool specified_file, specified_type;
+    specified_file    = false;
     specified_outfile = false;
     specified_type    = false;
     int opt;
@@ -42,7 +56,7 @@ static void parse_arguments(int argc, char *argv[])
             case 'f': 
                 file = argv[i];
                 i++;
-                file = true;
+                specified_file = true;
                 break;
             case 't': 
                 type = strcmp("pr", argv[i]) == 0 ? PR : PS;
@@ -63,13 +77,13 @@ static void parse_arguments(int argc, char *argv[])
                     );
                 exit(EXIT_FAILURE);
         }
-        if (!file) {
+        if (!specified_file) {
             fprintf(
                     stderr, "Usage : %s -f file [-t type] [-o outfile] \n",
                     argv[0]
                 );
         }
-        if (!type) {
+        if (!specified_type) {
             type = PR;
         }
     }
@@ -88,8 +102,8 @@ int main(int argc, char *argv[])
     }
     diff = clock() - start;
     int msec = diff * 1000 / CLOCKS_PER_SEC;
-    if (outfile) {
-        /* print_file(network, outfile); */
+    if (specified_outfile) {
+        print_file(network, msec, outfile);
     } else {
         print_after(network, msec);
     }
