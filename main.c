@@ -1,5 +1,7 @@
 
 #include <time.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 #include "parser.h"
 #include "goldberg_tarjan.h"
@@ -26,21 +28,30 @@ static void print_after(const NetworkPointer network, const int msec)
 
 static void parse_arguments(int argc, char *argv[])
 {
-    if (argc == 3) {
-        filename = argv[1];
-        if (strcmp(argv[2], "pr") == 0) {
-            type = PR; 
-        } else if (strcmp(argv[2], "ps") == 0) {
-            type = PS;
-        } else {
-            type = NETWORK_TYPE;
+    int opt;
+    int i = 1;
+    while ((opt = getopt(argc, argv, "fto")) != 1) {
+        i++;
+        switch (opt) {
+            case 'f': 
+                filename = argv[i];
+                i++;
+                break;
+            case 't': 
+                type = strcmp("pr", argv[i]) == 0 ? PR : PS;
+                i++;
+                break;
+            case 'o': 
+                printf("%s\n", argv[i]);
+                i++;
+                break;
+            case -1:
+                return;
+            default: 
+                printf("%d\n", opt);
+                fprintf(stderr, "Usage : %s [ilw] \n", argv[0]);
+                exit(EXIT_FAILURE);
         }
-    } else if (argc == 2) {
-        filename = argv[1];
-        type = NETWORK_TYPE;
-    } else {
-        filename = FILE_NAME;
-        type = NETWORK_TYPE;
     }
 }
 

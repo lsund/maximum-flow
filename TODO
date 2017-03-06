@@ -1,11 +1,6 @@
 
 recover the flow in a more efficient way        []
 
-analyze if the edges need pointers to 
-vertices / values / both                        []
-get rid of either first or first_ref
-from edges                                      []
-
 merger_edge scans all edges each iteration.
 Faster way to do this?                          []
 
@@ -21,6 +16,11 @@ place                                           []
 maybe reset vertexsets length, rather than 
 allocating/deallocating it once for each set
 of active vertices                              []
+
+analyze if the edges need pointers to 
+vertices / values / both                        [done]
+get rid of either first or first_ref
+from edges                                      [done]
 
 fix memory leaks                                [done]
 
