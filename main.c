@@ -11,7 +11,17 @@ char *file;
 int output;
 NetworkType type;
 
-static void print_after(const NetworkPointer network, const int msec)
+static void print_help_and_exit()
+{
+    fprintf(stderr, "\nUsage:\t./maxflow -f file -t type\n");
+    fprintf(stderr, "\ntype:\t\n");
+    fprintf(stderr, "\tpr:\trun push-relabel algorithm\n");
+    fprintf(stderr, "\tps:\trun pseudoflow algorithm\n");
+    fprintf(stderr, "\tboth:\tboth algorithms\n\n");
+    exit(EXIT_FAILURE);
+}
+
+static void print_benchcmark(const NetworkPointer network, const int msec)
 {
     char type_str[16];
     if (network->type == PR) {
@@ -19,9 +29,13 @@ static void print_after(const NetworkPointer network, const int msec)
     } else if (network->type == PS) {
         sprintf(type_str, "%s", "ps");
     } else {
-        runtime_error("print_after: invalid argument");
+        runtime_error("print_benchcmark: invalid argument");
     }
-    printf("%s %d ", type_str, msec);
+    if (VERBOSE) {
+        printf("File: %s, Network type: %s Msec: %d ", file, type_str, msec);
+    } else {
+        printf("%d ", msec);
+    }
 }
 
 static void parse_arguments(int argc, char *argv[])
@@ -52,23 +66,12 @@ static void parse_arguments(int argc, char *argv[])
                 break;
             case -1:
                 return;
-            default: 
-                fprintf(
-                        stderr, "Usage : %s -f file [-t type]\n",
-                        argv[0]
-                    );
-                exit(EXIT_FAILURE);
+            default:
+                print_help_and_exit();
         }
-        if (!specified_file) {
-            fprintf(
-                    stderr, "Usage : %s -f file [-t type]\n",
-                    argv[0]
-                );
-            exit(EXIT_FAILURE);
-        }
-        if (!specified_type) {
-            type = PR;
-        }
+    }
+    if (!specified_file || !specified_type) {
+        print_help_and_exit();
     }
 }
 
@@ -91,20 +94,28 @@ int main(int argc, char *argv[])
     parse_arguments(argc, argv);
     int msec;
     if (type == NO_TYPE) {
+
         int msec_pr, msec_ps;
+
         network = parse(file, PR);
+        printf("%zu ", vertexcollection_length(network->graph.vertices));
         msec_pr = benchmark(network);
-        print_after(network, msec_pr);
+        print_benchcmark(network, msec_pr);
+        network_destroy(network);
+
         network = parse(file, PS);
         msec_ps = benchmark(network);
-        print_after(network, msec_ps);
+        print_benchcmark(network, msec_ps);
+        network_destroy(network);
+
     } else {
         network = parse(file, type);
+        printf("%zu ", vertexcollection_length(network->graph.vertices));
         msec = benchmark(network);
-        print_after(network, msec);
+        print_benchcmark(network, msec);
+        network_destroy(network);
     } 
     printf("\n");
-    network_destroy(network);
     return 0;
 }
 
