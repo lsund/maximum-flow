@@ -7,50 +7,31 @@
 #include "goldberg_tarjan.h"
 #include "pseudoflow.h"
 
-char *file, *outfile;
-bool specified_outfile;
+char *file;
 int output;
 NetworkType type;
 
-static void print_before(const char *file, const NetworkType type)
-{
-    printf("type 0 = push relabel network\ntype 1 = pseudoflow network\n");
-    printf(
-            "Computing flow of the network in file %s using network type %d\n", 
-            file,
-            type
-        );
-}
-
 static void print_after(const NetworkPointer network, const int msec)
 {
-    printf("Time taken %d seconds %d milliseconds\n", msec/1000, msec%1000);
-    printf("flow: %u\n", recover_flow(network));
-}
-
-static void print_file(
-        const NetworkPointer network,
-        const int msec,
-        const char *outfile
-    )
-{
-    int m, n;
-    m = edgecollection_length(network->graph.edges);
-    n = vertexcollection_length(network->graph.vertices);
-    FILE *handle = fopen(outfile, "w");
-    fprintf(handle, "%d %d\n", m, msec);
-    fclose(handle);
+    char type_str[16];
+    if (network->type == PR) {
+        sprintf(type_str, "%s", "pr");
+    } else if (network->type == PS) {
+        sprintf(type_str, "%s", "ps");
+    } else {
+        runtime_error("print_after: invalid argument");
+    }
+    printf("%s %d ", type_str, msec);
 }
 
 static void parse_arguments(int argc, char *argv[])
 {
     bool specified_file, specified_type;
     specified_file    = false;
-    specified_outfile = false;
     specified_type    = false;
     int opt;
     int i   = 1;
-    while ((opt = getopt(argc, argv, "fto")) != 1) {
+    while ((opt = getopt(argc, argv, "ft")) != 1) {
         i++;
         switch (opt) {
             case 'f': 
@@ -58,30 +39,32 @@ static void parse_arguments(int argc, char *argv[])
                 i++;
                 specified_file = true;
                 break;
-            case 't': 
-                type = strcmp("pr", argv[i]) == 0 ? PR : PS;
+            case 't':
+                if (strcmp("pr", argv[i]) == 0) {
+                    type = PR;
+                } else if (strcmp("ps", argv[i]) == 0) {
+                    type = PS;
+                } else {
+                    type = NO_TYPE;
+                }
                 i++;
-                type = true;
-                break;
-            case 'o': 
-                outfile = argv[i];
-                i++;
-                specified_outfile = true;
+                specified_type = true;
                 break;
             case -1:
                 return;
             default: 
                 fprintf(
-                        stderr, "Usage : %s -f file [-t type] [-o outfile] \n",
+                        stderr, "Usage : %s -f file [-t type]\n",
                         argv[0]
                     );
                 exit(EXIT_FAILURE);
         }
         if (!specified_file) {
             fprintf(
-                    stderr, "Usage : %s -f file [-t type] [-o outfile] \n",
+                    stderr, "Usage : %s -f file [-t type]\n",
                     argv[0]
                 );
+            exit(EXIT_FAILURE);
         }
         if (!specified_type) {
             type = PR;
@@ -89,26 +72,39 @@ static void parse_arguments(int argc, char *argv[])
     }
 }
 
-int main(int argc, char *argv[]) 
+static int benchmark(const NetworkPointer network)
 {
-    parse_arguments(argc, argv);
-    NetworkPointer network = parse(file, type);
-    print_before(file, type);
-    clock_t start = clock(), diff;
+    clock_t start, diff;
+    start = clock();
     if (network->type == PR) {
         goldberg_tarjan(network);
     } else {
         pseudoflow(network);
     }
     diff = clock() - start;
-    int msec = diff * 1000 / CLOCKS_PER_SEC;
-    if (specified_outfile) {
-        print_file(network, msec, outfile);
-    } else {
-        print_after(network, msec);
-    }
-    network_destroy(network);
+    return diff * 1000 / CLOCKS_PER_SEC;
+}
 
+int main(int argc, char *argv[]) 
+{
+    NetworkPointer network;
+    parse_arguments(argc, argv);
+    int msec;
+    if (type == NO_TYPE) {
+        int msec_pr, msec_ps;
+        network = parse(file, PR);
+        msec_pr = benchmark(network);
+        print_after(network, msec_pr);
+        network = parse(file, PS);
+        msec_ps = benchmark(network);
+        print_after(network, msec_ps);
+    } else {
+        network = parse(file, type);
+        msec = benchmark(network);
+        print_after(network, msec);
+    } 
+    printf("\n");
+    network_destroy(network);
     return 0;
 }
 

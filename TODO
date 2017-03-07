@@ -1,4 +1,6 @@
 
+plot times                                      []
+
 recover the flow in a more efficient way        []
 
 merger_edge scans all edges each iteration.

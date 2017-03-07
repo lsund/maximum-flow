@@ -4,7 +4,7 @@
 #include "graph.h"
 #include "tree.h"
 
-typedef enum networktype { PR, PS } NetworkType;
+typedef enum networktype { PR, PS, NO_TYPE } NetworkType;
 
 typedef struct network {
     NetworkType             type;
