@@ -7,7 +7,9 @@ different algorithms:
 1. The Goldberg-Tarjan Algorithm [1]
 2. The Pseudoflow Algorithm [2]
 
-The focus of the implementation has been comprehensibility.
+The project aims on demonstrating the properties of these algorithms and compare
+them. The focus has thus been on clear and correctness of code rather than
+execution speed.
 
 Brief source code documentation can be found for all modules in `include/*.h`.
 
@@ -15,11 +17,12 @@ Brief source code documentation can be found for all modules in `include/*.h`.
 
 the command `make` will generate the binary `./bin/main`
 
-The usage is `./bin/main [filename]` where `filename` is an optional argument
-holding the string containing the path to a DIMACS-formatted file containing a
-representation of agraph.  Running the binary without the provided argument will
-run the algorithm on a sample file using the pseudoflow algorithm. Have a look
-in `main.c` to change these defaults.
+To run the program, use `./bin/main -f filename -t type` where `filename` is the
+path to a DIMACS-formatted file containing a representation of a graph. `type`
+is one of `pr`, `ps` or `both`. `pr` will run the Goldberg-Tarjan algorithm,
+`ps` will run the pseudoflow algorithm and `both` will run both (!).
+
+###input
 
 A graph in the DIMACS format is assumed to have a known, specified number of
 vertices and edges, a source vertex and a sink vertex.  Below is a description
@@ -45,6 +48,17 @@ an error message.
   where `first_id` is the integer of the first vertex of this edge, `second_id`
   is the integer of the second vertex of this edge and `capacity` is the
   capacity of this edge. Examples of these files are stored in `sample_data`
+
+###Output
+
+The program will write two or three space separated numbers to standard output.
+The first is the number of vertices of the graph that was specified.
+If `type` is `pr` or `ps` then the second number is the time that the
+corresponding algorithm took to calculate the maximum flow of the specified
+graph. If `type` is `both` then the second number is the time that the
+Goldberg-Tarjan algorithm took, and the third number is the time the Pseudoflow
+algorithm took to compute the maximum flow in the specified graph. Time is given
+in milliseconds.
 
 [1] Combinatorial Optimization Theory and Algorithms Second Edition, 
 Bernhard Korte, Jens Vygen, 2002, p 163-168.
