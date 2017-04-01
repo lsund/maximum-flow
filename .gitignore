@@ -8,3 +8,6 @@ generator
 prof
 valgrind_fail
 vgcore*
+notes
+plot
+generate-graph/

@@ -1,5 +1,5 @@
 
-#Maximum Flow
+# Maximum Flow
 
 A program for computing a maximum s-t-flow featuring implementations of two
 different algorithms:
@@ -11,9 +11,9 @@ The project aims on demonstrating the properties of these algorithms and compare
 them. The focus has thus been on clear and correctness of code rather than
 execution speed.
 
-Brief source code documentation can be found for all modules in `include/*.h`.
-
 ## Usage
+
+A brief description of all functions can be found in `include/*.h`.
 
 the command `make` will generate the binary `./bin/main`
 
@@ -22,7 +22,7 @@ path to a DIMACS-formatted file containing a representation of a graph. `type`
 is one of `pr`, `ps` or `both`. `pr` will run the Goldberg-Tarjan algorithm,
 `ps` will run the pseudoflow algorithm and `both` will run both (!).
 
-###Input
+### Input
 
 A graph in the DIMACS format is assumed to have a known, specified number of
 vertices and edges, a source vertex and a sink vertex.  Below is a description
@@ -57,7 +57,7 @@ an error message.
   is the integer of the second vertex of this edge and `capacity` is the
   capacity of this edge. Examples of these files are stored in `sample_data`
 
-###Output
+### Output
 
 If everything goes well, then the program writes two or three space separated
 numbers to standard output.  The first is the number of vertices of the graph
@@ -68,17 +68,19 @@ Goldberg-Tarjan algorithm took, and the third number is the time the Pseudoflow
 algorithm took to compute the maximum flow in the specified graph. Time is given
 in milliseconds.
 
-[1] Combinatorial Optimization Theory and Algorithms Second Edition, 
-Bernhard Korte, Jens Vygen, 2002, p 163-168.
-
-[2] The Pseudoflow Algorithm: A new Algorithm for the Maximum-Flow Problem, 
-Dorit S. Hochbaum, 2001.
-
-##Improvements
+## Improvements
 
 * Efficiency of algorithm 2 could probably be improved by at least a factor 2 by
   improving the merger-edge search. The approach is described in [2].
 
 * Flow recovery of algorithm 2 is rather complicated and currently implemented a
   bit hackish. Could be improved for efficiency and comprehensibility.
+
+## References
+
+[1] Combinatorial Optimization Theory and Algorithms Second Edition, 
+Bernhard Korte, Jens Vygen, 2002, p 163-168.
+
+[2] The Pseudoflow Algorithm: A new Algorithm for the Maximum-Flow Problem, 
+Dorit S. Hochbaum, 2001.
 
