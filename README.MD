@@ -1,6 +1,8 @@
 
 # Maximum Flow
 
+(Not under development)
+
 A program for computing a maximum s-t-flow featuring implementations of two
 different algorithms:
 
