@@ -10,7 +10,7 @@ different algorithms:
 2. The Pseudoflow Algorithm [2]
 
 The project aims on demonstrating the properties of these algorithms and compare
-them. The focus has thus been on clear and correctness of code rather than
+them. The focus has thus been on clear and readable code rather than
 execution speed.
 
 ## Usage
